@@ -1,0 +1,915 @@
+/*
+THE CSS CLASSES BELOW MUST BE IN ALL THEMES!  MODIFY THESE TO SUIT YOUR NEEDS
+*/
+
+img {
+	
+	border: 0px;
+	
+}
+
+input[type=checkbox] {
+	cursor: pointer;
+}
+
+.main {
+	color: white;
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+.largeFont {
+	
+	color: white;
+	font-size: 14px;
+	font-family: verdana, sans-serif;
+	
+}
+
+.tinyFont {
+	color: white;
+	font-size: 10px;
+	font-family: verdana, sans-serif;
+}
+
+.textBox {
+
+	font-family: verdana;
+	font-size: 11px;
+	border: solid green 1px;
+	padding: 1px;
+}
+
+
+
+.checkBox {
+	cursor: pointer;
+	color: green;
+	width: 11px;
+	height: 11px;
+}
+
+.submitButton {
+	font-family: verdana;
+	font-size: 11px;
+	background-color: whitesmoke;
+	border: solid green 1px;
+	color: black;
+	padding: 3px;
+	cursor: pointer;
+	width: 65px;
+}
+
+.submitButton:hover {
+	background-color: lightgrey;
+}
+
+.shadedBox {
+	border: solid green 1px;
+	background-image: url('formdiv-bg.png');
+	padding: 5px;
+}
+
+
+.breadCrumbTitle {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	padding-left: 10px;
+	padding-top: 10px;
+	position: relative;
+	font-family: 'Exo', verdana, sans-serif;
+}
+
+
+.breadCrumb {
+	font-size: 10px;
+	font-family: verdana, sans-serif;
+	margin-top: 5px;
+	margin-left: 15px;
+	color: white;
+	margin-bottom: 1px;
+}
+
+.successFont {
+	color: lime;
+	font-family: verdana, sans-serif;		
+}
+
+.failedFont {
+	color: pink;
+	font-family: verdana, sans-serif;
+}
+
+.pendingFont {
+	
+	color: green;
+	font-family: verdana, sans-serif;
+	
+}
+
+
+.consoleCategory {
+	border: dotted dimgray 1px;
+	background-color: #4e4e4e;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.consoleCategory_clicked {
+	border: dotted dimgray 1px;
+	background-color: gray;
+	padding: 5px;
+	cursor: pointer;
+}
+
+
+.dashedLine {
+	border-bottom: dashed green 1px;
+}
+
+.dottedLine {
+	border-bottom: dotted green 1px;
+}
+
+.solidLine {
+	border-bottom: solid green 1px;
+}
+
+.dottedBox {
+	
+	border: dotted green 1px;
+	padding: 3px;
+	margin: 3px;
+	
+}
+
+.dashedBox {
+	border: dashed green 1px;
+	padding: 3px;
+	margin: 3px;
+}
+
+.solidBox {
+	border: solid green 1px;
+	padding: 3px;
+	margin: 3px;
+}
+
+
+
+.formTable {
+	border: 0px;
+	padding: 0px;
+	width: 95%;
+	margin: 15px auto 0px auto;
+	border-spacing: 2px;
+}
+
+.formTable td {
+	padding: 2px;
+}
+
+.formLabel {
+	width: 175px;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: white;
+}
+
+.formTitle {
+/*background-color: #373737;*/
+	background-image: url('gradient.png');
+	font-weight: bold;
+	color: white;
+	font-family: verdana, sans-serif;
+	padding: 3px;
+	border: solid green 1px;
+	font-size: 12px;
+	height: 14px;
+}
+
+/* Box to surround forms */
+.formDiv {
+	font-family: verdana, sans-serif;
+	width: 95%;
+	padding: 5px; 
+	margin: 20px auto;
+	border: solid green 1px; 
+	background-image: url('formdiv-bg.png');
+}
+
+.errorDiv {
+	font-family: verdana, sans-serif;
+	width: 90%;
+	margin: 15px auto;
+	padding: 10px;
+	background-image: url('images/form-div.png');
+	border: dashed green 1px;
+}
+
+.errorDiv strong {
+	color: orange;
+}
+
+.newsDiv {
+	font-family: verdana, sans-serif;
+	width: 615px;
+	padding: 5px;
+	position: relative;
+	margin: 20px 15px;
+	border: solid green 1px;
+	background-image: url('formdiv-bg.png');	
+}
+
+
+.newsDiv .avatarImg {
+	
+	width: 50px;
+	height: 50px;
+	border: solid black 1px;
+	padding: 0px;
+	top: 5px;
+	left: 5px;
+	
+}
+
+.newsDiv .postInfo {
+	position: absolute;
+	left: 65px;
+	top: 5px;
+	font-size: 11px;
+	color: white;
+}
+
+
+.newsDiv .subjectText {
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}
+
+.newsDiv .postMessage {
+	position: relative;
+	font-size: 11px;
+	color: white;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+#toolTip {
+	position: absolute;
+	display: none;
+	font-family: verdana;
+	color: white;
+	font-size: 10px;
+	z-Index: 99999;
+	border: solid green 1px;
+	background-color: black;
+	padding: 5px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	text-align: left;
+
+}
+
+
+
+#toolTipWidth {
+	position: absolute;
+	display: none;
+	font-family: verdana;
+	color: white;
+	font-size: 10px;
+	z-Index: 99999;
+	border: solid green 1px;
+	background-color: dimgray;
+	padding: 5px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+
+.alternateBGColor {
+	background-image: url('formdiv-bg.png');
+}
+
+.loadingSpiral {
+	display: none;
+	width: 100%;
+	padding-top: 25px;
+	color: white;
+	font-size: 10px;
+	font-style: italic;
+}
+
+.loadingSpiral img {
+	margin-bottom: 10px;	
+}
+
+.denyText {
+	color: red;
+}
+
+.allowText {
+	color: lime;
+}
+
+.publicNewsColor {
+	color: skyblue;	
+}
+
+.privateNewsColor {
+	color: green;
+}
+
+iframe {
+	width: 560px;
+	height: 315px;
+	border: 0px;
+	position: relative;
+	z-index: 0;
+}
+
+
+.shoutBox {
+	
+	position: relative;
+	overflow-y: auto;
+	background: url('images/shoutbox-bg.png');
+	margin: 5px auto;
+	padding: 3px;
+	vertical-align: bottom;
+	border: solid green 1px;
+	font-family: verdana, sans-serif;
+	
+}
+
+.shoutBoxPost {
+	
+	position: relative;
+	margin: 5px auto;
+	padding: 0px;
+	
+}
+
+
+
+
+
+/* Squads Page CSS */
+
+
+.squadContainer {
+	position: relative;
+	width: 97%;
+	margin: 10px;
+	padding: 0px;
+	
+	
+}
+
+.squadLogo {
+	border: solid green 1px;
+	width: 400px;
+	height: 100px;
+	margin-left: 0px;
+	padding-left: auto;
+
+}
+
+
+.squadContainer .squadRightColumn .squadInfoBox {
+	
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed green 1px;
+
+	
+}
+
+.squadContainer .squadLeftColumn {
+	
+	float: left;
+	width: 60%;
+	padding: 3px;
+	margin-bottom: 25px;
+	text-align: center;
+	
+}
+
+
+.squadContainer .squadInfoTitle {
+	
+	position: relative;
+	font-weight: bold;
+	font-size: 14px;
+	color: white;
+	font-family: verdana, sans-serif;
+	margin: 15px auto 3px auto;
+	padding: 0px;
+	padding-left: 1px;
+	text-align: left;
+	width: 92%;
+	
+}
+
+
+.squadContainer .squadNews {
+	
+	width: 100%;
+	border: 0px;
+	padding: 2px;
+	overflow-y: auto;
+	height: 300px;
+	
+	
+}
+
+.squadContainer .squadNews .squadNewsPost {
+	
+	width: 98%;
+	border: solid green 1px;
+	padding: 3px;
+	margin-bottom: 10px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+
+.squadContainer .squadNews .squadNewsPost .avatarImg {
+	
+	width: 50px;
+	height: 50px;
+	border: solid black 1px;
+	float: left;
+}
+
+.squadContainer .squadNews .squadNewsPost .squadNewsInfo {
+	
+	font-size: 10px;
+	color: white;
+	font-family: verdana, sans-serif;
+	float: left;
+	margin-left: 5px;
+	top: 3px;
+	margin-bottom: 10px;
+	
+	
+}
+.squadContainer .squadNews .squadNewsPost .squadNewsSubject {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.squadContainer .squadLeftColumn .squadInfoBox {
+	
+	position: relative;
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed green 1px;
+	width: 90%;
+	padding: 3px;
+	font-size: 10px;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;	
+	
+}
+
+.squadContainer .formTable {
+	width: 390px;
+	margin: 0px;
+}
+
+.squadContainer .profilePic img {
+	border: solid black 1px;
+	width: 100px;
+	height: 133px;
+}
+
+.squadContainer .profilePic {
+	width: 100px;
+}
+
+.squadContainer .squadRightColumn {
+	
+	float: right;
+	width: 38%;
+	text-align: center;
+	padding: 3px;
+	margin-bottom: 25px;
+	
+	
+}
+
+
+.squadContainer .squadRightColumn .squadInfoTitle {
+	width: 82%;	
+}
+
+.squadContainer .squadRightColumn .squadInfoBox {
+	
+	position: relative;
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed green 1px;
+	width: 80%;
+	padding: 3px;
+	font-size: 10px;
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+	
+.squadContainer .squadNews .squadNewsPost iframe {
+	
+	width: 330px;
+	height: 250px;
+	
+}
+
+
+/*
+ - END SQUAD SECTION
+*/
+
+
+.manageTournamentTeams {
+	
+	position: relative;
+	width: 642px;
+	margin: 10px;
+	padding: 0px;
+	
+}
+
+.mttLeftColumn {
+	
+	width: 307px;
+	float: left;
+	padding: 5px;
+	
+	
+}
+
+.mttRightColumn {
+	
+	width: 307px;
+	float: right;
+	padding: 5px;
+	
+	
+}
+
+.mttPlayerSlot {
+	
+	width: 275px;
+	position: relative;
+	margin-top: 5px;
+	padding: 10px 3px 10px 5px;
+	background-color: #800000;
+	
+}
+
+.mttDeletePlayer {
+	
+	width: 20px;
+	height: 20px;
+	background-color: #B22222;
+	padding: 2px;
+	margin: 2px;
+	position: absolute;
+	right: 3px;
+	top: 2px;
+	text-align: center;
+	line-height: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	
+	
+}
+
+.mttDeletePlayer a {
+	
+	color: white;
+	text-decoration: none;
+}
+
+.mttDeletePlayer a:hover {
+	
+	color: #808080;
+	text-decoration: none;
+}
+
+
+
+.tournamentBracket {
+	
+	position: relative;
+	
+}
+
+.tournamentBracket .bracket {
+	
+	position: absolute;
+	border: solid green 1px;
+	padding: 3px;
+	background-color: #B22222;
+	
+}
+
+.tournamentBracket .seed {
+	
+	position: absolute;
+	width: 20px;
+	
+}
+
+.tournamentBracket .bracketConnector {
+	
+	position: absolute;
+	border: solid white 2px;
+	border-left-width: 0px;
+	
+	
+}
+
+.tournamentBracket .bracketConnectorDash {
+	
+	position: absolute;
+	border: 0px;
+	border-top: solid white 2px;
+	width: 25px;
+	
+	
+}
+
+
+.tournamentProfileContainer {
+	
+	position: relative;
+	width: 625px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	
+}
+
+.tournamentProfileTitle {
+	
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+	font-family: verdana, sans-serif;
+	
+}
+
+.tournamentProfileLeft {
+	width: 274px;
+	float: left;
+	padding: 3px;
+}
+
+.tournamentProfileRight {
+	width: 339px;
+	float: right;
+	padding: 3px;
+}
+
+
+
+.userProfileLeft {
+	width: 175px;
+	float: left;
+	padding: 3px;
+}
+
+.userProfileLeftBoxWidth {
+	width: 100%
+}
+
+
+.userProfileRight {
+	width: 70%;
+	float: right;
+	padding: 3px;
+}
+
+.profileTable {
+	border: solid green 1px;
+	padding: 0px;
+	width: 100%;
+	margin: 0px;
+	border-spacing: 0px;
+}
+
+.profileLabel {
+	width: 125px;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: white;
+}
+
+
+.notificationTable {
+	width: 350px;
+	height: 50px;
+	padding: 3px;
+	border-spacing: 0px;
+	border: 0px;
+}
+
+.notificationTable .notificationIcon {
+	width: 50px;
+}
+
+
+.notificationTable .notificationIMG {
+	border: solid green 1px;
+}
+
+.notificationTable .notificationClose {
+	width: 20px;
+	font-size: 10px;
+}
+
+#notificationDiv {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	border: solid green 1px;
+	background-color: black;
+	width: 350px;
+	height: 60px;
+	padding: 2px;
+	margin: 0px;
+	display: none;
+}
+
+#notificationContainer {
+	display: none;
+}
+
+
+.eventPageContainer {
+	postion: relative;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 97%;
+}
+
+.eventPageContainer .formTable {
+
+	border-spacing: 0px; 
+	margin-top: 0px;
+	width: 99%;
+	margin-left: 1px;
+	
+}
+
+.eventLeftContainer {
+	float: left;
+	width: 40%;
+	
+}
+
+.eventTitle {
+	font-weight: bold;
+	color: white;
+	font-size: 16px;
+	font-family: 'Exo', verdana;
+	position: relative;
+}
+
+/*	border: dashed #242013 1px; */
+.eventRightContainer {
+	float: right;
+	width: 55%;
+}
+
+
+.eventLeftContainer .profilePic {
+	width: 65px;
+}
+
+.eventLeftContainer .profilePic img {
+	border: solid black 1px;
+	width: 60px;
+	height: 80px;
+}
+
+
+.eventPageContainer .eventMessages ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px 10px;
+	margin-bottom: 10px;
+}
+
+.eventPageContainer .eventMessages li {
+	background-image: url('images/form-div.png');
+	padding: 5px;
+}
+
+.eventPageContainer .eventMessages .profilePic {
+	width: 40px;
+	float: left;
+}
+
+.eventPageContainer .eventMessages .profilePic img {
+	width: 40px;
+	height: 53px;
+	margin-bottom: 5px;
+}
+
+.eventPageContainer .eventMessages .messageDiv {
+	float: left;
+	margin-left: 5px;
+}
+
+.eventPageContainer .eventMessages .commentUL li {
+	margin: 1px 0px;
+	padding: 3px;
+	border-top: dotted darkgreen 1px;
+}
+
+.eventPageContainer .eventMessages .textBox {
+	height: 20px;
+	width: 98%;
+}
+
+.eventPageContainer .eventMessages .commentUL {
+	margin-bottom: 10px;
+}
+
+
+.eventChatContainer {
+	width: 95%;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+
+.eventChatContainer .eventChatRoom {
+	width: 72%;
+	height: 500px;
+	border: dotted #242013 1px;
+	background-image: url('images/form-div.png');
+	float: left;
+	overflow-y: auto;
+}
+
+.eventChatContainer .chatTextBoxContainer {
+	width: 72%;
+	position: relative;
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+.eventChatContainer textarea {
+
+	width: 100%;
+	height: 30px;
+	
+}
+
+.eventChatContainer input[type="button"] {
+	width: 100%;
+	height: 30px;
+
+}
+
+.eventChatContainer .eventChatList {
+	width: 23%;
+	height: 500px;
+	border: dotted #242013 1px;
+	background-image: url('images/form-div.png');
+	float: right;
+}
+
+
+.codeEditor {
+	 position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     height: 300px;
+}

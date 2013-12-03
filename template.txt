@@ -1,0 +1,33 @@
+<?php
+// Config File
+$prevFolder = "../";
+
+include($prevFolder."_setup.php");
+
+// Classes needed for index.php
+
+
+$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
+
+if($ipbanObj->select($IP_ADDRESS, false)) {
+	$ipbanInfo = $ipbanObj->get_info();
+
+	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
+		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
+	}
+	else {
+		$ipbanObj->delete();
+	}
+
+}
+
+
+// Start Page
+$dispBreadCrumb = "";
+include($prevFolder."themes/".$THEME."/_header.php");
+
+
+include($prevFolder."themes/".$THEME."/_footer.php");
+
+
+?>

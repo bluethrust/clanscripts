@@ -1,0 +1,686 @@
+/*
+THE CSS CLASSES BELOW MUST BE IN ALL THEMES!  MODIFY THESE TO SUIT YOUR NEEDS
+*/
+
+
+
+.main {
+	color: white;
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+.largeFont {
+	
+	color: white;
+	font-size: 14px;
+	font-family: verdana, sans-serif;
+	
+}
+
+.tinyFont {
+	color: white;
+	font-size: 10px;
+	font-family: verdana, sans-serif;
+}
+
+.textBox {
+
+	font-family: verdana;
+	font-size: 11px;
+	border: solid darkgray 1px;
+	padding: 2px;
+}
+
+
+
+.checkBox {
+	cursor: pointer;
+	color: dimgray;
+	width: 11px;
+	height: 11px;
+}
+
+.submitButton {
+	font-family: verdana;
+	font-size: 11px;
+	background-color: whitesmoke;
+	border: solid lightgrey 1px;
+	color: black;
+	padding: 3px;
+	cursor: pointer;
+	width: 65px;
+}
+
+.submitButton:hover {
+	background-color: lightgrey;
+}
+
+.shadedBox {
+	border: solid darkgray 1px;
+	background-color: #1d1d1d;
+	padding: 5px;
+}
+
+
+.breadCrumbTitle {
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+	padding-left: 10px;
+	padding-top: 10px;
+	position: relative;
+}
+
+.breadCrumb {
+	font-size: 10px;
+	font-family: verdana, sans-serif;
+	margin-top: 5px;
+	margin-left: 15px;
+	color: white;
+	margin-bottom: 1px;
+}
+
+.successFont {
+	color: lime;
+	font-family: verdana, sans-serif;		
+}
+
+.failedFont {
+	color: pink;
+	font-family: verdana, sans-serif;
+}
+
+.pendingFont {
+	
+	color: orange;
+	font-family: verdana, sans-serif;
+	
+}
+
+
+.consoleCategory {
+	border: dotted dimgray 1px;
+	background-color: #4e4e4e;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.consoleCategory_clicked {
+	border: dotted dimgray 1px;
+	background-color: gray;
+	padding: 5px;
+	cursor: pointer;
+}
+
+
+.dashedLine {
+	border-bottom: dashed dimgray 1px;
+}
+
+.dottedLine {
+	border-bottom: dotted dimgray 1px;
+}
+
+.solidLine {
+	border-bottom: solid dimgray 1px;
+}
+
+.dottedBox {
+	
+	border: dotted dimgray 1px;
+	padding: 3px;
+	margin: 3px;
+	
+}
+
+.dashedBox {
+	border: dashed dimgray 1px;
+	padding: 3px;
+	margin: 3px;
+}
+
+.solidBox {
+	border: solid dimgray 1px;
+	padding: 3px;
+	margin: 3px;
+}
+
+
+
+.formTable {
+	border: 0px;
+	padding: 0px;
+	width: 615px;
+	margin: 15px 0px 0px 15px;
+	border-spacing: 2px;
+}
+
+.formTable td {
+	padding: 2px;
+}
+
+.formLabel {
+	width: 175px;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: white;
+}
+
+.formTitle {
+/*background-color: #373737;*/
+	background-image: url('themes/new/images/gradient.jpg');
+	font-weight: bold;
+	color: white;
+	font-family: verdana, sans-serif;
+	padding: 3px;
+	border: solid dimgray 1px;
+	font-size: 12px;
+	height: 14px;
+}
+
+/* Box to surround forms */
+.formDiv {
+	font-family: verdana, sans-serif;
+	width: 615px;
+	padding: 5px; 
+	margin: 20px 15px;
+	border: solid #191a1a 1px; 
+	background-color: #373737
+}
+
+.errorDiv {
+	font-family: verdana, sans-serif;
+	width: 550px;
+	margin: 15px auto;
+	padding: 10px;
+	background-color: #525252;
+	border: dashed silver 1px;
+}
+
+.errorDiv strong {
+	color: pink;
+}
+
+.newsDiv {
+	font-family: verdana, sans-serif;
+	width: 615px;
+	padding: 5px;
+	position: relative;
+	margin: 20px 15px;
+	border: solid #191a1a 1px;
+	background-color: #373737;	
+}
+
+
+.newsDiv .avatarImg {
+	
+	width: 50px;
+	height: 50px;
+	border: solid black 1px;
+	padding: 0px;
+	top: 5px;
+	left: 5px;
+	
+}
+
+.newsDiv .postInfo {
+	position: absolute;
+	left: 65px;
+	top: 5px;
+	font-size: 11px;
+	color: white;
+}
+
+
+.newsDiv .subjectText {
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}
+
+.newsDiv .postMessage {
+	position: relative;
+	font-size: 11px;
+	color: white;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+#toolTip {
+	position: absolute;
+	display: none;
+	font-family: verdana;
+	color: silver;
+	font-size: 10px;
+	z-Index: 99999;
+	border: solid #767676 1px;
+	background-color: #0d0d0d;
+	padding: 5px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+
+}
+
+
+
+#toolTipWidth {
+	position: absolute;
+	display: none;
+	font-family: verdana;
+	color: silver;
+	font-size: 10px;
+	z-Index: 99999;
+	border: solid #767676 1px;
+	background-color: #0d0d0d;
+	padding: 5px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+
+.alternateBGColor {
+	background-color: #101010;
+}
+
+.loadingSpiral {
+	display: none;
+	width: 100%;
+	padding-top: 25px;
+	color: white;
+	font-size: 10px;
+	font-style: italic;
+}
+
+.loadingSpiral img {
+	margin-bottom: 10px;	
+}
+
+.denyText {
+	color: red;
+}
+
+.allowText {
+	color: lime;
+}
+
+.publicNewsColor {
+	color: skyblue;	
+}
+
+.privateNewsColor {
+	color: orange;
+}
+
+iframe {
+	width: 560px;
+	height: 315px;
+	border: 0px;
+	position: relative;
+	z-index: 0;
+}
+
+
+.shoutBox {
+	
+	position: relative;
+	overflow-y: auto;
+	/*background-color: #373737;*/
+	margin: 5px auto;
+	padding: 3px;
+	vertical-align: bottom;
+	
+}
+
+.shoutBoxPost {
+	
+	position: relative;
+	margin: 5px auto;
+	
+}
+
+
+
+
+
+/* Squads Page CSS */
+
+
+.squadContainer {
+	position: relative;
+	width: 642px;
+	margin: 10px;
+	padding: 0px;
+	/*border: solid red 1px;*/
+	
+}
+
+.squadLogo {
+	border: solid #767676 1px;
+	width: 400px;
+	height: 100px;
+}
+
+
+.squadContainer .squadRightColumn .squadInfoBox {
+	
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed #767676 1px;
+	
+}
+
+.squadContainer .squadLeftColumn {
+	
+	float: left;
+	width: 404px;
+	text-align: center;
+	padding: 3px;
+	margin-bottom: 25px;
+	
+}
+
+
+.squadContainer .squadInfoTitle {
+	
+	position: relative;
+	font-weight: bold;
+	font-size: 14px;
+	color: white;
+	font-family: verdana, sans-serif;
+	margin: 15px 0px 3px 0px;
+	padding: 0px;
+	padding-left: 1px;
+	text-align: left;
+	
+}
+
+
+.squadContainer .squadNews {
+	
+	width: 380px;
+	border: 0px;
+	padding: 2px;
+	overflow-y: auto;
+	height: 300px;
+	
+}
+
+.squadContainer .squadNews .squadNewsPost {
+	
+	width: 95%;
+	border: solid #767676 1px;
+	padding: 3px;
+	margin-bottom: 10px;
+	position: relative;
+	
+}
+
+
+.squadContainer .squadNews .squadNewsPost .avatarImg {
+	
+	width: 50px;
+	height: 50px;
+	border: solid black 1px;
+	
+}
+
+.squadContainer .squadNews .squadNewsPost .squadNewsInfo {
+	
+	font-size: 10px;
+	color: white;
+	font-family: verdana, sans-serif;
+	position: absolute;
+	left: 60px;
+	top: 3px;
+	
+}
+.squadContainer .squadNews .squadNewsPost .squadNewsSubject {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.squadContainer .squadLeftColumn .squadInfoBox {
+	
+	position: relative;
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed #767676 1px;
+	width: 394px;
+	padding: 3px;
+	font-size: 10px;
+	text-align: left;
+	
+}
+
+.squadContainer .formTable {
+	width: 390px;
+	margin: 0px;
+}
+
+.squadContainer .profilePic img {
+	border: solid black 1px;
+	width: 100px;
+	height: 133px;
+}
+
+.squadContainer .profilePic {
+	width: 100px;
+}
+
+.squadContainer .squadRightColumn {
+	
+	float: right;
+	width: 224px;
+	text-align: center;
+	padding: 3px;
+	margin-bottom: 25px;
+	
+	
+}
+
+
+.squadContainer .squadRightColumn .squadInfoBox {
+	
+	position: relative;
+	color: white;
+	font-family: verdana, sans-serif;
+	border: dashed #767676 1px;
+	width: 215px;
+	padding: 3px;
+	font-size: 10px;
+	text-align: left;
+	
+}
+
+	
+.squadContainer .squadNews .squadNewsPost iframe {
+	
+	width: 330px;
+	height: 250px;
+	
+}
+
+
+/*
+ - END SQUAD SECTION
+*/
+
+
+.manageTournamentTeams {
+	
+	position: relative;
+	width: 642px;
+	margin: 10px;
+	padding: 0px;
+	
+}
+
+.mttLeftColumn {
+	
+	width: 307px;
+	float: left;
+	padding: 5px;
+	
+	
+}
+
+.mttRightColumn {
+	
+	width: 307px;
+	float: right;
+	padding: 5px;
+	
+	
+}
+
+.mttPlayerSlot {
+	
+	width: 275px;
+	position: relative;
+	margin-top: 5px;
+	padding: 10px 3px 10px 5px;
+	background-color: #373737;
+	
+}
+
+.mttDeletePlayer {
+	
+	width: 20px;
+	height: 20px;
+	background-color: #2f2f2f;
+	padding: 2px;
+	margin: 2px;
+	position: absolute;
+	right: 3px;
+	top: 2px;
+	text-align: center;
+	line-height: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	
+	
+}
+
+.mttDeletePlayer a {
+	
+	color: #696969;
+	text-decoration: none;
+}
+
+.mttDeletePlayer a:hover {
+	
+	color: #808080;
+	text-decoration: none;
+}
+
+
+
+.tournamentBracket {
+	
+	position: relative;
+	
+}
+
+.tournamentBracket .bracket {
+	
+	position: absolute;
+	border: solid #008aff 1px;
+	padding: 3px;
+	background-image: url('themes/new/images/tournament-bracket-bg.png');
+	
+}
+
+.tournamentBracket .seed {
+	
+	position: absolute;
+	width: 20px;
+	
+}
+
+.tournamentBracket .bracketConnector {
+	
+	position: absolute;
+	border: solid white 2px;
+	border-left-width: 0px;
+	
+	
+}
+
+.tournamentBracket .bracketConnectorDash {
+	
+	position: absolute;
+	border: 0px;
+	border-top: solid white 2px;
+	width: 25px;
+	
+	
+}
+
+
+.tournamentProfileContainer {
+	
+	position: relative;
+	width: 625px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	
+}
+
+.tournamentProfileTitle {
+	
+	font-size: 14px;
+	font-weight: bold;
+	color: white;
+	font-family: verdana, sans-serif;
+	
+}
+
+.tournamentProfileLeft {
+	width: 274px;
+	float: left;
+	padding: 3px;
+}
+
+.tournamentProfileRight {
+	width: 339px;
+	float: right;
+	padding: 3px;
+}
+
+
+
+.userProfileLeft {
+	width: 154px;
+	float: left;
+	padding: 3px;
+}
+
+.userProfileRight {
+	width: 449px;
+	float: right;
+	padding: 3px;
+}
+
+.profileTable {
+	border: solid dimgray 1px;
+	padding: 0px;
+	width: 449px;
+	margin: 0px;
+	border-spacing: 0px;
+}
+
+.profileLabel {
+	width: 125px;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: white;
+}

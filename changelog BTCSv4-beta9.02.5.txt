@@ -1,0 +1,57 @@
+Bluethrust Clan Scripts v4 Beta 9.02.5 - 8/20/2013
+
+Fixed:
+	1) Unable to add admin privileges from the Add New Rank page.  (Only worked on Edit Rank page)
+
+
+Previous Beta 9 Updates:
+
+Beta 9.02.4 - 8/11/13
+
+Fixed:
+	1) When using a database prefix, you were unable to post news comments.
+
+
+Beta 9.02.3 - 7/21/2013
+
+Fixed:
+	1) Unable to delete forum posts.
+	2) Could not set linked menu item images to open in a new window.
+
+
+
+Beta 9.02.2 - 7/17/2013
+
+Fixed:
+	1) Bug with editing custom pages.  A member or rank given the ability to manage custom pages wasn't able to save the pages.
+
+
+
+Beta 9.02.1 - 7/16/2013
+
+Fixed:
+	1) Missing js folder
+
+
+Beta 9.02 - 7/13/2013
+
+Added:
+	1) Freeze member feature - Freezes members from being auto-promoted when being demoted. 
+				   Also prevents members from being re-awarded an auto-awarded medal which is revoked.
+
+Improved:
+	1) Update Installer - You are now be able to update without having issues regarding database modifications.
+
+Fixed:
+	1) When installing using the updater, although I had fixed it so the new menu information was added, the actual theme for
+	   those menus was not updated in the database.  It is now fixed.
+
+
+
+
+Beta 9.01 - 7/8/2013
+
+Fixed:
+	1) When installing using the updater, menu information was missing causing your site to have no menus.
+	2) If using SSL, the website would not work due to new menus.
+	3) Fire and Ice theme was showing stretched out news posts.

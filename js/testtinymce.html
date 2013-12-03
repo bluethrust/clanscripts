@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Test</title>
+<script type='text/javascript' src='jquery-1.6.4.min.js'></script>
+<script type='text/javascript' src='tiny_mce/jquery.tinymce.js'></script>
+</head>
+<body>
+
+<textarea cols='50' rows='12' id='tinymceTextArea'></textarea>
+
+
+<script type='text/javascript'>
+	$('document').ready(function() {
+		$('#tinymceTextArea').tinymce({
+			
+			script_url: 'tiny_mce/tiny_mce.js',
+			theme: 'advanced',
+			plugins: 'emotions',
+			theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,code,|,forecolorpicker,fontselect,fontsizeselect',
+			theme_advanced_resizing: true
+		
+		});
+		
+	});
+</script>
+
+
+	
+
+</body>
+</html>

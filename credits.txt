@@ -1,0 +1,3 @@
+TinyMCE WYSIWYG Text Editor - http://www.tinymce.com
+
+Color Picker - Cory LaViska for A Beautiful Site, LLC. (http://abeautifulsite.net/)
