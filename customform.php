@@ -190,17 +190,71 @@ if($_POST['submit']) {
 		if($customPageInfo['submitlink'] == "") {
 			$customPageInfo['submitlink'] = $MAIN_ROOT;	
 		}
+
 		
-		
-		echo "
-			<div style='display: none' id='successBox'>
-				".$customPageInfo['submitmessage']."
-			</div>
+		if($customPageInfo['specialform'] == "") {
+			echo "
+			
+				<div style='display: none' id='successBox'>
+					".$customPageInfo['submitmessage']."
+				</div>
+				<script type='text/javascript'>
+					popupDialog('".$customPageInfo['name']."', '".$customPageInfo['submitlink']."', 'successBox');
+				</script>
+			";
+		}
+		else {
+			
+			echo "
+				<div style='display: none' id='successBox'>
+					".$customPageInfo['submitmessage']."
+				
+					<form action='".$customPageInfo['submitlink']."' method='post'>
+						";
 	
-			<script type='text/javascript'>
-				popupDialog('".$customPageInfo['name']."', '".$customPageInfo['submitlink']."', 'successBox');
-			</script>
-		";
+					foreach($arrComponents as $value) {
+						
+						$tempName = "customform_".$value;
+						echo "	
+							<input type='hidden' name='".$tempName."' value='".$_POST[$tempName]."'>
+						";
+						
+					}
+								
+					echo "
+						<input type='submit' name='submit' id='btnSubmitCustomForm' style='display: none'>
+					</form>
+				</div>
+				<script type='text/javascript'>
+				$(document).ready(function() {
+		
+					$('#successBox').dialog({
+						title: '".$customPageInfo['name']."',
+						modal: true,
+						zIndex: 99999,
+						width: 400,
+						resizable: false,
+						show: 'scale',
+						buttons: {
+							'Ok': function() {
+								$(this).dialog('close');
+								//$('#btnSubmitCustomForm').click();
+							}
+						},
+						beforeClose: function() {
+							$('#btnSubmitCustomForm').click();
+						}
+						
+					});
+					$('.ui-dialog :button').blur();
+					
+					
+				});
+				</script>
+			
+			";
+			
+		}
 		
 		$member = new Member($mysqli);
 		$member->selectAdmin();

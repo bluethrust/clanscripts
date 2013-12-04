@@ -73,7 +73,9 @@ if($_POST['submit']) {
 		$_POST['submitMessageHTML'] = str_replace("&lt;?", "", $_POST['submitMessageHTML']);
 		$_POST['submitMessageHTML'] = str_replace("?&gt;", "", $_POST['submitMessageHTML']);
 		
-		if($customFormPageObj->update(array("name", "pageinfo", "submitmessage", "submitlink"), array($_POST['pagename'], $_POST['wysiwygHTML'], $_POST['submitMessageHTML'], $_POST['submitlink'])) && $customFormPageObj->addComponents($_SESSION['btFormComponent'])) {
+		$postResults = ($_POST['postresults'] == "yes") ? "yes" : "";
+		
+		if($customFormPageObj->update(array("name", "pageinfo", "submitmessage", "submitlink", "specialform"), array($_POST['pagename'], $_POST['wysiwygHTML'], $_POST['submitMessageHTML'], $_POST['submitlink'], $postResults)) && $customFormPageObj->addComponents($_SESSION['btFormComponent'])) {
 
 			foreach($_SESSION['btDeleteFormComponent'] as $deleteKey) {
 				if($customFormPageObj->objComponent->select($deleteKey)) {
@@ -175,6 +177,12 @@ if(!$_POST['submit']) {
 		$_SESSION['btDeleteFormComponent'] = array();
 	}
 	
+	
+	$postResultsYes = "";
+	if($customFormInfo['specialform'] == "yes") {
+		$postResultsYes = " selected";	
+	}
+	
 	echo "
 		Use the form below to edit the selected custom form page.  Remember to hit the save button!
 		<br><br>
@@ -217,6 +225,14 @@ if(!$_POST['submit']) {
 				<td class='formLabel' valign='top'>Submit Link: <a href='javascript:void(0)' onmouseover=\"showToolTip('Enter a URL to direct the user to once the form is submitted.')\" onmouseout='hideToolTip()'><b>(?)</b></a></td>
 				<td class='main' valign='top'>
 					<input type='text' name='submitlink' class='textBox' value='".$customFormInfo['submitlink']."' style='width: 250px'>
+				</td>
+			</tr>
+			<tr>
+				<td class='formLabel' valign='top'>Post Results: <a href='javascript:void(0)' onmouseover=\"showToolTip('Only used if a submit link is given.  Set to yes to post the form results to the submit link URL as well.')\" onmouseout='hideToolTip()'><b>(?)</b></a></td>
+				<td class='main' valign='top'>
+					<select name='postresults' class='textBox'>
+						<option value='no'>No</option><option value='yes'".$postResultsYes.">Yes</option>
+					</select>
 				</td>
 			</tr>
 			<tr>

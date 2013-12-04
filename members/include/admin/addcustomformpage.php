@@ -41,6 +41,7 @@ if($_POST['submit']) {
 	}
 	
 	
+	
 	if($countErrors == 0) {
 		
 		$_POST['wysiwygHTML'] = str_replace("<?", "", $_POST['wysiwygHTML']);
@@ -53,7 +54,9 @@ if($_POST['submit']) {
 		$_POST['submitMessageHTML'] = str_replace("&lt;?", "", $_POST['submitMessageHTML']);
 		$_POST['submitMessageHTML'] = str_replace("?&gt;", "", $_POST['submitMessageHTML']);
 		
-		if($customFormPageObj->addNew(array("name", "pageinfo", "submitmessage", "submitlink"), array($_POST['pagename'], $_POST['wysiwygHTML'], $_POST['submitMessageHTML'], $_POST['submitlink'])) && $customFormPageObj->addComponents($_SESSION['btFormComponent'])) {
+		$postResults = ($_POST['postresults'] == "yes") ? "yes" : "";
+		
+		if($customFormPageObj->addNew(array("name", "pageinfo", "submitmessage", "submitlink", "specialform"), array($_POST['pagename'], $_POST['wysiwygHTML'], $_POST['submitMessageHTML'], $_POST['submitlink'], $postResults)) && $customFormPageObj->addComponents($_SESSION['btFormComponent'])) {
 
 			$intManageCustomPagesID = $consoleObj->findConsoleIDByName("Manage Custom Form Pages");
 			$customPageInfo = $customFormPageObj->get_info_filtered();
@@ -149,6 +152,14 @@ if(!$_POST['submit']) {
 				<td class='formLabel' valign='top'>Submit Link: <a href='javascript:void(0)' onmouseover=\"showToolTip('Enter a URL to direct the user to once the form is submitted.')\" onmouseout='hideToolTip()'><b>(?)</b></a></td>
 				<td class='main' valign='top'>
 					<input type='text' name='submitlink' class='textBox' value='".$_POST['submitlink']."' style='width: 250px'>
+				</td>
+			</tr>
+			<tr>
+				<td class='formLabel' valign='top'>Post Results: <a href='javascript:void(0)' onmouseover=\"showToolTip('Only used if a submit link is given.  Set to yes to post the form results to the submit link URL as well.')\" onmouseout='hideToolTip()'><b>(?)</b></a></td>
+				<td class='main' valign='top'>
+					<select name='postresults' class='textBox'>
+						<option value='no'>No</option><option value='yes'>Yes</option>
+					</select>
 				</td>
 			</tr>
 			<tr>

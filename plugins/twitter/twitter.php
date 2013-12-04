@@ -5,6 +5,11 @@
 	class Twitter extends Basic {
 		
 
+		// SET CONSUMER KEY AND CONSUMER SECRET
+		protected $consumerKey = "";
+		protected $consumerSecret = "";
+		
+		
 		
 		public $requestTokenURL = "https://api.twitter.com/oauth/request_token";
 		public $authorizeURL = "https://api.twitter.com/oauth/authorize";
@@ -14,11 +19,7 @@
 		public $twitterInfoURL = "https://api.twitter.com/1.1/account/verify_credentials.json";
 		public $arrParameters;
 		public $oauthTokenSecret;
-		public $oauthToken;
-		
-		protected $consumerKey;
-		protected $consumerSecret;
-		
+		public $oauthToken;		
 		
 		protected $lastSig;
 		protected $lastSignKey;
@@ -26,17 +27,14 @@
 		public $httpCode;
 		
 		
-		public function __construct($sqlConnection, $setConsumerKey, $setConsumerSecret) {
+		public function __construct($sqlConnection) {
 			
 			
 			$this->MySQL = $sqlConnection;
 			$this->strTableName = "twitter";
 			$this->strTableKey = "twitter_id";
-			
-			
-			$this->consumerKey = $setConsumerKey;
-			$this->consumerSecret = $setConsumerSecret;
-			$this->arrParameters['oauth_consumer_key'] = $setConsumerKey;
+
+			$this->arrParameters['oauth_consumer_key'] = $this->consumerKey;
 			$this->arrParameters['oauth_signature_method'] = "HMAC-SHA1";
 			$this->arrParameters['oauth_version'] = "1.0";
 
@@ -49,17 +47,22 @@
 		
 		public function hasTwitter($memID) {
 
+			$returnVal = false;
 			if(is_numeric($memID)) {
 			
 				$query = "SELECT twitter_id FROM ".$this->MySQL->get_tablePrefix()."twitter WHERE member_id = ?";
 				$result = $this->MySQL->prepare($query);
 				if($result->execute(array($memID))) {
 					
-					
+					if($result->num_rows > 0) {
+						$returnVal = true;		
+					}
 					
 				}
 			
 			}
+			
+			return $returnVal;
 			
 		}
 		
