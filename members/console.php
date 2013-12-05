@@ -137,7 +137,13 @@ if($checkMember) {
 			}
 			
 			
-			$include_file = "include/".$consoleInfo['filename'];
+			if(substr($consoleInfo['filename'], 0, strlen("../")) != "../") {
+				$include_file = "include/".$consoleInfo['filename'];
+			}
+			else {
+				$include_file = $consoleInfo['filename'];	
+			}
+			
 			require($include_file);
 		
 			

@@ -2,12 +2,14 @@
 	
 	include_once("basic.php");
 
+	ini_set("display_errors", 1);
+	
 	class Twitter extends Basic {
 		
 
 		// SET CONSUMER KEY AND CONSUMER SECRET
-		protected $consumerKey = "";
-		protected $consumerSecret = "";
+		protected $consumerKey = "Usg8F5rw4lNlx01jDty8A";
+		protected $consumerSecret = "uXuhU1hFWWBLZMN5DJAPbaU2ejlE1YrmqGkNF31YsQ";
 		
 		
 		
@@ -19,11 +21,16 @@
 		public $twitterInfoURL = "https://api.twitter.com/1.1/account/verify_credentials.json";
 		public $arrParameters;
 		public $oauthTokenSecret;
-		public $oauthToken;		
+		public $oauthToken;
+		
+		protected $callbackURL;
+		
+		public $lastHTTPRequestInfo;
+		public $lastResponse;
 		
 		protected $lastSig;
 		protected $lastSignKey;
-		protected $lastAuthHeader;
+		public $lastAuthHeader;
 		public $httpCode;
 		
 		
@@ -31,7 +38,7 @@
 			
 			
 			$this->MySQL = $sqlConnection;
-			$this->strTableName = "twitter";
+			$this->strTableName = $this->MySQL->get_tablePrefix()."twitter";
 			$this->strTableKey = "twitter_id";
 
 			$this->arrParameters['oauth_consumer_key'] = $this->consumerKey;
@@ -47,23 +54,58 @@
 		
 		public function hasTwitter($memID) {
 
+
 			$returnVal = false;
 			if(is_numeric($memID)) {
-			
-				$query = "SELECT twitter_id FROM ".$this->MySQL->get_tablePrefix()."twitter WHERE member_id = ?";
-				$result = $this->MySQL->prepare($query);
-				if($result->execute(array($memID))) {
+				
+				
+				$query = "SELECT twitter_id FROM ".$this->MySQL->get_tablePrefix()."twitter WHERE member_id = '".$memID."'";
+				$result = $this->MySQL->query($query);
+				
+				if($result->num_rows > 0) {
 					
-					if($result->num_rows > 0) {
-						$returnVal = true;		
-					}
+					$row = $result->fetch_assoc();
+					$this->select($row['twitter_id']);
+					
+					$returnVal = true;	
 					
 				}
+				
 			
 			}
+
 			
 			return $returnVal;
 			
+		}
+		
+		
+		public function authorizeLogin($oauth_token, $oauth_token_secret) {
+			
+			$returnVal = false;
+			
+			if(isset($oauth_token) && isset($oauth_token_secret)) {
+				
+				$oauth_token = $this->MySQL->real_escape_string($oauth_token);
+				$oauth_token_secret = $this->MySQL->real_escape_string($oauth_token_secret);
+				
+				
+				$result = $this->MySQL->query("SELECT twitter_id FROM ".$this->strTableName." WHERE oauth_token = '".$oauth_token."' AND oauth_tokensecret = '".$oauth_token_secret."'");
+				
+				if($result->num_rows > 0) {
+				
+					$row = $result->fetch_assoc();
+					$this->select($row['twitter_id']);
+					
+					
+					$returnVal = true;
+				}
+
+				
+			}
+			
+			
+			return $returnVal;
 		}
 		
 		
@@ -173,7 +215,6 @@
 				$this->oauthToken = $setOauthToken;	
 			}
 			
-			
 			$this->arrParameters['oauth_token'] = $this->oauthToken;
 			$this->arrParameters['oauth_timestamp'] = time();
 			$this->arrParameters['oauth_nonce'] = $this->generateNonce();
@@ -187,9 +228,11 @@
 			
 			$this->lastAuthHeader = $arrHeader;
 			
-
-			$response = $this->httpRequest($this->accessTokenURL, "POST", $arrHeader, urlencode("oauth_verifier=".$oauthVerifier));
+			$arrPost = array();
+			$arrPost['oauth_verifier'] = $oauthVerifier;
+			$response = $this->httpRequest($this->accessTokenURL, "POST", $arrHeader, $arrPost);
 			
+			$this->lastResponse = $response;
 			
 			if($this->httpCode == 200) {
 			
@@ -252,7 +295,6 @@
 			
 			$response = $this->httpRequest($this->twitterInfoURL, "GET", $arrHeader);
 			
-			
 			if($this->httpCode == 200) {
 			
 				$returnVal = json_decode($response, true);
@@ -289,6 +331,9 @@
 			
 			$result = curl_exec($ch);
 			$info = curl_getinfo($ch);
+			
+			
+			$this->lastHTTPRequestInfo = $info;
 			
 			$this->httpCode = $info['http_code'];
 			
