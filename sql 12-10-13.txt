@@ -1,0 +1,3980 @@
+-- phpMyAdmin SQL Dump
+-- version 3.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Dec 10, 2013 at 07:50 AM
+-- Server version: 5.5.24-log
+-- PHP Version: 5.3.13
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `cs4`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_components`
+--
+
+CREATE TABLE IF NOT EXISTS `app_components` (
+  `appcomponent_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `componenttype` varchar(25) NOT NULL,
+  `required` int(11) NOT NULL,
+  `tooltip` text NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`appcomponent_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=225 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_selectvalues`
+--
+
+CREATE TABLE IF NOT EXISTS `app_selectvalues` (
+  `appselectvalue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `appcomponent_id` int(11) NOT NULL,
+  `componentvalue` varchar(255) NOT NULL,
+  PRIMARY KEY (`appselectvalue_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+
+--
+-- Dumping data for table `app_selectvalues`
+--
+
+INSERT INTO `app_selectvalues` (`appselectvalue_id`, `appcomponent_id`, `componentvalue`) VALUES
+(1, 4, 'Haha'),
+(2, 4, 'No'),
+(3, 4, 'Yes'),
+(4, 0, 'test');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_values`
+--
+
+CREATE TABLE IF NOT EXISTS `app_values` (
+  `appvalue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `appcomponent_id` int(11) NOT NULL,
+  `memberapp_id` int(11) NOT NULL,
+  `appvalue` text NOT NULL,
+  PRIMARY KEY (`appvalue_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+
+--
+-- Dumping data for table `app_values`
+--
+
+INSERT INTO `app_values` (`appvalue_id`, `appcomponent_id`, `memberapp_id`, `appvalue`) VALUES
+(40, 11, 10, 'China'),
+(39, 9, 10, 'Starcraft'),
+(37, 10, 10, 'sdf'),
+(38, 8, 10, 'sdf'),
+(36, 1, 10, 'Call of Duty');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `news_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `console`
+--
+
+CREATE TABLE IF NOT EXISTS `console` (
+  `console_id` int(11) NOT NULL AUTO_INCREMENT,
+  `consolecategory_id` int(11) NOT NULL,
+  `pagetitle` varchar(255) NOT NULL,
+  `filename` text NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  `adminoption` int(11) NOT NULL,
+  `sep` int(11) NOT NULL,
+  `defaultconsole` int(11) NOT NULL,
+  `hide` int(1) NOT NULL,
+  PRIMARY KEY (`console_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=153 ;
+
+--
+-- Dumping data for table `console`
+--
+
+INSERT INTO `console` (`console_id`, `consolecategory_id`, `pagetitle`, `filename`, `sortnum`, `adminoption`, `sep`, `defaultconsole`, `hide`) VALUES
+(1, 1, 'Add New Rank', 'admin/addrank.php', 1, 1, 0, 1, 0),
+(2, 1, 'Manage Ranks', 'admin/manageranks.php', 2, 1, 0, 1, 0),
+(5, 2, 'Add Member', 'membermanagement/addmember.php', 1, 0, 0, 1, 0),
+(6, 2, 'Promote Member', 'membermanagement/promotemember.php', 6, 0, 0, 1, 0),
+(7, 2, 'Demote Member', 'membermanagement/demotemember.php', 7, 0, 0, 1, 0),
+(8, 2, 'Set Member''s Rank', 'membermanagement/setrank.php', 8, 0, 0, 1, 0),
+(9, 10, 'Add New Medal', 'admin/addmedal.php', 1, 1, 0, 1, 0),
+(10, 10, 'Manage Medals', 'admin/managemedals.php', 2, 1, 0, 1, 0),
+(11, 3, 'Edit Profile', 'editprofile.php', 2, 0, 0, 1, 0),
+(12, 1, '-separator-', '', 28, 1, 1, 0, 0),
+(20, 2, 'Disable a Member', 'membermanagement/disablemember.php', 2, 0, 0, 1, 0),
+(14, 1, 'Add Games Played', 'admin/addgamesplayed.php', 6, 1, 0, 1, 0),
+(15, 1, 'Manage Games Played', 'admin/managegamesplayed.php', 7, 1, 0, 1, 0),
+(19, 1, '-separator-', '', 5, 1, 1, 0, 0),
+(17, 1, 'Add Custom Page', 'admin/addcustompages.php', 9, 1, 0, 1, 0),
+(18, 1, 'Manage Custom Pages', 'admin/managecustompages.php', 10, 1, 0, 1, 0),
+(21, 2, 'Delete Member', 'membermanagement/deletemember.php', 4, 0, 0, 1, 0),
+(22, 1, 'Add New Rank Category', 'admin/addrankcategory.php', 3, 1, 0, 1, 0),
+(23, 1, 'Manage Rank Categories', 'admin/managerankcategories.php', 4, 1, 0, 1, 0),
+(135, 10, '-separator-', '', 3, 0, 1, 0, 0),
+(25, 1, 'Add Console Option', 'admin/addconsoleoption.php', 15, 1, 0, 1, 0),
+(33, 1, 'Manage Console Categories', 'admin/manageconsolecategories.php', 18, 1, 0, 1, 0),
+(32, 1, 'Add New Console Category', 'admin/addconsolecategory.php', 17, 1, 0, 1, 0),
+(31, 1, 'Manage Console Options', 'admin/manageconsole.php', 16, 1, 0, 1, 0),
+(65, 1, 'Add Profile Option', 'admin/addprofileoption.php', 24, 1, 0, 1, 0),
+(51, 1, '-separator-', '', 8, 1, 1, 1, 0),
+(52, 1, '-separator-', '', 14, 1, 1, 1, 0),
+(54, 14, '-separator-', '', 3, 1, 1, 1, 0),
+(55, 14, 'Add Download Category', 'admin/adddownloadcategory.php', 1, 1, 0, 1, 0),
+(56, 14, 'Manage Download Categories', 'admin/managedownloadcategories.php', 2, 1, 0, 1, 0),
+(62, 1, 'Website Settings', 'admin/sitesettings.php', 30, 1, 0, 1, 0),
+(61, 1, 'Modify Current Theme', 'admin/edittheme.php', 29, 1, 0, 1, 0),
+(60, 1, '-separator-', '', 23, 1, 1, 1, 0),
+(63, 1, 'Add Profile Category', 'admin/addprofilecategory.php', 26, 1, 0, 1, 0),
+(64, 1, 'Manage Profile Categories', 'admin/manageprofilecategories.php', 27, 1, 0, 1, 0),
+(66, 1, 'Manage Profile Options', 'admin/manageprofileoptions.php', 25, 1, 0, 1, 0),
+(83, 9, 'Manage News', 'news/managenews.php', 4, 0, 0, 1, 0),
+(82, 9, 'Post News', 'news/postnews.php', 1, 0, 0, 1, 0),
+(70, 2, '-separator-', '', 5, 0, 1, 0, 0),
+(71, 7, 'Create a Squad', 'squads/create.php', 1, 0, 0, 1, 0),
+(72, 7, 'View Your Squads', 'squads/index.php', 4, 0, 0, 1, 0),
+(73, 7, 'Apply to a Squad', 'squads/apply.php', 2, 0, 0, 1, 0),
+(74, 7, 'View Squad Invitations', 'squads/viewinvites.php', 3, 0, 0, 1, 0),
+(75, 8, 'Create a Tournament', 'tournaments/create.php', 1, 0, 0, 1, 0),
+(76, 8, 'Manage Tournaments', 'tournaments/manage.php', 2, 0, 0, 1, 0),
+(77, 8, 'Manage My Matches', 'tournaments/managematches.php', 3, 0, 0, 1, 0),
+(78, 3, 'Private Messages', 'privatemessages/index.php', 3, 0, 0, 1, 0),
+(84, 9, 'View Private News', 'news/privatenews.php', 5, 0, 0, 1, 0),
+(80, 3, 'Edit My Game Stats', 'editmygamestats.php', 1, 0, 0, 1, 0),
+(85, 9, 'Post Comment', 'news/postcomment.php', 2, 0, 0, 1, 1),
+(86, 2, 'Undisable Member', 'membermanagement/undisablemember.php', 3, 0, 0, 1, 0),
+(87, 10, 'Award Medal', 'medals/awardmedal.php', 4, 0, 0, 1, 0),
+(88, 10, 'Revoke Medal', 'medals/revokemedal.php', 5, 0, 0, 1, 0),
+(89, 3, 'Change Password', 'changepassword.php', 4, 0, 0, 1, 0),
+(90, 2, '-separator-', '', 9, 0, 1, 0, 0),
+(91, 2, 'Reset Member Password', 'membermanagement/resetpassword.php', 14, 0, 0, 1, 0),
+(92, 3, 'View Logs', 'logs.php', 6, 0, 0, 1, 0),
+(93, 9, 'Post in Shoutbox', 'news/postshoutbox.php', 3, 0, 0, 1, 1),
+(96, 2, 'Registration Options', 'membermanagement/registrationoptions.php', 10, 0, 0, 1, 0),
+(97, 2, 'Member Application', 'membermanagement/memberapplication.php', 11, 0, 0, 1, 0),
+(98, 2, 'View Member Applications', 'membermanagement/viewapplications.php', 12, 0, 0, 1, 0),
+(99, 11, 'Diplomacy: Add a Clan', 'diplomacy/addclan.php', 1, 0, 0, 1, 0),
+(100, 11, 'Diplomacy: Manage Clans', 'diplomacy/manageclans.php', 2, 0, 0, 1, 0),
+(101, 11, 'View Diplomacy Requests', 'diplomacy/viewrequests.php', 3, 0, 0, 1, 0),
+(102, 11, 'Manage Diplomacy Statuses', 'diplomacy/diplomacystatuses.php', 6, 0, 0, 1, 0),
+(103, 11, '-seperator-', '', 4, 0, 1, 1, 0),
+(104, 11, 'Add Diplomacy Status', 'diplomacy/adddiplomacystatus.php', 5, 0, 0, 1, 0),
+(105, 12, 'Add Event', 'events/addevent.php', 1, 0, 0, 1, 0),
+(106, 12, 'Manage My Events', 'events/manage.php', 2, 0, 0, 1, 0),
+(107, 12, 'View Event Invitations', 'events/viewinvites.php', 3, 0, 0, 1, 0),
+(108, 1, 'Add Custom Form Page', 'admin/addcustomformpage.php', 11, 1, 0, 1, 0),
+(109, 1, 'Manage Custom Form Pages', 'admin/managecustomforms.php', 12, 1, 0, 1, 0),
+(110, 1, 'View Custom Form Submissions', 'admin/customformsubmissions.php', 13, 1, 0, 1, 0),
+(111, 9, 'Modify News Ticker', 'news/newsticker.php', 6, 0, 0, 1, 0),
+(113, 8, 'Join a Tournament', 'tournaments/join.php', 4, 0, 0, 1, 0),
+(114, 1, 'Member''s Only Pages', 'admin/membersonlypages.php', 31, 1, 0, 1, 0),
+(118, 13, 'Add Forum Category', 'forum/addcategory.php', 4, 0, 0, 1, 0),
+(122, 13, 'Manage Boards', 'forum/manageboards.php', 8, 0, 0, 1, 0),
+(119, 13, 'Manage Forum Categories', 'forum/managecategories.php', 5, 0, 0, 1, 0),
+(120, 13, '-seperator-', '', 6, 0, 1, 1, 0),
+(121, 13, 'Add Board', 'forum/addboard.php', 7, 0, 0, 1, 0),
+(123, 13, 'Post Topic', 'forum/post.php', 2, 0, 0, 1, 1),
+(124, 13, 'Manage Moderators', 'forum/managemoderators.php', 9, 0, 0, 1, 0),
+(125, 13, 'Manage Forum Posts', 'forum/manageposts.php', 3, 0, 0, 1, 1),
+(126, 3, 'Change Username', 'changeusername.php', 5, 0, 0, 1, 0),
+(127, 2, 'Set Member''s Recruiter', 'membermanagement/setrecruiter.php', 15, 0, 0, 1, 0),
+(128, 2, 'Set Member''s Recruit Date', 'membermanagement/setrecruitdate.php', 16, 0, 0, 1, 0),
+(129, 2, '-seperator-', '', 13, 0, 1, 1, 0),
+(134, 1, 'Clear Logs', 'admin/clearlogs.php', 32, 1, 0, 1, 0),
+(136, 1, '-seperator-', '', 33, 0, 1, 1, 0),
+(137, 1, 'Add Menu Category', 'admin/addmenucategory.php', 34, 0, 0, 1, 0),
+(138, 1, 'Add Menu Item', 'admin/addmenuitem.php', 36, 0, 0, 1, 0),
+(139, 1, 'Manage Menu Categories', 'admin/managemenucategory.php', 35, 0, 0, 1, 0),
+(140, 1, 'Manage Menu Items', 'admin/managemenuitem.php', 37, 0, 0, 1, 0),
+(141, 9, 'Manage Home Page Images', 'news/manageimages.php', 9, 0, 0, 1, 0),
+(142, 9, 'Add Home Page Image', 'news/addimage.php', 8, 0, 0, 1, 0),
+(143, 9, '-seperator-', '', 7, 0, 1, 1, 0),
+(144, 13, 'Post Forum Attachments', 'forum/postattachments.php', 1, 0, 0, 1, 1),
+(145, 14, 'Add Download', 'downloads/adddownload.php', 4, 0, 0, 1, 0),
+(146, 14, 'Manage Downloads', 'downloads/managedownloads.php', 4, 0, 0, 1, 0),
+(147, 13, '-seperator-', '', 10, 0, 1, 1, 0),
+(148, 13, 'Forum Settings', 'forum/forumsettings.php', 11, 0, 0, 1, 0),
+(152, 16, 'Twitter Connect', '../plugins/twitter/twitterconnect.php', 1, 0, 0, 0, 0),
+(150, 1, '-seperator-', '', 38, 0, 1, 1, 0),
+(151, 1, 'Plugin Manager', 'admin/pluginmanager.php', 39, 0, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `consolecategory`
+--
+
+CREATE TABLE IF NOT EXISTS `consolecategory` (
+  `consolecategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `adminoption` int(1) NOT NULL,
+  PRIMARY KEY (`consolecategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Dumping data for table `consolecategory`
+--
+
+INSERT INTO `consolecategory` (`consolecategory_id`, `name`, `ordernum`, `adminoption`) VALUES
+(1, 'Administrator Options', 1, 1),
+(2, 'Member Management', 5, 0),
+(3, 'Account Options', 7, 0),
+(9, 'News', 6, 0),
+(7, 'Squads', 3, 0),
+(8, 'Tournaments', 2, 0),
+(10, 'Medals', 4, 0),
+(11, 'Diplomacy Options', 8, 0),
+(12, 'Events', 9, 0),
+(13, 'Forum Management', 10, 0),
+(14, 'Downloads', 11, 0),
+(16, 'Social Media Connect', 12, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `console_members`
+--
+
+CREATE TABLE IF NOT EXISTS `console_members` (
+  `privilege_id` int(11) NOT NULL AUTO_INCREMENT,
+  `console_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `allowdeny` int(1) NOT NULL,
+  PRIMARY KEY (`privilege_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `console_members`
+--
+
+INSERT INTO `console_members` (`privilege_id`, `console_id`, `member_id`, `allowdeny`) VALUES
+(3, 82, 51, 0),
+(5, 121, 45, 1),
+(6, 5, 51, 1),
+(7, 6, 51, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customform`
+--
+
+CREATE TABLE IF NOT EXISTS `customform` (
+  `customform_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `pageinfo` text NOT NULL,
+  `submitmessage` text NOT NULL,
+  `submitlink` text NOT NULL,
+  `specialform` varchar(255) NOT NULL,
+  PRIMARY KEY (`customform_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `customform`
+--
+
+INSERT INTO `customform` (`customform_id`, `name`, `pageinfo`, `submitmessage`, `submitlink`, `specialform`) VALUES
+(1, 'Test Page', '<p>blah blah blah</p>\r\n<p>&nbsp;</p>\r\n<p>lol</p>', '', '', ''),
+(4, 'Test Form Page', '<p style="text-align: center;"><strong>Blah Blah</strong> this is a test1</p>', '<p style="text-align: center;">Success!! You submitted a form!</p>', 'http://localhost/cs4git/members', ''),
+(5, 'Join', '<p>Agree or die!!!</p>', '<p>Thank you for joining!</p>', 'http://localhost/cs4/signupcheck.php', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customform_components`
+--
+
+CREATE TABLE IF NOT EXISTS `customform_components` (
+  `component_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customform_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `componenttype` varchar(11) NOT NULL,
+  `required` int(11) NOT NULL,
+  `tooltip` text NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`component_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Dumping data for table `customform_components`
+--
+
+INSERT INTO `customform_components` (`component_id`, `customform_id`, `name`, `componenttype`, `required`, `tooltip`, `sortnum`) VALUES
+(1, 1, '', '0', 0, '', 1),
+(2, 1, '', '0', 0, '', 1),
+(10, 4, 'Name', 'input', 0, '', 1),
+(11, 4, 'Gender', 'select', 1, '', 2),
+(12, 4, 'large', 'largeinput', 0, 'tool tip''s!', 5),
+(13, 4, 'Separators!!', 'separator', 0, 'This is some info', 4),
+(14, 4, 'Color', 'multiselect', 1, '', 3),
+(15, 5, 'Agree 1', 'select', 0, 'NOW!', 1),
+(16, 5, 'Agree 2', 'select', 0, 'DO IT!', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customform_selectvalues`
+--
+
+CREATE TABLE IF NOT EXISTS `customform_selectvalues` (
+  `selectvalue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `component_id` int(11) NOT NULL,
+  `componentvalue` text NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`selectvalue_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=59 ;
+
+--
+-- Dumping data for table `customform_selectvalues`
+--
+
+INSERT INTO `customform_selectvalues` (`selectvalue_id`, `component_id`, `componentvalue`, `sortnum`) VALUES
+(50, 14, 'red', 0),
+(47, 11, 'Male', 0),
+(46, 11, 'Female', 0),
+(10, 9, 'test3', 0),
+(9, 9, 'test1', 0),
+(49, 14, 'green', 0),
+(48, 14, 'blue', 0),
+(56, 15, 'Yes', 0),
+(55, 15, 'No', 0),
+(58, 16, 'Yes', 0),
+(57, 16, 'No', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customform_submission`
+--
+
+CREATE TABLE IF NOT EXISTS `customform_submission` (
+  `submission_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customform_id` int(11) NOT NULL,
+  `submitdate` int(11) NOT NULL,
+  `ipaddress` varchar(255) NOT NULL,
+  `seenstatus` int(11) NOT NULL,
+  PRIMARY KEY (`submission_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+
+--
+-- Dumping data for table `customform_submission`
+--
+
+INSERT INTO `customform_submission` (`submission_id`, `customform_id`, `submitdate`, `ipaddress`, `seenstatus`) VALUES
+(1, 0, 1364178455, '::1', 0),
+(2, 0, 1364179225, '::1', 0),
+(3, 0, 1364179677, '::1', 0),
+(4, 0, 1364179802, '::1', 0),
+(15, 4, 1365132767, '::1', 1),
+(14, 4, 1365132267, '::1', 1),
+(16, 4, 1365132973, '::1', 1),
+(17, 4, 1365133148, '::1', 1),
+(20, 4, 1365133385, '::1', 1),
+(34, 5, 1386126157, '127.0.0.1', 0),
+(35, 5, 1386126301, '127.0.0.1', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customform_values`
+--
+
+CREATE TABLE IF NOT EXISTS `customform_values` (
+  `value_id` int(11) NOT NULL AUTO_INCREMENT,
+  `submission_id` int(11) NOT NULL,
+  `component_id` int(11) NOT NULL,
+  `formvalue` text NOT NULL,
+  PRIMARY KEY (`value_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=83 ;
+
+--
+-- Dumping data for table `customform_values`
+--
+
+INSERT INTO `customform_values` (`value_id`, `submission_id`, `component_id`, `formvalue`) VALUES
+(1, 1, 10, 'test'),
+(2, 1, 11, 'Male'),
+(3, 1, 12, 'zXcZXC'),
+(14, 11, 14, 'green'),
+(13, 11, 11, 'Female'),
+(12, 11, 10, ''),
+(15, 11, 12, 'test'),
+(16, 12, 10, 'My Name'),
+(17, 12, 11, 'Female'),
+(18, 12, 14, 'blue'),
+(19, 12, 14, 'green'),
+(20, 12, 14, 'red'),
+(21, 12, 12, 'LOLOL'),
+(30, 14, 12, 'lolz\r\n\r\nha'),
+(29, 14, 14, 'blue'),
+(28, 14, 11, 'Male'),
+(27, 14, 10, 'yo'),
+(31, 15, 10, 'asdf'),
+(32, 15, 11, 'Female'),
+(33, 15, 14, 'green'),
+(34, 15, 12, 'sdf'),
+(35, 16, 10, 'asdf'),
+(36, 16, 11, 'Female'),
+(37, 16, 14, 'green'),
+(38, 16, 12, 'asdf'),
+(39, 17, 10, 'asdf'),
+(40, 17, 11, 'Female'),
+(41, 17, 14, 'green'),
+(42, 17, 12, 'asdf'),
+(43, 18, 10, 'asdf'),
+(44, 18, 11, 'Female'),
+(45, 18, 14, 'green'),
+(46, 18, 12, 'asdf'),
+(50, 20, 11, 'Female'),
+(49, 20, 10, 'asdf'),
+(51, 20, 14, 'green'),
+(52, 20, 12, 'asdf'),
+(53, 21, 15, 'No'),
+(54, 21, 16, 'No'),
+(55, 22, 15, 'No'),
+(56, 22, 16, 'No'),
+(57, 23, 15, 'No'),
+(58, 23, 16, 'No'),
+(59, 24, 15, 'No'),
+(60, 24, 16, 'No'),
+(61, 25, 15, 'No'),
+(62, 25, 16, 'No'),
+(63, 26, 15, 'No'),
+(64, 26, 16, 'No'),
+(65, 27, 15, 'Yes'),
+(66, 27, 16, 'Yes'),
+(67, 28, 15, 'Yes'),
+(68, 28, 16, 'Yes'),
+(69, 29, 15, 'Yes'),
+(70, 29, 16, 'Yes'),
+(71, 30, 15, 'Yes'),
+(72, 30, 16, 'Yes'),
+(73, 31, 15, 'Yes'),
+(74, 31, 16, 'Yes'),
+(75, 32, 15, 'Yes'),
+(76, 32, 16, 'Yes'),
+(77, 33, 15, 'Yes'),
+(78, 33, 16, 'Yes'),
+(79, 34, 15, 'Yes'),
+(80, 34, 16, 'Yes'),
+(81, 35, 15, 'Yes'),
+(82, 35, 16, 'Yes');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `custompages`
+--
+
+CREATE TABLE IF NOT EXISTS `custompages` (
+  `custompage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pagename` varchar(255) NOT NULL,
+  `pageinfo` longtext NOT NULL,
+  PRIMARY KEY (`custompage_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `custompages`
+--
+
+INSERT INTO `custompages` (`custompage_id`, `pagename`, `pageinfo`) VALUES
+(11, 'History', '<p style="text-align: center;">This is the clan history.</p>\n<p style="text-align: center;">&nbsp;</p>\n<p style="text-align: center;">This is actually just a custom page...</p>'),
+(12, 'Rules', '<p style="text-align: center;">This is the clan rules page.</p>\n<p style="text-align: center;">&nbsp;</p>\n<p style="text-align: center;">This is actually<strong> just a</strong> custom page...</p>\n<p style="text-align: center;">&nbsp;</p>\n<p style="text-align: center;">&nbsp;</p>'),
+(15, 'Test Videos', '<p><iframe src="http://www.youtube.com/embed/q3jR0gaqH6o?list=UUshoKvlZGZ20rVgazZp5vnQ" frameborder="0" width="560" height="315"></iframe></p>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `diplomacy`
+--
+
+CREATE TABLE IF NOT EXISTS `diplomacy` (
+  `diplomacy_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `diplomacystatus_id` int(11) NOT NULL,
+  `dateadded` int(11) NOT NULL,
+  `clanname` varchar(255) NOT NULL,
+  `leaders` varchar(255) NOT NULL,
+  `website` varchar(255) NOT NULL,
+  `clansize` varchar(10) NOT NULL,
+  `clantag` varchar(15) NOT NULL,
+  `skill` varchar(100) NOT NULL,
+  `gamesplayed` varchar(255) NOT NULL,
+  `extrainfo` text NOT NULL,
+  PRIMARY KEY (`diplomacy_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `diplomacy`
+--
+
+INSERT INTO `diplomacy` (`diplomacy_id`, `member_id`, `diplomacystatus_id`, `dateadded`, `clanname`, `leaders`, `website`, `clansize`, `clantag`, `skill`, `gamesplayed`, `extrainfo`) VALUES
+(1, 13, 1, 1367095057, 'Test Clan', 'blah', '', 'small', '', '', 'lol', 'asdf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `diplomacy_request`
+--
+
+CREATE TABLE IF NOT EXISTS `diplomacy_request` (
+  `diplomacyrequest_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ipaddress` varchar(255) NOT NULL,
+  `dateadded` int(11) NOT NULL,
+  `diplomacystatus_id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `clanname` varchar(255) NOT NULL,
+  `clantag` varchar(15) NOT NULL,
+  `clansize` varchar(10) NOT NULL,
+  `gamesplayed` varchar(255) NOT NULL,
+  `website` varchar(255) NOT NULL,
+  `leaders` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `confirmemail` varchar(255) NOT NULL,
+  PRIMARY KEY (`diplomacyrequest_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `diplomacy_status`
+--
+
+CREATE TABLE IF NOT EXISTS `diplomacy_status` (
+  `diplomacystatus_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `imageurl` text NOT NULL,
+  `imagewidth` int(11) NOT NULL,
+  `imageheight` int(11) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`diplomacystatus_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `diplomacy_status`
+--
+
+INSERT INTO `diplomacy_status` (`diplomacystatus_id`, `name`, `imageurl`, `imagewidth`, `imageheight`, `ordernum`) VALUES
+(1, 'Ally', 'images/diplomacy/status_50e3b3406ddf8.png', 0, 0, 3),
+(2, 'Enemy', 'images/diplomacy/status_50e3b36d60f5a.png', 20, 20, 1),
+(3, 'Neutral', 'images/diplomacy/status_50e3b37ebd1fc.png', 0, 0, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `downloadcategory`
+--
+
+CREATE TABLE IF NOT EXISTS `downloadcategory` (
+  `downloadcategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `accesstype` int(11) NOT NULL,
+  `specialkey` varchar(255) NOT NULL,
+  PRIMARY KEY (`downloadcategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `downloadcategory`
+--
+
+INSERT INTO `downloadcategory` (`downloadcategory_id`, `name`, `ordernum`, `accesstype`, `specialkey`) VALUES
+(6, 'Replays', 2, 0, ''),
+(5, 'Forum Attachments', 1, 0, 'forumattachments'),
+(7, 'Videos', 3, 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `downloads`
+--
+
+CREATE TABLE IF NOT EXISTS `downloads` (
+  `download_id` int(11) NOT NULL AUTO_INCREMENT,
+  `downloadcategory_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateuploaded` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `mimetype` varchar(255) NOT NULL,
+  `filesize` int(11) NOT NULL,
+  `splitfile1` varchar(255) NOT NULL,
+  `splitfile2` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `downloadcount` int(11) NOT NULL,
+  PRIMARY KEY (`download_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+
+--
+-- Dumping data for table `downloads`
+--
+
+INSERT INTO `downloads` (`download_id`, `downloadcategory_id`, `member_id`, `dateuploaded`, `name`, `filename`, `mimetype`, `filesize`, `splitfile1`, `splitfile2`, `description`, `downloadcount`) VALUES
+(15, 5, 13, 1378008075, '', '218d8d91a9620cebcc6e3f695433c0dd.jpg', 'image/jpeg', 16527, 'downloads/files/forumattachment/split_13780080755222bc0bdd010', 'downloads/files/forumattachment/split_13780080755222bc0bdd2ef', '', 0),
+(16, 5, 13, 1378008075, '', '1323032613_trophy.png', 'image/png', 15325, 'downloads/files/forumattachment/split_13780080755222bc0bdf090', 'downloads/files/forumattachment/split_13780080755222bc0bdf36d', '', 0),
+(17, 5, 13, 1378008153, '', 'phpinfo.php', 'text/x-php', 62, 'downloads/files/forumattachment/split_13780081535222bc59dd1ac', 'downloads/files/forumattachment/split_13780081535222bc59dd4e3', '', 0),
+(19, 5, 13, 1378064028, '', 'iframe.html', 'text/html', 533, 'downloads/files/forumattachment/split_13780640275223969bf3c19', 'downloads/files/forumattachment/split_13780640275223969bf3e57', '', 2),
+(20, 6, 13, 1378273105, 'Test Download 2', 'SplatterSocialIcons.zip', 'application/zip', 75393, 'downloads/split_13782731055226c7515288f', 'downloads/split_13782731055226c75152b34', 'sdfasdf', 0),
+(21, 6, 13, 1378273133, 'Test 2', 'php_filesplit2.zip', 'application/zip', 1588, 'downloads/split_13782731335226c76de5c3d', 'downloads/split_13782731335226c76de971a', 'asdfs', 0),
+(22, 6, 13, 1378273157, 'lol', 'CamStudioCodec-1.4-w32.zip', 'application/zip', 34510, 'downloads/split_13782731575226c7854346f', 'downloads/split_13782731575226c785436fc', 'wut', 0),
+(23, 7, 13, 1378273371, 'Flow', 'flowplayer-3.2.7.swf', 'application/x-shockwave-flash', 120221, 'downloads/split_13782733715226c85bceb21', 'downloads/split_13782733715226c85bd333e', 'yo', 0),
+(24, 7, 13, 1378276276, 'test final', 'flowplayer-3.2.7.swf', 'application/x-shockwave-flash', 120221, 'downloads/files/split_13782762765226d3b47718a', 'downloads/files/split_13782762765226d3b47750d', 'asdfs', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `download_extensions`
+--
+
+CREATE TABLE IF NOT EXISTS `download_extensions` (
+  `extension_id` int(11) NOT NULL AUTO_INCREMENT,
+  `downloadcategory_id` int(11) NOT NULL,
+  `extension` varchar(255) NOT NULL,
+  PRIMARY KEY (`extension_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+
+--
+-- Dumping data for table `download_extensions`
+--
+
+INSERT INTO `download_extensions` (`extension_id`, `downloadcategory_id`, `extension`) VALUES
+(10, 6, '.zip'),
+(9, 5, ''),
+(11, 6, '.rep'),
+(17, 7, '.avi'),
+(16, 7, '.wmv'),
+(15, 7, '.mov'),
+(18, 7, '.swf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventchat`
+--
+
+CREATE TABLE IF NOT EXISTS `eventchat` (
+  `eventchat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) NOT NULL,
+  `datestarted` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`eventchat_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `eventchat`
+--
+
+INSERT INTO `eventchat` (`eventchat_id`, `event_id`, `datestarted`, `status`) VALUES
+(1, 1, 1362366001, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventchat_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `eventchat_messages` (
+  `eventchatmessage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `eventchat_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`eventchatmessage_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventchat_roomlist`
+--
+
+CREATE TABLE IF NOT EXISTS `eventchat_roomlist` (
+  `eventchatlist_id` int(11) NOT NULL AUTO_INCREMENT,
+  `eventchat_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `inactive` int(11) NOT NULL,
+  `lastseen` int(11) NOT NULL,
+  PRIMARY KEY (`eventchatlist_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventmessages`
+--
+
+CREATE TABLE IF NOT EXISTS `eventmessages` (
+  `eventmessage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`eventmessage_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `eventmessages`
+--
+
+INSERT INTO `eventmessages` (`eventmessage_id`, `event_id`, `member_id`, `dateposted`, `message`) VALUES
+(10, 5, 13, 1374853466, 'haha lol'),
+(11, 5, 13, 1374853552, 'asdf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventmessage_comment`
+--
+
+CREATE TABLE IF NOT EXISTS `eventmessage_comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `eventmessage_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+
+--
+-- Dumping data for table `eventmessage_comment`
+--
+
+INSERT INTO `eventmessage_comment` (`comment_id`, `eventmessage_id`, `member_id`, `dateposted`, `comment`) VALUES
+(22, 10, 13, 1374853541, 'yes!!!'),
+(21, 10, 13, 1374853473, 'what!!!');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventpositions`
+--
+
+CREATE TABLE IF NOT EXISTS `eventpositions` (
+  `position_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  `modchat` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `invitemembers` int(11) NOT NULL,
+  `manageinvites` int(11) NOT NULL,
+  `postmessages` int(11) NOT NULL,
+  `managemessages` int(11) NOT NULL,
+  `attendenceconfirm` int(11) NOT NULL,
+  `editinfo` int(11) NOT NULL,
+  `eventpositions` int(11) NOT NULL,
+  PRIMARY KEY (`position_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
+
+CREATE TABLE IF NOT EXISTS `events` (
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `startdate` int(11) NOT NULL,
+  `enddate` int(11) NOT NULL,
+  `publicprivate` int(11) NOT NULL,
+  `visibility` int(11) NOT NULL,
+  `messages` int(11) NOT NULL,
+  `invitepermission` int(11) NOT NULL,
+  PRIMARY KEY (`event_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `events`
+--
+
+INSERT INTO `events` (`event_id`, `member_id`, `title`, `description`, `location`, `startdate`, `enddate`, `publicprivate`, `visibility`, `messages`, `invitepermission`) VALUES
+(5, 13, 'Test Event21', '', '', 1375243200, 0, 0, 0, 0, 0),
+(4, 47, 'test', 'asdf', 'asdf', 1364356800, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events_members`
+--
+
+CREATE TABLE IF NOT EXISTS `events_members` (
+  `eventmember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `invitedbymember_id` int(11) NOT NULL,
+  `position_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `attendconfirm_admin` int(11) NOT NULL,
+  `attendconfirm_member` int(11) NOT NULL,
+  `hide` int(11) NOT NULL,
+  PRIMARY KEY (`eventmember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `failban`
+--
+
+CREATE TABLE IF NOT EXISTS `failban` (
+  `failban_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pagename` varchar(255) NOT NULL,
+  `ipaddress` varchar(255) NOT NULL,
+  PRIMARY KEY (`failban_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `failban`
+--
+
+INSERT INTO `failban` (`failban_id`, `pagename`, `ipaddress`) VALUES
+(1, 'editconsoleoption', '::1'),
+(2, 'editconsoleoption', '::1'),
+(3, 'editconsoleoption', '::1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forgotpass`
+--
+
+CREATE TABLE IF NOT EXISTS `forgotpass` (
+  `rqid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `changekey` varchar(255) NOT NULL,
+  `timeofrq` int(11) NOT NULL,
+  PRIMARY KEY (`rqid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_attachments`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_attachments` (
+  `forumattachment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumpost_id` int(11) NOT NULL,
+  `download_id` int(11) NOT NULL,
+  PRIMARY KEY (`forumattachment_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+--
+-- Dumping data for table `forum_attachments`
+--
+
+INSERT INTO `forum_attachments` (`forumattachment_id`, `forumpost_id`, `download_id`) VALUES
+(17, 30, 17),
+(16, 29, 16),
+(15, 29, 15),
+(18, 31, 19);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_board`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_board` (
+  `forumboard_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumcategory_id` int(11) NOT NULL,
+  `lastpost_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `accesstype` int(11) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`forumboard_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `forum_board`
+--
+
+INSERT INTO `forum_board` (`forumboard_id`, `forumcategory_id`, `lastpost_id`, `name`, `description`, `accesstype`, `sortnum`) VALUES
+(4, 1, 0, 'Test Board', '', 0, 4),
+(5, 1, 0, 'Test Rule Access - Generals ONLY', 'test', 1, 3),
+(6, 1, 0, 'Test Rules Take 2 - NO MORE!', 'asdfsad\r\n\r\nChanged!', 1, 2),
+(7, 6, 0, 'Test Board', 'This is THE board', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_category`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_category` (
+  `forumcategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`forumcategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `forum_category`
+--
+
+INSERT INTO `forum_category` (`forumcategory_id`, `name`, `ordernum`) VALUES
+(1, 'General', 2),
+(6, 'Test Cat', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_memberaccess`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_memberaccess` (
+  `forummemberaccess_id` int(11) NOT NULL AUTO_INCREMENT,
+  `board_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `accessrule` int(11) NOT NULL,
+  PRIMARY KEY (`forummemberaccess_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_moderator`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_moderator` (
+  `forummoderator_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumboard_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateadded` int(11) NOT NULL,
+  PRIMARY KEY (`forummoderator_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `forum_moderator`
+--
+
+INSERT INTO `forum_moderator` (`forummoderator_id`, `forumboard_id`, `member_id`, `dateadded`) VALUES
+(1, 7, 48, 1369358889),
+(5, 5, 46, 1369360045),
+(7, 6, 46, 1369360050);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_post`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_post` (
+  `forumpost_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumtopic_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `lastedit_date` int(11) NOT NULL,
+  `lastedit_member_id` int(11) NOT NULL,
+  PRIMARY KEY (`forumpost_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+
+--
+-- Dumping data for table `forum_post`
+--
+
+INSERT INTO `forum_post` (`forumpost_id`, `forumtopic_id`, `member_id`, `dateposted`, `title`, `message`, `lastedit_date`, `lastedit_member_id`) VALUES
+(1, 1, 13, 1368818879, 'First POst!', 'lol', 0, 0),
+(2, 2, 13, 1368819256, 'SEcond POST!', 'lol', 0, 0),
+(5, 4, 13, 1368999458, 'A forum!', '<p>finally!</p>', 0, 0),
+(7, 1, 48, 1369106020, '', '<p>[quote]<a href="../forum/viewtopic.php?tID=1#1">Originally posted by admin:</a>lol[/quote]</p>\r\n<p>&nbsp;</p>\r\n<p>ha what a joke</p>', 0, 0),
+(9, 4, 48, 1369197213, '', '<p>oooooo a reply<img title="Surprised" src="../js/tiny_mce/plugins/emotions/img/smiley-surprised.gif" alt="Surprised" border="0" /></p>', 0, 0),
+(10, 2, 48, 1369197313, '', '<p>asdf</p>', 0, 0),
+(12, 2, 48, 1369197769, '', '<p>haha111</p>', 1369628678, 13),
+(13, 2, 13, 1369620361, '', '<p>[quote]<br /><a href="../forum/viewtopic.php?tID=2#12">Originally posted by NewMember:</a></p>\r\n<p>haha</p>\r\n<p><br />[/quote]</p>\r\n<p>&nbsp;</p>\r\n<p>WHAT!!</p>', 0, 0),
+(14, 2, 13, 1369620467, '', '<p>[quote]<a href="../forum/viewtopic.php?tID=2#12">Originally posted by NewMember:</a></p>\r\n<p>haha</p>\r\n<p><br />[/quote]</p>\r\n<p>&nbsp;</p>\r\n<p>LOL!!!</p>', 0, 0),
+(17, 8, 48, 1369707734, 'test', '<p>asdf</p>', 0, 0),
+(18, 8, 13, 1369707749, '', '<p>haha lol</p>', 0, 0),
+(20, 10, 48, 1371708420, 'testing auto updates', '<p>asdfasdfs</p>', 0, 0),
+(21, 11, 13, 1377056196, 'test', '<p>[youtube]https://www.youtube.com/watch?v=YQ-2JXUZO_4[/youtube]</p>', 0, 0),
+(22, 12, 13, 1377996789, 'test attachments', '<p>asdf</p>', 0, 0),
+(23, 12, 13, 1378001290, '', '<p>test</p>', 0, 0),
+(24, 12, 13, 1378001511, '', '<p>test</p>', 0, 0),
+(25, 12, 13, 1378001535, '', '<p>test</p>', 0, 0),
+(26, 12, 13, 1378001584, '', '<p>test</p>', 0, 0),
+(27, 12, 13, 1378001830, '', '<p>test 2</p>', 0, 0),
+(28, 12, 13, 1378001896, '', '<p>asdfsadf</p>', 0, 0),
+(29, 12, 13, 1378008075, '', '<p>test 3</p>', 0, 0),
+(30, 12, 13, 1378008153, '', '<p>test php attachment</p>', 0, 0),
+(31, 10, 13, 1378064028, '', '<p>sdf</p>', 0, 0),
+(32, 13, 13, 1378690354, 'Test', '<p>asdfsad</p>', 0, 0),
+(33, 14, 13, 1378690379, 'test22', '<p>asdfsd</p>', 0, 0),
+(34, 13, 13, 1378690542, '', '<p>asdfsadf</p>', 0, 0),
+(35, 15, 13, 1378690551, 'asdfasd', '<p>sdfsadf</p>', 0, 0),
+(36, 10, 13, 1382408784, '', '<p>[youtube]http://www.youtube.com/watch?v=WWwaJzM2CFM[/youtube]</p>', 0, 0),
+(37, 10, 13, 1382408799, '', '<p>[twitch]http://www.twitch.tv/ksiolajidebt[/twitch]</p>', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_rankaccess`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_rankaccess` (
+  `forumrankaccess_id` int(11) NOT NULL AUTO_INCREMENT,
+  `board_id` int(11) NOT NULL,
+  `rank_id` int(11) NOT NULL,
+  PRIMARY KEY (`forumrankaccess_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `forum_rankaccess`
+--
+
+INSERT INTO `forum_rankaccess` (`forumrankaccess_id`, `board_id`, `rank_id`) VALUES
+(19, 6, 41),
+(15, 5, 31),
+(16, 5, 64),
+(17, 5, 65),
+(18, 5, 66);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_topic`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_topic` (
+  `forumtopic_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumboard_id` int(11) NOT NULL,
+  `forumpost_id` int(11) NOT NULL,
+  `lastpost_id` int(11) NOT NULL,
+  `views` int(11) NOT NULL,
+  `replies` int(11) NOT NULL,
+  `lockstatus` int(11) NOT NULL,
+  `stickystatus` int(11) NOT NULL,
+  PRIMARY KEY (`forumtopic_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `forum_topic`
+--
+
+INSERT INTO `forum_topic` (`forumtopic_id`, `forumboard_id`, `forumpost_id`, `lastpost_id`, `views`, `replies`, `lockstatus`, `stickystatus`) VALUES
+(1, 4, 1, 7, 42, 1, 0, 1),
+(2, 4, 2, 14, 213, 5, 0, 0),
+(4, 6, 5, 9, 40, 1, 0, 0),
+(8, 4, 17, 18, 167, 1, 0, 0),
+(10, 4, 20, 37, 29, 3, 0, 0),
+(11, 5, 21, 21, 44, 0, 0, 0),
+(12, 6, 22, 30, 24, 8, 0, 0),
+(13, 5, 32, 34, 3, 1, 0, 0),
+(14, 5, 33, 33, 2, 0, 0, 0),
+(15, 5, 35, 35, 1, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forum_topicseen`
+--
+
+CREATE TABLE IF NOT EXISTS `forum_topicseen` (
+  `forumtopicseen_id` int(11) NOT NULL AUTO_INCREMENT,
+  `forumtopic_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  PRIMARY KEY (`forumtopicseen_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+
+--
+-- Dumping data for table `forum_topicseen`
+--
+
+INSERT INTO `forum_topicseen` (`forumtopicseen_id`, `forumtopic_id`, `member_id`) VALUES
+(4, 1, 13),
+(7, 4, 13),
+(8, 4, 48),
+(10, 1, 48),
+(14, 2, 13),
+(15, 2, 48),
+(16, 6, 48),
+(17, 7, 48),
+(20, 8, 13),
+(21, 8, 48),
+(22, 9, 47),
+(24, 11, 13),
+(31, 12, 13),
+(34, 14, 13),
+(35, 13, 13),
+(36, 15, 13),
+(38, 10, 13);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freezemedals_members`
+--
+
+CREATE TABLE IF NOT EXISTS `freezemedals_members` (
+  `freezemedal_id` int(11) NOT NULL AUTO_INCREMENT,
+  `medal_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `freezetime` int(11) NOT NULL,
+  PRIMARY KEY (`freezemedal_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gamesplayed`
+--
+
+CREATE TABLE IF NOT EXISTS `gamesplayed` (
+  `gamesplayed_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `imageurl` text NOT NULL,
+  `imagewidth` int(11) NOT NULL,
+  `imageheight` int(11) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`gamesplayed_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `gamesplayed`
+--
+
+INSERT INTO `gamesplayed` (`gamesplayed_id`, `name`, `imageurl`, `imagewidth`, `imageheight`, `ordernum`) VALUES
+(8, 'Call of Duty', 'images/gamesplayed/game_508dc503812e7.png', 60, 15, 2),
+(2, 'Starcraft 2', 'images/gamesplayed/game_4f9dc59c97b06.png', 48, 48, 5),
+(5, 'Starcraft', 'images/gamesplayed/game_4fc70ad0a7ab8.gif', 28, 14, 3),
+(7, 'Minecraft', 'images/gamesplayed/game_501f58d5683e4.png', 32, 32, 1),
+(9, 'World of Warcraft', 'images/gamesplayed/game_508dc7963ba36.png', 0, 0, 4),
+(12, 'Black Ops 2', 'images/gamesplayed/game_522d32661c6b3.png', 40, 40, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gamesplayed_members`
+--
+
+CREATE TABLE IF NOT EXISTS `gamesplayed_members` (
+  `gamemember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gamesplayed_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  PRIMARY KEY (`gamemember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `gamesplayed_members`
+--
+
+INSERT INTO `gamesplayed_members` (`gamemember_id`, `gamesplayed_id`, `member_id`) VALUES
+(20, 2, 13),
+(18, 2, 48),
+(19, 7, 48);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gamestats`
+--
+
+CREATE TABLE IF NOT EXISTS `gamestats` (
+  `gamestats_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gamesplayed_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `stattype` varchar(15) NOT NULL,
+  `calcop` varchar(3) NOT NULL,
+  `firststat_id` int(11) NOT NULL,
+  `secondstat_id` int(11) NOT NULL,
+  `decimalspots` int(11) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `hidestat` int(11) NOT NULL,
+  `textinput` int(11) NOT NULL,
+  PRIMARY KEY (`gamestats_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `gamestats`
+--
+
+INSERT INTO `gamestats` (`gamestats_id`, `gamesplayed_id`, `name`, `stattype`, `calcop`, `firststat_id`, `secondstat_id`, `decimalspots`, `ordernum`, `hidestat`, `textinput`) VALUES
+(1, 8, 'K/D Ratio', 'calculate', 'div', 2, 3, 2, 0, 0, 0),
+(2, 8, 'Kills', 'input', '', 0, 0, 0, 1, 0, 0),
+(3, 8, 'Deaths', 'input', '', 0, 0, 0, 2, 0, 0),
+(4, 5, 'Wins', 'input', '', 0, 0, 0, 0, 0, 0),
+(5, 5, 'Losses', 'input', '', 0, 0, 0, 1, 0, 0),
+(6, 2, 'Wins', 'input', '', 0, 0, 0, 0, 0, 0),
+(7, 2, 'Losses', 'input', '', 0, 0, 0, 1, 0, 0),
+(8, 9, 'Level', 'input', '', 0, 0, 0, 0, 0, 0),
+(12, 12, 'K/D Ratio', 'input', '', 0, 0, 0, 0, 0, 0),
+(13, 12, 'Kills', 'input', '', 0, 0, 0, 1, 0, 0),
+(14, 12, 'Deaths', 'input', '', 0, 0, 0, 2, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gamestats_members`
+--
+
+CREATE TABLE IF NOT EXISTS `gamestats_members` (
+  `gamestatmember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gamestats_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `statvalue` decimal(65,30) NOT NULL,
+  `stattext` varchar(255) NOT NULL,
+  `dateupdated` int(11) NOT NULL,
+  PRIMARY KEY (`gamestatmember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hitcounter`
+--
+
+CREATE TABLE IF NOT EXISTS `hitcounter` (
+  `hit_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ipaddress` varchar(25) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `pagename` varchar(255) NOT NULL,
+  `totalhits` int(11) NOT NULL,
+  PRIMARY KEY (`hit_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
+
+--
+-- Dumping data for table `hitcounter`
+--
+
+INSERT INTO `hitcounter` (`hit_id`, `ipaddress`, `dateposted`, `pagename`, `totalhits`) VALUES
+(1, '::1', 1379122845, 'Forum - ', 380608),
+(2, '::1', 1365366291, 'Website Settings - ', 0),
+(3, '::1', 1365366295, '', 0),
+(4, '::1', 1365366308, '', 0),
+(5, '::1', 1365367097, '', 0),
+(6, '::1', 1365367117, '', 0),
+(7, '::1', 1365367142, '', 0),
+(8, '::1', 1365367215, '', 0),
+(9, '::1', 1365367342, '', 0),
+(10, '::1', 1365367360, '', 0),
+(11, '::1', 1365367386, '', 0),
+(12, '::1', 1365367396, '', 0),
+(13, '::1', 1365367411, '', 0),
+(14, '::1', 1365367487, '', 0),
+(15, '::1', 1365367550, '', 0),
+(16, '::1', 1365367593, '', 0),
+(17, '::1', 1365370145, '', 0),
+(18, '::1', 1365370174, '', 0),
+(19, '::1', 1365370241, '', 0),
+(20, '::1', 1365370368, '', 0),
+(21, '::1', 1365370378, '', 0),
+(22, '::1', 1365370618, '', 0),
+(23, '::1', 1365370660, '', 0),
+(24, '::1', 1365370917, '', 0),
+(25, '::1', 1365370966, '', 0),
+(26, '::1', 1365370980, '', 0),
+(27, '::1', 1365371002, '', 0),
+(28, '::1', 1365371009, '', 0),
+(29, '::1', 1365371018, '', 0),
+(30, '::1', 1365371066, '', 0),
+(31, '::1', 1365371079, '', 0),
+(32, '::1', 1365371092, '', 0),
+(33, '::1', 1365371099, '', 0),
+(34, '::1', 1365371108, '', 0),
+(35, '::1', 1365371126, '', 0),
+(36, '::1', 1365964355, 'Website Settings - ', 0),
+(37, '::1', 1365966739, 'Website Settings - ', 0),
+(38, '::1', 1365968370, 'Test Squad - ', 0),
+(39, '::1', 1365969988, 'Website Settings - ', 0),
+(40, '::1', 1365970037, 'Members - ', 0),
+(41, '::1', 1366246534, 'My Account - ', 0),
+(42, '::1', 1366246540, 'Add Custom Form Page - ', 0),
+(43, '::1', 1366246561, 'My Account - ', 0),
+(44, '::1', 1366246566, 'Website Settings - ', 0),
+(45, '::1', 1367036255, '', 0),
+(46, '::1', 1367036300, '', 0),
+(47, '::1', 1367036601, '', 0),
+(48, '::1', 1367047015, 'My Account - ', 0),
+(49, '::1', 1367047016, '', 0),
+(50, '::1', 1367047020, '', 0),
+(51, '::1', 1367047020, '', 0),
+(52, '::1', 1367047023, 'My Account - ', 0),
+(53, '::1', 1367047131, 'My Account - ', 0),
+(54, '::1', 1367047133, 'Member''s Only Pages - ', 0),
+(55, '::1', 1367047163, 'Member''s Only Pages - ', 0),
+(56, '::1', 1367047388, 'Member''s Only Pages - ', 0),
+(57, '::1', 1367047443, 'Member''s Only Pages - ', 0),
+(58, '::1', 1367047468, 'Member''s Only Pages - ', 0),
+(59, '::1', 1367047496, 'Member''s Only Pages - ', 0),
+(60, '::1', 1367047516, 'Member''s Only Pages - ', 0),
+(61, '::1', 1367047586, 'Member''s Only Pages - ', 0),
+(62, '::1', 1367047598, 'My Account - ', 0),
+(63, '::1', 1367047602, 'Website Settings - ', 0),
+(64, '::1', 1367093884, 'Website Settings - ', 0),
+(65, '::1', 1367105446, 'News - ', 0),
+(66, '::1', 1367105559, 'News - ', 0),
+(67, '::1', 1367105562, 'test - News - ', 0),
+(68, '::1', 1367105582, 'test - News - ', 0),
+(69, '::1', 1367105584, '', 0),
+(70, '::1', 1367107870, 'Diplomacy Request - ', 0),
+(71, '::1', 1367107874, 'Events - ', 0),
+(72, '::1', 1367107876, 'Test Event2 - ', 0),
+(73, '::1', 1367107878, 'News - ', 0),
+(74, '::1', 1367107891, 'My Account - ', 0),
+(75, '::1', 1367107894, 'Manage Tournaments - ', 0),
+(76, '::1', 1367107896, 'Tournaments - Manage Tournaments - ', 0),
+(77, '::1', 1367107904, 'My Account - ', 0),
+(78, '10.158.26.104', 1371182493, 'Private Messages - ', 33),
+(79, '10.158.26.136', 1371182497, 'My Account - ', 55),
+(80, '127.0.0.1', 1386658281, 'Plugin Manager - ', 91101);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `imageslider`
+--
+
+CREATE TABLE IF NOT EXISTS `imageslider` (
+  `imageslider_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `messagetitle` varchar(255) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `imageurl` text NOT NULL,
+  `fillstretch` varchar(7) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `link` text NOT NULL,
+  `linktarget` varchar(10) NOT NULL,
+  `membersonly` int(11) NOT NULL,
+  PRIMARY KEY (`imageslider_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `imageslider`
+--
+
+INSERT INTO `imageslider` (`imageslider_id`, `name`, `messagetitle`, `message`, `imageurl`, `fillstretch`, `ordernum`, `link`, `linktarget`, `membersonly`) VALUES
+(5, 'Minecraft', 'Testing News', 'asdfasdfsadf\r\n\r\n\r\n\r\nsadfasdfsdf', 'images/homepage/hpimage_522d0719804b5.jpg', 'stretch', 1, '/news/viewpost.php?nID=35', '', 0),
+(6, 'BLACK OPS 2 [color=white]TOURNAMENT[/color]', '24 May 2013 - Sign Up Now', 'Come join the Black Ops 2 tournament!', 'images/homepage/hpimage_52329dd49515d.jpg', 'stretch', 3, 'members.php', '_blank', 0),
+(7, 'Team Fortress 2!', 'Tournament!', 'Join the tournament today!', 'images/homepage/hpimage_5233c8482a5ed.jpg', 'stretch', 2, '', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ipban`
+--
+
+CREATE TABLE IF NOT EXISTS `ipban` (
+  `ipban_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ipaddress` varchar(11) NOT NULL,
+  `exptime` int(11) NOT NULL,
+  PRIMARY KEY (`ipban_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `logdate` int(11) NOT NULL,
+  `ipaddress` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=269 ;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`log_id`, `member_id`, `logdate`, `ipaddress`, `message`) VALUES
+(1, 13, 1370562726, '::1', 'Cleared all logs.'),
+(2, 45, 1370644272, '::1', 'Auto promoted for being in the clan for 56 days.'),
+(3, 13, 1370700233, '::1', '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> changed TestCommander''s recruiter from admin to Testing.<br><br><b>Reason:</b><br>'),
+(4, 13, 1370915758, '::1', 'Modified the member application component order.'),
+(5, 13, 1370915759, '::1', 'Modified the member application component order.'),
+(6, 13, 1370915760, '::1', 'Modified the member application component order.'),
+(7, 13, 1370915768, '::1', 'Modified the member application.'),
+(8, 13, 1370915772, '::1', 'Modified the member application component order.'),
+(9, 13, 1370915777, '::1', 'Added a new member application component.'),
+(10, 13, 1370915781, '::1', 'Modified the member application component order.'),
+(11, 13, 1370915783, '::1', 'Modified the member application component order.'),
+(12, 13, 1370915784, '::1', 'Modified the member application component order.'),
+(13, 13, 1370915786, '::1', 'Modified the member application component order.'),
+(14, 13, 1370915790, '::1', 'Deleted a member application component.'),
+(15, 13, 1370915796, '::1', 'Modified the member application component order.'),
+(16, 13, 1370915798, '::1', 'Modified the member application component order.'),
+(17, 13, 1370915801, '::1', 'Modified the member application component order.'),
+(18, 13, 1370915803, '::1', 'Modified the member application component order.'),
+(19, 13, 1370915805, '::1', 'Modified the member application component order.'),
+(20, 13, 1370915862, '::1', 'Deleted a member application component.'),
+(21, 13, 1370915865, '::1', 'Deleted a member application component.'),
+(22, 13, 1370915868, '::1', 'Deleted a member application component.'),
+(23, 13, 1370915871, '::1', 'Deleted a member application component.'),
+(24, 13, 1370915874, '::1', 'Deleted a member application component.'),
+(25, 13, 1370915881, '::1', 'Added a new member application component.'),
+(26, 13, 1370915920, '::1', 'Added a new member application component.'),
+(27, 13, 1370916133, '::1', 'Deleted a member application component.'),
+(28, 13, 1370916136, '::1', 'Deleted a member application component.'),
+(29, 13, 1370916140, '::1', 'Added a new member application component.'),
+(30, 13, 1370916151, '::1', 'Deleted a member application component.'),
+(31, 13, 1370916156, '::1', 'Added a new member application component.'),
+(32, 13, 1370916228, '::1', 'Deleted a member application component.'),
+(33, 13, 1370916233, '::1', 'Added a new member application component.'),
+(34, 13, 1370916309, '::1', 'Deleted a member application component.'),
+(35, 13, 1370916320, '::1', 'Added a new member application component.'),
+(36, 13, 1370916350, '::1', 'Deleted a member application component.'),
+(37, 13, 1370916356, '::1', 'Added a new member application component.'),
+(38, 13, 1370916370, '::1', 'Added a new member application component.'),
+(39, 13, 1370916661, '::1', 'Added a new member application component.'),
+(40, 13, 1370916671, '::1', 'Deleted a member application component.'),
+(41, 13, 1371084548, '::1', 'Added a new member application component.'),
+(42, 13, 1371084553, '::1', 'Added a new member application component.'),
+(43, 13, 1371084608, '::1', 'Modified the member application component order.'),
+(44, 13, 1371084609, '::1', 'Modified the member application component order.'),
+(45, 13, 1371084612, '::1', 'Modified the member application component order.'),
+(46, 13, 1371084613, '::1', 'Modified the member application component order.'),
+(47, 13, 1371084614, '::1', 'Modified the member application component order.'),
+(48, 13, 1371084616, '::1', 'Modified the member application component order.'),
+(49, 13, 1371084617, '::1', 'Modified the member application component order.'),
+(50, 13, 1371084618, '::1', 'Modified the member application component order.'),
+(51, 13, 1371084624, '::1', 'Deleted a member application component.'),
+(52, 13, 1371084627, '::1', 'Deleted a member application component.'),
+(53, 13, 1371084632, '::1', 'Added a new member application component.'),
+(54, 13, 1371084640, '::1', 'Added a new member application component.'),
+(55, 13, 1371084644, '::1', 'Modified the member application component order.'),
+(56, 13, 1371084646, '::1', 'Modified the member application component order.'),
+(57, 13, 1371084647, '::1', 'Modified the member application component order.'),
+(58, 13, 1371085077, '::1', 'Added a new member application component.'),
+(59, 13, 1371085122, '::1', 'Modified the member application component order.'),
+(60, 13, 1371085301, '::1', 'Added a new member application component.'),
+(61, 13, 1371085306, '::1', 'Added a new member application component.'),
+(62, 13, 1371085311, '::1', 'Added a new member application component.'),
+(63, 13, 1371085317, '::1', 'Added a new member application component.'),
+(64, 13, 1371085323, '::1', 'Added a new member application component.'),
+(65, 13, 1371085328, '::1', 'Modified the member application component order.'),
+(66, 13, 1371085330, '::1', 'Modified the member application component order.'),
+(67, 13, 1371085332, '::1', 'Modified the member application component order.'),
+(68, 13, 1371085333, '::1', 'Modified the member application component order.'),
+(69, 13, 1371085335, '::1', 'Modified the member application component order.'),
+(70, 13, 1371085337, '::1', 'Modified the member application component order.'),
+(71, 13, 1371085339, '::1', 'Modified the member application component order.'),
+(72, 13, 1371085340, '::1', 'Modified the member application component order.'),
+(73, 13, 1371085342, '::1', 'Modified the member application component order.'),
+(74, 13, 1371085344, '::1', 'Modified the member application component order.'),
+(75, 13, 1371085345, '::1', 'Modified the member application component order.'),
+(76, 13, 1371085347, '::1', 'Modified the member application component order.'),
+(77, 13, 1371085349, '::1', 'Modified the member application component order.'),
+(78, 13, 1371085350, '::1', 'Modified the member application component order.'),
+(79, 13, 1371085352, '::1', 'Modified the member application component order.'),
+(80, 13, 1371085354, '::1', 'Modified the member application component order.'),
+(81, 13, 1371085564, '::1', 'Added a new member application component.'),
+(82, 13, 1371085568, '::1', 'Modified the member application component order.'),
+(83, 13, 1371085572, '::1', 'Modified the member application component order.'),
+(84, 13, 1371085574, '::1', 'Modified the member application component order.'),
+(85, 13, 1371085712, '::1', 'Modified the member application component order.'),
+(86, 13, 1371085714, '::1', 'Modified the member application component order.'),
+(87, 13, 1371085727, '::1', 'Modified the member application component order.'),
+(88, 57, 1372126571, '::1', 'Auto promoted for being in the clan for 3 days.'),
+(89, 53, 1372127107, '::1', 'Auto promoted for being in the clan for 3 days.'),
+(90, 54, 1372127184, '::1', 'Auto promoted for being in the clan for 3 days.'),
+(91, 55, 1372127188, '::1', 'Auto promoted for being in the clan for 3 days.'),
+(92, 56, 1372127193, '::1', 'Auto promoted for being in the clan for 3 days.'),
+(93, 53, 1373425825, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(94, 53, 1373425825, '::1', 'Auto promoted for being in the clan for 14 days.'),
+(95, 13, 1373428269, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=53'' style=''color: #00FFFF'' title=''tes222[bT]''>tes222[bT]</a></span> demoted to rank Private First Class from Corporal.  Rank frozen for 3 days.<br><br><b>Reason:</b><br>'),
+(96, 13, 1373428582, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=53'' style=''color: #00FFFF'' title=''tes222[bT]''>tes222[bT]</a></span> demoted to rank Private from Private First Class.  Rank frozen for 0 days.<br><br><b>Reason:</b><br>'),
+(97, 53, 1373428593, '::1', 'Auto promoted for being in the clan for 14 days.'),
+(98, 13, 1373430396, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=48'' style=''color: #FF0000'' title=''NewMember''>NewMember</a></span> was stripped of the Rookie Medal medal.<br><br><b>Reason:</b><br>'),
+(99, 48, 1373430406, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(100, 48, 1373430406, '::1', 'Auto awarded medal for being in the clan for 120 days.'),
+(101, 13, 1373430486, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=48'' style=''color: #FF0000'' title=''NewMember''>NewMember</a></span> was stripped of the Rookie Medal medal.<br><br><b>Reason:</b><br>'),
+(102, 48, 1373603328, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(103, 48, 1373603328, '::1', 'Auto awarded medal for being in the clan for 150 days.'),
+(104, 13, 1373430749, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=48'' style=''color: #FF0000'' title=''NewMember''>NewMember</a></span> was stripped of the Rookie Medal medal.  The medal will not be awarded again for 3 days.<br><br><b>Reason:</b><br>'),
+(105, 52, 1373744442, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(106, 13, 1373744455, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=52'' style=''color: #09FF00'' title=''checkitout[bT]''>checkitout[bT]</a></span> was stripped of the Rookie Medal medal.  The medal will not be awarded again for 1 day.<br><br><b>Reason:</b><br>'),
+(107, 13, 1374118943, '::1', '<span style=''color: #9C2525''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000'' title=''TestMember''>TestMember</a></span> demoted to rank Co-Commander from Commander.  Rank frozen for 0 days.<br><br><b>Reason:</b><br>'),
+(108, 13, 1374120016, '::1', '<span style=''color: #9C2525''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000'' title=''TestMember''>TestMember</a></span> was awarded the Epic Medal medal.<br><br><b>Reason:</b><br>Testing Reasons'),
+(109, 43, 1374120022, '::1', 'Auto awarded medal for being in the clan for 120 days.'),
+(110, 43, 1374120022, '::1', 'Auto awarded medal for being in the clan for 150 days.'),
+(111, 50, 1374357682, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(112, 50, 1374357683, '::1', 'Auto awarded medal for being in the clan for 30 days.'),
+(113, 50, 1374357683, '::1', 'Auto awarded medal for being in the clan for 90 days.'),
+(114, 50, 1374357683, '::1', 'Auto promoted for being in the clan for 56 days.'),
+(115, 48, 1374358845, '::1', 'Auto awarded medal for being in the clan for 5 days.'),
+(116, 13, 1374853075, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000'' title=''TestCommander''>TestCommander</a></span> was awarded the Silver Shield Medal medal.<br><br><b>Reason:</b><br>ha'),
+(117, 13, 1374853169, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000'' title=''TestCommander''>TestCommander</a></span> was awarded the Humanitarian Medal medal.<br><br><b>Reason:</b><br>'),
+(118, 13, 1374853245, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000'' title=''TestCommander''>TestCommander</a></span> was stripped of the Humanitarian Medal medal.  The medal will not be awarded again for 0 days.<br><br><b>Reason:</b><br>'),
+(119, 13, 1374853293, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000'' title=''TestCommander''>TestCommander</a></span> was stripped of the Silver Shield Medal medal.<br><br><b>Reason:</b><br>'),
+(120, 13, 1374853407, '::1', '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000'' title=''TestCommander''>TestCommander</a></span> was awarded the Silver Shield Medal medal.<br><br><b>Reason:</b><br>'),
+(121, 13, 1374855784, '::1', 'Changed TestCommander''s recruit date to Tue Jul 9, 2013 12:00 am.'),
+(122, 51, 1375034104, '::1', 'Auto promoted for being in the clan for 56 days.'),
+(123, 59, 1375143089, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(124, 59, 1375542780, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(125, 59, 1375675826, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(126, 59, 1375675862, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(127, 59, 1375675886, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(128, 59, 1375675905, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(129, 59, 1375675908, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(130, 59, 1375675937, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(131, 59, 1375675955, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(132, 59, 1375675988, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(133, 59, 1375676008, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(134, 59, 1375676029, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(135, 59, 1375676043, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(136, 59, 1375676067, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(137, 59, 1375676084, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(138, 59, 1375676091, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(139, 59, 1375676098, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(140, 59, 1375676106, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(141, 59, 1375676123, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(142, 59, 1375676183, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(143, 59, 1375676193, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(144, 59, 1375676211, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(145, 59, 1375676233, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(146, 59, 1375676253, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(147, 59, 1375676269, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(148, 59, 1375676281, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(149, 59, 1375676292, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(150, 59, 1375676305, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(151, 59, 1375676326, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(152, 59, 1375676351, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(153, 59, 1375676378, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(154, 59, 1375676395, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(155, 59, 1375677435, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(156, 59, 1375928809, '::1', 'Disabled for failure to be promoted before 5 days.'),
+(157, 59, 1377986347, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(158, 59, 1378012255, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(159, 59, 1378159575, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(160, 59, 1378159639, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(161, 59, 1378159655, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(162, 59, 1378160851, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(163, 59, 1378160876, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(164, 59, 1378160904, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(165, 59, 1378160931, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(166, 59, 1378160959, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(167, 59, 1378160995, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(168, 59, 1378161023, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(169, 59, 1378161069, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(170, 59, 1378161128, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(171, 59, 1378161136, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(172, 59, 1378161215, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(173, 59, 1378161636, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(174, 59, 1378161645, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(175, 59, 1378161662, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(176, 59, 1378161690, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(177, 59, 1378161803, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(178, 59, 1378161824, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(179, 59, 1378161878, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(180, 59, 1378161902, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(181, 59, 1378161969, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(182, 59, 1378164913, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(183, 59, 1378165074, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(184, 59, 1378175081, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(185, 59, 1378175121, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(186, 59, 1378175124, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(187, 59, 1378175143, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(188, 59, 1378175384, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(189, 59, 1378175896, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(190, 59, 1378175947, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(191, 59, 1378175977, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(192, 59, 1378176269, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(193, 59, 1378176303, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(194, 59, 1378178088, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(195, 59, 1378179692, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(196, 59, 1378181184, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(197, 59, 1378182529, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(198, 59, 1378254117, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(199, 13, 1378271248, '127.0.0.1', 'Edited <a href=''/downloads/index.php?catID=6#18''>Test Download!</a> download information.'),
+(200, 59, 1378530523, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(201, 13, 1378606917, '127.0.0.1', 'Deleted a member application component.'),
+(202, 13, 1378606921, '127.0.0.1', 'Deleted a member application component.'),
+(203, 13, 1378606924, '127.0.0.1', 'Deleted a member application component.'),
+(204, 13, 1378606928, '127.0.0.1', 'Deleted a member application component.'),
+(205, 13, 1378606931, '127.0.0.1', 'Deleted a member application component.'),
+(206, 13, 1378606934, '127.0.0.1', 'Deleted a member application component.'),
+(207, 13, 1378606937, '127.0.0.1', 'Deleted a member application component.'),
+(208, 13, 1378606940, '127.0.0.1', 'Deleted a member application component.'),
+(209, 13, 1378606943, '127.0.0.1', 'Deleted a member application component.'),
+(210, 13, 1378606946, '127.0.0.1', 'Deleted a member application component.'),
+(211, 13, 1378606949, '127.0.0.1', 'Deleted a member application component.'),
+(212, 59, 1378683215, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(213, 59, 1378683228, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(214, 52, 1378683234, '127.0.0.1', 'Auto awarded medal for being in the clan for 5 days.'),
+(215, 52, 1378683234, '127.0.0.1', 'Auto awarded medal for being in the clan for 30 days.'),
+(216, 59, 1378683256, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(217, 59, 1378683402, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(218, 59, 1379057360, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(219, 59, 1379057897, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(220, 59, 1379558394, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(221, 59, 1379564036, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(222, 59, 1379564412, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(223, 59, 1381925558, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(224, 59, 1382136982, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(225, 59, 1382137024, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(226, 59, 1382232625, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(227, 59, 1382829533, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(228, 59, 1382829572, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(229, 59, 1382829712, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(230, 59, 1382829717, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(231, 59, 1382829863, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(232, 59, 1382829876, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(233, 59, 1382833202, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(234, 59, 1382835299, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(235, 59, 1382835311, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(236, 59, 1382837410, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(237, 59, 1382837472, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(238, 59, 1382837517, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(239, 59, 1382837825, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(240, 59, 1382837832, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(241, 59, 1382837963, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(242, 59, 1382838004, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(243, 59, 1382838223, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(244, 59, 1382838234, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(245, 59, 1382838244, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(246, 59, 1382838293, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(247, 59, 1382838298, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(248, 59, 1382838345, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(249, 59, 1382838374, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(250, 59, 1382838409, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(251, 59, 1382838473, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(252, 59, 1382838514, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(253, 59, 1382838530, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(254, 59, 1382838589, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(255, 59, 1382838757, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(256, 59, 1382838797, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(257, 59, 1382839276, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(258, 59, 1382841113, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(259, 59, 1382841192, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(260, 59, 1382841747, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(261, 59, 1383805392, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(262, 44, 1383805399, '127.0.0.1', 'Auto awarded medal for being in the clan for 5 days.'),
+(263, 44, 1383805399, '127.0.0.1', 'Auto awarded medal for being in the clan for 30 days.'),
+(264, 44, 1383805399, '127.0.0.1', 'Auto awarded medal for being in the clan for 90 days.'),
+(265, 44, 1383805399, '127.0.0.1', 'Auto awarded medal for being in the clan for 120 days.'),
+(266, 44, 1383805399, '127.0.0.1', 'Auto awarded medal for being in the clan for 150 days.'),
+(267, 59, 1386042936, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.'),
+(268, 59, 1386121577, '127.0.0.1', 'Disabled for failure to be promoted before 5 days.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `medals`
+--
+
+CREATE TABLE IF NOT EXISTS `medals` (
+  `medal_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `imageurl` text NOT NULL,
+  `imagewidth` int(11) NOT NULL,
+  `imageheight` int(11) NOT NULL,
+  `autodays` int(11) NOT NULL,
+  `autorecruits` int(11) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`medal_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `medals`
+--
+
+INSERT INTO `medals` (`medal_id`, `name`, `description`, `imageurl`, `imagewidth`, `imageheight`, `autodays`, `autorecruits`, `ordernum`) VALUES
+(1, 'Tournament Champ', 'Awarded for winning a clan tournament.', 'images/medals/medal_50d53680435d5.gif', 105, 30, 0, 0, 1),
+(2, 'Active Member Medal', 'Awarded for being an active clan member.', 'images/medals/medal_50d53660e7533.gif', 105, 30, 0, 0, 3),
+(3, 'Forum Hero', 'Awarded for being active on the forums.', 'images/medals/medal_50d536249845b.gif', 105, 30, 0, 0, 5),
+(4, 'Epic Medal', 'Awarded for being epic.', 'images/medals/medal_50d5361482940.gif', 105, 30, 0, 0, 6),
+(5, 'Rookie Medal', 'Awarded after 5 days in the clan.', 'images/medals/medal_50d535b39cf89.gif', 105, 30, 5, 0, 11),
+(6, 'Veteran Medal', 'Awarded after being in the clan for 90 days.', 'images/medals/medal_50d535a2dc0f8.gif', 105, 30, 90, 0, 9),
+(7, 'Old Timer Medal', 'Awarded for being in the clan for 120 days.', 'images/medals/medal_50d535ef43360.gif', 105, 30, 120, 0, 8),
+(8, 'Shooting Star Medal', 'Awarded for being in the clan 150 days.', 'images/medals/medal_50d536049e104.gif', 105, 30, 150, 0, 7),
+(9, 'Silver Shield Medal', 'Awarded to members who help the clan with Web Design/Graphics, etc...', 'images/medals/medal_50d53640a63e9.gif', 105, 30, 0, 0, 4),
+(10, 'Established Member Medal', 'Awarded after being in the clan for 30 days.', 'images/medals/medal_50d535cada75a.gif', 105, 30, 30, 0, 10),
+(11, 'Humanitarian Medal', 'Awarded for recruiting 5 members to the clan.', 'images/medals/medal_50d7c14e122fe.gif', 0, 0, 0, 5, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `medals_members`
+--
+
+CREATE TABLE IF NOT EXISTS `medals_members` (
+  `medalmember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `medal_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `dateawarded` int(11) NOT NULL,
+  `reason` text NOT NULL,
+  PRIMARY KEY (`medalmember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+
+--
+-- Dumping data for table `medals_members`
+--
+
+INSERT INTO `medals_members` (`medalmember_id`, `medal_id`, `member_id`, `dateawarded`, `reason`) VALUES
+(1, 5, 13, 1362363928, ''),
+(2, 10, 13, 1362363928, ''),
+(3, 6, 13, 1362363928, ''),
+(4, 7, 13, 1362363928, ''),
+(5, 8, 13, 1362363928, ''),
+(6, 11, 13, 1362363928, ''),
+(7, 5, 43, 1364181795, ''),
+(8, 10, 43, 1364181795, ''),
+(10, 10, 48, 1364181954, ''),
+(11, 5, 42, 1366245676, ''),
+(12, 10, 42, 1366245676, ''),
+(13, 5, 46, 1368390309, ''),
+(14, 10, 46, 1368390309, ''),
+(15, 6, 46, 1368390309, ''),
+(16, 6, 43, 1368504425, ''),
+(17, 5, 51, 1369632318, ''),
+(18, 10, 51, 1369632318, ''),
+(19, 6, 48, 1369634319, ''),
+(20, 6, 42, 1369717988, ''),
+(21, 7, 42, 1369717988, ''),
+(22, 8, 42, 1369717988, ''),
+(23, 5, 53, 1373425825, ''),
+(25, 7, 48, 1373430406, ''),
+(27, 8, 48, 1373603328, ''),
+(29, 4, 43, 1374120016, 'Testing Reasons'),
+(30, 7, 43, 1374120022, ''),
+(31, 8, 43, 1374120022, ''),
+(32, 5, 50, 1374357682, ''),
+(33, 10, 50, 1374357683, ''),
+(34, 6, 50, 1374357683, ''),
+(35, 5, 48, 1374358845, ''),
+(38, 9, 42, 1374853406, ''),
+(39, 5, 52, 1378683234, ''),
+(40, 10, 52, 1378683234, ''),
+(41, 5, 44, 1383805399, ''),
+(42, 10, 44, 1383805399, ''),
+(43, 6, 44, 1383805399, ''),
+(44, 7, 44, 1383805399, ''),
+(45, 8, 44, 1383805399, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `memberapps`
+--
+
+CREATE TABLE IF NOT EXISTS `memberapps` (
+  `memberapp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `password2` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `applydate` int(11) NOT NULL,
+  `ipaddress` varchar(25) NOT NULL,
+  `memberadded` int(11) NOT NULL,
+  `seenstatus` int(11) NOT NULL,
+  PRIMARY KEY (`memberapp_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `memberapps`
+--
+
+INSERT INTO `memberapps` (`memberapp_id`, `username`, `password`, `password2`, `email`, `applydate`, `ipaddress`, `memberadded`, `seenstatus`) VALUES
+(1, 'testuser22', '$2a$10$1d3a7d0054099a7da1396OIMODyP.B96XIaCfH.m.f6UQ.R6neFTO', '$2a$10$1d3a7d0054099a7da1396c', 'test@asdfasdf.com', 1381991261, '127.0.0.1', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE IF NOT EXISTS `members` (
+  `member_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `password2` varchar(255) NOT NULL,
+  `rank_id` int(11) NOT NULL,
+  `profilepic` text NOT NULL,
+  `avatar` text NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `facebook` text NOT NULL,
+  `twitter` varchar(20) NOT NULL,
+  `youtube` varchar(40) NOT NULL,
+  `googleplus` text NOT NULL,
+  `twitch` varchar(40) NOT NULL,
+  `maingame_id` int(11) NOT NULL,
+  `birthday` int(11) NOT NULL,
+  `datejoined` int(11) NOT NULL,
+  `lastlogin` int(11) NOT NULL,
+  `lastseen` int(11) NOT NULL,
+  `lastseenlink` text NOT NULL,
+  `loggedin` int(11) NOT NULL,
+  `lastpromotion` int(11) NOT NULL,
+  `lastdemotion` int(11) NOT NULL,
+  `timesloggedin` int(11) NOT NULL,
+  `recruiter` int(11) NOT NULL,
+  `ipaddress` varchar(255) NOT NULL,
+  `profileviews` int(11) NOT NULL,
+  `defaultconsole` int(11) NOT NULL,
+  `disabled` int(11) NOT NULL,
+  `disableddate` int(11) NOT NULL,
+  `notifications` int(11) NOT NULL,
+  `topicsperpage` int(11) NOT NULL,
+  `postsperpage` int(11) NOT NULL,
+  `freezerank` int(11) NOT NULL,
+  `forumsignature` text NOT NULL,
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`member_id`, `username`, `password`, `password2`, `rank_id`, `profilepic`, `avatar`, `email`, `facebook`, `twitter`, `youtube`, `googleplus`, `twitch`, `maingame_id`, `birthday`, `datejoined`, `lastlogin`, `lastseen`, `lastseenlink`, `loggedin`, `lastpromotion`, `lastdemotion`, `timesloggedin`, `recruiter`, `ipaddress`, `profileviews`, `defaultconsole`, `disabled`, `disableddate`, `notifications`, `topicsperpage`, `postsperpage`, `freezerank`, `forumsignature`) VALUES
+(13, 'ADMIN', '$2a$06$6b34c02521bf8cb05ce17uIv5llAB1ydbqaXAAWiQ8CvrUzg/2X3i', '$2a$06$6b34c02521bf8cb05ce173', 1, '', '', 'leorojas22@gmail.com', 'http://www.facebook.com/bluethrust', 'bluethrust', 'bluethrustweb', '', 'mets2oo1', 2, 596091600, 1318062024, 1386655894, 1386658281, '<a href=''http://localhost/cs4/members/console.php?cID=151''>Plugin Manager</a>', 1, 1350783875, 0, 249, 0, '127.0.0.1', 1956, 14, 0, 1351401446, 0, 10, 50, 0, '<p style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.bluethrust.com/images/logo.png" alt="" width="550" height="54" /></p>'),
+(50, 'Testing', '$2a$07$e12210975504e3bd08305u1Uaez4r282.XH9bxDA7lG5grIh0k3su', '$2a$07$e12210975504e3bd083054', 52, '', '', '', '', '', '', '', '', 0, 0, 1365730509, 1370307975, 1370307982, '<a href=''http://localhost/cs4git/members/''>My Account</a>', 0, 1374357683, 0, 4, 13, '::1', 6, 0, 0, 0, 0, 0, 0, 0, ''),
+(42, 'TestCommander', '$2a$06$2d5e8a01e31ead683ceeduaOT/igvxd2KjdLdt47KoR/zrFyKtOsO', '$2a$06$2d5e8a01e31ead683ceed9', 41, '', '', '', '', '', '', '', '', 2, 0, 1373342400, 1375034037, 1375034080, '<a href=''http://localhost/cs4git/themes/_refreshmenus.php''>Home Page</a>', 0, 0, 0, 7, 50, '::1', 39, 3, 0, 0, 0, 0, 0, 0, ''),
+(43, 'TestMember', '$2a$04$5e55e5ed6c17b5db04a02ORA6eski.vLHuq7PrLyp/puDD8J7oBPq', '$2a$04$5e55e5ed6c17b5db04a02b', 42, '', '', '', '', '', '', '', '', 0, 0, 1360122795, 1382841195, 1382841796, '<a href=''http://localhost/cs4/members/console.php?cID=78''>Private Messages</a>', 0, 1362363099, 1374118943, 13, 42, '127.0.0.1', 12, 0, 0, 0, 0, 0, 0, 1374118943, ''),
+(44, 'HahaMember', '$2a$06$0b84014aa834b4accc963uf986.oy5ae4XJxmd2TFycikEX112jsy', '$2a$06$0b84014aa834b4accc9636', 52, '', '', '', '', '', '', '', '', 0, 0, 1360475817, 1365733043, 1365733043, '<a href=''http://localhost/cs4git/index.php''>Home Page</a>', 0, 1365733043, 0, 1, 13, '::1', 4, 0, 0, 0, 0, 0, 0, 0, ''),
+(45, 'WhatMember', '$2a$10$e5557f427698a51030d61urhj8vHahYLQK1tTvTzd6vcqw4OpJf2e', '$2a$10$e5557f427698a51030d617', 52, '', '', '', '', '', '', '', '', 0, 0, 1360475827, 1370644272, 1370645705, '<a href=''http://localhost/cs4git/members/''>My Account</a>', 0, 1370644272, 0, 2, 13, '::1', 0, 0, 0, 0, 0, 0, 0, 0, ''),
+(46, 'ANotherONE?', '$2a$10$3a39c6655e348501bcc93O01yq0wGTISFSjPAl2rSeUI6FvGk69Ty', '$2a$10$3a39c6655e348501bcc93d', 59, '', '', '', '', '', '', '', '', 0, 0, 1360475840, 1360475840, 0, '', 0, 0, 0, 0, 51, '', 5, 0, 0, 0, 0, 0, 0, 0, ''),
+(47, 'SomeMember', '$2a$08$a83f266a6dcf9c9f57b3deD9/v2cFAmhZnKIOz0Or9Mf.e0CuT7RW', '$2a$08$a83f266a6dcf9c9f57b3de', 55, '', '', '', '', '', '', '', '', 0, 0, 1360475852, 1379185356, 1379185363, '<a href=''http://cs4svn/members/privatemessages/view.php?pmID=37''>Compose Message - Private Messages</a>', 0, 0, 0, 4, 13, '127.0.0.1', 0, 0, 0, 0, 0, 0, 0, 0, ''),
+(48, 'NewMember', '$2a$08$321271ce806f805f09d4cuRgCRoExebNLEOc0quqzt6RwRiYseSUW', '$2a$08$321271ce806f805f09d4c7', 41, '', '', '', '', '', '', '', '', 7, 0, 1360475862, 1379757788, 1379757788, '<a href=''http://localhost/cs4/''>Home Page</a>', 0, 1362363754, 0, 40, 13, '127.0.0.1', 38, 13, 0, 0, 0, 10, 10, 0, ''),
+(49, 'ThisIsATestMember', '$2a$10$1c96597bf709b71eb2d01uqEZgKQNZw.shyRndOvMu60G5DKemjm.', '$2a$10$1c96597bf709b71eb2d013', 48, '', '', '', '', '', '', '', '', 0, 0, 1360475876, 1360475876, 0, '', 0, 0, 0, 0, 13, '', 0, 0, 0, 0, 0, 0, 0, 0, ''),
+(51, 'RetiredDude', '$2a$10$22baf9995d1f8ab156087uNAT0bnQsCx5d5IlQGSODkNBcpoMVU6y', '$2a$10$22baf9995d1f8ab1560873', 52, '', '', '', '', '', '', '', '', 0, 0, 1365752863, 1375286854, 1375290127, '<a href=''http://localhost/cs4git/themes/_refreshmenus.php''>Home Page</a>', 0, 1375034104, 0, 2, 51, '::1', 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(52, 'checkitout[bT]', '$2a$06$3841a1413c9c21840973euFaLsN7WnFI0OZAgReuqSHl8pFzNDl..', '$2a$06$3841a1413c9c21840973e7', 60, '', '', '', '', '', '', '', '', 0, 0, 1371708653, 1371708653, 0, '', 0, 0, 0, 0, 13, '', 3, 0, 0, 0, 0, 0, 0, 0, ''),
+(53, 'tes222[bT]', '$2a$10$fed0bceedd33b513569c4u1aoNm5o6Sd95inDOKo7FRj0h29FUXdG', '$2a$10$fed0bceedd33b513569c40', 46, '', '', '', '', '', '', '', '', 0, 0, 1371773197, 1372127107, 1372130137, '<a href=''http://localhost/cs4git/themes/_refreshmenus.php''>Home Page</a>', 0, 1373428593, 1373428582, 1, 13, '::1', 4, 0, 0, 0, 0, 0, 0, 1373428582, ''),
+(54, 'test35[bT]', '$2a$04$cd6a1ae9fa0152ba1f319OKCbd3THA7oOATs/i/7.9.r2UU6RYI7i', '$2a$04$cd6a1ae9fa0152ba1f319b', 44, '', '', '', '', '', '', '', '', 0, 0, 1371773393, 1371773393, 0, '', 0, 1372127184, 0, 0, 13, '', 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(55, 'asdf333[bT]', '$2a$06$1729e7f1f65498ee8b4c1O.124i9pwwvesht2v21AdusFgie9xbFe', '$2a$06$1729e7f1f65498ee8b4c1c', 44, '', '', '', '', '', '', '', '', 0, 0, 1371773490, 1371773490, 0, '', 0, 1372127188, 0, 0, 13, '', 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(56, 'asd[bT]', '$2a$10$b8ff4dfd2d0eb463076b2eqMmEzPs/ge29hOsn4HLnbra9pHHPNkO', '$2a$10$b8ff4dfd2d0eb463076b2e', 44, '', '', '', '', '', '', '', '', 0, 0, 1371773552, 1371773552, 0, '', 0, 1372127193, 0, 0, 13, '', 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(57, 'hahahahahahhaha[bT]', '$2a$06$09c05efeb9bcc43ce57e3urx6MTSqSf06pqCO0/ldqlopAMI80GIG', '$2a$06$09c05efeb9bcc43ce57e31', 44, '', '', '', '', '', '', '', '', 0, 0, 1371773599, 1371773599, 0, '', 0, 1372126571, 0, 0, 13, '', 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(58, 'TestW4', '$2a$08$69dfc7a1c0b974864f5c3umQzPH./Ils4ieQ2mNb597NbWJ4QgHJ6', '$2a$08$69dfc7a1c0b974864f5c33', 56, '', '', '', '', '', '', '', '', 0, 0, 1372503283, 1372503283, 0, '', 0, 0, 0, 0, 13, '', 0, 0, 0, 0, 0, 0, 0, 0, ''),
+(59, 'testpass', '$2a$10$d847bd93eb3e4823f51fauCrGAtIPh2z3zO61awxAtxcaYniagu86', '$2a$10$d847bd93eb3e4823f51fa0', 67, '', '', '', '', '', '', '', '', 0, 0, 1374725952, 1374725952, 0, '', 0, 0, 0, 0, 13, '', 0, 0, 1, 0, 0, 0, 0, 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `membersonlypage`
+--
+
+CREATE TABLE IF NOT EXISTS `membersonlypage` (
+  `page_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pagename` varchar(255) NOT NULL,
+  `pageurl` text NOT NULL,
+  `dateadded` int(11) NOT NULL,
+  PRIMARY KEY (`page_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menuitem_customblock`
+--
+
+CREATE TABLE IF NOT EXISTS `menuitem_customblock` (
+  `menucustomblock_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menuitem_id` int(11) NOT NULL,
+  `blocktype` varchar(10) NOT NULL,
+  `code` longtext NOT NULL,
+  PRIMARY KEY (`menucustomblock_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `menuitem_customblock`
+--
+
+INSERT INTO `menuitem_customblock` (`menucustomblock_id`, `menuitem_id`, `blocktype`, `code`) VALUES
+(1, 55, 'code', '<a href=''[MAIN_ROOT]news''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_News'' style=''margin-left: 0px''></a>'),
+(2, 56, 'code', '<a href=''[MAIN_ROOT]members.php''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_Members''></a>'),
+(3, 57, 'code', '<a href=''[MAIN_ROOT]squads''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_Squads''></a>'),
+(4, 58, 'code', '<a href=''[MAIN_ROOT]tournaments''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_Tournaments''></a>'),
+(5, 59, 'code', '<a href=''[MAIN_ROOT]events''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_Events''></a>'),
+(6, 60, 'code', '<a href=''[MAIN_ROOT]forum''><img src=''[MAIN_ROOT]themes/ghost/images/transparent.png'' class=''topMenu_Forum''></a>');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menuitem_custompage`
+--
+
+CREATE TABLE IF NOT EXISTS `menuitem_custompage` (
+  `menucustompage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menuitem_id` int(11) NOT NULL,
+  `custompage_id` int(11) NOT NULL,
+  `prefix` varchar(20) NOT NULL,
+  `linktarget` varchar(255) NOT NULL,
+  `textalign` varchar(25) NOT NULL,
+  PRIMARY KEY (`menucustompage_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `menuitem_custompage`
+--
+
+INSERT INTO `menuitem_custompage` (`menucustompage_id`, `menuitem_id`, `custompage_id`, `prefix`, `linktarget`, `textalign`) VALUES
+(3, 19, 12, '<b>&middot;</b> ', '', 'left'),
+(2, 18, 11, '<b>&middot;</b> ', '', 'left'),
+(4, 52, 7, '<b>&middot;</b> ', '', 'left'),
+(5, 53, 6, '<b>&middot;</b> ', '', 'left');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menuitem_image`
+--
+
+CREATE TABLE IF NOT EXISTS `menuitem_image` (
+  `menuimage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menuitem_id` int(11) NOT NULL,
+  `imageurl` text NOT NULL,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  `link` text NOT NULL,
+  `linktarget` varchar(10) NOT NULL,
+  `imagealign` varchar(25) NOT NULL,
+  PRIMARY KEY (`menuimage_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menuitem_link`
+--
+
+CREATE TABLE IF NOT EXISTS `menuitem_link` (
+  `menulink_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menuitem_id` int(11) NOT NULL,
+  `link` text NOT NULL,
+  `linktarget` varchar(10) NOT NULL,
+  `prefix` varchar(255) NOT NULL,
+  `textalign` varchar(25) NOT NULL,
+  PRIMARY KEY (`menulink_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+
+--
+-- Dumping data for table `menuitem_link`
+--
+
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES
+(1, 1, 'index.php', '', '<b>&middot;</b> ', 'left'),
+(3, 8, 'news', '', '<b>&middot;</b> ', 'left'),
+(4, 9, 'members.php', '', '<b>&middot;</b> ', 'left'),
+(5, 10, 'ranks.php', '', '<b>&middot;</b> ', 'left'),
+(6, 11, 'squads', '', '<b>&middot;</b> ', 'left'),
+(7, 12, 'tournaments', '', '<b>&middot;</b> ', 'left'),
+(8, 13, 'events', '', '<b>&middot;</b> ', 'left'),
+(9, 14, 'medals.php', '', '<b>&middot;</b> ', 'left'),
+(10, 15, 'diplomacy', '', '<b>&middot;</b> ', 'left'),
+(11, 16, 'diplomacy/request.php', '', '<b>&middot;</b> ', 'left'),
+(12, 20, 'forum', '', '<b>&middot;</b> ', 'left'),
+(13, 21, 'signup.php', '', '<b>&middot;</b> ', 'left'),
+(29, 45, 'forgotpassword.php', '', '<b>&middot;</b> ', 'left');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menuitem_shoutbox`
+--
+
+CREATE TABLE IF NOT EXISTS `menuitem_shoutbox` (
+  `menushoutbox_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menuitem_id` int(11) NOT NULL,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  `percentwidth` int(1) NOT NULL,
+  `percentheight` int(1) NOT NULL,
+  `textboxwidth` int(11) NOT NULL,
+  PRIMARY KEY (`menushoutbox_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `menuitem_shoutbox`
+--
+
+INSERT INTO `menuitem_shoutbox` (`menushoutbox_id`, `menuitem_id`, `width`, `height`, `percentwidth`, `percentheight`, `textboxwidth`) VALUES
+(1, 2, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menu_category`
+--
+
+CREATE TABLE IF NOT EXISTS `menu_category` (
+  `menucategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `section` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  `headertype` varchar(255) NOT NULL,
+  `headercode` longtext NOT NULL,
+  `accesstype` int(11) NOT NULL,
+  `hide` int(11) NOT NULL,
+  PRIMARY KEY (`menucategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `menu_category`
+--
+
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES
+(3, 0, 'Main Menu', 1, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_MainMenu''>', 0, 0),
+(2, 0, 'Top Players', 2, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_TopPlayers''>', 0, 0),
+(5, 1, 'Forum Activity', 2, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_ForumActivity''>', 0, 0),
+(1, 1, 'Shoutbox', 1, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_Shoutbox''>', 0, 0),
+(4, 0, 'Newest Members', 4, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_NewMembers''>', 0, 0),
+(17, 0, 'Downloads', 3, 'customcode', '<img src=''[MAIN_ROOT]images/transparent.png'' class=''menuTitles_Downloads''>', 0, 0),
+(19, 2, 'Login', 1, 'customcode', '', 0, 0),
+(20, 3, 'Top Menu', 1, 'customcode', '', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menu_item`
+--
+
+CREATE TABLE IF NOT EXISTS `menu_item` (
+  `menuitem_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menucategory_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `itemtype` varchar(255) NOT NULL,
+  `itemtype_id` int(11) NOT NULL,
+  `accesstype` int(1) NOT NULL,
+  `hide` int(1) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`menuitem_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+
+--
+-- Dumping data for table `menu_item`
+--
+
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES
+(2, 1, 'Shoutbox', 'shoutbox', 1, 0, 0, 1),
+(3, 2, 'Top Players Links', 'top-players', 0, 0, 0, 1),
+(1, 3, 'Home', 'link', 1, 0, 0, 2),
+(8, 3, 'News', 'link', 3, 0, 0, 3),
+(9, 3, 'Members', 'link', 4, 0, 0, 4),
+(10, 3, 'Ranks', 'link', 5, 0, 0, 5),
+(11, 3, 'Squads', 'link', 6, 0, 0, 6),
+(12, 3, 'Tournaments', 'link', 7, 0, 0, 7),
+(13, 3, 'Events', 'link', 8, 0, 0, 8),
+(14, 3, 'Medals', 'link', 9, 0, 0, 9),
+(15, 3, 'Diplomacy', 'link', 10, 0, 0, 10),
+(16, 3, 'Diplomacy Request', 'link', 11, 0, 0, 11),
+(19, 3, 'Rules', 'custompage', 3, 0, 0, 12),
+(18, 3, 'History', 'custompage', 2, 0, 0, 13),
+(20, 3, 'Forum', 'link', 12, 0, 0, 14),
+(21, 3, 'Sign Up', 'link', 13, 2, 0, 15),
+(45, 3, 'Forgot Password', 'link', 29, 2, 0, 16),
+(4, 4, 'Newest Members', 'newestmembers', 0, 0, 0, 1),
+(5, 5, 'Forum Activity', 'forumactivity', 0, 0, 0, 1),
+(54, 19, 'Login Section', 'login', 0, 0, 0, 1),
+(55, 20, 'News', 'customcode', 1, 0, 0, 1),
+(56, 20, 'Members', 'customcode', 2, 0, 0, 2),
+(57, 20, 'Squads', 'customcode', 3, 0, 0, 3),
+(58, 20, 'Tournaments', 'customcode', 4, 0, 0, 4),
+(59, 20, 'Events', 'customcode', 5, 0, 0, 5),
+(60, 20, 'Forum', 'customcode', 6, 0, 0, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
+
+CREATE TABLE IF NOT EXISTS `news` (
+  `news_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `newstype` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `postsubject` varchar(255) NOT NULL,
+  `newspost` text NOT NULL,
+  `lasteditmember_id` int(11) NOT NULL,
+  `lasteditdate` int(11) NOT NULL,
+  `hpsticky` int(11) NOT NULL,
+  PRIMARY KEY (`news_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`news_id`, `member_id`, `newstype`, `dateposted`, `postsubject`, `newspost`, `lasteditmember_id`, `lasteditdate`, `hpsticky`) VALUES
+(2, 13, 3, 1362344823, 'Shoutbox Post', 'lol', 0, 0, 0),
+(15, 13, 3, 1370413248, 'Shoutbox Post', 'test', 0, 0, 0),
+(8, 13, 3, 1367114314, 'Shoutbox Post', ':p', 0, 0, 0),
+(9, 13, 3, 1367114351, 'Shoutbox Post', ':( :D', 0, 0, 0),
+(16, 13, 3, 1370413296, 'Shoutbox Post', 'test2', 0, 0, 0),
+(33, 48, 3, 1371708047, 'Shoutbox Post', 'sadfsd', 0, 0, 0),
+(26, 13, 3, 1370413715, 'Shoutbox Post', 'LOLLLLL', 0, 0, 0),
+(32, 48, 3, 1371703379, 'Shoutbox Post', 'test', 0, 0, 0),
+(22, 13, 3, 1370413461, 'Shoutbox Post', 'j', 0, 0, 0),
+(24, 13, 3, 1370413706, 'Shoutbox Post', 'jhkjhh', 0, 0, 0),
+(35, 13, 1, 1373327157, 'Testing News', 'asdfasdfsadf\r\n\r\nsadfasdfsdf', 0, 0, 1),
+(40, 13, 1, 1378617595, 'Test Twitch', '[twitch]http://www.twitch.tv/meatwagon22[/twitch]', 0, 0, 0),
+(41, 13, 1, 1379122878, 'asdf', '[color=blue]test colors[/color]', 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `datesent` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `icontype` varchar(15) NOT NULL,
+  PRIMARY KEY (`notification_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=116 ;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`notification_id`, `member_id`, `datesent`, `message`, `status`, `icontype`) VALUES
+(1, 43, 1362363099, 'Your rank has been set to Commander!', 1, 'general'),
+(2, 48, 1362363754, 'Your rank has been set to Commander!', 1, 'general'),
+(3, 13, 1362363928, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(4, 13, 1362363928, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 1, 'general'),
+(5, 13, 1362363928, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 1, 'general'),
+(6, 13, 1362363928, 'You have been awarded the Old Timer Medal for being the clan for 120 days.', 1, 'general'),
+(7, 13, 1362363928, 'You have been awarded the Shooting Star Medal for being the clan for 150 days.', 1, 'general'),
+(8, 13, 1362363928, 'You have been awarded the Humanitarian Medal for recruiting 5 members.', 1, 'general'),
+(9, 43, 1362365595, 'You have been invited to the event, <b>test</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=1''>event</a> page to view more info.', 1, 'general'),
+(10, 13, 1362365703, '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000''>TestMember</a></span> is going to your <a href=''/cs4git/events/info.php?eID=1''>event</a>.', 1, 'general'),
+(11, 43, 1362366001, 'A chatroom has been started for the event, <a href=''/cs4git/members/events/manage.php?eID=1&pID=Chat''>test</a>!', 1, 'general'),
+(12, 48, 1362366926, 'You have been invited to the event, <b>test</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=1''>event</a> page to view more info.', 1, 'general'),
+(13, 49, 1362366926, 'You have been invited to the event, <b>test</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=1''>event</a> page to view more info.', 0, 'general'),
+(14, 44, 1362366926, 'You have been invited to the event, <b>test</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=1''>event</a> page to view more info.', 1, 'general'),
+(15, 42, 1362366926, 'You have been invited to the event, <b>test</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=1''>event</a> page to view more info.', 1, 'general'),
+(16, 43, 1362368871, 'You have been invited to the event, <b>The Top Secret Event</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=3''>event</a> page to view more info.', 1, 'general'),
+(17, 46, 1362368871, 'You have been invited to the event, <b>The Top Secret Event</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=3''>event</a> page to view more info.', 0, 'general'),
+(18, 45, 1362368871, 'You have been invited to the event, <b>The Top Secret Event</b>!.  Go to the <a href=''/cs4git/events/info.php?eID=3''>event</a> page to view more info.', 1, 'general'),
+(19, 13, 1362368900, '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000''>TestMember</a></span> is going to your <a href=''/cs4git/events/info.php?eID=3''>event</a>.', 1, 'general'),
+(20, 43, 1364181795, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(21, 43, 1364181795, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 1, 'general'),
+(22, 48, 1364181954, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(23, 48, 1364181954, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 1, 'general'),
+(24, 13, 1365132767, 'There is a new submission for custom form: <b>Test Form Page</b><br><a href=''/cs4git/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(25, 13, 1365132973, 'There is a new submission for custom form: <b>Test Form Page</b><br><a href=''/cs4git/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(26, 13, 1365133148, 'There is a new submission for custom form: <b>Test Form Page</b><br><a href=''/cs4git/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(27, 13, 1365133329, 'There is a new submission for custom form: <b>Test Form Page</b><br><a href=''/cs4git/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(28, 13, 1365133385, 'There is a new submission for custom form: <b>Test Form Page</b><br><a href=''/cs4git/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(29, 42, 1366245676, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(30, 42, 1366245676, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 1, 'general'),
+(31, 42, 1366525393, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&pID=9''>TestCommander vs. admin</a>', 1, 'general'),
+(32, 48, 1366525547, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&pID=11''>NewMember vs. admin</a>', 1, 'general'),
+(33, 43, 1366569495, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&mID=3''>admin vs. TestMember</a>', 1, 'general'),
+(34, 43, 1366569517, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&mID=3''>admin vs. TestMember</a>', 1, 'general'),
+(35, 43, 1366569841, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&mID=3''>admin vs. TestMember</a>', 1, 'general'),
+(36, 13, 1366570087, '<span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000''>TestMember</a></span> has updated the match results for <a href=''/cs4git/members/console.php?cID=77&mID=3''>admin vs. TestMember</a>', 1, 'general'),
+(37, 43, 1366581613, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has approved the match results for <a href=''/cs4git/tournaments/view.php?tID=1''>admin vs. TestMember</a>', 1, 'general'),
+(38, 13, 1366598290, '<span style=''color: #7FFF00''><a href=''/cs4git/profile.php?mID=13'' style=''color: ''>admin</a></span> has joined your tournament: <a href=''/cs4git/tournaments/view.php?tID=2''>TEst Pools</a>', 1, 'general'),
+(39, 42, 1367115505, 'You have received a squad invitation from <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>!<br><br><a href=''/cs4git/members/console.php?cID=74''>Click Here</a> to view your Squad Invitations.', 1, 'general'),
+(40, 50, 1367115518, 'You have received a squad invitation from <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>!<br><br><a href=''/cs4git/members/console.php?cID=74''>Click Here</a> to view your Squad Invitations.', 1, 'general'),
+(41, 48, 1367115530, 'You have received a squad invitation from <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>!<br><br><a href=''/cs4git/members/console.php?cID=74''>Click Here</a> to view your Squad Invitations.', 1, 'general'),
+(42, 13, 1367115681, 'There are currently members in your squad, <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b> without ranks!', 1, 'general'),
+(43, 48, 1367115681, 'Congratulations!  You just joined the squad <b>Test Squad</b>.  View the Squads section of <a href=''/cs4git/members''>My Account</a> to <a href=''/cs4git/members/console.php?cID=72''>View Your Squads</a>.', 1, 'general'),
+(44, 13, 1367115681, '<b><span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=48'' style=''color: #FF0000''>NewMember</a></span></b> has accepted the invitation to join <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>', 1, 'general'),
+(45, 13, 1367115754, 'There are currently members in your squad, <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b> without ranks!', 1, 'general'),
+(46, 42, 1367115754, 'Congratulations!  You just joined the squad <b>Test Squad</b>.  View the Squads section of <a href=''/cs4git/members''>My Account</a> to <a href=''/cs4git/members/console.php?cID=72''>View Your Squads</a>.', 1, 'general'),
+(47, 13, 1367115754, '<b><span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=42'' style=''color: #FF0000''>TestCommander</a></span></b> has accepted the invitation to join <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>', 1, 'general'),
+(48, 13, 1367115770, 'There are currently members in your squad, <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b> without ranks!', 1, 'general'),
+(49, 50, 1367115770, 'Congratulations!  You just joined the squad <b>Test Squad</b>.  View the Squads section of <a href=''/cs4git/members''>My Account</a> to <a href=''/cs4git/members/console.php?cID=72''>View Your Squads</a>.', 1, 'general'),
+(50, 13, 1367115770, '<b><span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=50'' style=''color: #00FFFF''>Testing</a></span></b> has accepted the invitation to join <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>', 1, 'general'),
+(51, 43, 1367116003, 'You have received a squad invitation from <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>!<br><br><a href=''/cs4git/members/console.php?cID=74''>Click Here</a> to view your Squad Invitations.', 1, 'general'),
+(52, 13, 1367116035, 'There are currently members in your squad, <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b> without ranks!', 1, 'general'),
+(53, 43, 1367116035, 'Congratulations!  You just joined the squad <b>Test Squad</b>.  View the Squads section of <a href=''/cs4git/members''>My Account</a> to <a href=''/cs4git/members/console.php?cID=72''>View Your Squads</a>.', 1, 'general'),
+(54, 13, 1367116035, '<b><span style=''color: #ffffff''><a href=''/cs4git/profile.php?mID=43'' style=''color: #FF0000''>TestMember</a></span></b> has accepted the invitation to join <b><a href=''/cs4git/squads/profile.php?sID=1''>Test Squad</a></b>', 1, 'general'),
+(55, 51, 1367367576, 'Your rank has been set to Recruit!', 1, 'general'),
+(56, 46, 1368390309, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(57, 46, 1368390309, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 0, 'general'),
+(58, 46, 1368390309, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 0, 'general'),
+(59, 43, 1368504425, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 1, 'general'),
+(60, 13, 1369632295, 'Your recruiter has been set to ANotherONE?!', 1, 'general'),
+(61, 51, 1369632318, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(62, 51, 1369632318, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 1, 'general'),
+(63, 13, 1369632371, 'Your recruiter has been set to ANotherONE?!', 1, 'general'),
+(64, 48, 1369634319, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 1, 'general'),
+(65, 42, 1369717988, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 1, 'general'),
+(66, 42, 1369717988, 'You have been awarded the Old Timer Medal for being the clan for 120 days.', 1, 'general'),
+(67, 42, 1369717988, 'You have been awarded the Shooting Star Medal for being the clan for 150 days.', 1, 'general'),
+(68, 13, 1370700233, 'Your recruiter has been set to TestCommander!', 1, 'general'),
+(69, 53, 1373425825, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(70, 53, 1373428269, 'You have been demoted to Private First Class!', 0, 'demotion'),
+(71, 53, 1373428582, 'You have been demoted to Private!', 0, 'demotion'),
+(72, 48, 1373430396, 'You were stripped of the medal: <b>Rookie Medal</b>', 1, 'general'),
+(73, 48, 1373430406, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(74, 48, 1373430406, 'You have been awarded the Old Timer Medal for being the clan for 120 days.', 1, 'general'),
+(75, 48, 1373430486, 'You were stripped of the medal: <b>Rookie Medal</b>', 1, 'general'),
+(76, 48, 1373603328, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(77, 48, 1373603328, 'You have been awarded the Shooting Star Medal for being the clan for 150 days.', 1, 'general'),
+(78, 48, 1373430749, 'You were stripped of the medal: <b>Rookie Medal</b>', 1, 'general'),
+(79, 52, 1373744442, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(80, 52, 1373744455, 'You were stripped of the medal: <b>Rookie Medal</b>', 0, 'general'),
+(81, 43, 1374118943, 'You have been demoted to Co-Commander!', 1, 'demotion'),
+(82, 43, 1374120016, 'You were awarded the medal: <b>Epic Medal</b>', 1, 'general'),
+(83, 43, 1374120022, 'You have been awarded the Old Timer Medal for being the clan for 120 days.', 1, 'general'),
+(84, 43, 1374120022, 'You have been awarded the Shooting Star Medal for being the clan for 150 days.', 1, 'general'),
+(85, 50, 1374357682, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(86, 50, 1374357683, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 0, 'general'),
+(87, 50, 1374357683, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 0, 'general'),
+(88, 48, 1374358845, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 1, 'general'),
+(89, 42, 1374853075, 'You were awarded the medal: <b>Silver Shield Medal</b>', 1, 'general'),
+(90, 42, 1374853169, 'You were awarded the medal: <b>Humanitarian Medal</b>', 1, 'general'),
+(91, 42, 1374853245, 'You were stripped of the medal: <b>Humanitarian Medal</b>', 1, 'general'),
+(92, 42, 1374853293, 'You were stripped of the medal: <b>Silver Shield Medal</b>', 1, 'general'),
+(93, 42, 1374853406, 'You were awarded the medal: <b>Silver Shield Medal</b>', 1, 'general'),
+(94, 52, 1378683234, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(95, 52, 1378683234, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 0, 'general'),
+(96, 44, 1383805399, 'You have been awarded the Rookie Medal for being the clan for 5 days.', 0, 'general'),
+(97, 44, 1383805399, 'You have been awarded the Established Member Medal for being the clan for 30 days.', 0, 'general'),
+(98, 44, 1383805399, 'You have been awarded the Veteran Medal for being the clan for 90 days.', 0, 'general'),
+(99, 44, 1383805399, 'You have been awarded the Old Timer Medal for being the clan for 120 days.', 0, 'general'),
+(100, 44, 1383805399, 'You have been awarded the Shooting Star Medal for being the clan for 150 days.', 0, 'general'),
+(101, 13, 1386125017, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(102, 13, 1386125064, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(103, 13, 1386125097, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(104, 13, 1386125123, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(105, 13, 1386125412, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(106, 13, 1386125456, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(107, 13, 1386125547, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(108, 13, 1386125606, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(109, 13, 1386125664, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(110, 13, 1386125712, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(111, 13, 1386125846, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(112, 13, 1386126036, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(113, 13, 1386126072, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(114, 13, 1386126157, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general'),
+(115, 13, 1386126301, 'There is a new submission for custom form: <b>Join</b><br><a href=''/cs4/members/console.php?cID=110''>View Form Submissions</a>', 1, 'general');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plugins`
+--
+
+CREATE TABLE IF NOT EXISTS `plugins` (
+  `plugin_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `filepath` text NOT NULL,
+  `dateinstalled` int(11) NOT NULL,
+  PRIMARY KEY (`plugin_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `plugins`
+--
+
+INSERT INTO `plugins` (`plugin_id`, `name`, `filepath`, `dateinstalled`) VALUES
+(2, 'Twitter Connect', 'twitter', 1386653834);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plugin_pages`
+--
+
+CREATE TABLE IF NOT EXISTS `plugin_pages` (
+  `pluginpage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `plugin_id` int(11) NOT NULL,
+  `page` varchar(255) NOT NULL,
+  `pagepath` text NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`pluginpage_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `plugin_pages`
+--
+
+INSERT INTO `plugin_pages` (`pluginpage_id`, `plugin_id`, `page`, `pagepath`, `sortnum`) VALUES
+(1, 2, 'profile', 'plugins/twitter/_profile.php', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privatemessages`
+--
+
+CREATE TABLE IF NOT EXISTS `privatemessages` (
+  `pm_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `datesent` int(11) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `originalpm_id` int(11) NOT NULL,
+  `deletesender` int(11) NOT NULL,
+  `deletereceiver` int(11) NOT NULL,
+  PRIMARY KEY (`pm_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+
+--
+-- Dumping data for table `privatemessages`
+--
+
+INSERT INTO `privatemessages` (`pm_id`, `sender_id`, `receiver_id`, `datesent`, `subject`, `message`, `status`, `originalpm_id`, `deletesender`, `deletereceiver`) VALUES
+(1, 13, 48, 1363149044, 'test', 'test', 1, 0, 0, 0),
+(2, 13, 48, 1363150172, 'tes2', 'asdf', 1, 0, 0, 1),
+(3, 48, 13, 1364096095, 'test', 'asdf', 1, 0, 0, 1),
+(4, 48, 13, 1367292060, 'test', 'test', 1, 0, 0, 1),
+(5, 48, 13, 1368072601, 'test', 'asdf', 1, 0, 0, 1),
+(6, 13, 48, 1369634335, 'lol', 'test', 1, 4, 0, 0),
+(7, 48, 13, 1369634403, 'asdf', 'yeahah ahah', 1, 4, 0, 0),
+(8, 48, 13, 1369958988, 'adsf', 'sdfsd', 0, 0, 0, 1),
+(9, 48, 13, 1369960241, 'adsfds', 'sdfsd', 0, 0, 0, 1),
+(10, 48, 13, 1369960249, 'sadfs', 'sdfasd', 0, 0, 0, 1),
+(11, 48, 13, 1369960363, 'asdf', 'dsfs', 1, 0, 0, 1),
+(12, 48, 13, 1369960370, 'asds', 'sdfs', 1, 0, 0, 0),
+(13, 48, 13, 1370406698, 'test', 'asdf', 1, 0, 0, 0),
+(14, 13, 48, 1371123473, 'test', 'asdf', 1, 0, 0, 0),
+(18, 13, 0, 1372049052, 'test', 'asdjkfl', 0, 0, 0, 0),
+(19, 48, 0, 1372059346, 'test', 'teasdf', 0, 0, 0, 0),
+(20, 13, 0, 1372059384, 'test squads', 'asdf', 0, 0, 0, 0),
+(21, 13, 0, 1372059462, 'tournaments!', 'asdf', 0, 0, 0, 0),
+(22, 13, 48, 1372060079, 'test', 'asdf', 1, 0, 0, 0),
+(23, 13, 0, 1372119307, 'asdfsa', 'sdsfs', 0, 0, 0, 0),
+(24, 13, 57, 1372127027, 'test', 'asdfsd', 0, 0, 0, 0),
+(25, 13, 0, 1372127325, 'dsfsdf', 'asdfs', 0, 0, 0, 0),
+(26, 13, 0, 1372130138, 'test', 'asdfs', 0, 23, 0, 0),
+(27, 13, 0, 1372130692, 'test2 rank only', 'test3', 0, 0, 0, 0),
+(28, 48, 0, 1372131335, 'testasdf', 'asdfsdfsd', 0, 27, 0, 0),
+(29, 13, 48, 1372131434, 'test newmember only', 'asdfs', 1, 12, 0, 0),
+(30, 48, 13, 1372132187, 'test admin only', 'asdf', 1, 12, 0, 0),
+(31, 13, 48, 1372135273, 'test', 'asdfas', 0, 12, 0, 0),
+(32, 13, 48, 1372135304, 'tasdfasdf', 'asdfasdfsf3', 1, 12, 0, 0),
+(33, 13, 48, 1372137649, 'test reply', 'asdfasdf', 1, 12, 0, 0),
+(34, 13, 0, 1372140665, 'test tournaments 2', 'asdfsd', 0, 0, 0, 0),
+(35, 13, 0, 1372141268, 'lolz replys', 'asdfsd', 0, 34, 0, 0),
+(36, 47, 13, 1374724689, 'RE: lolz replys', 'test', 1, 34, 0, 0),
+(37, 13, 0, 1379185319, 'Test PM', 'asdfasd', 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privatemessage_members`
+--
+
+CREATE TABLE IF NOT EXISTS `privatemessage_members` (
+  `pmmember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pm_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `grouptype` varchar(20) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `seenstatus` int(11) NOT NULL,
+  `deletestatus` int(11) NOT NULL,
+  PRIMARY KEY (`pmmember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+
+--
+-- Dumping data for table `privatemessage_members`
+--
+
+INSERT INTO `privatemessage_members` (`pmmember_id`, `pm_id`, `member_id`, `grouptype`, `group_id`, `seenstatus`, `deletestatus`) VALUES
+(1, 18, 42, 'rank', 1, 0, 0),
+(2, 18, 43, 'rank', 1, 1, 0),
+(3, 18, 48, 'rank', 1, 1, 0),
+(4, 19, 13, '', 0, 1, 0),
+(5, 19, 48, '', 0, 1, 0),
+(6, 20, 13, 'squad', 2, 1, 0),
+(7, 21, 48, 'tournament', 2, 1, 0),
+(8, 21, 43, 'tournament', 2, 1, 0),
+(9, 21, 42, 'tournament', 2, 0, 0),
+(10, 21, 47, 'tournament', 2, 0, 0),
+(11, 21, 44, 'tournament', 2, 0, 0),
+(12, 21, 45, 'tournament', 2, 0, 0),
+(13, 21, 50, 'tournament', 2, 0, 0),
+(14, 21, 13, 'tournament', 2, 1, 0),
+(15, 23, 13, '', 0, 1, 1),
+(16, 23, 42, 'rank', 1, 0, 0),
+(17, 23, 43, 'rank', 1, 1, 0),
+(18, 23, 48, 'rank', 1, 1, 0),
+(19, 25, 53, 'rank', 44, 1, 0),
+(20, 25, 54, 'rank', 44, 0, 0),
+(21, 25, 55, 'rank', 44, 0, 0),
+(22, 25, 56, 'rank', 44, 0, 0),
+(23, 25, 57, 'rank', 44, 0, 0),
+(24, 26, 42, 'rankcategory', 1, 0, 0),
+(25, 26, 43, 'rankcategory', 1, 1, 0),
+(26, 26, 48, 'rankcategory', 1, 1, 0),
+(27, 27, 42, 'rank', 41, 0, 0),
+(28, 27, 43, 'rank', 41, 1, 0),
+(29, 27, 48, 'rank', 41, 1, 0),
+(30, 28, 42, 'rank', 41, 0, 0),
+(31, 28, 43, 'rank', 41, 1, 0),
+(32, 28, 48, 'rank', 41, 1, 0),
+(33, 34, 48, 'tournament', 2, 0, 0),
+(34, 34, 43, 'tournament', 2, 0, 0),
+(35, 34, 42, 'tournament', 2, 0, 0),
+(36, 34, 47, 'tournament', 2, 0, 0),
+(37, 34, 44, 'tournament', 2, 0, 0),
+(38, 34, 45, 'tournament', 2, 0, 0),
+(39, 34, 50, 'tournament', 2, 0, 0),
+(40, 34, 13, 'tournament', 2, 1, 1),
+(41, 35, 48, 'tournament', 2, 0, 0),
+(42, 35, 43, 'tournament', 2, 0, 0),
+(43, 35, 42, 'tournament', 2, 0, 0),
+(44, 35, 47, 'tournament', 2, 1, 0),
+(45, 35, 44, 'tournament', 2, 0, 0),
+(46, 35, 45, 'tournament', 2, 0, 0),
+(47, 35, 50, 'tournament', 2, 0, 0),
+(48, 35, 13, 'tournament', 2, 1, 1),
+(49, 37, 42, '', 0, 0, 0),
+(50, 37, 47, '', 0, 1, 0),
+(51, 37, 44, '', 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profilecategory`
+--
+
+CREATE TABLE IF NOT EXISTS `profilecategory` (
+  `profilecategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  PRIMARY KEY (`profilecategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `profilecategory`
+--
+
+INSERT INTO `profilecategory` (`profilecategory_id`, `name`, `ordernum`) VALUES
+(1, 'Personal Information', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profileoptions`
+--
+
+CREATE TABLE IF NOT EXISTS `profileoptions` (
+  `profileoption_id` int(11) NOT NULL AUTO_INCREMENT,
+  `profilecategory_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `optiontype` varchar(255) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`profileoption_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `profileoptions`
+--
+
+INSERT INTO `profileoptions` (`profileoption_id`, `profilecategory_id`, `name`, `optiontype`, `sortnum`) VALUES
+(2, 1, 'First Name', 'input', 2),
+(3, 1, 'Gender', 'select', 1),
+(6, 1, 'Last Name', 'input', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profileoptions_select`
+--
+
+CREATE TABLE IF NOT EXISTS `profileoptions_select` (
+  `selectopt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `profileoption_id` int(11) NOT NULL,
+  `selectvalue` varchar(255) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`selectopt_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `profileoptions_select`
+--
+
+INSERT INTO `profileoptions_select` (`selectopt_id`, `profileoption_id`, `selectvalue`, `sortnum`) VALUES
+(14, 3, 'Male', 2),
+(13, 3, 'Alien', 1),
+(15, 3, 'Female', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profileoptions_values`
+--
+
+CREATE TABLE IF NOT EXISTS `profileoptions_values` (
+  `values_id` int(11) NOT NULL AUTO_INCREMENT,
+  `profileoption_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `inputvalue` varchar(255) NOT NULL,
+  PRIMARY KEY (`values_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=130 ;
+
+--
+-- Dumping data for table `profileoptions_values`
+--
+
+INSERT INTO `profileoptions_values` (`values_id`, `profileoption_id`, `member_id`, `inputvalue`) VALUES
+(2, 0, 0, ''),
+(40, 3, 18, '13'),
+(41, 2, 18, 'Not Set'),
+(42, 6, 18, 'Not Set'),
+(34, 3, 16, '13'),
+(35, 2, 16, 'Not Set'),
+(36, 6, 16, 'Not Set'),
+(37, 3, 17, '13'),
+(38, 2, 17, 'Not Set'),
+(39, 6, 17, 'Not Set'),
+(70, 3, 42, '13'),
+(71, 2, 42, 'Not Set'),
+(72, 6, 42, 'Not Set'),
+(124, 3, 48, '13'),
+(125, 2, 48, 'Not Set'),
+(126, 6, 48, 'Not Set'),
+(127, 3, 13, '14'),
+(128, 2, 13, 'Leo'),
+(129, 6, 13, 'Rojas');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rankcategory`
+--
+
+CREATE TABLE IF NOT EXISTS `rankcategory` (
+  `rankcategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `imageurl` text NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `hidecat` int(11) NOT NULL,
+  `useimage` int(1) NOT NULL,
+  `description` text NOT NULL,
+  `imagewidth` int(11) NOT NULL,
+  `imageheight` int(11) NOT NULL,
+  `color` varchar(30) NOT NULL,
+  PRIMARY KEY (`rankcategory_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+
+--
+-- Dumping data for table `rankcategory`
+--
+
+INSERT INTO `rankcategory` (`rankcategory_id`, `name`, `imageurl`, `ordernum`, `hidecat`, `useimage`, `description`, `imagewidth`, `imageheight`, `color`) VALUES
+(1, 'Commanders', '', 6, 0, 0, 'The leaders of the clan', 0, 0, '#DE0000'),
+(2, 'Generals', '', 4, 0, 0, '', 0, 0, '#0000FF'),
+(7, 'Warrant Officers', '', 2, 0, 0, '', 0, 0, '#202866'),
+(6, 'Officers', '', 3, 0, 0, '', 0, 0, '#046900'),
+(8, 'Enlisted', '', 1, 0, 0, '', 0, 0, '#006FFF'),
+(16, 'Co-Commanders', '', 5, 0, 0, 'asdfsadfff', 0, 0, '#FF6600');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ranks`
+--
+
+CREATE TABLE IF NOT EXISTS `ranks` (
+  `rank_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rankcategory_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `imageurl` text NOT NULL,
+  `imagewidth` int(11) NOT NULL,
+  `imageheight` int(11) NOT NULL,
+  `ordernum` int(11) NOT NULL,
+  `autodays` int(11) NOT NULL,
+  `hiderank` int(11) NOT NULL,
+  `promotepower` int(11) NOT NULL,
+  `autodisable` int(11) NOT NULL,
+  `color` varchar(25) NOT NULL,
+  PRIMARY KEY (`rank_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=71 ;
+
+--
+-- Dumping data for table `ranks`
+--
+
+INSERT INTO `ranks` (`rank_id`, `rankcategory_id`, `name`, `description`, `imageurl`, `imagewidth`, `imageheight`, `ordernum`, `autodays`, `hiderank`, `promotepower`, `autodisable`, `color`) VALUES
+(50, 8, 'Master Sergeant', '42 days in the clan.', 'images/ranks/rank_4fa5ecc2638ee.png', 50, 75, 10, 42, 0, 0, 0, '#ffffff'),
+(1, 3, 'Administrator', '', '', 0, 0, 1, 0, 1, 0, 0, '#7FFF00'),
+(49, 8, 'Gunnery Sergeant', '35 days in the clan.', 'images/ranks/rank_4fa5ec8766300.png', 50, 75, 9, 35, 0, 0, 0, '#ffffff'),
+(41, 1, 'Commander', 'This is a very important rank. They have to be very active and a good leader.', 'images/ranks/rank_517e082d87871.png', 50, 75, 30, 0, 0, 41, 0, '#ffffff'),
+(42, 16, 'Co-Commander', 'The Co-Commander helps the Commanders. Promoted by the Commander.', 'images/ranks/rank_517e0836044ec.png', 50, 75, 29, 0, 0, 31, 0, '#9C2525'),
+(43, 8, 'Recruit', 'Starting Rank', 'images/ranks/rank_4fa58088a6a9d.png', 50, 75, 3, 0, 0, 0, 0, '#00EAFF'),
+(44, 8, 'Private', '3 days in clan.', 'images/ranks/rank_4fa580f71decb.png', 50, 75, 4, 3, 0, 0, 0, '#ffffff'),
+(45, 8, 'Private First Class', '7 days in clan.', 'images/ranks/rank_4fa581276383b.png', 50, 75, 5, 7, 0, 0, 0, '#ffffff'),
+(46, 8, 'Corporal', '14 days in clan.', 'images/ranks/rank_4fa5eb8927175.png', 50, 75, 6, 14, 0, 0, 0, '#ffffff'),
+(47, 8, 'Sergeant', '21 days in the clan.', 'images/ranks/rank_4fa5ebcbef13c.png', 50, 75, 7, 21, 0, 0, 0, '#ffffff'),
+(48, 8, 'Staff Sergeant', '28 days in the clan.', 'images/ranks/rank_4fa5ec028e2a9.png', 50, 75, 8, 28, 0, 0, 0, '#ffffff'),
+(31, 2, 'General', 'Promoted by Co-Commanders and up.', 'images/ranks/rank_4fa57ff737f8f.png', 50, 75, 28, 0, 0, 66, 0, '#ffffff'),
+(51, 8, '1st Sergeant', '49 days in the clan.', 'images/ranks/rank_4fa5ed08200bc.png', 50, 75, 11, 49, 0, 0, 0, '#ffffff'),
+(52, 8, 'Sergeant Major', '56 days in the clan.', 'images/ranks/rank_4fa5ed82cb573.png', 50, 75, 12, 56, 0, 0, 0, '#ffffff'),
+(53, 7, 'Warrant Officer W1', 'Promoted by 2nd Lieutanent or Higher.', 'images/ranks/rank_4fa5f1e607f8a.png', 50, 75, 14, 0, 0, 0, 0, '#ffffff'),
+(54, 7, 'Warrant Officer W2', 'Promoted by 2nd Lieutanent or Higher.', 'images/ranks/rank_4fa5f35316e43.png', 50, 75, 15, 0, 0, 0, 0, '#ffffff'),
+(55, 7, 'Warrant Officer W3', 'Promoted by 2nd Lieutanent or Higher.', 'images/ranks/rank_4fa5f37660647.png', 50, 75, 16, 0, 0, 0, 0, '#ffffff'),
+(56, 7, 'Chief Warrant Officer W4', 'Promoted by 1st Lieutanent or Higher.', 'images/ranks/rank_4fa5f3d842b99.png', 50, 75, 17, 0, 0, 52, 0, '#ffffff'),
+(57, 7, 'Chief Warrant Officer W5', 'Promoted by 1st Lieutanent or Higher.', 'images/ranks/rank_4fa5f407bba12.png', 50, 75, 18, 0, 0, 52, 0, '#ffffff'),
+(58, 6, '2nd Lieutenant', 'Promoted by Captain or Higher.', 'images/ranks/rank_4fa5f51b9c48c.png', 50, 75, 19, 0, 0, 55, 0, '#ffffff'),
+(59, 6, '1st Lieutenant', 'Promoted by Captain or Higher.', 'images/ranks/rank_4fa5f54c265ce.png', 50, 75, 20, 0, 0, 57, 0, '#ffffff'),
+(60, 6, 'Captain', 'Promoted by Colonel or Higher.', 'images/ranks/rank_4fa5f5ddbca9a.png', 50, 75, 21, 0, 1, 59, 0, '#ffffff'),
+(61, 6, 'Major', 'Promoted by Colonel or Higher.', 'images/ranks/rank_4fa5f614eabf2.png', 50, 75, 22, 0, 0, 59, 0, '#FF6F00'),
+(62, 6, 'Lieutenant Colonel', 'Promoted by Colonel or Higher.', 'images/ranks/rank_517e084db9628.png', 50, 75, 23, 0, 0, 59, 0, '#ffffff'),
+(63, 6, 'Colonel', 'Promoted by Brigadier General or Higher.', 'images/ranks/rank_517e0842d66f0.png', 50, 75, 24, 0, 0, 62, 0, '#ffffff'),
+(64, 2, 'Brigadier General', 'Promoted by Lieutenant General or Higher.', 'images/ranks/rank_4fa5f9c2eb082.png', 50, 75, 25, 0, 0, 63, 0, '#ffffff'),
+(65, 2, 'Major General', 'Promoted by General or Higher.', 'images/ranks/rank_4fa5f9f050643.png', 50, 75, 26, 0, 0, 63, 0, '#ffffff'),
+(66, 2, 'Lieutenant General', 'Promoted by General or Higher.', 'images/ranks/rank_4fa5fa1568f34.png', 50, 75, 27, 0, 0, 64, 0, '#ffffff'),
+(67, 8, 'Trial Member', '', 'images/ranks/rank_508358b676d92.png', 40, 40, 2, 0, 0, 0, 5, '#ffffff'),
+(70, 8, 'New Rank', '', 'images/ranks/rank_518de9bcb3500.png', 0, 0, 13, 0, 0, 0, 0, '#ffffff');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rank_privileges`
+--
+
+CREATE TABLE IF NOT EXISTS `rank_privileges` (
+  `privilege_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rank_id` int(11) NOT NULL,
+  `console_id` int(11) NOT NULL,
+  PRIMARY KEY (`privilege_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2204 ;
+
+--
+-- Dumping data for table `rank_privileges`
+--
+
+INSERT INTO `rank_privileges` (`privilege_id`, `rank_id`, `console_id`) VALUES
+(2, 1, 2),
+(3, 1, 3),
+(6, 1, 7),
+(10, 1, 11),
+(11, 1, 12),
+(12, 1, 14),
+(13, 1, 15),
+(14, 1, 17),
+(15, 1, 18),
+(16, 1, 19),
+(2180, 31, 91),
+(2179, 31, 90),
+(836, 58, 75),
+(856, 57, 75),
+(855, 57, 71),
+(872, 56, 93),
+(871, 56, 85),
+(921, 55, 78),
+(920, 55, 74),
+(901, 54, 93),
+(900, 54, 85),
+(927, 53, 93),
+(926, 53, 85),
+(938, 52, 85),
+(948, 51, 85),
+(958, 50, 85),
+(968, 49, 85),
+(978, 48, 85),
+(988, 47, 85),
+(998, 46, 85),
+(835, 58, 71),
+(165, 1, 25),
+(1527, 43, 92),
+(2060, 41, 138),
+(61, 1, 22),
+(62, 1, 23),
+(2059, 41, 139),
+(2058, 41, 137),
+(2057, 41, 136),
+(2110, 42, 91),
+(2109, 42, 18),
+(2108, 42, 90),
+(816, 59, 75),
+(815, 59, 71),
+(2203, 60, 7),
+(2202, 60, 92),
+(783, 61, 78),
+(782, 61, 77),
+(781, 61, 74),
+(780, 61, 76),
+(1514, 62, 7),
+(1512, 62, 92),
+(1491, 63, 7),
+(1489, 63, 92),
+(707, 64, 75),
+(706, 64, 71),
+(678, 65, 75),
+(677, 65, 71),
+(649, 66, 75),
+(648, 66, 71),
+(340, 1, 34),
+(339, 1, 33),
+(338, 1, 32),
+(337, 1, 31),
+(2107, 42, 17),
+(779, 61, 73),
+(1511, 62, 70),
+(1488, 63, 70),
+(367, 1, 21),
+(2056, 41, 134),
+(2178, 31, 8),
+(852, 57, 93),
+(832, 58, 93),
+(812, 59, 93),
+(2201, 60, 6),
+(778, 61, 11),
+(1510, 62, 89),
+(1487, 63, 89),
+(703, 64, 93),
+(674, 65, 93),
+(645, 66, 93),
+(451, 1, 8),
+(2055, 41, 114),
+(2106, 42, 8),
+(2177, 31, 7),
+(851, 57, 85),
+(831, 58, 85),
+(811, 59, 85),
+(2200, 60, 84),
+(1509, 62, 72),
+(1486, 63, 72),
+(702, 64, 85),
+(673, 65, 85),
+(644, 66, 85),
+(465, 1, 20),
+(482, 1, 51),
+(483, 1, 52),
+(494, 1, 63),
+(493, 1, 62),
+(492, 1, 61),
+(491, 1, 60),
+(495, 1, 64),
+(496, 1, 65),
+(497, 1, 66),
+(575, 1, 85),
+(574, 1, 84),
+(509, 1, 70),
+(517, 1, 71),
+(518, 1, 72),
+(519, 1, 73),
+(520, 1, 74),
+(573, 1, 83),
+(1526, 43, 89),
+(776, 61, 75),
+(775, 61, 71),
+(564, 1, 75),
+(565, 1, 76),
+(567, 1, 78),
+(772, 61, 93),
+(771, 61, 85),
+(578, 1, 86),
+(579, 1, 87),
+(580, 1, 88),
+(581, 1, 89),
+(582, 1, 90),
+(583, 1, 91),
+(584, 1, 92),
+(585, 1, 93),
+(2105, 42, 7),
+(2104, 42, 102),
+(2103, 42, 92),
+(2102, 42, 6),
+(2101, 42, 104),
+(2100, 42, 88),
+(2099, 42, 84),
+(2098, 42, 70),
+(2097, 42, 103),
+(2096, 42, 89),
+(2095, 42, 87),
+(2094, 42, 72),
+(2093, 42, 83),
+(2092, 42, 21),
+(2091, 42, 125),
+(2090, 42, 107),
+(2089, 42, 101),
+(2176, 31, 92),
+(2175, 31, 6),
+(2174, 31, 88),
+(2173, 31, 84),
+(2172, 31, 70),
+(2171, 31, 89),
+(2170, 31, 87),
+(2169, 31, 72),
+(2168, 31, 83),
+(2167, 31, 21),
+(2166, 31, 125),
+(2165, 31, 107),
+(2164, 31, 93),
+(2163, 31, 86),
+(2162, 31, 78),
+(2161, 31, 77),
+(2160, 31, 74),
+(2159, 31, 123),
+(2158, 31, 106),
+(2157, 31, 85),
+(2156, 31, 76),
+(651, 66, 87),
+(652, 66, 11),
+(653, 66, 20),
+(654, 66, 83),
+(655, 66, 73),
+(656, 66, 76),
+(657, 66, 88),
+(658, 66, 74),
+(659, 66, 77),
+(660, 66, 78),
+(661, 66, 84),
+(662, 66, 86),
+(663, 66, 21),
+(664, 66, 72),
+(665, 66, 89),
+(666, 66, 70),
+(667, 66, 92),
+(669, 66, 7),
+(670, 66, 8),
+(671, 66, 90),
+(672, 66, 91),
+(680, 65, 87),
+(681, 65, 11),
+(682, 65, 20),
+(683, 65, 83),
+(684, 65, 73),
+(685, 65, 76),
+(686, 65, 88),
+(687, 65, 74),
+(688, 65, 77),
+(689, 65, 78),
+(690, 65, 84),
+(691, 65, 86),
+(692, 65, 21),
+(693, 65, 72),
+(694, 65, 89),
+(695, 65, 70),
+(696, 65, 92),
+(698, 65, 7),
+(699, 65, 8),
+(700, 65, 90),
+(701, 65, 91),
+(709, 64, 87),
+(710, 64, 11),
+(711, 64, 20),
+(712, 64, 83),
+(713, 64, 73),
+(714, 64, 76),
+(715, 64, 88),
+(716, 64, 74),
+(717, 64, 77),
+(718, 64, 78),
+(719, 64, 84),
+(720, 64, 86),
+(721, 64, 21),
+(722, 64, 72),
+(723, 64, 89),
+(724, 64, 70),
+(725, 64, 92),
+(727, 64, 7),
+(728, 64, 8),
+(729, 64, 90),
+(730, 64, 91),
+(1485, 63, 107),
+(1484, 63, 84),
+(1483, 63, 78),
+(1482, 63, 77),
+(1481, 63, 74),
+(1479, 63, 76),
+(1478, 63, 73),
+(1477, 63, 11),
+(1476, 63, 106),
+(1475, 63, 80),
+(1474, 63, 75),
+(1473, 63, 71),
+(1508, 62, 107),
+(1507, 62, 84),
+(1506, 62, 78),
+(1505, 62, 77),
+(1504, 62, 74),
+(1502, 62, 76),
+(1501, 62, 73),
+(1500, 62, 11),
+(1499, 62, 106),
+(1498, 62, 80),
+(1497, 62, 75),
+(1496, 62, 71),
+(784, 61, 84),
+(785, 61, 72),
+(786, 61, 89),
+(787, 61, 70),
+(788, 61, 92),
+(790, 61, 7),
+(2199, 60, 70),
+(2198, 60, 89),
+(2197, 60, 72),
+(2196, 60, 107),
+(2195, 60, 93),
+(2194, 60, 78),
+(2193, 60, 77),
+(2192, 60, 74),
+(2191, 60, 123),
+(2190, 60, 106),
+(2189, 60, 85),
+(2188, 60, 76),
+(818, 59, 11),
+(819, 59, 73),
+(820, 59, 76),
+(821, 59, 74),
+(822, 59, 77),
+(823, 59, 78),
+(824, 59, 84),
+(825, 59, 72),
+(826, 59, 89),
+(827, 59, 70),
+(828, 59, 92),
+(830, 59, 7),
+(838, 58, 11),
+(839, 58, 73),
+(840, 58, 76),
+(841, 58, 74),
+(842, 58, 77),
+(843, 58, 78),
+(844, 58, 84),
+(845, 58, 72),
+(846, 58, 89),
+(847, 58, 70),
+(848, 58, 92),
+(850, 58, 7),
+(858, 57, 11),
+(859, 57, 73),
+(860, 57, 76),
+(861, 57, 74),
+(862, 57, 77),
+(863, 57, 78),
+(864, 57, 84),
+(865, 57, 72),
+(866, 57, 89),
+(867, 57, 70),
+(868, 57, 92),
+(870, 57, 7),
+(875, 56, 71),
+(876, 56, 75),
+(878, 56, 11),
+(879, 56, 73),
+(880, 56, 76),
+(881, 56, 74),
+(882, 56, 77),
+(883, 56, 78),
+(884, 56, 84),
+(885, 56, 72),
+(886, 56, 89),
+(887, 56, 70),
+(888, 56, 92),
+(890, 56, 7),
+(919, 55, 73),
+(918, 55, 11),
+(914, 55, 93),
+(913, 55, 85),
+(905, 54, 11),
+(906, 54, 73),
+(907, 54, 74),
+(908, 54, 78),
+(909, 54, 84),
+(910, 54, 72),
+(911, 54, 89),
+(912, 54, 92),
+(922, 55, 84),
+(923, 55, 72),
+(924, 55, 89),
+(925, 55, 92),
+(930, 53, 11),
+(931, 53, 73),
+(932, 53, 74),
+(933, 53, 78),
+(934, 53, 84),
+(935, 53, 72),
+(936, 53, 89),
+(937, 53, 92),
+(939, 52, 93),
+(941, 52, 11),
+(942, 52, 73),
+(943, 52, 74),
+(944, 52, 78),
+(945, 52, 72),
+(946, 52, 89),
+(947, 52, 92),
+(949, 51, 93),
+(951, 51, 11),
+(952, 51, 73),
+(953, 51, 74),
+(954, 51, 78),
+(955, 51, 72),
+(956, 51, 89),
+(957, 51, 92),
+(959, 50, 93),
+(961, 50, 11),
+(962, 50, 73),
+(963, 50, 74),
+(964, 50, 78),
+(965, 50, 72),
+(966, 50, 89),
+(967, 50, 92),
+(969, 49, 93),
+(971, 49, 11),
+(972, 49, 73),
+(973, 49, 74),
+(974, 49, 78),
+(975, 49, 72),
+(976, 49, 89),
+(977, 49, 92),
+(979, 48, 93),
+(981, 48, 11),
+(982, 48, 73),
+(983, 48, 74),
+(984, 48, 78),
+(985, 48, 72),
+(986, 48, 89),
+(987, 48, 92),
+(989, 47, 93),
+(991, 47, 11),
+(992, 47, 73),
+(993, 47, 74),
+(994, 47, 78),
+(995, 47, 72),
+(996, 47, 89),
+(997, 47, 92),
+(999, 46, 93),
+(1001, 46, 11),
+(1002, 46, 73),
+(1003, 46, 74),
+(1004, 46, 78),
+(1005, 46, 72),
+(1006, 46, 89),
+(1007, 46, 92),
+(1285, 45, 78),
+(1284, 45, 74),
+(1282, 45, 73),
+(1281, 45, 11),
+(1279, 45, 80),
+(1278, 45, 93),
+(1272, 44, 78),
+(1271, 44, 74),
+(1269, 44, 73),
+(1268, 44, 11),
+(1266, 44, 80),
+(1265, 44, 93),
+(1525, 43, 72),
+(1524, 43, 107),
+(1523, 43, 78),
+(1522, 43, 74),
+(1038, 67, 93),
+(1040, 67, 11),
+(1041, 67, 74),
+(1042, 67, 78),
+(1043, 67, 72),
+(1044, 67, 89),
+(1048, 50, 80),
+(1049, 49, 80),
+(1839, 1, 135),
+(2088, 42, 93),
+(1520, 43, 73),
+(1264, 44, 85),
+(1277, 45, 85),
+(1055, 46, 80),
+(1056, 47, 80),
+(1057, 48, 80),
+(2155, 31, 73),
+(1059, 51, 80),
+(1060, 52, 80),
+(1061, 53, 80),
+(1062, 54, 80),
+(1063, 55, 80),
+(1064, 56, 80),
+(1065, 57, 80),
+(1066, 58, 80),
+(1067, 59, 80),
+(2187, 60, 73),
+(1069, 61, 80),
+(1072, 64, 80),
+(1073, 65, 80),
+(1074, 66, 80),
+(1075, 67, 80),
+(1076, 1, 80),
+(2054, 41, 62),
+(2053, 41, 61),
+(2052, 41, 12),
+(2051, 41, 64),
+(2050, 41, 63),
+(2049, 41, 66),
+(2048, 41, 65),
+(2047, 41, 60),
+(2043, 41, 33),
+(2042, 41, 32),
+(2041, 41, 31),
+(2040, 41, 25),
+(2039, 41, 91),
+(2038, 41, 52),
+(1106, 1, 96),
+(1107, 1, 97),
+(1108, 1, 98),
+(1138, 1, 99),
+(1139, 1, 100),
+(1140, 1, 101),
+(1141, 1, 102),
+(1143, 1, 104),
+(1519, 43, 11),
+(1518, 43, 106),
+(2037, 41, 110),
+(2036, 41, 109),
+(2035, 41, 108),
+(2034, 41, 18),
+(2033, 41, 90),
+(2032, 41, 17),
+(2031, 41, 51),
+(2030, 41, 8),
+(2087, 42, 86),
+(2086, 42, 78),
+(2085, 42, 77),
+(2084, 42, 74),
+(2083, 42, 123),
+(2082, 42, 106),
+(2081, 42, 100),
+(2080, 42, 85),
+(1274, 44, 72),
+(1275, 44, 89),
+(1276, 44, 92),
+(1287, 45, 72),
+(1288, 45, 89),
+(1289, 45, 92),
+(1290, 50, 106),
+(1291, 49, 106),
+(2029, 41, 15),
+(2079, 42, 76),
+(1517, 43, 80),
+(1295, 44, 106),
+(1296, 45, 106),
+(1297, 46, 106),
+(1298, 47, 106),
+(1299, 48, 106),
+(2154, 31, 20),
+(1301, 51, 106),
+(1302, 52, 106),
+(1303, 53, 106),
+(1304, 54, 106),
+(1305, 55, 106),
+(1306, 56, 106),
+(1307, 57, 106),
+(1308, 58, 106),
+(1309, 59, 106),
+(2186, 60, 11),
+(1311, 61, 106),
+(1314, 64, 106),
+(1315, 65, 106),
+(1316, 66, 106),
+(1317, 67, 106),
+(1319, 1, 106),
+(1320, 50, 107),
+(1321, 49, 107),
+(2078, 42, 73),
+(1516, 43, 93),
+(1325, 44, 107),
+(1326, 45, 107),
+(1327, 46, 107),
+(1328, 47, 107),
+(1329, 48, 107),
+(2153, 31, 11),
+(1331, 51, 107),
+(1332, 52, 107),
+(1333, 53, 107),
+(1334, 54, 107),
+(1335, 55, 107),
+(1336, 56, 107),
+(1337, 57, 107),
+(1338, 58, 107),
+(1339, 59, 107),
+(2185, 60, 105),
+(1341, 61, 107),
+(1493, 62, 93),
+(1470, 63, 93),
+(1344, 64, 107),
+(1345, 65, 107),
+(1346, 66, 107),
+(1347, 67, 107),
+(1349, 1, 107),
+(2028, 41, 7),
+(2077, 42, 20),
+(1515, 43, 85),
+(1492, 62, 85),
+(1469, 63, 85),
+(2027, 41, 102),
+(2076, 42, 11),
+(1603, 1, 103),
+(1622, 50, 82),
+(1623, 49, 82),
+(2026, 41, 92),
+(2075, 42, 10),
+(1626, 43, 82),
+(1627, 44, 82),
+(1628, 45, 82),
+(1629, 46, 82),
+(1630, 47, 82),
+(1631, 48, 82),
+(2152, 31, 10),
+(1633, 51, 82),
+(1634, 52, 82),
+(1635, 53, 82),
+(1636, 54, 82),
+(1637, 55, 82),
+(1638, 56, 82),
+(1639, 57, 82),
+(1640, 58, 82),
+(1641, 59, 82),
+(2184, 60, 80),
+(1643, 61, 82),
+(1644, 62, 82),
+(1645, 63, 82),
+(1646, 64, 82),
+(1647, 65, 82),
+(1648, 66, 82),
+(1649, 1, 82),
+(1651, 50, 105),
+(1652, 49, 105),
+(2025, 41, 14),
+(2074, 42, 105),
+(1655, 43, 105),
+(1656, 44, 105),
+(1657, 45, 105),
+(1658, 46, 105),
+(1659, 47, 105),
+(1660, 48, 105),
+(2151, 31, 105),
+(1662, 51, 105),
+(1663, 52, 105),
+(1664, 53, 105),
+(1665, 54, 105),
+(1666, 55, 105),
+(1667, 56, 105),
+(1668, 57, 105),
+(1669, 58, 105),
+(1670, 59, 105),
+(2183, 60, 75),
+(1672, 61, 105),
+(1673, 62, 105),
+(1674, 63, 105),
+(1675, 64, 105),
+(1676, 65, 105),
+(1677, 66, 105),
+(1678, 67, 105),
+(1679, 1, 105),
+(1682, 50, 123),
+(1683, 49, 123),
+(2024, 41, 6),
+(2073, 42, 99),
+(1686, 43, 123),
+(1687, 44, 123),
+(1688, 45, 123),
+(1689, 46, 123),
+(1690, 47, 123),
+(1691, 48, 123),
+(2150, 31, 80),
+(1693, 51, 123),
+(1694, 52, 123),
+(1695, 53, 123),
+(1696, 54, 123),
+(1697, 55, 123),
+(1698, 56, 123),
+(1699, 57, 123),
+(1700, 58, 123),
+(1701, 59, 123),
+(2182, 60, 71),
+(1703, 61, 123),
+(1704, 62, 123),
+(1705, 63, 123),
+(1706, 64, 123),
+(1707, 65, 123),
+(1708, 66, 123),
+(1709, 67, 123),
+(1710, 70, 123),
+(1711, 1, 123),
+(2023, 41, 104),
+(1715, 1, 1),
+(2022, 41, 88),
+(2021, 41, 84),
+(2020, 41, 70),
+(2019, 41, 19),
+(2018, 41, 103),
+(2017, 41, 89),
+(2016, 41, 87),
+(2015, 41, 72),
+(2014, 41, 83),
+(2013, 41, 23),
+(2012, 41, 21),
+(2011, 41, 107),
+(2010, 41, 101),
+(2009, 41, 93),
+(2008, 41, 86),
+(2007, 41, 78),
+(2006, 41, 77),
+(2005, 41, 74),
+(2004, 41, 22),
+(2003, 41, 125),
+(2002, 41, 106),
+(2001, 41, 100),
+(2000, 41, 85),
+(1999, 41, 76),
+(1998, 41, 73),
+(1997, 41, 20),
+(1996, 41, 11),
+(1995, 41, 10),
+(1994, 41, 2),
+(1993, 41, 123),
+(1992, 41, 105),
+(1991, 41, 99),
+(2072, 42, 80),
+(2149, 31, 75),
+(1821, 64, 125),
+(1822, 65, 125),
+(1823, 66, 125),
+(1824, 1, 125),
+(1829, 1, 121),
+(1831, 1, 9),
+(1990, 41, 80),
+(2148, 31, 71),
+(1835, 64, 10),
+(1836, 65, 10),
+(1837, 66, 10),
+(1838, 1, 10),
+(1989, 41, 75),
+(1988, 41, 71),
+(1987, 41, 82),
+(1986, 41, 9),
+(1985, 41, 5),
+(2071, 42, 75),
+(2070, 42, 71),
+(1984, 41, 1),
+(2069, 42, 82),
+(2147, 31, 82),
+(1964, 64, 5),
+(1965, 65, 5),
+(1966, 66, 5),
+(1967, 1, 5),
+(1983, 41, 144),
+(2068, 42, 5),
+(2146, 31, 5),
+(1971, 56, 6),
+(1972, 57, 6),
+(1973, 58, 6),
+(1974, 59, 6),
+(2181, 60, 82),
+(1976, 61, 6),
+(1977, 62, 6),
+(1978, 63, 6),
+(1979, 64, 6),
+(1980, 65, 6),
+(1981, 66, 6),
+(1982, 1, 6),
+(2061, 41, 140),
+(2062, 41, 55),
+(2063, 1, 55),
+(2064, 41, 56),
+(2065, 1, 56),
+(2066, 41, 54),
+(2067, 1, 54);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squadapps`
+--
+
+CREATE TABLE IF NOT EXISTS `squadapps` (
+  `squadapp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `squad_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `applydate` int(11) NOT NULL,
+  `dateaction` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `squadmember_id` int(11) NOT NULL,
+  PRIMARY KEY (`squadapp_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squadinvites`
+--
+
+CREATE TABLE IF NOT EXISTS `squadinvites` (
+  `squadinvite_id` int(11) NOT NULL AUTO_INCREMENT,
+  `squad_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `datesent` int(11) NOT NULL,
+  `dateaction` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `startingrank_id` int(11) NOT NULL,
+  PRIMARY KEY (`squadinvite_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `squadinvites`
+--
+
+INSERT INTO `squadinvites` (`squadinvite_id`, `squad_id`, `sender_id`, `receiver_id`, `datesent`, `dateaction`, `status`, `message`, `startingrank_id`) VALUES
+(1, 1, 13, 42, 1367115505, 1367115754, 1, '', 2),
+(2, 1, 13, 50, 1367115518, 1367115770, 1, '', 2),
+(3, 1, 13, 48, 1367115530, 1367115681, 1, '', 2),
+(4, 1, 13, 43, 1367116003, 1367116035, 1, '', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squadnews`
+--
+
+CREATE TABLE IF NOT EXISTS `squadnews` (
+  `squadnews_id` int(11) NOT NULL AUTO_INCREMENT,
+  `squad_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `newstype` int(11) NOT NULL,
+  `dateposted` int(11) NOT NULL,
+  `postsubject` varchar(255) NOT NULL,
+  `newspost` text NOT NULL,
+  `lasteditmember_id` int(11) NOT NULL,
+  `lasteditdate` int(11) NOT NULL,
+  PRIMARY KEY (`squadnews_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `squadnews`
+--
+
+INSERT INTO `squadnews` (`squadnews_id`, `squad_id`, `member_id`, `newstype`, `dateposted`, `postsubject`, `newspost`, `lasteditmember_id`, `lasteditdate`) VALUES
+(1, 1, 13, 1, 1364007215, 'test post', 'asdfasdf', 0, 0),
+(2, 1, 13, 1, 1364007731, 'ahha', 'test\r\n\r\n\r\nasdf\r\n\r\nasdfasdf', 0, 0),
+(3, 1, 13, 1, 1364007747, 'asdf', 'asdfasdf', 0, 0),
+(5, 1, 13, 3, 1382840229, '', 'test', 0, 0),
+(6, 1, 13, 3, 1382840234, '', 'hello', 0, 0),
+(7, 1, 13, 3, 1382840273, '', 'whats up', 0, 0),
+(8, 1, 13, 3, 1382840926, '', 'hi', 0, 0),
+(9, 1, 13, 3, 1382840939, '', 'whats up', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squadranks`
+--
+
+CREATE TABLE IF NOT EXISTS `squadranks` (
+  `squadrank_id` int(11) NOT NULL AUTO_INCREMENT,
+  `squad_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  `postnews` int(11) NOT NULL,
+  `managenews` int(11) NOT NULL,
+  `postshoutbox` int(11) NOT NULL,
+  `manageshoutbox` int(11) NOT NULL,
+  `addrank` int(11) NOT NULL,
+  `manageranks` int(11) NOT NULL,
+  `editprofile` int(11) NOT NULL,
+  `sendinvites` int(11) NOT NULL,
+  `acceptapps` int(11) NOT NULL,
+  `setrank` int(11) NOT NULL,
+  `removemember` int(11) NOT NULL,
+  PRIMARY KEY (`squadrank_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `squadranks`
+--
+
+INSERT INTO `squadranks` (`squadrank_id`, `squad_id`, `name`, `sortnum`, `postnews`, `managenews`, `postshoutbox`, `manageshoutbox`, `addrank`, `manageranks`, `editprofile`, `sendinvites`, `acceptapps`, `setrank`, `removemember`) VALUES
+(1, 1, 'Founder', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(2, 1, 'Member', 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 2, 'Founder', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squads`
+--
+
+CREATE TABLE IF NOT EXISTS `squads` (
+  `squad_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `logourl` text NOT NULL,
+  `recruitingstatus` int(11) NOT NULL,
+  `datecreated` int(11) NOT NULL,
+  `privateshoutbox` int(11) NOT NULL,
+  `website` text NOT NULL,
+  PRIMARY KEY (`squad_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `squads`
+--
+
+INSERT INTO `squads` (`squad_id`, `member_id`, `name`, `description`, `logourl`, `recruitingstatus`, `datecreated`, `privateshoutbox`, `website`) VALUES
+(1, 13, 'Test Squad', 'blah\r\n\r\n\r\nasdf\r\n\r\nasdf', '/cs4git/images/squads/squad_514d1764b3bec.gif', 1, 1363924075, 1, ''),
+(2, 13, 'Test Squad2', '', 'asdf', 1, 1367177255, 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `squads_members`
+--
+
+CREATE TABLE IF NOT EXISTS `squads_members` (
+  `squadmember_id` int(11) NOT NULL AUTO_INCREMENT,
+  `squad_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `squadrank_id` int(11) NOT NULL,
+  `datejoined` int(11) NOT NULL,
+  `lastpromotion` int(11) NOT NULL,
+  `lastdemotion` int(11) NOT NULL,
+  PRIMARY KEY (`squadmember_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `squads_members`
+--
+
+INSERT INTO `squads_members` (`squadmember_id`, `squad_id`, `member_id`, `squadrank_id`, `datejoined`, `lastpromotion`, `lastdemotion`) VALUES
+(1, 1, 13, 1, 1363924075, 0, 0),
+(2, 1, 48, 2, 1367115681, 0, 0),
+(3, 1, 42, 2, 1367115754, 0, 0),
+(4, 1, 50, 2, 1367115770, 0, 0),
+(5, 1, 43, 2, 1367116035, 0, 0),
+(6, 2, 13, 3, 1367177255, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tableupdates`
+--
+
+CREATE TABLE IF NOT EXISTS `tableupdates` (
+  `tableupdate_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tablename` varchar(255) NOT NULL,
+  `updatetime` int(11) NOT NULL,
+  PRIMARY KEY (`tableupdate_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+
+--
+-- Dumping data for table `tableupdates`
+--
+
+INSERT INTO `tableupdates` (`tableupdate_id`, `tablename`, `updatetime`) VALUES
+(1, 'menu_item', 1386126574),
+(2, 'websiteinfo', 1386642361),
+(3, 'members', 1381800225),
+(4, 'hitcounter', 1386658281),
+(5, 'news', 1379122878),
+(6, 'forum_topic', 1385664195),
+(7, 'forum_post', 1382408799),
+(8, 'menu_category', 1385663663),
+(9, 'menuitem_link', 1386126574),
+(10, 'menuitem_custompage', 1382833426),
+(11, 'menuitem_customblock', 1385664072),
+(12, 'menuitem_shoutbox', 1378156655),
+(13, 'privatemessages', 1379185320),
+(14, 'privatemessage_members', 1382841795),
+(15, 'logs', 1386121577),
+(16, 'menuitem_image', 1378177119),
+(17, 'medals_members', 1383805399),
+(18, 'notifications', 1386126301),
+(19, 'freezemedals_members', 1374853245),
+(20, 'ranks', 1378683245),
+(21, 'rank_privileges', 1378683245),
+(22, 'custompages', 1375155191),
+(23, 'rankcategory', 1382837513),
+(24, 'forum_board', 1374724829),
+(25, 'membersonlypage', 1374853043),
+(26, 'events', 1374853455),
+(27, 'eventmessages', 1374853552),
+(28, 'eventmessage_comment', 1374853541),
+(29, 'console', 1386653834),
+(30, 'failban', 1375034128),
+(31, 'console_members', 1375034209),
+(32, 'profileoptions_values', 1378273073),
+(33, 'gamesplayed_members', 1378273073),
+(34, 'downloadcategory', 1378273340),
+(35, 'download_extensions', 1378273340),
+(36, 'imageslider', 1379564372),
+(37, 'downloads', 1378573208),
+(38, 'forum_attachments', 1378064028),
+(39, 'app_components', 1378606946),
+(40, 'gamesplayed', 1386302757),
+(41, 'gamestats', 1378693734),
+(42, 'memberapps', 1381991261),
+(43, 'squadnews', 1382840939),
+(44, 'customform', 1386126282),
+(45, 'customform_components', 1386126282),
+(46, 'customform_selectvalues', 1386126282),
+(47, 'customform_submission', 1386126301),
+(48, 'customform_values', 1386126301),
+(49, 'consolecategory', 1386653834),
+(50, 'tournaments', 1386562849),
+(51, 'tournamentteams', 1386562849),
+(52, 'tournamentmatch', 1386562849),
+(53, 'plugins', 1386653834),
+(54, 'plugin_pages', 1386653834);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournamentmatch`
+--
+
+CREATE TABLE IF NOT EXISTS `tournamentmatch` (
+  `tournamentmatch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `round` int(11) NOT NULL,
+  `team1_id` int(11) NOT NULL,
+  `team2_id` int(11) NOT NULL,
+  `team1score` int(11) NOT NULL,
+  `team2score` int(11) NOT NULL,
+  `outcome` int(11) NOT NULL,
+  `replayteam1url` text NOT NULL,
+  `replayteam2url` text NOT NULL,
+  `adminreplayurl` text NOT NULL,
+  `team1approve` int(11) NOT NULL,
+  `team2approve` int(11) NOT NULL,
+  `nextmatch_id` int(11) NOT NULL,
+  `sortnum` int(11) NOT NULL,
+  PRIMARY KEY (`tournamentmatch_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `tournamentmatch`
+--
+
+INSERT INTO `tournamentmatch` (`tournamentmatch_id`, `tournament_id`, `round`, `team1_id`, `team2_id`, `team1score`, `team2score`, `outcome`, `replayteam1url`, `replayteam2url`, `adminreplayurl`, `team1approve`, `team2approve`, `nextmatch_id`, `sortnum`) VALUES
+(1, 1, 2, 1, 3, 0, 0, 0, '', '', '', 0, 0, 0, 0),
+(2, 1, 1, 1, 4, 0, 0, 1, '', '', '/cs4git/downloads/replays/replay_517431c5d429b.zip', 0, 0, 1, 0),
+(3, 1, 1, 2, 3, 3, 1, 2, '/cs4git/downloads/replays/replay_51743217d80b8.zip', '/cs4git/downloads/replays/replay_51743217d80b8.zip', '', 1, 1, 1, 0),
+(4, 3, 2, 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, 0),
+(5, 3, 1, 13, 16, 0, 0, 0, '', '', '', 0, 0, 4, 0),
+(6, 3, 1, 14, 15, 0, 0, 0, '', '', '', 0, 0, 4, 0),
+(7, 5, 2, 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, 0),
+(8, 5, 1, 21, 24, 0, 0, 0, '', '', '', 0, 0, 7, 0),
+(9, 5, 1, 22, 23, 0, 0, 0, '', '', '', 0, 0, 7, 0),
+(10, 6, 2, 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, 0),
+(11, 6, 1, 26, 28, 0, 0, 0, '', '', '', 0, 0, 10, 0),
+(12, 6, 1, 25, 27, 0, 0, 0, '', '', '', 0, 0, 10, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournamentplayers`
+--
+
+CREATE TABLE IF NOT EXISTS `tournamentplayers` (
+  `tournamentplayer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `displayname` varchar(50) NOT NULL,
+  PRIMARY KEY (`tournamentplayer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+
+--
+-- Dumping data for table `tournamentplayers`
+--
+
+INSERT INTO `tournamentplayers` (`tournamentplayer_id`, `tournament_id`, `team_id`, `member_id`, `displayname`) VALUES
+(1, 1, 1, 48, ''),
+(2, 2, 5, 48, ''),
+(3, 2, 6, 43, ''),
+(42, 3, 13, 48, ''),
+(5, 2, 8, 42, ''),
+(6, 2, 9, 47, ''),
+(7, 2, 10, 44, ''),
+(8, 2, 11, 45, ''),
+(9, 2, 12, 50, ''),
+(14, 2, 7, 13, ''),
+(11, 1, 3, 43, ''),
+(12, 1, 4, 50, ''),
+(41, 3, 13, 42, ''),
+(40, 3, 13, 50, ''),
+(48, 5, 21, 48, ''),
+(38, 3, 13, 13, ''),
+(47, 5, 21, 13, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournamentpools`
+--
+
+CREATE TABLE IF NOT EXISTS `tournamentpools` (
+  `tournamentpool_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `finished` int(11) NOT NULL,
+  PRIMARY KEY (`tournamentpool_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `tournamentpools`
+--
+
+INSERT INTO `tournamentpools` (`tournamentpool_id`, `tournament_id`, `finished`) VALUES
+(1, 2, 0),
+(2, 2, 0),
+(3, 4, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournamentpools_teams`
+--
+
+CREATE TABLE IF NOT EXISTS `tournamentpools_teams` (
+  `poolteam_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `pool_id` int(11) NOT NULL,
+  `team1_id` int(11) NOT NULL,
+  `team2_id` int(11) NOT NULL,
+  `team1score` int(11) NOT NULL,
+  `team2score` int(11) NOT NULL,
+  `team1approve` int(1) NOT NULL,
+  `team2approve` int(1) NOT NULL,
+  `replayteam1url` text NOT NULL,
+  `replayteam2url` text NOT NULL,
+  `winner` int(11) NOT NULL,
+  PRIMARY KEY (`poolteam_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+--
+-- Dumping data for table `tournamentpools_teams`
+--
+
+INSERT INTO `tournamentpools_teams` (`poolteam_id`, `tournament_id`, `pool_id`, `team1_id`, `team2_id`, `team1score`, `team2score`, `team1approve`, `team2approve`, `replayteam1url`, `replayteam2url`, `winner`) VALUES
+(1, 2, 1, 11, 10, 0, 0, 0, 0, '', '', 2),
+(2, 2, 1, 11, 12, 0, 0, 0, 0, '', '', 0),
+(3, 2, 1, 11, 9, 0, 0, 0, 0, '', '', 0),
+(4, 2, 1, 10, 12, 0, 0, 0, 0, '', '', 0),
+(5, 2, 1, 10, 9, 0, 0, 0, 0, '', '', 0),
+(6, 2, 1, 12, 9, 0, 0, 0, 0, '', '', 0),
+(7, 2, 2, 8, 5, 0, 0, 0, 0, '', '', 0),
+(8, 2, 2, 8, 6, 0, 0, 0, 0, '', '', 0),
+(9, 2, 2, 8, 7, 0, 0, 0, 1, '', '', 2),
+(10, 2, 2, 5, 6, 0, 0, 0, 0, '', '', 0),
+(11, 2, 2, 5, 7, 0, 0, 0, 1, '', '', 2),
+(12, 2, 2, 6, 7, 0, 0, 0, 0, '', '', 0),
+(13, 4, 3, 18, 19, 0, 0, 0, 0, '', '', 0),
+(14, 4, 3, 18, 20, 0, 0, 0, 0, '', '', 0),
+(15, 4, 3, 18, 17, 0, 0, 0, 0, '', '', 0),
+(16, 4, 3, 19, 20, 0, 0, 0, 0, '', '', 0),
+(17, 4, 3, 19, 17, 0, 0, 0, 0, '', '', 0),
+(18, 4, 3, 20, 17, 0, 0, 0, 0, '', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournaments`
+--
+
+CREATE TABLE IF NOT EXISTS `tournaments` (
+  `tournament_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `gamesplayed_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `seedtype` int(11) NOT NULL,
+  `startdate` int(11) NOT NULL,
+  `eliminations` int(11) NOT NULL,
+  `playersperteam` int(11) NOT NULL,
+  `maxteams` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `requirereplay` int(10) NOT NULL,
+  `access` int(11) NOT NULL,
+  PRIMARY KEY (`tournament_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `tournaments`
+--
+
+INSERT INTO `tournaments` (`tournament_id`, `member_id`, `gamesplayed_id`, `name`, `seedtype`, `startdate`, `eliminations`, `playersperteam`, `maxteams`, `status`, `description`, `password`, `requirereplay`, `access`) VALUES
+(1, 13, 2, 'Test Tournament', 1, 1366171200, 1, 1, 4, 0, '', '', 0, 1),
+(2, 13, 2, 'TEst Pools', 3, 1366862400, 1, 1, 8, 0, '', '098f6bcd4621d373cade4e832627b4f6', 0, 1),
+(3, 13, 2, 'Test Tournament Teams', 1, 1367294400, 1, 5, 4, 0, '', 'd41d8cd98f00b204e9800998ecf8427e', 0, 1),
+(4, 13, 2, 'Test Poolsdsf', 3, 1367294400, 1, 1, 4, 0, '', 'd41d8cd98f00b204e9800998ecf8427e', 0, 1),
+(5, 13, 2, 'test teams2', 1, 1369195200, 1, 2, 4, 0, '', 'd41d8cd98f00b204e9800998ecf8427e', 0, 1),
+(6, 13, 12, 'test tournament', 2, 1387929600, 1, 1, 4, 0, '', 'd41d8cd98f00b204e9800998ecf8427e', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournamentteams`
+--
+
+CREATE TABLE IF NOT EXISTS `tournamentteams` (
+  `tournamentteam_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `seed` int(11) NOT NULL,
+  PRIMARY KEY (`tournamentteam_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+
+--
+-- Dumping data for table `tournamentteams`
+--
+
+INSERT INTO `tournamentteams` (`tournamentteam_id`, `tournament_id`, `name`, `seed`) VALUES
+(1, 1, 'Team 1', 4),
+(2, 1, 'Team 2', 2),
+(3, 1, 'Team 3', 3),
+(4, 1, 'Team 4', 1),
+(5, 2, 'Team 1', 0),
+(6, 2, 'Team 2', 0),
+(7, 2, 'Team 3', 0),
+(8, 2, 'Team 4', 0),
+(9, 2, 'Team 5', 0),
+(10, 2, 'Team 6', 0),
+(11, 2, 'Team 7', 0),
+(12, 2, 'Team 8', 0),
+(13, 3, 'Test Squad', 1),
+(14, 3, 'Team 2', 2),
+(15, 3, 'Team 3', 3),
+(16, 3, 'Team 4', 4),
+(17, 4, 'Team 1', 0),
+(18, 4, 'Team 2', 0),
+(19, 4, 'Team 3', 0),
+(20, 4, 'Team 4', 0),
+(21, 5, 'Test Squad', 1),
+(22, 5, 'Team 2', 2),
+(23, 5, 'Team 3', 3),
+(24, 5, 'Team 4', 4),
+(25, 6, 'Team 1', 2),
+(26, 6, 'Team 2', 1),
+(27, 6, 'Team 3', 3),
+(28, 6, 'Team 4', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tournament_connect`
+--
+
+CREATE TABLE IF NOT EXISTS `tournament_connect` (
+  `tournamentconnect_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tournament_id` int(11) NOT NULL,
+  `clanname` varchar(255) NOT NULL,
+  `clanurl` text NOT NULL,
+  `connected` int(11) NOT NULL,
+  PRIMARY KEY (`tournamentconnect_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `twitter`
+--
+
+CREATE TABLE IF NOT EXISTS `twitter` (
+  `twitter_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `oauth_token` varchar(255) NOT NULL,
+  `oauth_tokensecret` varchar(255) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `followers` int(11) NOT NULL,
+  `following` int(11) NOT NULL,
+  `tweets` int(11) NOT NULL,
+  `profilepic` text NOT NULL,
+  `lasttweet_id` varchar(255) NOT NULL,
+  `lasttweet_html` text NOT NULL,
+  `showfeed` int(11) NOT NULL,
+  `embedtweet` int(11) NOT NULL,
+  `infocard` int(11) NOT NULL,
+  `allowlogin` int(11) NOT NULL,
+  `lastupdate` int(11) NOT NULL,
+  PRIMARY KEY (`twitter_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `websiteinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `websiteinfo` (
+  `websiteinfo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `clanname` varchar(255) NOT NULL,
+  `clantag` varchar(255) NOT NULL,
+  `preventhack` varchar(32) NOT NULL,
+  `maxdsl` int(11) NOT NULL,
+  `theme` varchar(255) NOT NULL,
+  `lowdsl` varchar(255) NOT NULL,
+  `meddsl` varchar(255) NOT NULL,
+  `highdsl` varchar(255) NOT NULL,
+  `logourl` text NOT NULL,
+  `forumurl` text NOT NULL,
+  `failedlogins` int(11) NOT NULL,
+  `maxdiplomacy` int(11) NOT NULL,
+  `mostonline` int(11) NOT NULL,
+  `mostonlinedate` int(11) NOT NULL,
+  `memberregistration` int(11) NOT NULL,
+  `memberapproval` int(11) NOT NULL,
+  `medalorder` int(11) NOT NULL,
+  `newsticker` varchar(255) NOT NULL,
+  `newstickercolor` varchar(40) NOT NULL,
+  `newstickersize` int(11) NOT NULL,
+  `newstickerbold` int(11) NOT NULL,
+  `newstickeritalic` int(11) NOT NULL,
+  `debugmode` int(11) NOT NULL,
+  `privateforum` int(11) NOT NULL,
+  `privateprofile` int(11) NOT NULL,
+  `updatemenu` int(11) NOT NULL,
+  `hpimagetype` varchar(6) NOT NULL,
+  `hpimagewidth` int(11) NOT NULL,
+  `hpimageheight` int(11) NOT NULL,
+  `hpimagewidthunit` varchar(7) NOT NULL,
+  `hpimageheightunit` varchar(7) NOT NULL,
+  `forum_showmedal` int(11) NOT NULL,
+  `forum_medalcount` int(11) NOT NULL,
+  `forum_medalwidth` int(11) NOT NULL,
+  `forum_medalheight` int(11) NOT NULL,
+  `forum_medalwidthunit` varchar(2) NOT NULL,
+  `forum_medalheightunit` varchar(2) NOT NULL,
+  `forum_showrank` int(11) NOT NULL,
+  `forum_rankwidth` int(11) NOT NULL,
+  `forum_rankheight` int(11) NOT NULL,
+  `forum_rankwidthunit` varchar(2) NOT NULL,
+  `forum_rankheightunit` varchar(2) NOT NULL,
+  `forum_postsperpage` int(11) NOT NULL,
+  `forum_topicsperpage` int(11) NOT NULL,
+  PRIMARY KEY (`websiteinfo_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `websiteinfo`
+--
+
+INSERT INTO `websiteinfo` (`websiteinfo_id`, `clanname`, `clantag`, `preventhack`, `maxdsl`, `theme`, `lowdsl`, `meddsl`, `highdsl`, `logourl`, `forumurl`, `failedlogins`, `maxdiplomacy`, `mostonline`, `mostonlinedate`, `memberregistration`, `memberapproval`, `medalorder`, `newsticker`, `newstickercolor`, `newstickersize`, `newstickerbold`, `newstickeritalic`, `debugmode`, `privateforum`, `privateprofile`, `updatemenu`, `hpimagetype`, `hpimagewidth`, `hpimageheight`, `hpimagewidthunit`, `hpimageheightunit`, `forum_showmedal`, `forum_medalcount`, `forum_medalwidth`, `forum_medalheight`, `forum_medalwidthunit`, `forum_medalheightunit`, `forum_showrank`, `forum_rankwidth`, `forum_rankheight`, `forum_rankwidthunit`, `forum_rankheightunit`, `forum_postsperpage`, `forum_topicsperpage`) VALUES
+(1, 'Bluethrust Clan Website Manager: Clan Scripts v4', '[bT]', '5555', 0, 'ghost', '#00FF00', '#FFFF52', '#F75B5B', 'http://cs4svn/themes/simpletech/images/logo.png', 'http://localhost/cs4git/forum', 8, 10, 2, 1362280462, 0, 1, 1, 'Welcome to the Site!', '#FFFFFF', 14, 0, 0, 0, 0, 0, 1374720512, 'slider', 600, 400, 'px', 'px', 1, 5, 50, 13, 'px', 'px', 1, 50, 75, 'px', 'px', 25, 0);
