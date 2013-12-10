@@ -22,7 +22,7 @@ include_once($prevFolder."classes/rank.php");
 include_once($prevFolder."classes/profilecategory.php");
 include_once($prevFolder."classes/profileoption.php");
 include_once($prevFolder."classes/game.php");
-
+include_once($prevFolder."classes/btplugin.php");
 
 // Classes needed for index.php
 
@@ -268,267 +268,38 @@ else {
 
 
 	<div class='main userProfileRight'>
-		
-		
-		<div class='formTitle' style='text-align: center'>User Information</div>
-	
-		<table class='profileTable' style='border-top-width: 0px'>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Username:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $memberInfo['username']; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Rank:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $rankInfo['name']; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Recruited By:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $dispRecruiter; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Recruits: <?php echo $totalRecruits; ?></td>
-				<td class='main' style='padding-left: 10px'><marquee scrollamount='3'><?php echo $dispRecruits; ?></marquee></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Last Log In:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $dispLastLogin; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Times Logged In:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $memberInfo['timesloggedin']; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Last Promotion:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $dispLastPromotion; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Last Demotion:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $dispLastDemotion; ?></td>
-			</tr>
-			<tr>
-				<td class='profileLabel alternateBGColor'>Days In Clan:</td>
-				<td class='main' style='padding-left: 10px'><?php echo $dispDaysInClan; ?></td>
-			</tr>
-		</table>
-	
-		<?php
-			$profileCatObj = new ProfileCategory($mysqli);
-			$profileOptionObj = new ProfileOption($mysqli);
+		<?php 
+			define("SHOW_PROFILE_MAIN", true);
+			$arrSections[] = "include/profile/_main.php";
+			$arrSections[] = "include/profile/_customoptions.php";
+			$arrSections[] = "include/profile/_gamesplayed.php";
+			$arrSections[] = "include/profile/_squads.php";
+			$arrSections[] = "include/profile/_medals.php";
 			
-			$member->select($memberInfo['member_id']);
+			$pluginObj = new btPlugin($mysqli);
 			
-			$result = $mysqli->query("SELECT * FROM ".$dbprefix."profilecategory ORDER BY ordernum DESC");
-			while($row = $result->fetch_assoc()) {
-		
-				$profileCatObj->select($row['profilecategory_id']);
-				
-				$arrProfileOptions = $profileCatObj->getAssociateIDs("ORDER BY sortnum");
-				
-				
-				echo "
-					<div class='formTitle' style='text-align: center; margin-top: 20px'>".$profileCatObj->get_info_filtered("name")."</div>
-					<table class='profileTable' style='border-top-width: 0px'>
-				";
-				
-				foreach($arrProfileOptions as $profileOptionID) {
-					
-					$profileOptionObj->select($profileOptionID);
-					
-					
-					echo "
-					
-					<tr>
-						<td class='profileLabel alternateBGColor' valign='top'>".$profileOptionObj->get_info_filtered("name").":</td>
-						<td class='main' style='padding-left: 10px' valign='top'>".$member->getProfileValue($profileOptionID)."</td>
-					</tr>
-					
-					";
-					
-				}
-				
-				echo "</table>";
-			}
+			$arrPlugins = $pluginObj->getPluginPage("profile");
 			
+			$x = 0;
 			
-			$gameObj = new Game($mysqli);
-			$gameStatObj = new Basic($mysqli, "gamestats", "gamestats_id");
-			$dispGamesPlayed = "";
-			$arrGames = $gameObj->getGameList();
-			foreach($arrGames as $gameID) {
-				if($member->playsGame($gameID)) {
-					$gameObj->select($gameID);
-					
-					$dispGameStats = "";
-					$arrGameStats = $gameObj->getAssociateIDs("ORDER BY ordernum");
-					foreach($arrGameStats as $gameStatID) {
-						$gameStatObj->select($gameStatID);
-						if($gameStatObj->get_info_filtered("hidestat") == 0) {
-							
-							
-							if($gameStatObj->get_info_filtered("stattype") == "calculate") {
-								$dispGameStats .= "<b>".$gameStatObj->get_info_filtered("name").":</b> ".$gameObj->calcStat($gameStatID, $member)."<br>";
-							}
-							else {
-								$dispGameStats .= "<b>".$gameStatObj->get_info_filtered("name").":</b> ".$member->getGameStatValue($gameStatID)."<br>";
-							}
-							
-						}
-					}
-					
-					$dispGamesPlayed .= "
-						<tr>
-							<td class='profileLabel alternateBGColor' valign='top'>
-								".$gameObj->get_info_filtered("name").":
-							</td>
-							<td class='main' style='padding-left: 10px' valign='top'>
-								".$dispGameStats."<br>						
-							</td>
-						</tr>
-					";
+			foreach($arrSections as $section) {
 				
-				}
-			}
-			
-			
-			if($dispGamesPlayed != "") {
-				
-				echo "
+				foreach($arrPlugins as $pluginInfo) {
 
-					<div class='formTitle' style='text-align: center; margin-top: 20px'>Game Statistics</div>
-					<table class='profileTable' style='border-top-width: 0px'>
-					".$dispGamesPlayed."</table>";
+					if($pluginInfo['sortnum'] == $x) {
+						include($pluginInfo['pagepath']);	
+					}
+					
+				}
 
-			}
-			
-			
-			$arrSquads = $member->getSquadList();
-			$squadObj = new Basic($mysqli, "squads", "squad_id");
-			$dispSquads = "";
-			
-			foreach($arrSquads as $squadID) {
-				
-				$squadObj->select($squadID);
-				$squadInfo = $squadObj->get_info_filtered();
-				
-				if($squadInfo['logourl'] != "") {
-					$dispSquads .= "<a href='".$MAIN_ROOT."squads/profile.php?sID=".$squadID."'><img src='".$squadInfo['logourl']."' class='squadLogo'></a><div class='dottedLine' style='width: 90%; margin-top: 20px; margin-bottom: 20px'></div>";
-				}
-				else {
-					$dispSquads .= "<span class='largeFont'><b><a href='".$MAIN_ROOT."squads/profile.php?sID=".$squadID."'>".$squadInfo['name']."</a></b><div class='dottedLine' style='width: 90%; margin-top: 20px; margin-bottom: 20px'></div>";
-				}
-			}
-			
-			if($dispSquads != "") {
-				
-				echo "
-					<div class='formTitle' style='text-align: center; margin-top: 20px'>Squads</div>
-					<table class='profileTable' style='border-top-width: 0px'>
-						<tr>
-							<td class='main' align='center'>
-								<p>
-									".$dispSquads."
-								</p>
-							</td>
-						</tr>
-					</table>
-				";
-				
+				include($section);
+								
+				$x++;
 				
 			}
 			
-			
-			$arrMedals = $member->getMedalList(false, $websiteInfo['medalorder']);
-			$medalObj = new Medal($mysqli);
-			
-			if(count($arrMedals) > 0) {
-				
-				foreach($arrMedals as $medalID) {
-					
-					$medalObj->select($medalID);
-					$medalInfo = $medalObj->get_info_filtered();
-					
-					if($medalInfo['imagewidth'] == 0) {
-						$imgInfo = getimagesize($medalObj->getLocalImageURL());
-						$medalInfo['imagewidth'] = $imgInfo[0];
-					}
-					
-					if($medalInfo['imageheight'] == 0) {
-						$imgInfo = getimagesize($medalObj->getLocalImageURL());
-						$medalInfo['imageheight'] = $imgInfo[1];
-					}
-					
-					$result = $mysqli->query("SELECT * FROM ".$dbprefix."medals_members WHERE member_id = '".$memberInfo['member_id']."' AND medal_id = '".$medalInfo['medal_id']."'");
-					$row = $result->fetch_assoc();
-					
-					$dispDateAwarded = "<b>Date Awarded:</b><br>".getPreciseTime($row['dateawarded']);
-					
-					$dispReason = "";
-					if($row['reason'] != "") {
-						$dispReason = "<br><br><b>Awarded for:</b><br>".filterText($row['reason']);	
-					}
-					
-					$dispMedalMessage = "<b>".$medalInfo['name']."</b><br><br>".$dispDateAwarded.$dispReason;
-					
-					$tempArr = array("width" => $medalInfo['imagewidth'], "height" => $medalInfo['imageheight'], "url" => $medalInfo['imageurl'], "message" => $dispMedalMessage);
-					$arrDispMedals[] = $tempArr;
-				}
-				
-				
-				
-				
-				$jsonMedals = json_encode($arrDispMedals);
-				
-				echo "
-				<div class='formTitle' style='position: relative; text-align: center; margin-top: 20px'>Medals</div>
-					<table class='profileTable' id='medalTable' style='border-top-width: 0px'>
-						<tr>
-							<td class='main' align='center'>
-								<p>
-									<div id='medalDiv'>
-									
-									</div>
-								</p>
-							</td>
-						</tr>
-					</table>
-				
-					
-					<script type='text/javascript'>
-						var arrMedals = ".$jsonMedals."
-						var medalHTML = \"\";
-						var divWidth = $('#medalTable').width();
-						var countWidth = 0;
-						var arrMessage = [];
-						
-						$(document).ready(function() {
-							
-							$.each(arrMedals, function(i, val) {
-								
-								countWidth += parseInt(val.width);
-								if(countWidth > divWidth) {
-									medalHTML += \"<br><br>\";
-									countWidth = 0;
-								}
-								
-								
-								
-								arrMessage[i] = val.message;
-								//alert(arrMessage[i]);
-								medalHTML += \"<img src='\"+val.url+\"' width='\"+val.width+\"' height='\"+val.height+\"' style='margin: 0px 20px' onmouseover='showToolTip(arrMessage[\"+i+\"])' onmouseout='hideToolTip()'>\";
-
-							});
-						
-							$('#medalDiv').html(medalHTML);
-							
-						});
-						
-					</script>
-				";
-				
-			}
 			
 		?>
-	
 	
 	</div>
 	

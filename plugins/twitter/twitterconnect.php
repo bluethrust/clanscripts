@@ -50,6 +50,12 @@ if(isset($_GET['oauth_token']) && isset($_GET['oauth_verifier']) && $_GET['oauth
 		
 			$twitterObj->addNew($arrColumns, $arrValues);
 			
+			echo "
+				<script type='text/javascript'>
+					window.location = '".$MAIN_ROOT."members/console.php?cID=".$_GET['cID']."';
+				</script>
+			";
+			
 		}
 		else {
 
@@ -82,6 +88,14 @@ if(isset($_GET['oauth_token']) && isset($_GET['oauth_verifier']) && $_GET['oauth
 	}
 	
 	
+}
+elseif(isset($_GET['denied'])) {	
+	echo "
+		<script type='text/javascript'>
+			window.location = '".$MAIN_ROOT."members';
+		</script>
+	";
+	exit();
 }
 elseif(!$twitterObj->hasTwitter($memberInfo['member_id'])) {
 	// CONNECT
@@ -122,114 +136,201 @@ elseif(!$twitterObj->hasTwitter($memberInfo['member_id'])) {
 	
 }
 elseif($twitterObj->hasTwitter($memberInfo['member_id'])) {
+	
+	
+	$dispSuccess = false;
+	if($_POST['submit']) {
+
+		$setShowFeed = ($_POST['showfeed'] == 1) ? 1 : 0;
+		$setEmbedTweet = ($_POST['embedlasttweet'] == 1) ? 1 : 0;
+		$setInfoCard = ($_POST['showinfo'] == 1) ? 1 : 0;
+		$setAllowLogin = ($_POST['allowlogin'] == 1) ? 1 : 0;
+		
+		$arrColumns = array("showfeed", "embedtweet", "infocard", "allowlogin");
+		$arrValues = array($setShowFeed, $setEmbedTweet, $setInfoCard, $setAllowLogin);
+		
+		$twitterObj->update($arrColumns, $arrValues);
+		
+		$dispSuccess = true;
+		
+	}
+	
+	
+	
 	// MEMBER ALREADY HAS TWITTER CONNECTED
 	
 	$twitterObj->oauthToken = $twitterObj->get_info("oauth_token");
 	$twitterObj->oauthTokenSecret = $twitterObj->get_info("oauth_tokensecret");
 	
-	
-	if((time()-$twitterObj->get_info("lastupdate")) > 1800) {
-		$twitterInfo = $twitterObj->getTwitterInfo();
-		
-		$arrColumns = array("lastupdate", "username", "name", "description", "followers", "following", "tweets", "profilepic", "lasttweet_id");
-		$arrValues = array(time(), $twitterInfo['screen_name'], $twitterInfo['name'], $twitterInfo['description'], $twitterInfo['followers_count'], $twitterInfo['friends_count'], $twitterInfo['statuses_count'], $twitterInfo['profile_image_url_https'], $twitterInfo['status']['id_str']);
-		
-		$twitterObj->update($arrColumns, $arrValues);
-	}
+	$twitterObj->reloadCacheInfo();	
 	
 	$twitterInfo = $twitterObj->get_info_filtered();
 
-	
+	$checkShowFeed = ($twitterInfo['showfeed'] == 1) ? " checked" : "";
+	$checkEmbedTweet = ($twitterInfo['embedtweet'] == 1) ? " checked" : "";
+	$checkInfoCard = ($twitterInfo['infocard'] == 1) ? " checked" : "";
+	$checkAllowLogin = ($twitterInfo['allowlogin'] == 1) ? " checked" : "";
 	
 	echo "
 	
-		<div class='formDiv'>
-	
-			<table class='formTable'>
-				<tr>
-					<td colspan='2'>
-						<div class='main dottedLine' style='margin-bottom: 20px; padding-bottom: 3px'>
-							<b>Connected:</b>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan='2'>
-		
-						<div class='shadedBox' style='margin-left: auto; margin-right: auto; width: 50%; overflow: auto'>
-							
-							<div style='float: left'>
-								<img src='".str_replace("_normal", "_bigger", $twitterInfo['profilepic'])."' class='solidBox' style='padding: 0px'>
-							</div>
-							<div class='largeFont' style='float: left; margin-left: 10px'>
-								<b><span class='breadCrumbTitle' style='padding: 0px'>".$twitterInfo['name']."</span></b><br>
-								<a href='http://twitter.com/".$twitterInfo['username']."' target='_blank'>@".$twitterInfo['username']."</a>
-								<p class='main'>".$twitterInfo['description']."</p>
-								
-								<div class='main' style='position: relative; overflow: auto'>
-									<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$twitterInfo['username']."' target='_blank'><b>".number_format($twitterInfo['tweets'],0)."</b><br>TWEETS</a></div>
-									<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$twitterInfo['username']."/following' target='_blank'><b>".number_format($twitterInfo['following'],0)."</b><br>FOLLOWING</a></div>
-									<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$twitterInfo['username']."/followers' target='_blank'><b>".number_format($twitterInfo['followers'],0)."</b><br>FOLLOWERS</a></div>
+		<div id='connectedDiv'>
+			<form action='".$MAIN_ROOT."members/console.php?cID=".$_GET['cID']."' method='post'>
+				<div class='formDiv'>
+					<table class='formTable'>
+						<tr>
+							<td colspan='2'>
+								<div class='main dottedLine' style='margin-bottom: 20px; padding-bottom: 3px'>
+									<b>Connected:</b>
 								</div>
-								
-							</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'>
 				
-						</div>
-						<div style='font-style: italic; text-align: center; margin-top: 3px; margin-left: auto; margin-right: auto; position: relative' class='main'>
-							Last updated ".getPreciseTime($twitterInfo['lastupdate'])."
-							<p class='largeFont' style='font-style: normal; font-weight: bold' align='center'>
-								<a href='".$MAIN_ROOT."members/console.php?cID=".$_GET['cID']."disconnect=1'>DISCONNECT ACCOUNT</a>
-							</p>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan='2'><br><br>
-						<div class='main dottedLine' style='margin-bottom: 2px; padding-bottom: 3px'>
-							<b>Profile Display Options:</b>
-						</div>
-						<div style='padding-left: 3px; margin-bottom: 15px'>
-							Use the form below to set which items from Twitter will show in your profile.
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Show Feed:</td>
-					<td class='main'><input type='checkbox' name='showfeed' value='1'></td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Embed Last Tweet:</td>
-					<td class='main'><input type='checkbox' name='embedlasttweet' value='1'></td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Show Info Card: <a href='javascript:void(0)' onmouseover=\"showToolTip('An example of the Info Card is shown in the &quot;Connected&quot; section above.')\" onmouseout='hideToolTip()'>(?)</a></td>
-					<td class='main'><input type='checkbox' name='showinfo' value='1'></td>
-				</tr>
-				<tr>
-					<td colspan='2'><br>
-						<div class='main dottedLine' style='margin-bottom: 2px; padding-bottom: 3px'>
-							<b>Log In Options:</b>
-						</div>
-						<div style='padding-left: 3px; margin-bottom: 15px'>
-							Check the box below to allow logging into this website through twitter.
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Allow Log In:</td>
-					<td class='main'><input type='checkbox' name='allowlogin' value='1'></td>
-				</tr>
-				<tr>
-					<td class='main' colspan='2' align='center'><br>
-						<input type='submit' name='submit' value='Save' class='submitButton'>
-					</td>
-				</tr>
-			</table>
-			<br>
+								<div class='shadedBox' style='margin-left: auto; margin-right: auto; width: 50%; overflow: auto'>
+									
+									".$twitterObj->dispCard()."
+						
+								</div>
+								<div style='font-style: italic; text-align: center; margin-top: 3px; margin-left: auto; margin-right: auto; position: relative' class='main'>
+									Last updated ".getPreciseTime($twitterInfo['lastupdate'])."
+									<p class='largeFont' style='font-style: normal; font-weight: bold' align='center'>
+										<a style='cursor: pointer' id='btnDisconnect'>DISCONNECT ACCOUNT</a>
+									</p>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan='2'><br><br>
+								<div class='main dottedLine' style='margin-bottom: 2px; padding-bottom: 3px'>
+									<b>Profile Display Options:</b>
+								</div>
+								<div style='padding-left: 3px; margin-bottom: 15px'>
+									Use the form below to set which items from Twitter will show in your profile.
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class='formLabel'>Show Feed:</td>
+							<td class='main'><input type='checkbox' name='showfeed' value='1'".$checkShowFeed."></td>
+						</tr>
+						<tr>
+							<td class='formLabel'>Embed Last Tweet:</td>
+							<td class='main'><input type='checkbox' name='embedlasttweet' value='1'".$checkEmbedTweet."></td>
+						</tr>
+						<tr>
+							<td class='formLabel'>Show Info Card: <a href='javascript:void(0)' onmouseover=\"showToolTip('An example of the Info Card is shown in the &quot;Connected&quot; section above.')\" onmouseout='hideToolTip()'>(?)</a></td>
+							<td class='main'><input type='checkbox' name='showinfo' value='1'".$checkInfoCard."></td>
+						</tr>
+						<tr>
+							<td colspan='2'><br>
+								<div class='main dottedLine' style='margin-bottom: 2px; padding-bottom: 3px'>
+									<b>Log In Options:</b>
+								</div>
+								<div style='padding-left: 3px; margin-bottom: 15px'>
+									Check the box below to allow logging into this website through twitter.
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class='formLabel'>Allow Log In:</td>
+							<td class='main'><input type='checkbox' name='allowlogin' value='1'".$checkAllowLogin."></td>
+						</tr>
+						<tr>
+							<td class='main' colspan='2' align='center'><br>
+								<input type='submit' name='submit' value='Save' class='submitButton'>
+							</td>
+						</tr>
+					</table>
+					<br>
+				</div>
+			</form>
 		</div>
-	
+		
+		<div id='disconnectDiv' style='display: none'>
+			<p class='main' align='center'>
+				Are you sure you want to disconnect your Twitter account?
+			</p>
+		</div>
+		
+		<script type='text/javascript'>
+		
+			$(document).ready(function() {
+			
+				$('#btnDisconnect').click(function() {
+					
+					$('#disconnectDiv').dialog({
+						title: 'Disconnect Twitter',
+						modal: true,
+						zIndex: 99999,
+						width: 400,
+						resizable: false,
+						show: 'scale',
+						buttons: {
+							'Yes': function() {
+								$('#connectedDiv').fadeOut(250);
+								$.post('".$MAIN_ROOT."plugins/twitter/disconnect.php', { }, function(data) {
+								
+									$('#connectedDiv').html(data);
+									$('#connectedDiv').fadeIn(250);
+								
+								});
+								
+								
+								$(this).dialog('close');
+							},
+							'Cancel': function() {
+								$(this).dialog('close');
+							}
+						}
+						
+					});
+					$('.ui-dialog :button').blur();
+				
+				});
+			
+			});
+		
+		</script>
 	";
 	
+	
+	if($dispSuccess) {
+
+		echo "
+			<div id='successDiv' style='display: none'>
+				<p align='center' class='main'>
+					Twitter Connect Settings Saved!
+				</p>
+			</div>
+			<script type='text/javascript'>
+			
+				$(document).ready(function() {
+				
+					$('#successDiv').dialog({
+						title: 'Twitter Connect',
+						modal: true,
+						zIndex: 99999,
+						width: 400,
+						resizable: false,
+						show: 'scale',
+						buttons: {
+							'Ok': function() {
+								$(this).dialog('close');
+							}
+						}
+						
+					});
+					$('.ui-dialog :button').blur();
+				
+				});
+			
+			</script>
+		
+		
+		";
+		
+	}
 	
 }
 else {

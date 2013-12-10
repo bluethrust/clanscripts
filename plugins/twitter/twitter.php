@@ -1,16 +1,14 @@
 <?php
 	
-	include_once("basic.php");
+	include_once($prevFolder."classes/basic.php");
 
-	ini_set("display_errors", 1);
-	
 	class Twitter extends Basic {
 		
 
-		// SET CONSUMER KEY AND CONSUMER SECRET
+		// SET THESE VARIABLES
 		protected $consumerKey = "Usg8F5rw4lNlx01jDty8A";
 		protected $consumerSecret = "uXuhU1hFWWBLZMN5DJAPbaU2ejlE1YrmqGkNF31YsQ";
-		
+		public $widgetID = "312408324882702338";
 		
 		
 		public $requestTokenURL = "https://api.twitter.com/oauth/request_token";
@@ -19,6 +17,7 @@
 		public $accessTokenURL = "https://api.twitter.com/oauth/access_token";
 		public $tweetURL = "https://api.twitter.com/1.1/statuses/update.json";
 		public $twitterInfoURL = "https://api.twitter.com/1.1/account/verify_credentials.json";
+		public $embedTweetURL = "https://api.twitter.com/1.1/statuses/oembed.json";
 		public $arrParameters;
 		public $oauthTokenSecret;
 		public $oauthToken;
@@ -90,15 +89,15 @@
 				$oauth_token_secret = $this->MySQL->real_escape_string($oauth_token_secret);
 				
 				
-				$result = $this->MySQL->query("SELECT twitter_id FROM ".$this->strTableName." WHERE oauth_token = '".$oauth_token."' AND oauth_tokensecret = '".$oauth_token_secret."'");
-				
-				if($result->num_rows > 0) {
-				
-					$row = $result->fetch_assoc();
-					$this->select($row['twitter_id']);
+				$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE oauth_token = '".$oauth_token."'");
+				$row = $result->fetch_assoc();
+				if($result->num_rows > 0 && $row['oauth_tokensecret'] == $oauth_token_secret) {
 					
+					$this->select($row['twitter_id']);
+
 					
 					$returnVal = true;
+					
 				}
 
 				
@@ -108,6 +107,61 @@
 			return $returnVal;
 		}
 		
+		
+		public function reloadCacheInfo() {
+			
+			if($this->intTableKeyValue != "" && isset($this->oauthToken) && isset($this->oauthTokenSecret)) {
+			
+				if((time()-$this->arrObjInfo["lastupdate"]) > 1800) {
+					$twitterInfo = $this->getTwitterInfo();
+					
+					if($twitterInfo !== false) {
+						$embedTweet = $this->getEmbeddedTweet($twitterInfo['status']['id_str']);
+						
+						$arrColumns = array("lastupdate", "username", "name", "description", "followers", "following", "tweets", "profilepic", "lasttweet_id", "lasttweet_html");
+						$arrValues = array(time(), $twitterInfo['screen_name'], $twitterInfo['name'], $twitterInfo['description'], $twitterInfo['followers_count'], $twitterInfo['friends_count'], $twitterInfo['statuses_count'], $twitterInfo['profile_image_url_https'], $twitterInfo['status']['id_str'], $embedTweet['html']);
+						
+						$this->update($arrColumns, $arrValues);
+					}
+					else {
+						$this->delete();
+						$this->arrObjInfo = array();
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		public function dispCard() {
+		
+			$returnVal = "";
+			if($this->intTableKeyValue != "") {
+				$returnVal = "
+					
+									
+					<div style='float: left; width: 25%; text-align: left'>
+						<img src='".str_replace("_normal", "_bigger", $this->arrObjInfo['profilepic'])."' class='solidBox' style='padding: 0px'>
+					</div>
+					<div class='largeFont' style='width: 68%; float: left; margin-left: 10px; text-align: left'>
+						<b><span class='breadCrumbTitle' style='padding: 0px'>".$this->arrObjInfo['name']."</span></b><br>
+						<a href='http://twitter.com/".$this->arrObjInfo['username']."' target='_blank'>@".$this->arrObjInfo['username']."</a>
+						<p class='main'>".$this->arrObjInfo['description']."</p>
+						
+						<div class='main' style='position: relative; overflow: auto; text-align: left'>
+							<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$this->arrObjInfo['username']."' target='_blank'><b>".number_format($this->arrObjInfo['tweets'],0)."</b><br>TWEETS</a></div>
+							<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$this->arrObjInfo['username']."/following' target='_blank'><b>".number_format($this->arrObjInfo['following'],0)."</b><br>FOLLOWING</a></div>
+							<div style='float: left; margin-left: 10px'><a href='http://twitter.com/".$this->arrObjInfo['username']."/followers' target='_blank'><b>".number_format($this->arrObjInfo['followers'],0)."</b><br>FOLLOWERS</a></div>
+						</div>
+						
+					</div>
+
+				";
+			}
+
+			return $returnVal;
+		}
 		
 		// Twitter connection functions below	
 		
@@ -305,10 +359,47 @@
 			
 				$returnVal = false;
 			
+			}			
+			
+			return $returnVal;
+			
+		}
+		
+		
+		public function getEmbeddedTweet($tweetID) {
+
+			$returnArr = array();
+			if(is_numeric($tweetID)) {
+				
+				$this->resetParamArray();
+
+				$url = $this->embedTweetURL."?id=".$tweetID."&maxwidth=350&hide_media=1";
+				
+				$this->arrParameters['hide_media'] = 1;
+				$this->arrParameters['id'] = $tweetID;
+				$this->arrParameters['maxwidth'] = 350;
+				$this->arrParameters['oauth_token'] = $this->oauthToken;
+				$this->arrParameters['oauth_timestamp'] = time();
+				$this->arrParameters['oauth_nonce'] = $this->generateNonce();
+				$this->arrParameters['oauth_signature'] = $this->generateSignature("GET", $this->embedTweetURL);
+				
+			
+				$arrHeader = $this->prepareAuthHeader();
+						
+				$this->lastAuthHeader = $arrHeader;
+
+				$response = $this->httpRequest($url, "GET", $arrHeader);
+
+				if($this->httpCode == 200) {
+				
+					$returnArr = json_decode($response, true);
+				
+				}
+				
 			}
 			
 			
-			return $returnVal;		
+			return $returnArr;
 			
 		}
 		
@@ -322,6 +413,7 @@
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			}
+			
 			
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -341,9 +433,24 @@
 			
 		}
 		
+		public function resetParamArray() {
+			
+			$this->arrParameters = array();
+			
+			$this->arrParameters['oauth_consumer_key'] = $this->consumerKey;
+			$this->arrParameters['oauth_signature_method'] = "HMAC-SHA1";
+			$this->arrParameters['oauth_version'] = "1.0";
 		
+		}
+
+		public function getConsumerKey() {
+			return $this->consumerKey;	
+		}
 		
-		
+		public function getConsumerSecret() {
+			return $this->consumerSecret;	
+		}
+
 	}
 
 ?>
