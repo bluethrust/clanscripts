@@ -83,7 +83,31 @@ echo "
 	</div>
 	
 	<div id='installMessage' style='display: none'></div>
+	
+	
+	<script type='text/javascript'>
+	
+		function reloadPluginLists() {
 		
+			$(document).ready(function() {
+		
+				$.post('".$MAIN_ROOT."members/include/admin/plugins/available.php', { }, function(data) {
+				
+					$('#availableDiv').html(data);
+				
+				});
+				
+				$.post('".$MAIN_ROOT."members/include/admin/plugins/installed.php', { }, function(data) {
+				
+					$('#installedDiv').html(data);
+				
+				});
+			
+			});
+		
+		}
+	
+	</script>
 	";
 
 

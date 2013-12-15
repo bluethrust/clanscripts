@@ -71,6 +71,57 @@ class ConsoleOption extends BasicSort {
 		return $returnVal;
 	}
 
+	
+	/*
+	 * - countMembers -
+	 * 
+	 * Counts the amount of members that have access to the selected console option.
+	 * 
+	 * returns a numeric value
+	 * 
+	 */
+	function countMembers() {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			
+			$result = $this->MySQL->query("SELECT rank_id FROM ".$this->MySQL->get_tablePrefix()."rank_privileges WHERE console_id = '".$this->intTableKeyValue."'");
+			while($row = $result->fetch_assoc()) {
+				
+				$arrRanks[] = $row['rank_id'];
+				
+			}
+			
+			$sqlRanks = "('".implode("','", $arrRanks)."')";
+			$result = $this->MySQL->query("SELECT member_id FROM ".$this->MySQL->get_tablePrefix()."members WHER rank_id IN ".$sqlRanks);
+			while($row = $result->fetch_assoc()) {
+				$arrMembers[] = $row['member_id'];	
+			}
+			
+			$sqlMembers = "('".implode("','", $arrMembers)."')";
+			$countMembers = $result->num_rows;
+			
+			$addTo = 0;
+			$result = $this->MySQL->query("SELECT allowdeny FROM ".$this->get_tablePrefix()."console_members WHERE console_id = '".$this->intTableKeyValue."' AND member_id IN ".$sqlMembers);
+			while($row = $result->fetch_assoc()) {
+				if($row['allowdeny'] == 0) {
+					$addTo += -1;	
+				}
+				else {
+					$addTo += 1;
+				}
+			}
+			
+			$returnVal = $countMembers+$addTo;
+			
+		}
+		
+		return $returnVal;
+		
+		
+	}
+	
+	
 	/*
 	
 	-Delete Method-

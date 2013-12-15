@@ -40,13 +40,18 @@
 			
 		}
 		
-		public function getPluginPage($page) {
+		public function getPluginPage($page, $limitToPlugin="") {
+			
+			$sqlFilter = "";
+			if($limitToPlugin != "" && is_numeric($limitToPlugin)) {
+				$sqlFilter = " AND plugin_id = '".$limitToPlugin."'";
+			}
 			
 			$arrReturn = array();
 			
 			$page = $this->MySQL->real_escape_string($page);
 			
-			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."plugin_pages WHERE page = '".$page."' ORDER BY sortnum");
+			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."plugin_pages WHERE page = '".$page."'".$sqlFilter." ORDER BY sortnum");
 			while($row = $result->fetch_assoc()) {
 			
 				$this->pluginPage->select($row['pluginpage_id']);
@@ -57,6 +62,22 @@
 						
 			return $arrReturn;
 			
+		}
+		
+		public function delete() {
+			$returnVal = false;
+			if($this->intTableKeyValue != "") {
+				$blnDeletePlugin = parent::delete();
+				
+				if($this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."plugin_pages WHERE plugin_id = '".$this->intTableKeyValue."'") && $blnDeletePlugin) {
+					$returnVal = true;
+				}
+				
+				$this->MySQL->query("OPTIMIZE TABLE `".$this->MySQL->get_tablePrefix()."plugin_pages`");
+			
+			}
+			
+			return $returnVal;
 		}
 		
 		

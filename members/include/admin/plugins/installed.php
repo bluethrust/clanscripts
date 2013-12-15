@@ -72,12 +72,37 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 		echo "
 			<tr>
 				<td class='dottedLine main manageList".$addCSS."'>".$row['name']."</td>
-				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></td>
-				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></td>
+				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a href='".$MAIN_ROOT."plugins/".$row['filepath']."/settings.php'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></a></td>
+				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
 			</tr>		
 		";
 		
 	}
 
-	echo "</table>";
+	echo "</table>
+	
+	<script type='text/javascript'>
+	
+		$(document).ready(function() {
+		
+			$(\"a[id='uninstallPlugin']\").click(function() {
+				
+				if($(this).attr('data-clicked') == 0) {
+					$(this).html(\"<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif' class='manageListActionButton'>\");
+					$(this).attr('data-clicked', 1);
+					$(this).css('cursor', 'default');
+					
+					$.post('".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/uninstall.php', { pluginDir: $(this).attr('data-plugin') }, function(data) {
+					
+					
+					});
+				
+				}
+			
+			});
+		
+		});
+	
+	</script>
+	";
 ?>
