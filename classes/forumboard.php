@@ -53,13 +53,31 @@ class ForumBoard extends BasicSort {
 		
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
-
+			$arrSubForums = $this->getSubForums();
+			
 			$result[] = $this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."forum_post WHERE forumboard_id = '".$this->intTableKeyValue."'");	
 			$result[] = $this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."forum_topic WHERE forumboard_id = '".$this->intTableKeyValue."'");
 			$result[] = $this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."forum_rankaccess WHERE board_id = '".$this->intTableKeyValue."'");
 			$result[] = $this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."forum_memberaccess WHERE board_id = '".$this->intTableKeyValue."'");
 			$result[] = parent::delete();
 			
+			if(count($arrSubForums) > 0) {
+				$subForumObj = new ForumBoard($this->MySQL);
+				$arrColumns = array("sortnum", "subforum_id");
+				foreach($arrSubForums as $subForumID) {
+					$subForumObj->select($subForumID);
+					$subForumInfo = $subForumObj->get_info();
+					
+					$newSortNum = $subForumInfo['sortnum']+($this->arrObjInfo['sortnum']-1);
+					$arrValues = array($newSortNum, $this->arrObjInfo['subforum_id']);
+					
+					$subForumObj->update($arrColumns, $arrValues);
+					
+				}
+				
+				$subForumObj->resortOrder();
+				
+			}
 			
 			if(!in_array(false, $result)) {
 				$returnVal = true;	
@@ -86,9 +104,9 @@ class ForumBoard extends BasicSort {
 		if($this->intTableKeyValue != "") {
 			
 			$result = $this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."forum_rankaccess WHERE board_id = '".$this->intTableKeyValue."'");
-			$arrColumns = array("rank_id", "board_id");
-			foreach($arrRanks as $rankID) {
-				$arrValues = array($rankID, $this->intTableKeyValue);
+			$arrColumns = array("rank_id", "board_id", "accesstype");
+			foreach($arrRanks as $rankID => $accessValue) {
+				$arrValues = array($rankID, $this->intTableKeyValue, $accessValue);
 				if(!$this->objRankAccess->addNew($arrColumns, $arrValues)) {
 					$countErrors++;
 					break;
@@ -149,7 +167,7 @@ class ForumBoard extends BasicSort {
 			$result = $this->MySQL->query("SELECT * FROM ".$dbprefix."forum_rankaccess WHERE board_id = '".$this->intTableKeyValue."'");
 			while($row = $result->fetch_assoc()) {
 	
-				$returnArr[] = $row['rank_id'];
+				$returnArr[$row['rank_id']] = $row['accesstype'];
 	
 			}
 			
@@ -159,7 +177,7 @@ class ForumBoard extends BasicSort {
 		return $returnArr;
 	}
 	
-	public function memberHasAccess($memberInfo) {
+	public function memberHasAccess($memberInfo, $fullAccessOnly=false) {
 		
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
@@ -167,14 +185,34 @@ class ForumBoard extends BasicSort {
 			if($this->arrObjInfo['accesstype'] == 1) {
 				$checkCount = 0;
 				
-				if(in_array($memberInfo['rank_id'], $this->getRankAccessRules()) || $memberInfo['rank_id'] == 1) {
+				
+				$arrRankAccess = $this->getRankAccessRules();
+				if($fullAccessOnly) {
+					$checkAccess = $arrRankAccess[$memberInfo['rank_id']] == 0;
+				}
+				else {
+					$checkAccess = ($arrRankAccess[$memberInfo['rank_id']] == 0 || $arrRankAccess[$memberInfo['rank_id']] == 1);	
+				}
+				
+				
+				if((isset($arrRankAccess[$memberInfo['rank_id']]) && $checkAccess) || $memberInfo['rank_id'] == 1) {
 					$checkCount++;
 				}
 				
 				$arrMembers = $this->getMemberAccessRules();
-				if(isset($arrMembers[$memberInfo['member_id']]) && $arrMembers[$memberInfo['member_id']] !== 0) {
+				$memberAccessIsSet = isset($arrMembers[$memberInfo['member_id']]);
+				
+				if($memberAccessIsSet && !$fullAccessOnly && $arrMembers[$memberInfo['member_id']] != 0) {
 					$checkCount++;
 				}
+				elseif($memberAccessIsSet && $fullAccessOnly && $arrMembers[$memberInfo['member_id']] == 1) {
+					$checkCount++;	
+				}
+				elseif($memberAccessIsSet && $arrMembers[$memberInfo['member_id']] == 0) {
+					$checkCount = 0;	
+				}
+				
+				
 				
 				if($checkCount > 0) {
 					$returnVal = true;	
@@ -335,6 +373,218 @@ class ForumBoard extends BasicSort {
 		return $returnVal;
 
 	}
+	
+	public function getSubForums() {
+		
+		$arrReturn = array();
+		if($this->intTableKeyValue != "") {
+			
+			$result = $this->MySQL->query("SELECT forumboard_id FROM ".$this->strTableName." WHERE subforum_id = '".$this->intTableKeyValue."' ORDER BY sortnum");
+			while($row = $result->fetch_assoc()) {
+				$arrReturn[] = $row['forumboard_id'];
+			}
+						
+		}
+		return $arrReturn;
+	}
+	
+	
+	/*
+	 * BasicSort Functions Re-written to filter by 2 categories
+	 * 
+	 */
+	
+	public function getHighestSortNum() {
+		
+		$returnVal = false;
+		if($this->arrObjInfo[$this->strCategoryKey] != "") {
+			$catKeyValue = $this->arrObjInfo[$this->strCategoryKey];
 
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strCategoryKey." = '".$catKeyValue."' AND subforum_id = '".$this->arrObjInfo['subforum_id']."'");
+			$returnVal = $result->num_rows;
+			
+		}
+		
+		return $returnVal;
+		
+	}
+	
+	
+	function makeRoom($strBeforeAfter) {
+	
+		$strBeforeAfter = strtolower($strBeforeAfter);
+		$newSortNum = "false";
+		if($this->intTableKeyValue != "" AND ($strBeforeAfter == "before" OR $strBeforeAfter == "after")) {
+			$consoleInfo = $this->arrObjInfo;
+			$startSaving = false;
+			$x = 1;
+			$arrConsoleOptions = array();
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strCategoryKey." = '".$consoleInfo[$this->strCategoryKey]."' AND subforum_id = '".$this->arrObjInfo['subforum_id']."' ORDER BY sortnum");
+			while($row = $result->fetch_assoc()) {
+	
+				if($strBeforeAfter == "before" AND $row[$this->strTableKey] == $consoleInfo[$this->strTableKey]) {
+					$newSortNum = $x;
+					$x++;
+					$arrConsoleOptions[$x][0] = $row[$this->strTableKey];
+					$arrConsoleOptions[$x][1] = $row['sortnum'];
+					$x++;
+				}
+				elseif($strBeforeAfter == "after" AND $row[$this->strTableKey] == $consoleInfo[$this->strTableKey]) {
+					$arrConsoleOptions[$x][0] = $row[$this->strTableKey];
+					$arrConsoleOptions[$x][1] = $row['sortnum'];
+					$x++;
+					$newSortNum = $x;
+					$x++;
+	
+				}
+				else {
+	
+					$arrConsoleOptions[$x][0] = $row[$this->strTableKey];
+					$arrConsoleOptions[$x][1] = $row['sortnum'];
+					$x++;
+	
+				}
+	
+			}
+	
+			$updateArray = array();
+	
+			$updateRowName = array("sortnum");
+			if(is_numeric($newSortNum)) {
+				$intOriginalCID = $this->intTableKeyValue;
+				foreach($arrConsoleOptions as $key => $value) {
+	
+					if($key != $value[1]) {
+	
+						$this->select($value[0]);
+						$this->update(array("sortnum"), array($key));
+	
+					}
+	
+				}
+	
+				$this->select($intOriginalCID);
+	
+			}
+	
+		}
+	
+	
+		return $newSortNum;
+	}
+	
+	function resortOrder() {
+		$counter = 1; // ordernum counter
+		$consoleInfo = $this->arrObjInfo;
+		$x = 0; // array counter
+		$arrUpdateID = array();
+		$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strCategoryKey." = '".$consoleInfo[$this->strCategoryKey]."' AND subforum_id = '".$this->arrObjInfo['subforum_id']."' ORDER BY sortnum");
+		while($row = $result->fetch_assoc()) {
+			$arrUpdateID[] = $row[$this->strTableKey];
+			$x++;
+		}
+	
+		$intOriginalConsole = $this->intTableKeyValue;
+		foreach($arrUpdateID as $intUpdateID) {
+			$arrUpdateCol[0] = "sortnum";
+			$arrUpdateVal[0] = $counter;
+			$this->select($intUpdateID);
+			$this->update($arrUpdateCol, $arrUpdateVal);
+			$counter++;
+		}
+	
+		$this->select($intOriginalConsole);
+	
+	
+		return true;
+	}
+	
+	
+	function selectByOrder($intOrderNum) {
+	
+		$returnVal = false;
+		if(is_numeric($intOrderNum) && $this->arrObjInfo[$this->strCategoryKey] != "") {
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE sortnum = '".$intOrderNum."' AND ".$this->strCategoryKey." = '".$this->arrObjInfo[$this->strCategoryKey]."' AND subforum_id = '".$this->arrObjInfo['subforum_id']."'");
+			if($result->num_rows > 0) {
+				$this->arrObjInfo = $result->fetch_assoc();
+				$returnVal = true;
+				$this->intTableKeyValue = $this->arrObjInfo[$this->strTableKey];
+				$returnVal = true;
+			}
+	
+	
+		}
+	
+		return $returnVal;
+	
+	}
+	
+	function validateOrder($intOrderNumID, $strBeforeAfter, $blnEdit = false, $intEditOrderNum = "") {
+	
+		$returnVal = false;
+	
+		$catKeyValue = $this->get_info($this->strCategoryKey);
+		
+		if($intOrderNumID == "first") {
+			// "(no other categories)" selected, check to see if there are actually no other categories
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strCategoryKey." = '".$catKeyValue."' AND subforum_id = '".$this->arrObjInfo['subforum_id']."'");
+			$num_rows = $result->num_rows;
+	
+			if($num_rows == 0 || ($num_rows == 1 && $blnEdit)) {
+				$returnVal = 1;
+			}
+	
+		}
+		elseif($this->select($intOrderNumID) && ($strBeforeAfter == "before" || $strBeforeAfter == "after")) {
+	
+	
+			// Check first to see if we are editing or adding a new rank
+	
+			if($blnEdit) {
+	
+				// Editing...
+				// Check to see if the rank's order is being changed or if its staying the same
+	
+	
+				$addTo = -1; // Minus 1 if we chose "before"
+				if($strBeforeAfter == "after") {
+					$addTo = 1; // Add 1 if we chose "after"
+				}
+	
+				// Get the ordernum of the rank that we are using to determine the order of the rank being edited (*** It was selected in the IF statement above ***)
+				$thisCatOrderNum = $this->get_info("sortnum");
+	
+				$checkOrderNum = $intEditOrderNum+$addTo; // This is the new ordernum of the rank we are editing
+	
+				// If checkOrderNum is the same as intEditOrderNum then the order hasn't changed
+				if($checkOrderNum != $intEditOrderNum) {
+					$returnVal = $this->makeRoom($strBeforeAfter);
+				}
+				else {
+					$returnVal= $intEditOrderNum;
+				}
+	
+	
+			}
+			else {
+	
+				$returnVal = $this->makeRoom($strBeforeAfter);
+	
+			}
+	
+		}
+	
+		return $returnVal;
+	}
+	
+	public function setSubForumID($subforumID) {
+
+		if(is_numeric($subforumID)) {
+
+			$this->arrObjInfo['subforum_id'] = $subforumID;
+			
+		}
+		
+	}
 	
 }

@@ -27,7 +27,7 @@ $boardObj = new ForumBoard($mysqli);
 
 $consoleObj = new ConsoleOption($mysqli);
 
-$cID = $consoleObj->findConsoleIDByName("Manage Forum Categories");
+$cID = $consoleObj->findConsoleIDByName("Manage Boards");
 $consoleObj->select($cID);
 
 if($member->authorizeLogin($_SESSION['btPassword']) && $boardObj->select($_POST['bID'])) {
@@ -36,15 +36,21 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $boardObj->select($_POST[
 	if(isset($_POST['confirm'])) {
 		
 		$boardObj->delete();
+		$member->logAction("Deleted Forum Board: ".$boardInfo['name']);
+		
 		include("main_manageboards.php");
 		
 	}
 	else {
+		$addMessage = "";
+		if(count($boardObj->getSubForums()) > 0) {
+			$addMessage = "<br><br>All sub-forums will be moved to the parent category/sub-forum.";	
+		}
 		
 		echo "
 		
 			<p class='main' align='center'>
-				Are you sure you want to delete the board, <b>".$boardInfo['name']."</b>?<br><br>All posts in this board will also be deleted.
+				Are you sure you want to delete the board, <b>".$boardInfo['name']."</b>?<br><br>All posts in this board will also be deleted.".$addMessage."
 			</p>
 		
 		";

@@ -48,7 +48,7 @@ echo "
 			<tr>
 				<td class='main'>
 					<p align='center'>
-						<input type='button' id='addAppComponentBtn' class='submitButton' style='width: 150px' value='Add Component'><br><br>
+						<input type='button' id='addAppComponentBtn' class='submitButton' value='Add Component'><br><br>
 					</p>
 					<table class='formTable' style='width: 90%; margin-top: 5px'>
 						<tr>

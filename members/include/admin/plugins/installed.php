@@ -69,18 +69,21 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 		}
 		
 		$arrInstalledPlugins[] = $row['filepath'];
+		
+		$dispPluginName = filterText($row['name']);
 		echo "
 			<tr>
-				<td class='dottedLine main manageList".$addCSS."'>".$row['name']."</td>
+				<td class='dottedLine main manageList".$addCSS."'>".$dispPluginName."</td>
 				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a href='".$MAIN_ROOT."plugins/".$row['filepath']."/settings.php'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></a></td>
-				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
+				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0' data-pluginname='".$dispPluginName."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
 			</tr>		
 		";
 		
 	}
 
 	echo "</table>
-	
+	<div id='uninstallMessage' style='display: none'></div>
+	<div id='confirmDelete' style='display: none'></div>
 	<script type='text/javascript'>
 	
 		$(document).ready(function() {
@@ -88,12 +91,84 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 			$(\"a[id='uninstallPlugin']\").click(function() {
 				
 				if($(this).attr('data-clicked') == 0) {
+					$(this).attr('data-clicked', 1);
+					var thisLink = $(this);	
+					$('#confirmDelete').html(\"<p class='main' align='center'>Are you sure you want to delete the plugin: \"+$(this).attr('data-pluginname')+\"?\");
+					
+					$('#confirmDelete').dialog({
+					
+						title: 'Plugin Manager',
+						zIndex: 9999,
+						show: 'scale',
+						modal: true,
+						width: 450,
+						resizable: false,
+						buttons: {
+							'Yes': function() {
+								thisLink.attr('data-clicked', 2);
+								thisLink.click();
+								$(this).dialog('close');
+							},
+							'Cancel': function() {
+								$(this).dialog('close');
+							}
+						}
+					
+					});
+				
+				}
+				else if($(this).attr('data-clicked') == 2) {
 					$(this).html(\"<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif' class='manageListActionButton'>\");
 					$(this).attr('data-clicked', 1);
 					$(this).css('cursor', 'default');
 					
 					$.post('".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/uninstall.php', { pluginDir: $(this).attr('data-plugin') }, function(data) {
 					
+						postResult = JSON.parse(data);
+						
+						if(postResult['result'] == 'success') {
+							
+							$('#uninstallMessage').html(\"<p class='main' align='center'>Successfully uninstalled plugin!</p>\");
+							
+							
+						}
+						else {
+						
+							
+							var strErrorHTML = \"<ul>\";
+							
+							for(var x in postResult['errors']) {
+							
+								strErrorHTML += \"<li class='main'>\"+postResult['errors'][x]+\"</li>\";
+															
+							}
+
+							strErrorHTML += \"</ul>\";
+							
+							$('#uninstallMessage').html(\"<p class='main'>Unable to uninstall plugin because the following errors occurred:<br>\"+strErrorHTML+\"</p>\");
+							
+						
+						}
+						
+						$('#uninstallMessage').dialog({
+						
+							title: 'Plugin Manager',
+							zIndex: 9999,
+							show: 'scale',
+							modal: true,
+							width: 450,
+							resizable: false,
+							buttons: {
+								'Ok': function() {
+									$(this).dialog('close');
+								}								
+							}
+						
+						});
+					
+					
+					
+						reloadPluginLists();
 					
 					});
 				

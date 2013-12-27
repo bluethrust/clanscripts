@@ -1,15 +1,30 @@
 <?php
 	
+	/*
+	 * Bluethrust Clan Scripts v4
+	 * Copyright 2014
+	 *
+	 * Author: Bluethrust Web Development
+	 * E-mail: support@bluethrust.com
+	 * Website: http://www.bluethrust.com
+	 *
+	 * License: http://www.bluethrust.com/license.php
+	 *
+	 */
+
+
 	include_once($prevFolder."classes/basic.php");
 
 	class Twitter extends Basic {
 		
 
-		// SET THESE VARIABLES
+		// SET YOUR TWITTER APP KEY, SECRET AND WIDGET ID
 		protected $consumerKey = "Usg8F5rw4lNlx01jDty8A";
 		protected $consumerSecret = "uXuhU1hFWWBLZMN5DJAPbaU2ejlE1YrmqGkNF31YsQ";
 		public $widgetID = "312408324882702338";
 		
+		
+		// DO NOT EDIT BELOW
 		
 		public $requestTokenURL = "https://api.twitter.com/oauth/request_token";
 		public $authorizeURL = "https://api.twitter.com/oauth/authorize";
@@ -85,11 +100,9 @@
 			
 			if(isset($oauth_token) && isset($oauth_token_secret)) {
 				
-				$oauth_token = $this->MySQL->real_escape_string($oauth_token);
-				$oauth_token_secret = $this->MySQL->real_escape_string($oauth_token_secret);
-				
-				
-				$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE oauth_token = '".$oauth_token."'");
+				$loginHash = md5($oauth_token);
+												
+				$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE loginhash = '".$loginHash."'");
 				$row = $result->fetch_assoc();
 				if($result->num_rows > 0 && $row['oauth_tokensecret'] == $oauth_token_secret) {
 					

@@ -81,14 +81,27 @@ if($_POST['submit']) {
 		$countErrors++;
 	}
 	
-	// Check Order
+	// Check Subforum
 	
+	if($_POST['subforum'] == 1 && $boardObj->select($_POST['subforumboard'])) {
+		$setSubForum = $_POST['subforumboard'];
+	}
+	else {
+		$setSubForum = 0;
+	}
+	
+	
+	$boardObj = new ForumBoard($mysqli); // Reset boardObj
+	$boardObj->setSubForumID($setSubForum);
+	// Check Order
+	$boardObj->setCategoryKeyValue($categoryObj->get_info("forumcategory_id"));
 	$intNewOrderSpot = $boardObj->validateOrder($_POST['displayorder'], $_POST['beforeafter']);
 	
 	if($intNewOrderSpot === false) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid display order.<br>";
 		$countErrors++;
 	}
+		
 	
 	// Forum Access
 	
@@ -103,8 +116,11 @@ if($_POST['submit']) {
 		while($row = $result->fetch_assoc()) {
 
 			$checkboxName = "rankaccess_".$row['rank_id'];
-			if($_POST[$checkboxName] == "1") {
-				$arrRanks[] = $row['rank_id'];
+			if($_SESSION['btRankAccessCache'][$checkboxName] == "1") {
+				$arrRanks[$row['rank_id']] = 1;
+			}
+			elseif($_SESSION['btRankAccessCache'][$checkboxName] == "2") {
+				$arrRanks[$row['rank_id']] = 0;
 			}
 			
 		}
@@ -122,8 +138,8 @@ if($_POST['submit']) {
 	
 	if($countErrors == 0) {
 		
-		$arrColumns = array("forumcategory_id", "name", "description", "sortnum", "accesstype");
-		$arrValues = array($_POST['forumcat'], $_POST['boardname'], $_POST['boarddesc'], $intNewOrderSpot, $_POST['accesstype']);
+		$arrColumns = array("forumcategory_id", "name", "description", "sortnum", "accesstype", "subforum_id");
+		$arrValues = array($_POST['forumcat'], $_POST['boardname'], $_POST['boarddesc'], $intNewOrderSpot, $_POST['accesstype'], $setSubForum);
 		
 		if($boardObj->addNew($arrColumns, $arrValues) && $boardObj->secureBoard($arrRanks, $arrMembers)) {
 			$boardInfo = $boardObj->get_info_filtered();
@@ -160,31 +176,25 @@ if($_POST['submit']) {
 
 
 if(!$_POST['submit']) {
-	$_SESSION['btMemberAccessCache'] = array();
-	$rankoptions = "";
-	$rankCounter = 0;
-	$result1 = $mysqli->query("SELECT rankcategory_id FROM ".$dbprefix."rankcategory ORDER BY ordernum DESC");
-	while($row = $result1->fetch_assoc()) {
-
-		$rankCatObj->select($row['rankcategory_id']);
-		$arrRanks = $rankCatObj->getRanks();
-		$rankCatName = $rankCatObj->get_info_filtered("name");
-		
-		if(count($arrRanks) > 0) {
-			$rankoptions .= "<b><u>".$rankCatName."</u></b> - <a href='javascript:void(0)' onclick=\"selectAllCheckboxes('rankcat_".$row['rankcategory_id']."', 1)\">Check All</a> - <a href='javascript:void(0)' onclick=\"selectAllCheckboxes('rankcat_".$row['rankcategory_id']."', 0)\">Uncheck All</a><br>";
-			$rankoptions .= "<div id='rankcat_".$row['rankcategory_id']."'>";
-			foreach($arrRanks as $rankID) {
-				$rankObj->select($rankID);
-				$rankName = $rankObj->get_info_filtered("name");
-				$rankoptions .= "<input type='checkbox' name='rankaccess_".$rankID."' value='1'> ".$rankName."<br>";
-				$rankCounter++;
-			}
-			
-			$rankoptions .= "</div><br>";
-			$rankCounter++;
-		}
-		
+	
+	if($dispError != "") {
+		$dispError = "
+		<div class='errorDiv'>
+		<strong>Unable to add new board because the following errors occurred:</strong><br><br>
+		$dispError
+		</div>
+		";
 	}
+	else {
+		$_SESSION['btMemberAccessCache'] = array();
+		$_SESSION['btRankAccessCache'] = array();
+	}
+	
+	
+	
+	$rankCounter = 0;
+	$result1 = $mysqli->query("SELECT rankcategory_id FROM ".$dbprefix."ranks ORDER BY ordernum DESC");
+	$rankCounter = $result1->num_rows;
 	
 	while($row = $result->fetch_assoc()) {
 	
@@ -203,17 +213,7 @@ if(!$_POST['submit']) {
 		
 		";
 	
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to add new board because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	
+	echo $dispError;
 
 	echo "
 			Use the form below to add a new board to your forum.
@@ -232,6 +232,12 @@ if(!$_POST['submit']) {
 				<tr>
 					<td class='formLabel'>Category:</td>
 					<td class='main'><select id='forumcat' name='forumcat' class='textBox'>".$catoptions."</select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Sub-Forum: <input type='checkbox' name='subforum' value='1' id='isSubForum'></td>
+					<td class='main'>
+						<select name='subforumboard' id='subForumBoard' class='textBox'></select>
+					</td>
 				</tr>
 				<tr>
 					<td class='formLabel' valign='top'>Display Order:</td>
@@ -277,9 +283,21 @@ if(!$_POST['submit']) {
 		echo "
 					<tr>
 						<td class='main' colspan='2'>
-							<div style='width: 90%; margin-left: 15px; overflow-y: auto; height: ".$rankOptionsHeight."px'>
-								".$rankoptions."							
+							<div id='loadingSpiralRankAccess' class='loadingSpiral'>
+								<p align='center'>
+									<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral2.gif'><br>Loading
+								</p>
 							</div>
+							<div id='rankOptionsDiv' style='width: 90%; margin-left: 15px; margin-bottom: 10px; overflow-y: auto; height: ".$rankOptionsHeight."px'>
+											
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class='formLabel'>With Selected:</td>
+						<td class='main'>
+							<select id='selectRankAccess' class='textBox'><option value='0'>No Access</option><option value='1'>Read-Only Access</option><option value='2'>Full Access</option></select>
+							<input type='button' id='setRankAccess' value='Set' class='submitButton'>
 						</td>
 					</tr>
 					<tr>
@@ -294,7 +312,9 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='formLabel'>Access:</td>
-						<td class='main'><input type='button' class='submitButton' value='Allow' onclick=\"addMemberAccess('1')\"> <input type='button' class='submitButton' value='Deny' onclick=\"addMemberAccess('0')\"></td>
+						<td class='main'>
+							<select id='selectMemberAccess' class='textBox'><option value='0'>No Access</option><option value='2'>Read-Only Access</option><option value='1'>Full Access</option></select> <input type='button' id='btnSetMemberAccess' class='submitButton' value='Set'>
+						</td>
 					</tr>
 					<tr>
 						<td class='main' colspan='2'><br><br>
@@ -335,13 +355,54 @@ if(!$_POST['submit']) {
 		<script type='text/javascript'>
 	
 			$(document).ready(function() {
+				var intSubForumClick = 0;
+				$('#subForumBoard').attr('disabled', 'disabled');
 			
-				$('#forumcat').change(function() {
-					$.post('".$MAIN_ROOT."members/include/forum/include/boardlist.php', { catID: $('#forumcat').val() }, function(data) {
+				$('#isSubForum').click(function() {	
+				
+					if(intSubForumClick == 0) {
+						$('#subForumBoard').attr('disabled', false);
+						intSubForumClick = 1;
+						
+						$('#subForumBoard').change();
+						
+					}
+					else {
+						$('#subForumBoard').attr('disabled', 'disabled');
+						intSubForumClick = 0;
+						
+						$('#forumcat').change();
+						
+					}			
+				
+				});
+				
+				$('#subForumBoard').change(function() {
+				
+					$.post('".$MAIN_ROOT."members/include/forum/include/subforumlist.php', { subforum: $('#subForumBoard').val() }, function(data) {
 						
 						$('#displayorder').html(data);
 					
 					});
+				
+				});
+				
+				
+				$('#forumcat').change(function() {
+					$.post('".$MAIN_ROOT."members/include/forum/include/boardlist.php', { catID: $('#forumcat').val(), isSubforum: intSubForumClick }, function(data) {
+						
+						$('#subForumBoard').html(data);
+					
+						if(intSubForumClick == 0) {
+							$('#displayorder').html(data);
+						}
+						else {
+							$('#subForumBoard').change();
+						}
+						
+						
+					
+					});					
 				});
 				
 				$('#accesstype').change(function() {
@@ -357,6 +418,69 @@ if(!$_POST['submit']) {
 				
 			
 				$('#forumcat').change();
+				
+				$('#loadingSpiralRankAccess').show();
+				$('#rankOptionsDiv').hide();
+				
+				$.post('".$MAIN_ROOT."members/include/forum/include/rankaccesscache.php', { }, function(data) {
+				
+					$('#loadingSpiralRankAccess').hide();
+					$('#rankOptionsDiv').html(data);				
+					$('#rankOptionsDiv').fadeIn(250);
+
+				});
+				
+				
+				";
+		
+			if($dispError != "") {
+				echo "
+					$('#loadingSpiral').show();
+					$('#boardMemberAccess').hide();
+					
+					$.post('".$MAIN_ROOT."members/include/forum/include/boardaccesscache.php', { }, function(data) {
+					
+						$('#loadingSpiral').hide();
+						$('#boardMemberAccess').html(data);				
+						$('#boardMemberAccess').fadeIn(250);
+	
+					});
+				";
+			}
+				
+			echo "
+				
+				$('#setRankAccess').click(function() {
+					var intAccessCount = 0;
+					var objRankAccess = {};
+					$(\"input[data-rankaccess='1']\").each(function(index) {
+						if($(this).is(':checked') && ($('#selectRankAccess').val() == '0' || $('#selectRankAccess').val() == '1' || $('#selectRankAccess').val() == '2')) {
+							objRankAccess[$(this).attr('name')] = $('#selectRankAccess').val();
+						}
+					});
+					
+					var jsonRankAccess = JSON.stringify(objRankAccess);
+					
+					$('#loadingSpiralRankAccess').show();
+					$('#rankOptionsDiv').hide();
+					
+					$.post('".$MAIN_ROOT."members/include/forum/include/rankaccesscache.php', { accessInfo: jsonRankAccess }, function(data) {
+					
+						$('#loadingSpiralRankAccess').hide();
+						$('#rankOptionsDiv').html(data);				
+						$('#rankOptionsDiv').fadeIn(250);
+					
+					});
+					
+				});
+
+				$('#btnSetMemberAccess').click(function() {
+				
+					addMemberAccess($('#selectMemberAccess').val());
+				
+				});
+				
+				
 			});
 			
 			

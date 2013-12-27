@@ -160,7 +160,7 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='main' colspan='2' align='center'><br><br>
-							<input type='submit' name='submit' value='Reset Password' class='submitButton' style='width: 140px'>
+							<input type='submit' name='submit' value='Reset Password' class='submitButton'>
 						</td>
 					</tr>
 				</table>

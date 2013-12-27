@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -22,6 +22,7 @@ include_once($prevFolder."classes/forumboard.php");
 
 $consoleObj = new ConsoleOption($mysqli);
 $boardObj = new ForumBoard($mysqli);
+$subForumObj = new ForumBoard($mysqli);
 $member = new Member($mysqli);
 $postMemberObj = new Member($mysqli);
 
@@ -69,7 +70,6 @@ if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION
 }
 
 
-
 echo "
 	<div class='breadCrumbTitle'>Forum</div>
 	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
@@ -86,7 +86,7 @@ while($row = $result->fetch_assoc()) {
 	
 	$categoryObj->select($row['forumcategory_id']);
 	$catInfo = $categoryObj->get_info_filtered();
-	$arrBoards = $categoryObj->getAssociateIDs("ORDER BY sortnum");
+	$arrBoards = $categoryObj->getAssociateIDs("AND subforum_id = '0' ORDER BY sortnum", true);
 	$dispBoards = "";
 	foreach($arrBoards as $boardID) {
 		
@@ -126,9 +126,26 @@ while($row = $result->fetch_assoc()) {
 			$dispTopicCount = $boardObj->countTopics();
 			$dispPostCount = $boardObj->countPosts();
 			
+			$arrDispSubForums = array();
+			$arrSubForums = $boardObj->getSubForums();
+		
+			foreach($arrSubForums as $value) {
+				$subForumObj->select($value);
+				$subForumInfo = $subForumObj->get_info_filtered();
+				
+				$arrDispSubForums[] = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$value."'>".$subForumInfo['name']."</a>";
+			}
+			
+			
+			$dispSubForums = "";
+			if(count($arrDispSubForums) > 0) {
+				$dispSubForums = "<br><br><b>Sub-Forums:</b><br>&nbsp;&nbsp;".implode("&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;", $arrDispSubForums);	
+			}
+			
+			
 			$dispBoards .= "
 				<tr class='boardRows'>
-					<td class='boardName dottedLine".$newTopicBG."'><a href='viewboard.php?bID=".$boardInfo['forumboard_id']."'>".$boardInfo['name']."</a>".$dispNewTopicIMG."<br><span class='boardDescription'>".$boardInfo['description']."</span></td>
+					<td class='boardName dottedLine".$newTopicBG."'><a href='viewboard.php?bID=".$boardInfo['forumboard_id']."'>".$boardInfo['name']."</a>".$dispNewTopicIMG."<br><span class='boardDescription'>".$boardInfo['description'].$dispSubForums."</span></td>
 					<td class='dottedLine boardLastPost".$newTopicBG."'>".$dispLastPost."</td>
 					<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."</td>
 					<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispPostCount."</td>

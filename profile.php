@@ -275,6 +275,7 @@ else {
 			$arrSections[] = "include/profile/_gamesplayed.php";
 			$arrSections[] = "include/profile/_squads.php";
 			$arrSections[] = "include/profile/_medals.php";
+			$arrSections[] = "";
 			
 			$pluginObj = new btPlugin($mysqli);
 			
@@ -292,11 +293,15 @@ else {
 					
 				}
 
-				include($section);
+				if($section != "") {
+					include($section);
+				}
 								
 				$x++;
 				
 			}
+			
+			
 			
 			
 		?>

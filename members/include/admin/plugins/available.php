@@ -125,7 +125,7 @@ echo "
 
 							strErrorHTML += \"</ul>\";
 							
-							$('#installMessage').html(\"<p class='main'>Unable to add new profile option because the following errors occurred:<br>\"+strErrorHTML+\"</p>\");
+							$('#installMessage').html(\"<p class='main'>Unable to install plugin because the following errors occurred:<br>\"+strErrorHTML+\"</p>\");
 							
 						
 						}

@@ -157,18 +157,129 @@ if($blnPageSelect) {
 	";
 }
 
+
+// Subforums
+
+$subForumObj = new ForumBoard($mysqli);
+$arrSubForums = $boardObj->getSubForums();
+$dispSubForums = "";
+foreach($arrSubForums as $boardID) {
+	
+	$subForumObj->select($boardID);
+	
+	if($subForumObj->memberHasAccess($memberInfo)) {
+		$subForumInfo = $subForumObj->get_info_filtered();
+		$arrForumTopics = $subForumObj->getForumTopics();
+		
+		$newTopicBG = "";
+		$dispNewTopicIMG = "";
+		
+		if($LOGGED_IN && $subForumObj->hasNewTopics($memberInfo['member_id'])) {
+			$dispNewTopicIMG = " <img style='margin-left: 5px' src='".$MAIN_ROOT."themes/".$THEME."/images/forum-new.png' title='New Posts!'>";
+			$newTopicBG = " boardNewPostBG";
+		}
+		
+		// Get Last Post Display Info
+		if(count($arrForumTopics) > 0) {
+			$subForumObj->objPost->select($arrForumTopics[0]);
+			$firstPostInfo = $subForumObj->objPost->get_info_filtered();
+			
+			$subForumObj->objTopic->select($firstPostInfo['forumtopic_id']);
+			$lastPostID = $subForumObj->objTopic->get_info("lastpost_id");
+			
+			$subForumObj->objPost->select($lastPostID);
+			$lastPostInfo = $subForumObj->objPost->get_info_filtered();
+			
+			$postMemberObj->select($lastPostInfo['member_id']);
+			
+			$dispLastPost = "<div class='boardLastPostTitle'><a href='viewtopic.php?tID=".$firstPostInfo['forumtopic_id']."#".$lastPostID."' title='".$firstPostInfo['title']."'>".$firstPostInfo['title']."</a></div>by ".$postMemberObj->getMemberLink()."<br>".getPreciseTime($lastPostInfo['dateposted']);
+		}
+		else {
+			$dispLastPost = "<div style='text-align: center'>No Posts</div>";	
+		}
+		
+		$dispTopicCount = $subForumObj->countTopics();
+		$dispPostCount = $subForumObj->countPosts();
+		
+		$arrDispMoreSubForums = array();
+		$arrMoreSubForums = $subForumObj->getSubForums();
+	
+		foreach($arrMoreSubForums as $value) {
+			$subForumObj->select($value);
+			$subForumInfo = $subForumObj->get_info_filtered();
+			
+			$arrDispMoreSubForums[] = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$value."'>".$subForumInfo['name']."</a>";
+		}
+		
+		
+		$dispMoreSubForums = "";
+		if(count($arrDispMoreSubForums) > 0) {
+			$dispMoreSubForums = "<br><br><b>Sub-Forums:</b><br>&nbsp;&nbsp;".implode("&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;", $arrDispMoreSubForums);	
+		}
+		
+		$subForumObj->select($boardID);
+		$subForumInfo = $subForumObj->get_info_filtered();
+		$dispSubForums .= "
+			<tr class='boardRows'>
+				<td class='boardName dottedLine".$newTopicBG."'><a href='viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a>".$dispNewTopicIMG."<br><span class='boardDescription'>".$subForumInfo['description'].$dispMoreSubForums."</span></td>
+				<td class='dottedLine boardLastPost".$newTopicBG."'>".$dispLastPost."</td>
+				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."</td>
+				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispPostCount."</td>
+			
+			</tr>
+		";
+		
+	}
+
+}
+
+$dispBreadCrumbChain = "";
+if($boardInfo['subforum_id'] != 0) {
+
+	$subForumID = $boardInfo['subforum_id'];
+	while($subForumID != 0) {
+		$subForumObj->select($subForumID);
+		$subForumInfo = $subForumObj->get_info_filtered();
+		$subForumID = $subForumInfo['subforum_id'];
+		$dispBreadCrumbChain = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a> > ".$dispBreadCrumbChain;
+	}
+	
+}
+
 echo "
 <div class='breadCrumbTitle'>".$boardInfo['name']."</div>
 <div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-<a href='".$MAIN_ROOT."'>Home</a> > <a href='index.php'>Forum</a> > ".$boardInfo['name']."
+<a href='".$MAIN_ROOT."'>Home</a> > <a href='index.php'>Forum</a> > ".$dispBreadCrumbChain.$boardInfo['name']."
 </div>
 
 
 <table class='forumTable'>
+";
+
+if($dispSubForums != "") {
+
+	echo "	
+	
+		<tr>
+			<td colspan='4' class='boardCategory'>Sub-Forums</td>
+		</tr>
+		<tr>
+			<td class='boardTitles-Name'>Forum:</td>
+			<td class='boardTitles-LastPost' style='border-left: 0px'>Last Post:</td>
+			<td class='boardTitles-TopicCount' style='border-left: 0px'>Topics:</td>
+			<td class='boardTitles-TopicCount' style='border-left: 0px'>Posts:</td>
+		</tr>
+	";
+	
+	echo $dispSubForums;
+	echo "<tr><td colspan='4'><br><br></td></tr>";
+}
+
+echo "
 	<tr>
 		<td colspan='2' class='main' valign='bottom'>
 			"; 
-			if(LOGGED_IN) { 
+			if(LOGGED_IN && $boardObj->memberHasAccess($memberInfo, true)) { 
 				echo "<p style='margin-top: 0px'><b>&raquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$intPostTopicCID."&bID=".$boardInfo['forumboard_id']."'>NEW TOPIC</a> &laquo;</b></p>"; 
 			}
 		echo "

@@ -37,8 +37,10 @@ class Member extends Basic {
 	function select($memberID) {
 		$returnVal = false;
 		if(is_numeric($memberID)) {
+			
 			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE member_id = '$memberID'");
 			if($result->num_rows > 0) {
+				
 				$this->arrObjInfo = $result->fetch_assoc();
 				$this->intTableKeyValue = $this->arrObjInfo['member_id'];
 				$returnVal = true;

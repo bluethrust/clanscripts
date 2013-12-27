@@ -377,10 +377,13 @@ class BasicOrder extends Basic {
 	 *
 	 */
 	
-	function getAssociateIDs($sqlOrderBY = "") {
+	function getAssociateIDs($sqlOrderBY = "", $bypassFilter=false) {
 	
 		$arrReturn = array();
-		$sqlOrderBY = $this->MySQL->real_escape_string($sqlOrderBY);
+		if(!$bypassFilter) {
+			$sqlOrderBY = $this->MySQL->real_escape_string($sqlOrderBY);
+		}
+		
 		if($this->intTableKeyValue != "") {
 			$result = $this->MySQL->query("SELECT * FROM ".$this->strAssociateTableName." WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."' ".$sqlOrderBY);
 			while($row = $result->fetch_assoc()) {
@@ -422,6 +425,7 @@ class BasicOrder extends Basic {
 				$returnVal = true;	
 			}
 			
+			$this->resortOrder();
 			
 			$this->MySQL->query("OPTIMIZE TABLE `".$this->strTableName."`");
 			

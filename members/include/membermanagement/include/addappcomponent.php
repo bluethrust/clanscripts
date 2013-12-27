@@ -218,7 +218,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 					</tr>
 					<tr>
 						<td class='main' style='width: 25%'><b>Option Value:</b></td>
-						<td class='main' style='width: 75%'><input type='text' id='optionValue' class='textBox'> <input type='button' id='addOptionValueBtn' class='submitButton' style='width: 40px' value='Add'></td>
+						<td class='main' style='width: 75%'><input type='text' id='optionValue' class='textBox'> <input type='button' id='addOptionValueBtn' class='submitButton' value='Add'></td>
 					</tr>
 					<tr>
 						<td class='main' style='width: 25%' valign='top'><b>Option List:</td></td>

@@ -22,7 +22,7 @@ include_once("basic.php");
 
 class BasicSort extends Basic {
 	
-	var $strCategoryKey;
+	public $strCategoryKey;
 	
 	public function __construct($sqlConnection, $tableName, $tableKey, $categoryKey) {
 		$this->MySQL = $sqlConnection;
@@ -153,7 +153,6 @@ class BasicSort extends Basic {
 		$returnVal = false;
 		if($this->arrObjInfo[$this->strCategoryKey] != "") {
 			$catKeyValue = $this->arrObjInfo[$this->strCategoryKey];
-
 			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strCategoryKey." = '".$catKeyValue."'");
 			$returnVal = $result->num_rows;
 			
@@ -378,9 +377,16 @@ class BasicSort extends Basic {
 		}
 
 		return $this->arrObjInfo[$this->strCategoryKey];
-		//$this->arrObjInfo[$this->strCategoryKey];
 	}
 	
+	function delete() {
+		
+		if($this->intTableKeyValue != "") {
+			$blnDelete = parent::delete();
+			$this->resortOrder();
+		}
+		
+	}
 	
 }
 

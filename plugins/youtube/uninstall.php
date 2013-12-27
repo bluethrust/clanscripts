@@ -20,8 +20,8 @@ include_once("../../classes/consolecategory.php");
 
 // Plugin Info
 
-$PLUGIN_TABLE_NAME = $dbprefix."twitter";
-$PLUGIN_NAME = "Twitter Connect";
+$PLUGIN_TABLE_NAME = $dbprefix."youtube";
+$PLUGIN_NAME = "Youtube Connect";
 
 
 // Start Page
@@ -58,8 +58,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	// Start Uninstall
 	
 	$sql = "DROP TABLE `".$PLUGIN_TABLE_NAME."`";
+	$sql2 = "DROP TABLE `".$dbprefix."youtube_videos`";
 	
-	if($mysqli->query($sql)) {
+	if($mysqli->query($sql) && $mysqli->query($sql2)) {
 		// Remove Plugin from plugin table
 		$pluginID = array_search($_POST['pluginDir'], $pluginObj->getPlugins("filepath"));
 		
@@ -67,9 +68,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		$checkDeletePlugin = $pluginObj->delete();
 		
 		// Remove Console Option
-		$twitterConnectCID = $consoleObj->findConsoleIDByName($PLUGIN_NAME);
-		if($twitterConnectCID !== false) {
-			$consoleObj->select($twitterConnectCID);
+		$ytConnectCID = $consoleObj->findConsoleIDByName($PLUGIN_NAME);
+		if($ytConnectCID !== false) {
+			$consoleObj->select($ytConnectCID);
 			$checkDeleteConsole = $consoleObj->delete();
 		}
 		else {

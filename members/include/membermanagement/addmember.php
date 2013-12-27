@@ -219,7 +219,7 @@ if(!$_POST['submit']) {
 					echo "
 					<tr>
 						<td class='main' align='center' colspan='2'><br><br>
-							<input type='submit' name='submit' value='Add New Member' class='submitButton' style='width: 125px'>
+							<input type='submit' name='submit' value='Add New Member' class='submitButton'>
 						</td>
 					</tr>
 				</table>

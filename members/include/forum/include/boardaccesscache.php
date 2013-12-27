@@ -32,8 +32,15 @@ $consoleObj->select($cID);
 
 if($member->authorizeLogin($_SESSION['btPassword'])) {
 	
+	/*
+	 * 0 - No Access
+	 * 1 - Full Access
+	 * 2 - Read Only
+	 */
+	
+	
 	if(isset($_POST['action']) &&  $accessMemberObj->select($_POST['mID'])) {
-		if($_POST['action'] == "add" && ($_POST['accessRule'] == "1" || $_POST['accessRule'] == "0")) {
+		if($_POST['action'] == "add" && ($_POST['accessRule'] == "1" || $_POST['accessRule'] == "0" || $_POST['accessRule'] == "2")) {
 			$_SESSION['btMemberAccessCache'][$_POST['mID']] = $_POST['accessRule'];
 		}
 		elseif($_POST['action'] == "delete") {
@@ -65,7 +72,10 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			
 			$dispAccess = "<span class='denyText'>Deny</span>";
 			if($accessRule == 1) {
-				$dispAccess = "<span class='allowText'>Allow</span>";
+				$dispAccess = "<span class='pendingFont'>Full</span>";
+			}
+			elseif($accessRule == 2) {
+				$dispAccess = "<span class='allowText'>Read-Only</span>";
 			}
 
 			

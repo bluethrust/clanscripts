@@ -15,7 +15,7 @@
 
 // This setup page should not be changed.  Edit _config.php to configure your website.
 
-//ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 
 if(get_magic_quotes_gpc() == 1) {
 	foreach($_GET as $key=>$value) { $_GET[$key] = stripslashes($value); }
@@ -37,7 +37,7 @@ else {
 	}
 }
 
-include("_config.php");
+include($prevFolder."_config.php");
 $PAGE_NAME = "";
 
 include_once($prevFolder."classes/btmysql.php");
@@ -70,8 +70,8 @@ if($websiteInfo['debugmode'] == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 else {
-	//ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
-	//ini_set('display_errors', 0);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
+	ini_set('display_errors', 0);
 }
 
 

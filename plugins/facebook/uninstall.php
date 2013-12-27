@@ -20,8 +20,8 @@ include_once("../../classes/consolecategory.php");
 
 // Plugin Info
 
-$PLUGIN_TABLE_NAME = $dbprefix."twitter";
-$PLUGIN_NAME = "Twitter Connect";
+$PLUGIN_TABLE_NAME = $dbprefix."facebook";
+$PLUGIN_NAME = "Facebook Login";
 
 
 // Start Page
@@ -53,8 +53,6 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		$dispError[] = "The selected plugin is not installed!";
 	}
 	
-	
-	
 	// Start Uninstall
 	
 	$sql = "DROP TABLE `".$PLUGIN_TABLE_NAME."`";
@@ -67,14 +65,10 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		$checkDeletePlugin = $pluginObj->delete();
 		
 		// Remove Console Option
-		$twitterConnectCID = $consoleObj->findConsoleIDByName($PLUGIN_NAME);
-		if($twitterConnectCID !== false) {
-			$consoleObj->select($twitterConnectCID);
-			$checkDeleteConsole = $consoleObj->delete();
-		}
-		else {
-			$checkDeleteConsole = false;	
-		}
+		$fbLoginCID = $consoleObj->findConsoleIDByName($PLUGIN_NAME);
+		$consoleObj->select($fbLoginCID);
+		$checkDeleteConsole = $consoleObj->delete();
+
 		
 		if(!$checkDeletePlugin) {
 			$countErrors++;
@@ -106,7 +100,5 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	
 	echo json_encode($arrReturn);
 	
+	
 }
-
-
-?>

@@ -121,7 +121,7 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='main' colspan='2' align='center'><br><br>
-							<input type='submit' name='submit' value='Save' class='submitButton' style='width: 100px'><br><br>
+							<input type='submit' name='submit' value='Save' class='submitButton'><br><br>
 						</td>
 					</tr>
 				</table>

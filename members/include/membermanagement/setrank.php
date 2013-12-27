@@ -243,7 +243,7 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='main' align='center' colspan='2'><br>		
-							<input type='submit' name='submit' value='Set Rank' class='submitButton' style='width: 125px'>
+							<input type='submit' name='submit' value='Set Rank' class='submitButton'>
 						</td>
 					</tr>
 				</table>

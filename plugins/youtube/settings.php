@@ -16,7 +16,7 @@ include_once("../../_setup.php");
 include_once("../../classes/member.php");
 include_once("../../classes/rank.php");
 include_once("../../classes/btplugin.php");
-include_once("twitter.php");
+include_once("youtube.php");
 
 
 $ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
@@ -49,8 +49,8 @@ $member->select($_SESSION['btUsername']);
 
 $prevFolder = "../../";
 
-$PAGE_NAME = "Twitter Connect - ".$consoleTitle." - ";
-$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members'>My Account</a> > <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>".$consoleTitle."</a> > Twitter Connect Settings";
+$PAGE_NAME = "Youtube Connect - ".$consoleTitle." - ";
+$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members'>My Account</a> > <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>".$consoleTitle."</a> > Youtube Connect Settings";
 $EXTERNAL_JAVASCRIPT .= "
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/console.js'></script>
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/main.js'></script>
@@ -58,7 +58,7 @@ $EXTERNAL_JAVASCRIPT .= "
 
 include("../../themes/".$THEME."/_header.php");
 echo "
-<div class='breadCrumbTitle' id='breadCrumbTitle'>Twitter Connect Settings</div>
+<div class='breadCrumbTitle' id='breadCrumbTitle'>Youtube Connect Settings</div>
 <div class='breadCrumb' id='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
 $dispBreadCrumb
 </div>
@@ -69,11 +69,11 @@ $dispBreadCrumb
 // Check Login
 $LOGIN_FAIL = true;
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj)) {
-
-	$twitterObj = new Twitter($mysqli);
+	
+	$ytObj = new Youtube($mysqli);
 	$memberInfo = $member->get_info_filtered();
 	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."plugins WHERE name = 'Twitter Connect'");
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."plugins WHERE name = 'Youtube Connect'");
 	$pluginInfo = $result->fetch_assoc();
 	
 	$pluginObj->pluginPage->setCategoryKeyValue($pluginInfo['plugin_id']);
@@ -85,9 +85,11 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	$countErrors = 0;
 	$dispError = "";
 	
-	if($_POST['submit']) {
 	
-		// Check Display Order (before/after)
+	if($_POST['submit']) {
+		
+		
+	// Check Display Order (before/after)
 		if($_POST['beforeafter'] != "before" && $_POST['beforeafter'] != "after") {
 			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid display order (before/after).<br>";
 			$countErrors++;
@@ -117,17 +119,17 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				echo "
 				<div style='display: none' id='successBox'>
 				<p align='center'>
-				Successfully Saved Twitter Connect Settings!
+				Successfully Saved Youtube Connect Settings!
 				</p>
 				</div>
 				
 				<script type='text/javascript'>
-				popupDialog('Twitter Connect', '".$MAIN_ROOT."members/console.php?cID=".$cID."', 'successBox');
+				popupDialog('Youtube Connect', '".$MAIN_ROOT."members/console.php?cID=".$cID."', 'successBox');
 				</script>
 				
 				";
 				
-				$member->logAction("Changed Twitter Connect Plugin Settings.");
+				$member->logAction("Changed Youtube Connect Plugin Settings.");
 			}
 			else {
 				$countErrors++;
@@ -145,6 +147,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 	}
 	
+	
 	if(!$_POST['submit']) {
 		
 		$selectAfter = "";
@@ -159,16 +162,16 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		$dispNote = "";
 		
-		$arrTwitterAPIKeys = array("Consumer Key"=>$twitterObj->getConsumerKey(), "Consumer Secret"=>$twitterObj->getConsumerSecret(), "Widget ID"=>$twitterObj->widgetID);
+		$arrYoutubeAPIKeys = array("Client ID"=>$ytObj->getClientID(), "Client Secret"=>$ytObj->getClientSecret());
 		
-		foreach($arrTwitterAPIKeys as $key=>$value) {
+		foreach($arrYoutubeAPIKeys as $key=>$value) {
 			
 			if($value == "") {
 				$dispNote .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> ".$key."<br>";
-				$dispTwitterAPIKey[$key] = "<span class='failedFont'>Not Set!</span>";
+				$dispYTAPIKey[$key] = "<span class='failedFont'>Not Set!</span>";
 			}
 			else {
-				$dispTwitterAPIKey[$key] = $value;
+				$dispYTAPIKey[$key] = $value;
 			}
 			
 		}
@@ -176,7 +179,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		echo "
 			<p align='right' style='margin-bottom: 10px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
 		
-			<form action='".$MAIN_ROOT."plugins/twitter/settings.php' method='post'>
+			<form action='".$MAIN_ROOT."plugins/youtube/settings.php' method='post'>
 				<div class='formDiv'>
 					
 				";
@@ -184,7 +187,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		if($dispError != "") {
 			echo "
 			<div class='errorDiv'>
-			<strong>Unable to save Twitter Connect settings because the following errors occurred:</strong><br><br>
+			<strong>Unable to Youtube Connect settings because the following errors occurred:</strong><br><br>
 			$dispError
 			</div>
 			";
@@ -194,7 +197,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		if($dispNote != "") {
 			echo "
 				<div class='errorDiv'>
-					<strong><u>NOTE:</u> In order for Twitter Connect to work you must set the following variables in the twitter.php plugin file.</strong><br><br>
+					<strong><u>NOTE:</u> In order for Youtube Connect to work you must set the following variables in the youtube.php plugin file.</strong><br><br>
 					".$dispNote."
 				</div>
 			";
@@ -204,26 +207,22 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		echo "
 				
 				
-					Your Twitter Connect settings are listed below.  Some settings must be set within the actual plugin files.
+					Your Youtube Connect settings are listed below.  Some settings must be set within the actual plugin files.
 					<table class='formTable'>
 						<tr>
 							<td class='main' colspan='2'>
 								<div class='dottedLine' style='padding-bottom: 3px'>
-									<b>Twitter API Settings:</b>
+									<b>Youtube API Settings:</b>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<td class='formLabel'>Consumer Key: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Consumer Key']."</td>
+							<td class='formLabel'>Client ID: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the youtube.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
+							<td class='main'>".$dispYTAPIKey['Client ID']."</td>
 						</tr>
 						<tr>
-							<td class='formLabel'>Consumer Secret: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Consumer Secret']."</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Twitter Widget ID: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Widget ID']."</td>
+							<td class='formLabel'>Consumer Secret: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the youtube.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
+							<td class='main'>".$dispYTAPIKey['Client Secret']."</td>
 						</tr>
 						<tr>
 							<td class='main' colspan='2'><br>
@@ -270,9 +269,11 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			</form>
 			<p align='right' style='margin-bottom: 20px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
 	
-		";
-	
+		";	
+		
+		
 	}
+	
 	
 	
 }
@@ -285,5 +286,7 @@ else {
 
 
 include("../../themes/".$THEME."/_footer.php");
+
+
 
 ?>

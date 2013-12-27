@@ -74,7 +74,7 @@ class ShoutBox {
 				
 				$shoutBoxInfo .= "
 					<b>".$memberLink.":</b><br>
-					".$dispPost."
+					".filterText($dispPost)."
 					".$dispTime."
 					".$dispManagePost."
 					<div class='dottedLine' style='margin: 5px 0px'></div>

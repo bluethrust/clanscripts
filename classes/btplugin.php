@@ -31,9 +31,11 @@
 			}
 			
 
-			$result = $this->MySQL->query("SELECT ".$return." FROM ".$this->strTableName);
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName);
 			while($row = $result->fetch_assoc()) {
-				$arrReturn[] = $row[$return];	
+
+				$arrReturn[$row['plugin_id']] = $row[$return];
+			
 			}
 			
 			return $arrReturn;

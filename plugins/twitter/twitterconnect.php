@@ -42,8 +42,8 @@ if(isset($_GET['oauth_token']) && isset($_GET['oauth_verifier']) && $_GET['oauth
 	
 	if($twitterObj->httpCode == 200) {
 		parse_str($response, $oauthArray);
-		$arrColumns = array("member_id", "oauth_token", "oauth_tokensecret");
-		$arrValues = array($memberInfo['member_id'], $oauthArray['oauth_token'], $oauthArray['oauth_token_secret']);
+		$arrColumns = array("member_id", "oauth_token", "oauth_tokensecret", "loginhash");
+		$arrValues = array($memberInfo['member_id'], $oauthArray['oauth_token'], $oauthArray['oauth_token_secret'], md5($oauthArray['oauth_token']));
 		
 		
 		if(!$twitterObj->authorizeLogin($oauthArray['oauth_token'], $oauthArray['oauth_token_secret'])) {
@@ -109,13 +109,14 @@ elseif(!$twitterObj->hasTwitter($memberInfo['member_id'])) {
 		$_SESSION['btOauth_Token_Secret'] = $arrOutput['oauth_token_secret'];
 		
 		echo "
-			
+					
+			<p>Redirecting to Twitter...</p>
 			<script type='text/javascript'>
 			
 				window.location = '".$twitterObj->authorizeURL."?oauth_token=".$arrOutput['oauth_token']."';
 			
 			</script>
-		
+
 		";
 		
 	}
@@ -228,7 +229,7 @@ elseif($twitterObj->hasTwitter($memberInfo['member_id'])) {
 									<b>Log In Options:</b>
 								</div>
 								<div style='padding-left: 3px; margin-bottom: 15px'>
-									Check the box below to allow logging into this website through twitter.
+									Check the box below to allow logging into this website through Twitter.
 								</div>
 							</td>
 						</tr>
