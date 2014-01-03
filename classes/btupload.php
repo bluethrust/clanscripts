@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -26,6 +26,7 @@ class BTUpload {
 	protected $intUploadSizeLimit;
 	protected $strOutsideFileURL;
 	protected $blnOutsideLink;
+	public $arrErrors = array();
 	
 	const ONE_MEGABYTE = 1048576;
 	
@@ -156,8 +157,18 @@ class BTUpload {
 				
 			}
 			
+			if(!$blnUploadFile) {
+				$this->arrErrors[] = "Can't Upload";
+			}
+			
+		}
+		else {
+			$this->arrErrors[] = "File Size and Extension";	
 		}
 
+		
+		print_r($this->arrErrors);
+		
 		return $blnUploadFile;
 	}
 	

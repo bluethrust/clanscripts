@@ -3,7 +3,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -77,12 +77,20 @@ echo "
 			$dispUpArrow = "<img src='".$MAIN_ROOT."themes/".$THEME."/images/transparent.png' width='24' height='24'>";
 		}
 
-		if($appComponentInfo['componenttype'] == "multiselect") {
-			$appComponentInfo['componenttype'] = "Multi-Select";	
+		
+		
+		switch($appComponentInfo['componenttype']) {
+			case "multiselect":
+				$appComponentInfo['componenttype'] = "Multi-Select";
+				break;
+			case "largeinput":
+				$appComponentInfo['componenttype'] = "Large-Input";
+				break;
+			case "captchaextra":
+				$appComponentInfo['componenttype'] = "Captcha - Extra Distortion";	
+				break;
 		}
-		elseif($appComponentInfo['componenttype'] == "largeinput") {
-			$appComponentInfo['componenttype'] = "Large-Input";	
-		}
+		
 		
 		$dispType = ucfirst($appComponentInfo['componenttype']);
 		

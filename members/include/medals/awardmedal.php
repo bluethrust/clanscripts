@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -26,6 +26,14 @@ else {
 include_once("../classes/medal.php");
 
 $rankInfo = $memberRank->get_info_filtered();
+
+if($memberInfo['promotepower'] != 0) {
+	$rankInfo['promotepower'] = $memberInfo['promotepower'];	
+}
+elseif($memberInfo['promotepower'] == -1) {
+	$rankInfo['promotepower'] = 0;	
+}
+
 $cID = $_GET['cID'];
 
 $dispError = "";
@@ -53,7 +61,7 @@ if($rankInfo['rank_id'] == 1) {
 }
 
 $arrRanks = array();
-$result = $mysqli->query("SELECT * FROM ".$dbprefix."ranks WHERE ordernum < '".$maxRankInfo['ordernum']."' AND rank_id != '1' ORDER BY ordernum DESC");
+$result = $mysqli->query("SELECT * FROM ".$dbprefix."ranks WHERE ordernum <= '".$maxRankInfo['ordernum']."' AND rank_id != '1' ORDER BY ordernum DESC");
 while($row = $result->fetch_assoc()) {
 	$arrRanks[] = $row['rank_id'];
 }

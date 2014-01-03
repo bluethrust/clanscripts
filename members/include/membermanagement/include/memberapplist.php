@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -73,7 +73,7 @@ while($row = $result->fetch_assoc()) {
 			";
 	
 	
-	$memAppCompQuery = $mysqli->query("SELECT appcomponent_id FROM ".$dbprefix."app_components ORDER BY ordernum DESC");
+	$memAppCompQuery = $mysqli->query("SELECT appcomponent_id FROM ".$dbprefix."app_components WHERE componenttype != 'captcha' AND componenttype != 'captchaextra' ORDER BY ordernum DESC");
 	while($row2 = $memAppCompQuery->fetch_assoc()) {
 		
 		$appComponentObj->select($row2['appcomponent_id']);

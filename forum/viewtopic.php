@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -341,7 +341,7 @@ while($row = $result->fetch_assoc()) {
 			<td class='boardPosterInfo' valign='top'><a name='".$postInfo['forumpost_id']."'></a>
 				<span class='boardPosterName'>".$postMemberObj->getMemberLink()."</span><br>
 				".$posterRankInfo['name']."<br>
-				<img src='".$postMemberInfo['avatar']."' style='width: 50px; height: 50px; margin-top: 5px; margin-bottom: 5px'><br>
+				<img src='".$postMemberInfo['avatar']."' class='boardPosterAvatar' style='margin-top: 5px; margin-bottom: 5px'><br>
 				Posts: ".$postMemberObj->countForumPosts()."
 				".$dispRankIMG."
 				".$dispMedals."
@@ -402,7 +402,7 @@ while($row = $result->fetch_assoc()) {
 		<tr>
 			<td class='boardPosterInfoExtra'></td>
 			<td class='boardPostExtraRow'>
-				<div class='forumSignatureContainer'>".$postMemberObj->get_info("forumsignature")."</div>
+				<div class='forumSignatureContainer'>".parseBBCode($postMemberObj->get_info("forumsignature"))."</div>
 			</td>
 		</tr>
 		";

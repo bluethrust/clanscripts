@@ -23,6 +23,14 @@ else {
 	$dispHTTP = "https://";
 }
 
+// Check CSRF Attack
+
+if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['csrfKey'] != $_SESSION['csrfKey']) {
+	echo "Hacks?";
+	exit();
+}
+
+
 //$menuXML = new SimpleXMLElement($dispHTTP.$siteDomain.$MAIN_ROOT."themes/".$THEME."/themeinfo.xml", NULL, true);
 $menuXML = new SimpleXMLElement($prevFolder."themes/".$THEME."/themeinfo.xml", NULL, true);
 if(isset($_SESSION['btUsername']) AND isset($_SESSION['btPassword'])) {

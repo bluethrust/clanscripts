@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -29,6 +29,7 @@ include($prevFolder."themes/".$THEME."/_header.php");
 $member = new Member($mysqli);
 $rankObj = new Rank($mysqli);
 
+$consoleObj = new ConsoleOption($mysqli);
 
 $appComponentObj = new BasicOrder($mysqli, "app_components", "appcomponent_id");
 $appComponentObj->set_assocTableName("app_selectvalues");
@@ -120,7 +121,7 @@ if($_POST['submit']) {
 	
 	// Check Required Custom Fields
 	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."app_components WHERE required = '1'");
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."app_components WHERE required = '1' AND (componenttype != 'captcha' OR componenttype != 'captchaextra')");
 	while($row = $result->fetch_assoc()) {
 		
 		$arrOneInputs = array("input", "largeinput");
@@ -172,6 +173,23 @@ if($_POST['submit']) {
 		}			
 	}
 	
+	// Check for captchas
+	$filterIP = $mysqli->real_escape_string($IP_ADDRESS);
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."app_components WHERE componenttype = 'captcha' OR componenttype = 'captchaextra'");
+	while($row = $result->fetch_assoc()) {
+
+		$result2 = $mysqli->query("SELECT * FROM ".$dbprefix."app_captcha WHERE ipaddress = '".$filterIP."' AND appcomponent_id = '".$row['appcomponent_id']."'");
+		if($result2->num_rows > 0) {
+			$checkArr = $result2->fetch_assoc();
+			$postName = "appcomponent_".$row['appcomponent_id'];
+			if($checkArr['captchatext'] != strtolower($_POST[$postName])) {
+				$countErrors++;
+				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You entered an incorrect value for ".filterText($row['name']).".<br>";
+			}
+		}
+		
+	}
+	
 	
 	if($countErrors == 0) {
 		
@@ -213,7 +231,7 @@ if($_POST['submit']) {
 					}
 					
 				}
-				else {
+				elseif($row['componenttype'] != "captcha" || $row['componenttype'] != "captchaextra") {
 					$appComponentObj->select($row['appcomponent_id']);
 					$arrSelectValueIDs = $appComponentObj->getAssociateIDs();
 					$countSelectedOptions = 0;
@@ -371,7 +389,7 @@ echo "
 ";
 		
 		$result = $mysqli->query("SELECT appcomponent_id FROM ".$dbprefix."app_components");
-		if($result->num_rows > 0) {		
+		if($result->num_rows > 0) {	
 			
 			echo "
 				<tr>
@@ -424,6 +442,12 @@ echo "
 						}
 						
 						break;
+					case "captcha":
+						$dispInput .= "<input type='text' name='".$formInputName."' class='textBox'>&nbsp;&nbsp;&nbsp<a href='javascript:void(0)' data-refresh='1' data-image='".$formInputName."_image' data-appid='".$arrAppCompInfo['appcomponent_id']."'>Refresh Image</a><br><br><div id='".$formInputName."_image' style='margin-bottom: 25px'><img src='".$MAIN_ROOT."images/captcha.php?appCompID=".$arrAppCompInfo['appcomponent_id']."' width='440' height='90'></div>";
+						break;
+					case "captchaextra":
+						$dispInput .= "<input type='text' name='".$formInputName."' class='textBox'>&nbsp;&nbsp;&nbsp<a href='javascript:void(0)' data-refresh='1' data-image='".$formInputName."_image' data-appid='".$arrAppCompInfo['appcomponent_id']."'>Refresh Image</a><br><br><div id='".$formInputName."_image' style='margin-bottom: 25px'><img src='".$MAIN_ROOT."images/captcha.php?appCompID=".$arrAppCompInfo['appcomponent_id']."' width='440' height='90'></div>";
+						break;
 					default:
 						$dispInput = "<input type='text' name='".$formInputName."' value='".$_POST[$formInputName]."' class='textBox' style='width: 150px'>";				
 					
@@ -454,6 +478,29 @@ echo "
 		</tr>
 	</table>
 	</form>
+	
+	<script type='text/javascript'>
+	
+		$(document).ready(function() {
+		
+			$(\"a[data-refresh='1']\").click(function() {
+						
+				var imgDivID = '#'+$(this).attr('data-image');
+				
+				$(imgDivID).fadeOut(250);
+				
+				
+				$.post('".$MAIN_ROOT."images/captcha.php?display=1&appCompID='+$(this).attr('data-appid'), { }, function(data) {
+					$(imgDivID).html(data);
+					$(imgDivID).fadeIn(250);
+				});
+				
+			});
+		
+		});
+	
+	</script>
+	
 	";
 
 } ?>

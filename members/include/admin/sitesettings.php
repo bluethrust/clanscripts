@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -133,6 +133,10 @@ if($websiteInfo['debugmode'] == 1) {
 		<tr>
 			<td class='formLabel'>Debug Mode:</td>
 			<td class='main'><select id='debugmode' class='textBox'><option value='0'>Off</option><option value='1'<?php echo $selectDebugOn; ?>>On</option></select></td>
+		</tr>
+		<tr>
+			<td class='formLabel'>Hide Inactive Members: <a href='javascript:void(0)' onmouseover="showToolTip('If set to Yes, inactive members will be hidden on the Members page.')" onmouseout='hideToolTip()'>(?)</a></td>
+			<td class='main'><select id='showinactive' class='textBox'><option value='0'>No</option><option value='1'<?php echo $selectHideInactive; ?>>Yes</option></select></td>
 		</tr>
 		<tr>
 			<td colspan='2' class='main'><br>
@@ -381,7 +385,7 @@ if($websiteInfo['debugmode'] == 1) {
 
 			$('#loadingspiral').show();
 
-			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val() }, function(data) {
+			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val(), hideInactive: $('#showinactive').val() }, function(data) {
 				$('#postResponse').html(data);
 				$('#loadingspiral').hide();
 			});

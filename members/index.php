@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -155,6 +155,7 @@ if($checkMember) {
 						$memberAppCID = $consoleObj->findConsoleIDByName("View Member Applications");
 						$diplomacyRequestsCID = $consoleObj->findConsoleIDByName("View Diplomacy Requests");
 						$viewEventInvitationsCID = $consoleObj->findConsoleIDByName("View Event Invitations");
+						$viewInactiveRequestsCID = $consoleObj->findConsoleIDByName("View Inactive Requests");
 						if($consoleInfo['console_id'] == $memberAppCID) {
 							$getUnseenApps = $mysqli->query("SELECT memberapp_id FROM ".$dbprefix."memberapps WHERE seenstatus = '0'");
 							$unseenApps = $getUnseenApps->num_rows;
@@ -179,6 +180,11 @@ if($checkMember) {
 							$eventInvitationsSQL = $mysqli->query("SELECT em.eventmember_id FROM ".$dbprefix."events_members em, ".$dbprefix."events e WHERE status = '0' AND em.event_id = e.event_id AND e.startdate > '".time()."' AND em.member_id = '".$memberInfo['member_id']."'");
 							$countEventInvitations = $eventInvitationsSQL->num_rows;
 							$dispPageTitle .= " (".$countEventInvitations.")";
+						}
+						elseif($consoleInfo['console_id'] == $viewInactiveRequestsCID) {
+							$iaRequestSQL = $mysqli->query("SELECT iarequest_id FROM ".$dbprefix."iarequest WHERE requeststatus = '0'");
+							$countIARequests = $iaRequestSQL->num_rows;
+							$dispPageTitle .= " (".$countIARequests.")";
 						}
 						
 						

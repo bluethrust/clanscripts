@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -51,7 +51,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				$countErrors++;
 			}
 			
-			$arrOptionTypes = array("input", "largeinput", "select", "multiselect");
+			$arrOptionTypes = array("input", "largeinput", "select", "multiselect", "captcha", "captchaextra");
 			if(!in_array($_POST['saveComponentType'], $arrOptionTypes)) {
 				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid component type.<br>";
 				$countErrors++;
@@ -181,15 +181,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			$selectedLargeInput = "";
 			$selectedSelect = "";
 			$selectedMultiSelect = "";
-			if($appCompInfo['componenttype'] == "largeinput") {
-				$selectedLargeInput = " selected";
-			}
-			elseif($appCompInfo['componenttype'] == "select") {
-				$selectedSelect = " selected";
-			}
-			elseif($appCompInfo['componenttype'] == "multiselect") {
-				$selectedMultiSelect = " selected";
-			}
+			
+			$selectedTypeOptions = array();
+			$selectedTypeOptions[$appCompInfo['componenttype']] = " selected";
 			
 			
 			if($dispError != "") {
@@ -219,15 +213,17 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 						<td class='main' style='width: 75%'>
 							<select id='componentType' class='textBox'>
 								<option value='input'>Input</option>
-								<option value='largeinput'".$selectedLargeInput.">Large-Input</option>
-								<option value='select'".$selectedSelect.">Select</option>
-								<option value='multiselect'".$selectedMultiSelect.">Multi-Select</option>
+								<option value='largeinput'".$selectedTypeOptions['largeinput'].">Large-Input</option>
+								<option value='select'".$selectedTypeOptions['select'].">Select</option>
+								<option value='multiselect'".$selectedTypeOptions['multiselect'].">Multi-Select</option>
+								<option value='captcha'".$selectedTypeOptions['captcha'].">Captcha</option>
+								<option value='captchaextra'".$selectedTypeOptions['captchaextra'].">Captcha - Extra Distortion</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td class='main' style='width: 25%'><b>Required:</b></td>
-						<td class='main' style='width: 75%'><input type='checkbox' id='componentRequiredCB'".$checkRequired."><input type='hidden' id='componentRequired' value='".$appCompInfo['required']."'></td>
+						<td class='main' style='width: 75%'><input type='checkbox' id='componentRequiredCB'".$checkRequired."><input type='hidden' id='componentRequired' value='".$appCompInfo['required']."'><span id='captchaMessage' class='tinyFont' style='display: none'><i>Captcha's are automatically required.</i></span></td>
 					</tr>
 					<tr>
 						<td class='main' style='width: 25%' valign='top'><b>Tooltip:</b></td>
@@ -288,6 +284,16 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 							$('#moreComponentOptions').hide();
 						}
 					
+						if($('#componentType').val() == 'captcha' || $('#componentType').val() == 'captchaextra') {
+							$('#componentRequiredCB').attr('disabled', 'disabled');
+							$('#captchaMessage').show();
+						}
+						else {
+							$('#componentRequiredCB').attr('disabled', false);
+							$('#captchaMessage').hide();
+						}
+						
+						
 					});
 					
 					$('#addOptionValueBtn').click(function() {

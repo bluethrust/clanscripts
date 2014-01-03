@@ -72,59 +72,110 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	
 	
 	$fbObj = new Facebook($mysqli);
+	$pluginObj->selectByName("Facebook Login");
 	
-	$dispNote = "";
+	if($_POST['submit']) {
 		
-	$arrFacebookAPIKeys = array("App ID"=>$fbObj->getAppID(), "App Secret"=>$fbObj->getAppSecret());
-	
-	foreach($arrFacebookAPIKeys as $key=>$value) {
+		$arrAPIKey = array(
+			'appID' => $_POST['appid'],
+			'appSecret' => $_POST['appsecret']
+		);
 		
-		if($value == "") {
-			$dispNote .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> ".$key."<br>";
-			$dispFacebookAPIKey[$key] = "<span class='failedFont'>Not Set!</span>";
+		$jsonAPIKey = json_encode($arrAPIKey);
+		if($pluginObj->update(array("apikey"), array($jsonAPIKey))) {
+		
+			echo "
+				<div style='display: none' id='successBox'>
+				<p align='center'>
+				Successfully Saved Facebook Login Settings!
+				</p>
+				</div>
+				
+				<script type='text/javascript'>
+				popupDialog('Facebook Login', '".$MAIN_ROOT."members/console.php?cID=".$cID."', 'successBox');
+				</script>
+				
+			";
+				
+			$member->logAction("Changed Facebook Login Plugin Settings.");
 		}
 		else {
-			$dispFacebookAPIKey[$key] = $value;
+			$countErrors++;
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to database! Please contact the website administrator.<br>";
 		}
+		
 		
 	}
 	
-	echo "
-		<p align='right' style='margin-bottom: 10px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
-
-		<div class='formDiv'>
 	
-		";
 	
-		if($dispNote != "") {
-			echo "
-				<div class='errorDiv'>
-					<strong><u>NOTE:</u> In order for Facebook Login to work you must set the following variables in the facebook.php plugin file.</strong><br><br>
-					".$dispNote."
-				</div>
-			";
+	if(!$_POST['submit']) {
+		$dispNote = "";
+			
+		$arrFacebookAPIKeys = array("App ID"=>$fbObj->getAppID(), "App Secret"=>$fbObj->getAppSecret());
+		
+		foreach($arrFacebookAPIKeys as $key=>$value) {
+			
+			if($value == "") {
+				$dispNote .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> ".$key."<br>";
+			}
+	
+			$dispFacebookAPIKey[$key] = filterText($value);
+			
+			
 		}
-	
-	
-	echo "
-			These settings must be set within the actual Facebook Login plugin file (facebook.php).  You may only view them below.
 		
-			<table class='formTable'>
-				<tr>
-					<td class='formLabel'>App ID:</td>
-					<td class='main'>".$dispFacebookAPIKey['App ID']."</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>App Secret:</td>
-					<td class='main'>".$dispFacebookAPIKey['App Secret']."</td>
-				</tr>
-			</table>
-
-		</div>
+		echo "
+			<p align='right' style='margin-bottom: 10px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
+			
+			<form action='".$MAIN_ROOT."plugins/facebook/settings.php' method='post'>
+			<div class='formDiv'>
 		
-		<p align='right' style='margin-bottom: 20px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
-	";
+			";
+		
+			if($dispError != "") {
+				echo "
+				<div class='errorDiv'>
+				<strong>Unable to save Facebook Login settings because the following errors occurred:</strong><br><br>
+				$dispError
+				</div>
+				";
+			}
+		
+			if($dispNote != "") {
+				echo "
+					<div class='errorDiv'>
+						<strong><u>NOTE:</u> In order for Facebook Login to work you must set the following variables in the facebook.php plugin file.</strong><br><br>
+						".$dispNote."
+					</div>
+				";
+			}
+		
+		
+		echo "
+				
+				Your Facebook Login plugin settings are listed below.  You must set App ID and App Secret in order for the plugin to work properly.
+		
+				<table class='formTable'>
+					<tr>
+						<td class='formLabel'>App ID:</td>
+						<td class='main'><input type='text' name='appid' class='textBox' value='".$dispFacebookAPIKey['App ID']."'></td>
+					</tr>
+					<tr>
+						<td class='formLabel'>App Secret:</td>
+						<td class='main'><input type='text' name='appsecret' class='textBox' value='".$dispFacebookAPIKey['App Secret']."'></td>
+					</tr>
+					<tr>
+						<td class='main' align='center' colspan='2'><br>
+							<input type='submit' name='submit' value='Save Settings' class='submitButton'>
+						</td>
+				</table>
 	
+			</div>
+			</form>
+			<p align='right' style='margin-bottom: 20px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Plugin Manager</a></p>
+		";
+	}
 }
 else {
 

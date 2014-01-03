@@ -2,15 +2,15 @@
 
 /*
  * Bluethrust Clan Scripts v4
-* Copyright 2012
-*
-* Author: Bluethrust Web Development
-* E-mail: support@bluethrust.com
-* Website: http://www.bluethrust.com
-*
-* License: http://www.bluethrust.com/license.php
-*
-*/
+ * Copyright 2014
+ *
+ * Author: Bluethrust Web Development
+ * E-mail: support@bluethrust.com
+ * Website: http://www.bluethrust.com
+ *
+ * License: http://www.bluethrust.com/license.php
+ *
+ */
 
 include_once("../../_setup.php");
 include_once("../../classes/member.php");

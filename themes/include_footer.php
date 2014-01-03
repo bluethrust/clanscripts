@@ -63,7 +63,8 @@
 				}
 			}
 			
-					
+			
+			$_SESSION['csrfKey'] = md5(uniqid());
 		?>
 
 		
@@ -75,7 +76,7 @@
 
 					$.post('<?php echo $MAIN_ROOT; ?>members/include/news/include/reloadshoutbox.php', { }, function(data) {
 
-						$('div[data-shoutbox=main]').html(data);
+						$('#<?php echo $arrShoutBoxIDs[0]; ?>').html(data);
 	
 					});
 						
@@ -89,4 +90,11 @@
 
 
 			setTimeout("reloadShoutbox()", 20000);
+		
+			$(document).ready(function() {
+				$("form").append("<input type='hidden' name='csrfKey' value='<?php echo $_SESSION['csrfKey']; ?>'>");
+			});
+		
 		</script>
+		
+		

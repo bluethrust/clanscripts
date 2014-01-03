@@ -3,7 +3,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -145,7 +145,8 @@ while($row = $result->fetch_assoc()) {
 	
 }
 
-echo "
+if($result->num_rows > 0) {
+	echo "
 		<div style='float: left; text-align: left; width: 225px; padding: 10px 0px 0px 40px'>
 			$dispEventTitles
 		</div>
@@ -154,8 +155,9 @@ echo "
 		</div>
 	
 		<div style='clear:both; height: 30px; margin-top: 20px'></div>
-";
+	";
 
+}
 
 if($clickCounter != 0) {
 

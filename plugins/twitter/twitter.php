@@ -14,17 +14,16 @@
 
 
 	include_once($prevFolder."classes/basic.php");
+	include_once($prevFolder."classes/btplugin.php");
 
 	class Twitter extends Basic {
 		
 
-		// SET YOUR TWITTER APP KEY, SECRET AND WIDGET ID
-		protected $consumerKey = "Usg8F5rw4lNlx01jDty8A";
-		protected $consumerSecret = "uXuhU1hFWWBLZMN5DJAPbaU2ejlE1YrmqGkNF31YsQ";
-		public $widgetID = "312408324882702338";
+
+		protected $consumerKey;
+		protected $consumerSecret;
+		public $widgetID;
 		
-		
-		// DO NOT EDIT BELOW
 		
 		public $requestTokenURL = "https://api.twitter.com/oauth/request_token";
 		public $authorizeURL = "https://api.twitter.com/oauth/authorize";
@@ -47,6 +46,7 @@
 		public $lastAuthHeader;
 		public $httpCode;
 		
+		public $objPlugin;
 		
 		public function __construct($sqlConnection) {
 			
@@ -55,11 +55,19 @@
 			$this->strTableName = $this->MySQL->get_tablePrefix()."twitter";
 			$this->strTableKey = "twitter_id";
 
+			$this->objPlugin = new btPlugin($sqlConnection);
+			$this->objPlugin->selectByName("Twitter Connect");
+			
+			$apiInfo = $this->objPlugin->getAPIKeys();
+			
+			$this->consumerKey = $apiInfo['consumerKey'];
+			$this->consumerSecret = $apiInfo['consumerSecret'];
+			$this->widgetID = $apiInfo['widgetID'];
+			
+			
 			$this->arrParameters['oauth_consumer_key'] = $this->consumerKey;
 			$this->arrParameters['oauth_signature_method'] = "HMAC-SHA1";
 			$this->arrParameters['oauth_version'] = "1.0";
-
-			
 			
 		}
 		

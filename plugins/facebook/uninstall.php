@@ -66,8 +66,10 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		// Remove Console Option
 		$fbLoginCID = $consoleObj->findConsoleIDByName($PLUGIN_NAME);
-		$consoleObj->select($fbLoginCID);
-		$checkDeleteConsole = $consoleObj->delete();
+		$checkDeleteConsole = false;
+		if($consoleObj->select($fbLoginCID)) {
+			$checkDeleteConsole = $consoleObj->delete();
+		}
 
 		
 		if(!$checkDeletePlugin) {

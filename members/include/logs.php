@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -101,7 +101,7 @@ echo "
 				<b>Page:</b> <select id='pageselect' class='textBox'>".$pageoptions."</select> <input type='button' id='pageselectButton' class='submitButton' style='width: 30px' value='GO'> &nbsp;&nbsp;&nbsp; ".$dispLinks." 
 			</p>
 		</div>
-		<div style='clear: both'></div>
+		
 		<table class='formTable'>
 ";
 
@@ -140,7 +140,7 @@ echo "</table>
 <p align='right' style='padding-right: 10px' class='main'>
 	<a href='javascript:void(0)' id='goUpLink'>^^ Go Up</a>
 </p>
-
+<div style='clear: both'></div>
 </div>
 
 

@@ -1,12 +1,25 @@
 <?php
 
+/*
+ * Bluethrust Clan Scripts v4
+ * Copyright 2014
+ *
+ * Author: Bluethrust Web Development
+ * E-mail: support@bluethrust.com
+ * Website: http://www.bluethrust.com
+ *
+ * License: http://www.bluethrust.com/license.php
+ *
+ */
+
 	include_once($prevFolder."classes/basic.php");
+	include_once($prevFolder."classes/btplugin.php");
 
 	class Youtube extends Basic {
 		
 		// SET YOUR YOUTUBE CLIENT ID AND SECRET
-		protected $clientID = "517723608990.apps.googleusercontent.com";
-		protected $clientSecret = "bvV29OPaCEji_GT7PLT6GQ2o";
+		protected $clientID;// = "517723608990.apps.googleusercontent.com";
+		protected $clientSecret;// = "bvV29OPaCEji_GT7PLT6GQ2o";
 		
 		// DO NOT EDIT BELOW
 		
@@ -25,6 +38,14 @@
 			$this->strTableKey = "youtube_id";			
 			
 			$this->objYTVideo = new Basic($sqlConnection, "youtube_videos", "youtubevideo_id");
+			
+			$this->objPlugin = new btPlugin($sqlConnection);
+			$this->objPlugin->selectByName("Youtube Connect");
+			
+			$apiInfo = $this->objPlugin->getAPIKeys();
+			
+			$this->clientID = $apiInfo['clientID'];
+			$this->clientSecret = $apiInfo['clientSecret'];
 			
 		}
 		

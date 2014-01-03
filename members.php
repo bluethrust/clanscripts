@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -52,7 +52,7 @@ $rankObj = new Rank($mysqli);
 if($websiteInfo['maxdsl'] != 0) {
 	$maxDSLTime = time() - ($websiteInfo['maxdsl']*86400);
 	$time = time();
-	$result = $mysqli->query("UPDATE ".$dbprefix."members SET disabled = '1', disableddate = '".$time."' WHERE disabled = '0' AND lastlogin <= '".$maxDSLTime."'");
+	$result = $mysqli->query("UPDATE ".$dbprefix."members SET disabled = '1', disableddate = '".$time."' WHERE disabled = '0' AND onia = '0' AND lastlogin <= '".$maxDSLTime."'");
 	
 	$result = $mysqli->query("SELECT member_id FROM ".$dbprefix."members WHERE disableddate = '".$time."'");
 	while($row = $result->fetch_assoc()) {
@@ -71,7 +71,7 @@ while($row = $result->fetch_assoc()) {
 
 $sqlRanks = "('".implode("','", $arrRanks)."')";
 
-$result = $mysqli->query("SELECT * FROM ".$dbprefix."members WHERE rank_id IN ".$sqlRanks);
+$result = $mysqli->query("SELECT * FROM ".$dbprefix."members WHERE rank_id IN ".$sqlRanks." AND onia = '0'");
 while($row = $result->fetch_assoc()) {
 	$member->select($row['member_id']);
 	$memberListInfo = $member->get_info();

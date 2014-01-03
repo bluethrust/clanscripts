@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -63,7 +63,7 @@ class ShoutBox {
 			
 			if($this->memberObj->select($row['member_id'])) {
 				$memberLink = $this->memberObj->getMemberLink();
-				$dispPost = nl2br(parseBBCode(wordwrap($row['newspost'], $this->intWordWrap)));
+				$dispPost = nl2br(parseBBCode(wordwrap(filterText($row['newspost']), $this->intWordWrap)));
 				$dispTime = "<p align='center' style='font-size: 9px'><br>".getPreciseTime($row['dateposted'])."</p>";
 				
 				$dispManagePost = "";
@@ -74,7 +74,7 @@ class ShoutBox {
 				
 				$shoutBoxInfo .= "
 					<b>".$memberLink.":</b><br>
-					".filterText($dispPost)."
+					".$dispPost."
 					".$dispTime."
 					".$dispManagePost."
 					<div class='dottedLine' style='margin: 5px 0px'></div>

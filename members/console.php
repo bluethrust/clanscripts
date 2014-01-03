@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -102,6 +102,25 @@ if($checkMember) {
 		$LOGIN_FAIL = false;
 		
 		$memberInfo = $member->get_info();
+		
+		// Check for IA
+		
+		if($memberInfo['onia'] == 1 && $cID != $consoleObj->findConsoleIDByName("Cancel IA")) {
+			$cancelIACID = $consoleObj->findConsoleIDByName("Cancel IA");
+			echo "
+			
+				<div id='iaMessage' style='display: none'>
+					<p class='main' align='center'>You are currently Inactive!<br><br>While inactive, you do not have access to console options.<br><br><a href='".$MAIN_ROOT."members/console.php?cID=".$cancelIACID."'><b>Click Here</b></a> to become active again!</p>
+				</div>
+				
+				<script type='text/javascript'>
+					popupDialog('Inactive Member', '".$MAIN_ROOT."members', 'iaMessage');
+				</script>
+			";
+				
+			exit();
+		}		
+		
 		$memberRankID = $memberInfo['rank_id'];
 		define("MEMBERRANK_ID", $memberRankID);
 		

@@ -14,16 +14,14 @@
 
 
 	include_once($prevFolder."classes/basic.php");
+	include_once($prevFolder."classes/btplugin.php");
 
 	class Facebook extends Basic {
 
 		
-		// SET YOUR FACEBOOK APP ID AND SECRET
-		protected $appID = "570808419661458";
-		protected $appSecret = "be8083ccfb8aa9b1eb32af1fc1f6ac6d";
+		protected $appID;
+		protected $appSecret;
 		
-		
-		// DO NOT EDIT BELOW
 		
 		public $facebookLoginURL = "https://www.facebook.com/dialog/oauth";
 		public $facebookAccessTokenURL = "https://graph.facebook.com/oauth/access_token";
@@ -38,6 +36,14 @@
 			$this->MySQL = $sqlConnection;
 			$this->strTableName = $this->MySQL->get_tablePrefix()."facebook";
 			$this->strTableKey = "fbconnect_id";
+			
+			$this->objPlugin = new btPlugin($sqlConnection);
+			$this->objPlugin->selectByName("Facebook Login");
+			
+			$apiInfo = $this->objPlugin->getAPIKeys();
+			
+			$this->appID = $apiInfo['appID'];
+			$this->appSecret = $apiInfo['appSecret'];
 			
 		}
 		

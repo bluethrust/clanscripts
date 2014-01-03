@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -97,10 +97,14 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		}
 		
 		
+		if($_POST['hideInactive'] != 1) {
+			$_POST['hideInactive'] = 0;	
+		}
+		
 		if($countErrors == 0) {
 			
-			$updateCols = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode");
-			$updateVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode']);
+			$updateCols = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode", "hideinactive");
+			$updateVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode'], $_POST['hideInactive']);
 			
 			if(!$webInfoObj->update($updateCols, $updateVals)) {
 				$countErrors++;

@@ -73,9 +73,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	$ytObj = new Youtube($mysqli);
 	$memberInfo = $member->get_info_filtered();
 	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."plugins WHERE name = 'Youtube Connect'");
-	$pluginInfo = $result->fetch_assoc();
-	
+	$pluginObj->selectByName("Youtube Connect");
+	$pluginInfo = $pluginObj->get_info();
+
 	$pluginObj->pluginPage->setCategoryKeyValue($pluginInfo['plugin_id']);
 	
 	$pluginPageInfo = $pluginObj->getPluginPage("profile", $pluginInfo['plugin_id']);
@@ -103,6 +103,12 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		}
 		
 		if($countErrors == 0) {
+			$arrAPIKey = array(
+				'clientID' => $_POST['clientid'],
+				'clientSecret' => $_POST['clientsecret']
+			);
+			
+			$jsonAPIKey = json_encode($arrAPIKey);
 			
 			$setSortNum = $_POST['displayorder'];
 			if($_POST['beforeafter'] == "after") {
@@ -113,8 +119,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			if($_POST['profiledisplay'] == "no") {
 				$setSortNum = -1;	
 			}
-			
-			if($pluginObj->pluginPage->update(array("sortnum"), array($setSortNum))) {
+
+			if($pluginObj->update(array("apikey"), array($jsonAPIKey)) && $pluginObj->pluginPage->update(array("sortnum"), array($setSortNum))) {
 				
 				echo "
 				<div style='display: none' id='successBox'>
@@ -168,11 +174,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			
 			if($value == "") {
 				$dispNote .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> ".$key."<br>";
-				$dispYTAPIKey[$key] = "<span class='failedFont'>Not Set!</span>";
 			}
-			else {
-				$dispYTAPIKey[$key] = $value;
-			}
+			
+			$dispYTAPIKey[$key] = $value;
 			
 		}
 		
@@ -197,7 +201,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		if($dispNote != "") {
 			echo "
 				<div class='errorDiv'>
-					<strong><u>NOTE:</u> In order for Youtube Connect to work you must set the following variables in the youtube.php plugin file.</strong><br><br>
+					<strong><u>NOTE:</u> In order for Youtube Connect to work you must set the following variables.</strong><br><br>
 					".$dispNote."
 				</div>
 			";
@@ -207,7 +211,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		echo "
 				
 				
-					Your Youtube Connect settings are listed below.  Some settings must be set within the actual plugin files.
+					Your Youtube Connect plugin settings are listed below.  You must set the Client ID and Client Secret in order for the plugin to work properly.
 					<table class='formTable'>
 						<tr>
 							<td class='main' colspan='2'>
@@ -217,12 +221,12 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 							</td>
 						</tr>
 						<tr>
-							<td class='formLabel'>Client ID: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the youtube.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispYTAPIKey['Client ID']."</td>
+							<td class='formLabel'>Client ID:</td>
+							<td class='main'><input type='text' name='clientid' class='textBox' value='".$dispYTAPIKey['Client ID']."'></td>
 						</tr>
 						<tr>
-							<td class='formLabel'>Consumer Secret: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the youtube.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispYTAPIKey['Client Secret']."</td>
+							<td class='formLabel'>Client Secret:</td>
+							<td class='main'><input type='text' name='clientsecret' class='textBox' value='".$dispYTAPIKey['Client Secret']."'></td>
 						</tr>
 						<tr>
 							<td class='main' colspan='2'><br>

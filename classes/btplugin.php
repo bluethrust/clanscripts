@@ -1,5 +1,18 @@
 <?php
 
+/*
+ * Bluethrust Clan Scripts v4
+ * Copyright 2014
+ *
+ * Author: Bluethrust Web Development
+ * E-mail: support@bluethrust.com
+ * Website: http://www.bluethrust.com
+ *
+ * License: http://www.bluethrust.com/license.php
+ *
+ */
+
+
 	include_once("basic.php");
 	include_once("basicsort.php");
 
@@ -19,6 +32,20 @@
 			
 		}
 		
+		public function selectByName($pluginName) {
+			$returnVal = false;
+			if($pluginName != "") {
+				$filterPluginName = $this->MySQL->real_escape_string($pluginName);
+				
+				$result = $this->MySQL->query("SELECT plugin_id FROM ".$this->strTableName." WHERE name = '".$filterPluginName."'");
+				if($result->num_rows == 1) {
+					$row = $result->fetch_assoc();
+					$returnVal = $this->select($row['plugin_id']);	
+				}
+			}
+			
+			return $returnVal;
+		}
 		
 		public function getPlugins($return = "") {
 			
@@ -40,6 +67,17 @@
 			
 			return $arrReturn;
 			
+		}
+		
+		public function getAPIKeys() {
+			$returnArr = array();
+			if($this->intTableKeyValue != "") {
+				
+				$returnArr = json_decode($this->arrObjInfo['apikey'], true);
+				
+			}
+			
+			return $returnArr;
 		}
 		
 		public function getPluginPage($page, $limitToPlugin="") {

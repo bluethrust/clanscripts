@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -62,43 +62,7 @@ $blnPostReply = false;
 $addToForm = "";
 if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID'])) {
 	$blnPostReply = true;
-	$topicInfo = $boardObj->objTopic->get_info();
-	
-	// Check Full Access
-	
-	if(!$boardObj->select($_GET['bID']) || ($boardObj->select($_GET['bID']) && !$boardObj->memberHasAccess($memberInfo, true))) {
-		echo "
-			<div id='lockedMessage' style='display: none'>
-				<p class='main' align='center'>
-					You don't have posting privileges on this board!
-				</p>
-			</div>
-			<script type='text/javascript'>
-				$(document).ready(function() {
-					$('#lockedMessage').dialog({
-						title: 'Post Reply - Error!',
-						show: 'scale',
-						modal: true,
-						width: 400,
-						zIndex: 999999,
-						resizable: false,
-						buttons: {
-							'OK': function() {
-								$(this).dialog('close');
-							}
-						},
-						close: function(event, ui) {
-							window.location = '".$MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id']."'						
-						}
-					
-					});
-	
-				});
-			</script>
-		";
-		exit();
-	}
-		
+	$topicInfo = $boardObj->objTopic->get_info();		
 	
 	// Check if topic is actually in the selected board
 	if($topicInfo['forumboard_id'] != $boardInfo['forumboard_id']) {
@@ -181,6 +145,46 @@ else {
 	
 	$postActionWord = "topic";
 }
+
+
+// Check Full Access
+	
+	$topicOrReply = (isset($_GET['tID'])) ? "Reply" : "Topic";
+
+	if(!$boardObj->memberHasAccess($memberInfo, true)) {
+		echo "
+			<div id='lockedMessage' style='display: none'>
+				<p class='main' align='center'>
+					You don't have posting privileges on this board!
+				</p>
+			</div>
+			<script type='text/javascript'>
+				$(document).ready(function() {
+					$('#lockedMessage').dialog({
+						title: 'Post ".$topicOrReply." - Error!',
+						show: 'scale',
+						modal: true,
+						width: 400,
+						zIndex: 999999,
+						resizable: false,
+						buttons: {
+							'OK': function() {
+								$(this).dialog('close');
+							}
+						},
+						close: function(event, ui) {
+							window.location = '".$MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id']."'						
+						}
+					
+					});
+	
+				});
+			</script>
+		";
+		exit();
+	}
+
+
 
 $dispQuote = "";
 if(isset($_GET['quote']) && $boardObj->objPost->select($_GET['quote'])) {

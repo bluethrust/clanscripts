@@ -14,6 +14,7 @@
 
 include_once("../../_setup.php");
 include_once("../../classes/member.php");
+$prevFolder = "../../";
 include("facebook.php");
 
 

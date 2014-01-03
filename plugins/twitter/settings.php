@@ -73,8 +73,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	$twitterObj = new Twitter($mysqli);
 	$memberInfo = $member->get_info_filtered();
 	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."plugins WHERE name = 'Twitter Connect'");
-	$pluginInfo = $result->fetch_assoc();
+	$pluginObj->selectByName("Twitter Connect");
+	//$result = $mysqli->query("SELECT * FROM ".$dbprefix."plugins WHERE name = 'Twitter Connect'");
+	$pluginInfo = $pluginObj->get_info();
 	
 	$pluginObj->pluginPage->setCategoryKeyValue($pluginInfo['plugin_id']);
 	
@@ -86,7 +87,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	$dispError = "";
 	
 	if($_POST['submit']) {
-	
+			
+		
 		// Check Display Order (before/after)
 		if($_POST['beforeafter'] != "before" && $_POST['beforeafter'] != "after") {
 			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid display order (before/after).<br>";
@@ -102,6 +104,14 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		if($countErrors == 0) {
 			
+			$arrAPIKey = array(
+				'consumerKey' => $_POST['consumerkey'],
+				'consumerSecret' => $_POST['consumersecret'],
+				'widgetID' => $_POST['widgetid']
+			
+			);
+			
+			$jsonAPIKey = json_encode($arrAPIKey);
 			$setSortNum = $_POST['displayorder'];
 			if($_POST['beforeafter'] == "after") {
 				$setSortNum = $_POST['displayorder']+1;
@@ -112,7 +122,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				$setSortNum = -1;	
 			}
 			
-			if($pluginObj->pluginPage->update(array("sortnum"), array($setSortNum))) {
+			if($pluginObj->update(array("apikey"), array($jsonAPIKey)) && $pluginObj->pluginPage->update(array("sortnum"), array($setSortNum))) {
 				
 				echo "
 				<div style='display: none' id='successBox'>
@@ -162,15 +172,11 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		$arrTwitterAPIKeys = array("Consumer Key"=>$twitterObj->getConsumerKey(), "Consumer Secret"=>$twitterObj->getConsumerSecret(), "Widget ID"=>$twitterObj->widgetID);
 		
 		foreach($arrTwitterAPIKeys as $key=>$value) {
-			
 			if($value == "") {
 				$dispNote .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> ".$key."<br>";
-				$dispTwitterAPIKey[$key] = "<span class='failedFont'>Not Set!</span>";
-			}
-			else {
-				$dispTwitterAPIKey[$key] = $value;
 			}
 			
+			$dispTwitterAPIKey[$key] = filterText($value);
 		}
 		
 		echo "
@@ -194,7 +200,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		if($dispNote != "") {
 			echo "
 				<div class='errorDiv'>
-					<strong><u>NOTE:</u> In order for Twitter Connect to work you must set the following variables in the twitter.php plugin file.</strong><br><br>
+					<strong><u>NOTE:</u> In order for Twitter Connect to work you must set the following variables.</strong><br><br>
 					".$dispNote."
 				</div>
 			";
@@ -204,7 +210,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		echo "
 				
 				
-					Your Twitter Connect settings are listed below.  Some settings must be set within the actual plugin files.
+					Your Twitter Connect plugin settings are listed below.  You must set the Consumer Key, Consumer Secret and Widget ID in order for the plugin to work properly.
 					<table class='formTable'>
 						<tr>
 							<td class='main' colspan='2'>
@@ -215,15 +221,15 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 						</tr>
 						<tr>
 							<td class='formLabel'>Consumer Key: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Consumer Key']."</td>
+							<td class='main'><input type='text' name='consumerkey' class='textBox' value='".$dispTwitterAPIKey['Consumer Key']."'></td>
 						</tr>
 						<tr>
 							<td class='formLabel'>Consumer Secret: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Consumer Secret']."</td>
+							<td class='main'><input type='text' name='consumersecret' class='textBox' value='".$dispTwitterAPIKey['Consumer Secret']."'></td>
 						</tr>
 						<tr>
 							<td class='formLabel'>Twitter Widget ID: <a href='javascript:void(0)' onmouseover=\"showToolTip('Set within the twitter.php file')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'>".$dispTwitterAPIKey['Widget ID']."</td>
+							<td class='main'><input type='text' name='widgetid' class='textBox' value='".$dispTwitterAPIKey['Widget ID']."'></td>
 						</tr>
 						<tr>
 							<td class='main' colspan='2'><br>

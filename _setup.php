@@ -61,6 +61,14 @@ $CLAN_NAME = $websiteInfo['clanname'];
 $THEME = $websiteInfo['theme'];
 
 
+$arrWebsiteLogoURL = parse_url($websiteInfo['logourl']);
+
+
+if(!isset($arrWebsiteLogoURL['scheme']) || $arrWebsiteLogoURL['scheme'] == "") {
+	$websiteInfo['logourl'] = $MAIN_ROOT."themes/".$THEME."/".$websiteInfo['logourl'];
+}
+
+
 $IP_ADDRESS = $_SERVER['REMOTE_ADDR'];
 
 // Check Debug Mode
@@ -71,7 +79,7 @@ if($websiteInfo['debugmode'] == 1) {
 }
 else {
 	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
-	ini_set('display_errors', 0);
+	ini_set('display_errors', 1);
 }
 
 

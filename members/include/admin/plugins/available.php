@@ -108,7 +108,7 @@ echo "
 						
 						if(postResult['result'] == 'success') {
 							
-							$('#installMessage').html(\"<p class='main' align='center'>Successfully installed plugin!</p>\");
+							$('#installMessage').html(\"<p class='main' align='center'>Successfully installed plugin!<br><br>Make sure to configure the API settings on the plugin's settings page.</p>\");
 							
 							
 						}

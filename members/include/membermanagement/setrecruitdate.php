@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -32,6 +32,12 @@ $rankObj = new Rank($mysqli);
 
 $rankObj->select($memberInfo['rank_id']);
 $rankInfo = $rankObj->get_info();
+if($memberInfo['promotepower'] != 0) {
+	$rankInfo['promotepower'] = $memberInfo['promotepower'];	
+}
+elseif($memberInfo['promotepower'] == -1) {
+	$rankInfo['promotepower'] = 0;	
+}
 
 if($memberInfo['rank_id'] == 1) {
 	$highestOrderNum = $rankObj->getHighestOrderNum();

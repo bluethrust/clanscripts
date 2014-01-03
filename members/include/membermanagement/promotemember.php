@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -24,6 +24,14 @@ else {
 }
 
 $rankInfo = $memberRank->get_info_filtered();
+if($memberInfo['promotepower'] != 0) {
+	$rankInfo['promotepower'] = $memberInfo['promotepower'];	
+}
+elseif($memberInfo['promotepower'] == -1) {
+	$rankInfo['promotepower'] = 0;	
+}
+
+
 $cID = $_GET['cID'];
 
 $dispError = "";

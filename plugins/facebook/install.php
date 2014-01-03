@@ -22,6 +22,11 @@ include_once("../../classes/consolecategory.php");
 $PLUGIN_TABLE_NAME = $dbprefix."facebook";
 $PLUGIN_NAME = "Facebook Login";
 
+$arrAPIKeys = array(
+	'appID' => "",
+	'appSecret' => ""
+);
+
 
 // Start Page
 
@@ -82,7 +87,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		if($mysqli->query($sql)) {
 			
-			$pluginObj->addNew(array("name", "filepath", "dateinstalled"), array($PLUGIN_NAME, $_POST['pluginDir'], time()));
+			$jsonAPIKey = json_encode($arrAPIKeys);
+			$pluginObj->addNew(array("name", "filepath", "dateinstalled", "apikey"), array($PLUGIN_NAME, $_POST['pluginDir'], time(), $jsonAPIKey));
 			
 			// Check if need to add new console category
 			

@@ -2,7 +2,7 @@
 
 /*
  * Bluethrust Clan Scripts v4
- * Copyright 2012
+ * Copyright 2014
  *
  * Author: Bluethrust Web Development
  * E-mail: support@bluethrust.com
@@ -835,6 +835,27 @@ class Member extends Basic {
 		if($arrCallingInfo[1]['function'] == "addNew") {
 			parent::updateTableTime();			
 		}
+	}
+	
+	
+	public function requestedIA($returnID=false) {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			
+			$result = $this->MySQL->query("SELECT iarequest_id FROM ".$this->MySQL->get_tablePrefix()."iarequest WHERE member_id = '".$this->intTableKeyValue."'");
+			
+			if(!$returnID) {
+				$returnVal = ($result->num_rows > 0) ? true : false;
+			}
+			else {
+				$row = $result->fetch_assoc();
+				$returnVal = $row['iarequest_id'];	
+			}
+			
+		}
+		
+		return $returnVal;
 	}
 	
 }

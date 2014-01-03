@@ -11,6 +11,7 @@
  * License: http://www.bluethrust.com/license.php
  *
  */
+
 $prevFolder = "../../";
 include_once("../../_setup.php");
 include_once("../../classes/member.php");
@@ -22,6 +23,12 @@ include_once("../../classes/consolecategory.php");
 
 $PLUGIN_TABLE_NAME = $dbprefix."twitter";
 $PLUGIN_NAME = "Twitter Connect";
+
+$arrAPIKeys = array(
+	'consumerKey' => "",
+	'consumerSecret' => "",
+	'widgetID' => ""
+);
 
 
 // Start Page
@@ -96,7 +103,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		if($mysqli->query($sql)) {
 			
-			$pluginObj->addNew(array("name", "filepath", "dateinstalled"), array($PLUGIN_NAME, $_POST['pluginDir'], time()));
+			$jsonAPIKey = json_encode($arrAPIKeys);
+			$pluginObj->addNew(array("name", "filepath", "dateinstalled", "apikey"), array($PLUGIN_NAME, $_POST['pluginDir'], time(), $jsonAPIKey));
 			
 			$pluginID = $pluginObj->get_info("plugin_id");
 			$pluginObj->pluginPage->setCategoryKeyValue($pluginID);
