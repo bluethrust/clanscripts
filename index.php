@@ -201,6 +201,7 @@ if($websiteInfo['newsticker'] != "") {
 	
 }
 
+$dispAnnouncements = "";
 $dispHPNews = "";
 // Get Pinned News Posts
 
@@ -231,6 +232,7 @@ while($row = $result->fetch_assoc()) {
 			$dispNewsType = " - <span class='privateNewsColor' style='font-style: italic'>private</span>";
 		}
 		
+		$dispLastEdit = "";
 		if($member->select($newsInfo['lasteditmember_id'])) {
 		
 			$dispLastEditTime = getPreciseTime($newsInfo['lasteditdate']);
@@ -240,7 +242,7 @@ while($row = $result->fetch_assoc()) {
 		$member->select($newsInfo['member_id']);
 		
 		
-		$dispHPNews .= "
+		$dispAnnouncements .= "
 			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
 				<div class='postInfo'>
 					<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
@@ -267,53 +269,69 @@ while($row = $result->fetch_assoc()) {
 
 
 // Get Most Recent News Post
-$result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '1' AND hpsticky = '0' ORDER BY dateposted DESC LIMIT 1");
 
-if($result->num_rows == 1) {
-	$newsObj = new News($mysqli);
-	
-	$newsInfo = filterArray($result->fetch_assoc());
-	$newsObj->select($newsInfo['news_id']);
-	
-	$member->select($newsInfo['member_id']);
-	$posterInfo = $member->get_info_filtered();
-	
-	if($posterInfo['avatar'] == "") {
-		$posterInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";
-	}
-	
+$numOfNewsPosts = ($websiteInfo['hpnews'] == -1) ? "" : " LIMIT ".$websiteInfo['hpnews'];
+$result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '1' AND hpsticky = '0' ORDER BY dateposted DESC".$numOfNewsPosts);
 
-	$dispNewsType = " - <span class='publicNewsColor' style='font-style: italic'>public</span>";
-
+if($result->num_rows > 0) {
+	while($row = $result->fetch_assoc()) {
+		$newsObj = new News($mysqli);
+		
+		$newsInfo = filterArray($row);
+		$newsObj->select($newsInfo['news_id']);
+		
+		$member->select($newsInfo['member_id']);
+		$posterInfo = $member->get_info_filtered();
+		
+		if($posterInfo['avatar'] == "") {
+			$posterInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";
+		}
+		
 	
-	if($member->select($newsInfo['lasteditmember_id'])) {
+		$dispNewsType = " - <span class='publicNewsColor' style='font-style: italic'>public</span>";
 	
-		$dispLastEditTime = getPreciseTime($newsInfo['lasteditdate']);
-		$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";
-	}
-	
-	$member->select($newsInfo['member_id']);
-	
-	
-	$dispHPNews .= "		
-		<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
-			<div class='postInfo'>
-				<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
-				<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
-				<span class='subjectText'>".$newsInfo['postsubject']."</span></div>
+		$dispLastEdit = "";
+		if($member->select($newsInfo['lasteditmember_id'])) {
+		
+			$dispLastEditTime = getPreciseTime($newsInfo['lasteditdate']);
+			$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";
+		}
+		
+		$member->select($newsInfo['member_id']);
+		
+		
+		$dispHPNews .= "		
+			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
+				<div class='postInfo'>
+					<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
+					<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
+					<span class='subjectText'>".$newsInfo['postsubject']."</span></div>
+				</div>
+				<br>
+				<div class='dottedLine' style='margin-top: 5px'></div>
+				<div class='postMessage'>
+					".nl2br(parseBBCode($newsInfo['newspost']))."
+				</div>
+				<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
+				<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
+				<p style='padding: 0px; margin: 0px' align='right'><b><a href='".$MAIN_ROOT."news/viewpost.php?nID=".$newsInfo['news_id']."#comments'>Comments (".$newsObj->countComments().")</a></b></p>
 			</div>
-			<br>
-			<div class='dottedLine' style='margin-top: 5px'></div>
-			<div class='postMessage'>
-				".nl2br(parseBBCode($newsInfo['newspost']))."
-			</div>
-			<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
-			<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
-			<p style='padding: 0px; margin: 0px' align='right'><b><a href='".$MAIN_ROOT."news/viewpost.php?nID=".$newsInfo['news_id']."#comments'>Comments (".$newsObj->countComments().")</a></b></p>
-		</div>
+		
+		
+		";
+	}
+}
+
+
+if($dispAnnouncements != "") {
 	
-	
-	";
+echo "<p class='main' style='font-size: 18px; font-weight: bold; padding-left: 15px'>Announcements</p>";
+echo $dispAnnouncements;
+
+	if($dispHPNews != "") {
+		echo "<br>";	
+	}
+
 }
 
 

@@ -107,6 +107,7 @@ if($result->num_rows > 0) {
 		}
 
 		
+		$dispLastEdit = "";
 		if($member->select($row['lasteditmember_id'])) {
 		
 			$dispLastEditTime = getPreciseTime($row['lasteditdate']);

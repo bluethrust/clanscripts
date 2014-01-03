@@ -101,10 +101,25 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			$_POST['hideInactive'] = 0;	
 		}
 		
+		$numOfNewsPosts = 0;
+		if($_POST['showHPNews'] == "yes" && $_POST['numOfNewsPosts'] == "custom" && is_numeric($_POST['customNewsAmount']) && $_POST['customNewsAmount'] > 0) {
+			$numOfNewsPosts = $_POST['customNewsAmount'];
+		}
+		elseif($_POST['showHPNews'] == "yes" && $_POST['numOfNewsPosts'] == "all") {
+			$numOfNewsPosts = -1;	
+		}
+		elseif($_POST['showHPNews'] == "yes" &&  is_numeric($_POST['numOfNewsPosts']) && $_POST['numOfNewsPosts'] > 0) {
+			$numOfNewsPosts = $_POST['numOfNewsPosts'];
+		}
+		
+		
+		
+		
+		
 		if($countErrors == 0) {
 			
-			$updateCols = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode", "hideinactive");
-			$updateVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode'], $_POST['hideInactive']);
+			$updateCols = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode", "hideinactive", "hpnews");
+			$updateVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode'], $_POST['hideInactive'], $numOfNewsPosts);
 			
 			if(!$webInfoObj->update($updateCols, $updateVals)) {
 				$countErrors++;

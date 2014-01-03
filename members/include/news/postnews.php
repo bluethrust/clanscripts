@@ -127,7 +127,7 @@ if(!$_POST['submit']) {
 						<td class='main'><select name='newstype' class='textBox' id='newsType' onchange='updateTypeDesc()'><option value='1'>Public</option><option value='2'>Private</option></select><span class='tinyFont' style='padding-left: 10px' id='typeDesc'></span></td>
 					</tr>
 					<tr>
-						<td class='formLabel'>Pin to Homepage: <a href='javascript:void(0)' onmouseover=\"showToolTip('Pinning a news post to the homepage will force the news post to remain on the homepage even when new posts are made.')\" onmouseout='hideToolTip()'>(?)</a></td>
+						<td class='formLabel'>Pin to Homepage: <a href='javascript:void(0)' onmouseover=\"showToolTip('Pinning a news post to the homepage will show the post under the Announcments section, instead of the Latest News section.')\" onmouseout='hideToolTip()'>(?)</a></td>
 						<td class='main'><input type='checkbox' name='hpsticky' value='1'></td>
 					</tr>
 					<tr>

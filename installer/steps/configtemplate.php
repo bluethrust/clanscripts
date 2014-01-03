@@ -1,5 +1,11 @@
 <?php
 
+$filterConfigPass = str_replace('"', '\"', $_POST['dbpass']);
+$filterConfigPass = str_replace('$', '\$', $filterConfigPass);
+
+$filterConfigKey = str_replace('"', '\"', $_POST['adminkey']);
+$filterConfigKey = str_replace('$', '\$', $filterConfigKey);
+
 $configInput = "<?php
 
    /*
@@ -16,7 +22,7 @@ $configInput = "<?php
 	
 	\$dbhost = \"".$_POST['dbhost']."\";
 	\$dbuser = \"".$_POST['dbuser']."\";
-	\$dbpass = \"".$_POST['dbpass']."\";
+	\$dbpass = \"".$filterConfigPass."\";
 	\$dbname = \"".$_POST['dbname']."\";
 	
 	\$dbprefix = \"".$_POST['tableprefix']."\";
@@ -24,7 +30,7 @@ $configInput = "<?php
 	\$MAIN_ROOT = \"".$setMainRoot."\";
 	
 	
-	\$ADMIN_KEY = \"".$_POST['adminkey']."\"; // KEY FOR EXTRA SECURITY WHEN ADDING CONSOLE OPTION
+	\$ADMIN_KEY = \"".$filterConfigKey."\"; // KEY FOR EXTRA SECURITY WHEN ADDING CONSOLE OPTION
 	
 	define(\"ADMIN_KEY\", \$ADMIN_KEY);
 

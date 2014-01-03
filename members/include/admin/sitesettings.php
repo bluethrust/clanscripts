@@ -72,8 +72,49 @@ if($websiteInfo['debugmode'] == 1) {
 	$selectDebugOn = " selected";	
 }
 
-?>
+$selectHideInactive = "";
+if($websiteInfo['hideinactive'] == 1) {
+	$selectHideInactive = " selected";	
+}
 
+$selectShowNewsPosts = "";
+
+if($websiteInfo['hpnews'] == 0) {
+	$selectShowNewsPosts = " selected";	
+}
+else {
+	$showCustomAmount = "";
+	switch($websiteInfo['hpnews']) {
+
+		case 5:
+			$selectNumOfNewsPosts[5] = " selected";
+			break;
+		case 4:
+			$selectNumOfNewsPosts[4] = " selected";
+			break;
+		case 3:
+			$selectNumOfNewsPosts[3] = " selected";
+			break;
+		case 2:
+			$selectNumOfNewsPosts[2] = " selected";
+			break;
+		case 1:
+			$selectNumOfNewsPosts[1] = " selected";
+			break;
+		case -1:
+			$selectNumOfNewsPosts[0] = " selected";
+			break;
+		default:
+			$selectNumOfNewsPosts[6] = " selected";
+			$showCustomAmount = $websiteInfo['hpnews'];
+	}
+	
+}
+
+$webInfoObj->select(1);
+$websiteInfo = $webInfoObj->get_info_filtered();
+
+?>
 
 <div class='formDiv'>
 
@@ -138,6 +179,24 @@ if($websiteInfo['debugmode'] == 1) {
 			<td class='formLabel'>Hide Inactive Members: <a href='javascript:void(0)' onmouseover="showToolTip('If set to Yes, inactive members will be hidden on the Members page.')" onmouseout='hideToolTip()'>(?)</a></td>
 			<td class='main'><select id='showinactive' class='textBox'><option value='0'>No</option><option value='1'<?php echo $selectHideInactive; ?>>Yes</option></select></td>
 		</tr>
+		<tr>
+			<td class='formLabel'>Show News on Homepage:</td>
+			<td class='main'><select id='showNewsPosts' class='textBox'><option value='yes'>Yes</option><option value='no'<?php echo $selectShowNewsPosts; ?>>No</option></select></td>
+		</tr>
+		</table>
+		<div id='hpNewsOptions' style='padding-left: 10px'>
+			<table class='formTable' style='margin-top: 0px'>
+				<tr>
+					<td class='formLabel'>Number of Posts:</td>
+					<td class='main'><select id='numOfNewsPosts' class='textBox'><option value='1'<?php echo $selectNumOfNewsPosts[1]; ?>>Latest Post</option><option value='2'<?php echo $selectNumOfNewsPosts[2]; ?>>Last 2 Posts</option><option value='3'<?php echo $selectNumOfNewsPosts[3]; ?>>Last 3 Posts</option><option value='4'<?php echo $selectNumOfNewsPosts[4]; ?>>Last 4 Posts</option><option value='5'<?php echo $selectNumOfNewsPosts[5]; ?>>Last 5 Posts</option><option value='all'<?php echo $selectNumOfNewsPosts[0]; ?>>Show All Posts</option><option value='custom'<?php echo $selectNumOfNewsPosts[6]; ?>>Custom Amount</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'><span id='enterAmountTitle' style='display: none'>Enter Amount:</span></td>
+					<td class='main'><span id='enterAmountTxt' style='display: none'><input type='text' id='customNewsAmount' class='textBox' style='width: 30px' value='<?php echo $showCustomAmount; ?>'></span></td>
+				</tr>
+			</table>
+		</div>
+		<table class='formTable' style='margin-top: 0px'>
 		<tr>
 			<td colspan='2' class='main'><br>
 				<b>Latest Activity Information</b>
@@ -219,6 +278,34 @@ if($websiteInfo['debugmode'] == 1) {
 	var blnSkip = false;
 	
 	$(document).ready(function() {
+
+
+		$('#showNewsPosts').change(function() {
+			if($(this).val() == "no") {
+				$('#hpNewsOptions').hide();
+			}
+			else {
+				$('#hpNewsOptions').show();
+			}
+
+		});
+
+		$('#numOfNewsPosts').change(function() {
+
+			if($(this).val() == "custom") {
+				$('#enterAmountTitle').show();
+				$('#enterAmountTxt').show();
+			}
+			else {
+				$('#enterAmountTitle').hide();
+				$('#enterAmountTxt').hide();
+			}	
+
+		});
+
+		$('#numOfPosts').change();
+
+		$('#showNewsPosts').change();
 		
 		$('#lowdsl').miniColors({
 			change: function(hex, rgb) { }
@@ -385,7 +472,7 @@ if($websiteInfo['debugmode'] == 1) {
 
 			$('#loadingspiral').show();
 
-			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val(), hideInactive: $('#showinactive').val() }, function(data) {
+			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val(), hideInactive: $('#showinactive').val(), showHPNews: $('#showNewsPosts').val(), numOfNewsPosts: $('#numOfNewsPosts').val(), customNewsAmount: $('#customNewsAmount').val() }, function(data) {
 				$('#postResponse').html(data);
 				$('#loadingspiral').hide();
 			});
