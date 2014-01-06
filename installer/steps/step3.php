@@ -232,19 +232,23 @@
 							if($checkConsole === false) {
 								$tempCatID = $arrConsoleCategoryIDs[$arrConsoleOptionInfo[$key]['category']];
 								$consoleOptionObj->setCategoryKeyValue($tempCatID);
+								$consoleOptionObj->resortOrder();
+								
 								$highestSortNum = $consoleOptionObj->getHighestSortNum();
 																
 								$newOrderNum = $highestSortNum+1;
 								
+								if($arrConsoleOptionInfo[$key]['addsep'] == "1") {
+									$arrValues = array($tempCatID, "-separator-", "", ($newOrderNum), "1", "", "1");
+									$consoleOptionObj->addNew($arrColumns, $arrValues);
+									
+									$newOrderNum++;
+								}
+								
 								$arrValues = array($tempCatID, $consoleOptionName, $arrConsoleOptionInfo[$key]['filename'], $newOrderNum, "1", $arrConsoleOptionInfo[$key]['hide'], "");
 								
 								$consoleOptionObj->addNew($arrColumns, $arrValues);
-																
-								if($arrConsoleOptionInfo[$key]['addsep'] == "1") {
-									$arrValues = array($tempCatID, "-separator-", "", ($newOrderNum+1), "1", "", "1");
-									$consoleOptionObj->addNew($arrColumns, $arrValues);
-								}
-								
+																								
 								$consoleOptionObj->resortOrder();
 							}
 							

@@ -98,6 +98,10 @@ if($_POST['submit']) {
 	}
 	
 	
+	// Load Plugins
+	
+	
+	
 	if($countErrors == 0) {
 		
 		$freezeTime = (86400*$_POST['freezetime'])+time();

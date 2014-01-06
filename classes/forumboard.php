@@ -146,7 +146,7 @@ class ForumBoard extends BasicSort {
 		$returnArr = array();
 		if($this->intTableKeyValue != "") {
 			
-			$result = $this->MySQL->query("SELECT * FROM ".$dbprefix."forum_memberaccess WHERE board_id = '".$this->intTableKeyValue."'");
+			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."forum_memberaccess WHERE board_id = '".$this->intTableKeyValue."'");
 			while($row = $result->fetch_assoc()) {
 				
 				$returnArr[$row['member_id']] = $row['accessrule'];
@@ -164,7 +164,7 @@ class ForumBoard extends BasicSort {
 		$returnArr = array();
 		if($this->intTableKeyValue != "") {
 	
-			$result = $this->MySQL->query("SELECT * FROM ".$dbprefix."forum_rankaccess WHERE board_id = '".$this->intTableKeyValue."'");
+			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."forum_rankaccess WHERE board_id = '".$this->intTableKeyValue."'");
 			while($row = $result->fetch_assoc()) {
 	
 				$returnArr[$row['rank_id']] = $row['accesstype'];

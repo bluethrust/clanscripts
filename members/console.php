@@ -21,6 +21,7 @@ include("../_setup.php");
 include_once("../classes/member.php");
 include_once("../classes/rank.php");
 include_once("../classes/consoleoption.php");
+include_once("../classes/btplugin.php");
 
 // Check for valid Console Option
 
@@ -50,6 +51,16 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 	}
 
 }
+
+
+// Load any plugins
+$consolePluginObj = new btPlugin($mysqli);
+$arrPlugins = $consolePluginObj->getPluginPage("console");
+
+foreach($arrPlugins as $pluginPageInfo) {
+	include_once($pluginPageInfo['pagepath']);
+}
+
 
 // Start Page
 

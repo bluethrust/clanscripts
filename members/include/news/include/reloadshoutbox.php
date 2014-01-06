@@ -39,7 +39,7 @@ $newsObj = new News($mysqli);
 $LOGIN_FAIL = true;
 
 $shoutboxObj = new Shoutbox($mysqli, "news", "news_id");
-$shoutboxObj->strDivID = "mainShoutbox";
+$shoutboxObj->strDivID = $_POST['divID'];
 $shoutboxObj->intDispWidth = 140;
 $shoutboxObj->intDispHeight = 300;
 $shoutboxObj->blnUpdateShoutbox = true;

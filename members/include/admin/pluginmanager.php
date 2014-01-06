@@ -26,7 +26,7 @@ else {
 }
 
 
-include("../classes/btplugin.php");
+include_once("../classes/btplugin.php");
 $cID = $_GET['cID'];
 
 $pluginObj = new btPlugin($mysqli);
@@ -83,8 +83,7 @@ echo "
 	</div>
 	
 	<div id='installMessage' style='display: none'></div>
-	
-	
+	<div id='termsMessage'></div>
 	<script type='text/javascript'>
 	
 		function reloadPluginLists() {

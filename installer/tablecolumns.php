@@ -1,5 +1,10 @@
 <?php
 	
+	$arrTableColumns['app_captcha'][0] = "appcaptcha_id";
+	$arrTableColumns['app_captcha'][1] = "appcomponent_id";
+	$arrTableColumns['app_captcha'][2] = "ipaddress";
+	$arrTableColumns['app_captcha'][3] = "captchatext";
+	
 	$arrTableColumns['app_components'][0] = "appcomponent_id";
 	$arrTableColumns['app_components'][1] = "name";
 	$arrTableColumns['app_components'][2] = "componenttype";
@@ -119,14 +124,21 @@
 	$arrTableColumns['downloadcategory'][0] = "downloadcategory_id";
 	$arrTableColumns['downloadcategory'][1] = "name";
 	$arrTableColumns['downloadcategory'][2] = "ordernum";
+	$arrTableColumns['downloadcategory'][3] = "accesstype";
+	$arrTableColumns['downloadcategory'][4] = "specialkey";
 	
 	$arrTableColumns['downloads'][0] = "download_id";
 	$arrTableColumns['downloads'][1] = "downloadcategory_id";
 	$arrTableColumns['downloads'][2] = "member_id";
 	$arrTableColumns['downloads'][3] = "dateuploaded";
 	$arrTableColumns['downloads'][4] = "name";
-	$arrTableColumns['downloads'][5] = "description";
-	$arrTableColumns['downloads'][6] = "downloadcount";
+	$arrTableColumns['downloads'][5] = "filename";
+	$arrTableColumns['downloads'][6] = "mimetype";
+	$arrTableColumns['downloads'][7] = "filesize";
+	$arrTableColumns['downloads'][8] = "splitfile1";
+	$arrTableColumns['downloads'][9] = "splitfile2";
+	$arrTableColumns['downloads'][10] = "description";
+	$arrTableColumns['downloads'][11] = "downloadcount";
 	
 	$arrTableColumns['eventchat'][0] = "eventchat_id";
 	$arrTableColumns['eventchat'][1] = "event_id";
@@ -203,13 +215,18 @@
 	$arrTableColumns['forgotpass'][3] = "changekey";
 	$arrTableColumns['forgotpass'][4] = "timeofrq";
 	
+	$arrTableColumns['forum_attachments'][0] = "forumattachment_id";
+	$arrTableColumns['forum_attachments'][1] = "forumpost_id";
+	$arrTableColumns['forum_attachments'][2] = "download_id";
+	
 	$arrTableColumns['forum_board'][0] = "forumboard_id";
 	$arrTableColumns['forum_board'][1] = "forumcategory_id";
-	$arrTableColumns['forum_board'][2] = "lastpost_id";
-	$arrTableColumns['forum_board'][3] = "name";
-	$arrTableColumns['forum_board'][4] = "description";
-	$arrTableColumns['forum_board'][5] = "accesstype";
-	$arrTableColumns['forum_board'][6] = "sortnum";
+	$arrTableColumns['forum_board'][2] = "subforum_id";
+	$arrTableColumns['forum_board'][3] = "lastpost_id";
+	$arrTableColumns['forum_board'][4] = "name";
+	$arrTableColumns['forum_board'][5] = "description";
+	$arrTableColumns['forum_board'][6] = "accesstype";
+	$arrTableColumns['forum_board'][7] = "sortnum";
 	
 	$arrTableColumns['forum_category'][0] = "forumcategory_id";
 	$arrTableColumns['forum_category'][1] = "name";
@@ -237,6 +254,7 @@
 	$arrTableColumns['forum_rankaccess'][0] = "forumrankaccess_id";
 	$arrTableColumns['forum_rankaccess'][1] = "board_id";
 	$arrTableColumns['forum_rankaccess'][2] = "rank_id";
+	$arrTableColumns['forum_rankaccess'][3] = "accesstype";
 	
 	$arrTableColumns['forum_topic'][0] = "forumtopic_id";
 	$arrTableColumns['forum_topic'][1] = "forumboard_id";
@@ -292,6 +310,31 @@
 	$arrTableColumns['hitcounter'][3] = "pagename";
 	$arrTableColumns['hitcounter'][4] = "totalhits";
 	
+	$arrTableColumns['iarequest'][0] = "iarequest_id";
+	$arrTableColumns['iarequest'][1] = "member_id";
+	$arrTableColumns['iarequest'][2] = "requestdate";
+	$arrTableColumns['iarequest'][3] = "reason";
+	$arrTableColumns['iarequest'][4] = "requeststatus";
+	$arrTableColumns['iarequest'][5] = "reviewer_id";
+	$arrTableColumns['iarequest'][6] = "reviewdate";
+	
+	$arrTableColumns['iarequest_messages'][0] = "iamessage_id";
+	$arrTableColumns['iarequest_messages'][1] = "iarequest_id";
+	$arrTableColumns['iarequest_messages'][2] = "member_id";
+	$arrTableColumns['iarequest_messages'][3] = "messagedate";
+	$arrTableColumns['iarequest_messages'][4] = "message";
+	
+	$arrTableColumns['imageslider'][0] = "imageslider_id";
+	$arrTableColumns['imageslider'][1] = "name";
+	$arrTableColumns['imageslider'][2] = "messagetitle";
+	$arrTableColumns['imageslider'][3] = "message";
+	$arrTableColumns['imageslider'][4] = "imageurl";
+	$arrTableColumns['imageslider'][5] = "fillstretch";
+	$arrTableColumns['imageslider'][6] = "ordernum";
+	$arrTableColumns['imageslider'][7] = "link";
+	$arrTableColumns['imageslider'][8] = "linktarget";
+	$arrTableColumns['imageslider'][9] = "membersonly";
+	
 	$arrTableColumns['ipban'][0] = "ipban_id";
 	$arrTableColumns['ipban'][1] = "ipaddress";
 	$arrTableColumns['ipban'][2] = "exptime";
@@ -316,6 +359,7 @@
 	$arrTableColumns['medals_members'][1] = "medal_id";
 	$arrTableColumns['medals_members'][2] = "member_id";
 	$arrTableColumns['medals_members'][3] = "dateawarded";
+	$arrTableColumns['medals_members'][4] = "reason";
 	
 	$arrTableColumns['memberapps'][0] = "memberapp_id";
 	$arrTableColumns['memberapps'][1] = "username";
@@ -360,6 +404,10 @@
 	$arrTableColumns['members'][30] = "topicsperpage";
 	$arrTableColumns['members'][31] = "postsperpage";
 	$arrTableColumns['members'][32] = "freezerank";
+	$arrTableColumns['members'][33] = "forumsignature";
+	$arrTableColumns['members'][34] = "promotepower";
+	$arrTableColumns['members'][35] = "onia";
+	$arrTableColumns['members'][36] = "inactivedate";
 	
 	$arrTableColumns['membersonlypage'][0] = "page_id";
 	$arrTableColumns['membersonlypage'][1] = "pagename";
@@ -436,6 +484,18 @@
 	$arrTableColumns['notifications'][3] = "message";
 	$arrTableColumns['notifications'][4] = "status";
 	$arrTableColumns['notifications'][5] = "icontype";
+	
+	$arrTableColumns['plugin_pages'][0] = "pluginpage_id";
+	$arrTableColumns['plugin_pages'][1] = "plugin_id";
+	$arrTableColumns['plugin_pages'][2] = "page";
+	$arrTableColumns['plugin_pages'][3] = "pagepath";
+	$arrTableColumns['plugin_pages'][4] = "sortnum";
+	
+	$arrTableColumns['plugins'][0] = "plugin_id";
+	$arrTableColumns['plugins'][1] = "name";
+	$arrTableColumns['plugins'][2] = "filepath";
+	$arrTableColumns['plugins'][3] = "apikey";
+	$arrTableColumns['plugins'][4] = "dateinstalled";
 	
 	$arrTableColumns['privatemessage_members'][0] = "pmmember_id";
 	$arrTableColumns['privatemessage_members'][1] = "pm_id";
@@ -658,5 +718,25 @@
 	$arrTableColumns['websiteinfo'][24] = "privateforum";
 	$arrTableColumns['websiteinfo'][25] = "privateprofile";
 	$arrTableColumns['websiteinfo'][26] = "updatemenu";
+	$arrTableColumns['websiteinfo'][27] = "hpimagetype";
+	$arrTableColumns['websiteinfo'][28] = "hpimagewidth";
+	$arrTableColumns['websiteinfo'][29] = "hpimageheight";
+	$arrTableColumns['websiteinfo'][30] = "hpimagewidthunit";
+	$arrTableColumns['websiteinfo'][31] = "hpimageheightunit";
+	$arrTableColumns['websiteinfo'][32] = "forum_showmedal";
+	$arrTableColumns['websiteinfo'][33] = "forum_medalcount";
+	$arrTableColumns['websiteinfo'][34] = "forum_medalwidth";
+	$arrTableColumns['websiteinfo'][35] = "forum_medalheight";
+	$arrTableColumns['websiteinfo'][36] = "forum_medalwidthunit";
+	$arrTableColumns['websiteinfo'][37] = "forum_medalheightunit";
+	$arrTableColumns['websiteinfo'][38] = "forum_showrank";
+	$arrTableColumns['websiteinfo'][39] = "forum_rankwidth";
+	$arrTableColumns['websiteinfo'][40] = "forum_rankheight";
+	$arrTableColumns['websiteinfo'][41] = "forum_rankwidthunit";
+	$arrTableColumns['websiteinfo'][42] = "forum_rankheightunit";
+	$arrTableColumns['websiteinfo'][43] = "forum_postsperpage";
+	$arrTableColumns['websiteinfo'][44] = "forum_topicsperpage";
+	$arrTableColumns['websiteinfo'][45] = "hideinactive";
+	$arrTableColumns['websiteinfo'][46] = "hpnews";
 
 ?>

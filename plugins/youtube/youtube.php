@@ -18,8 +18,8 @@
 	class Youtube extends Basic {
 		
 		// SET YOUR YOUTUBE CLIENT ID AND SECRET
-		protected $clientID;// = "517723608990.apps.googleusercontent.com";
-		protected $clientSecret;// = "bvV29OPaCEji_GT7PLT6GQ2o";
+		protected $clientID;
+		protected $clientSecret;
 		
 		// DO NOT EDIT BELOW
 		

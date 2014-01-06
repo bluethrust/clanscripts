@@ -161,7 +161,12 @@ while($row = $result->fetch_assoc()) {
 	
 	$sqlRanks = "('".implode("','", $arrRanks)."')";
 	
-	$query = "SELECT ".$dbprefix."members.member_id FROM ".$dbprefix."members INNER JOIN ".$dbprefix."ranks ON ".$dbprefix."members.rank_id=".$dbprefix."ranks.rank_id WHERE ".$dbprefix."members.rank_id IN ".$sqlRanks." AND ".$dbprefix."members.disabled = '0' AND ".$dbprefix."ranks.hiderank = '0' ORDER BY ".$dbprefix."ranks.ordernum DESC";
+	$sqlHideInactive = "";
+	if($websiteInfo['hideinactive'] == 1) {
+		$sqlHideInactive = " AND ".$dbprefix."members.onia = '0'";
+	}
+	
+	$query = "SELECT ".$dbprefix."members.member_id FROM ".$dbprefix."members INNER JOIN ".$dbprefix."ranks ON ".$dbprefix."members.rank_id=".$dbprefix."ranks.rank_id WHERE ".$dbprefix."members.rank_id IN ".$sqlRanks." AND ".$dbprefix."members.disabled = '0' AND ".$dbprefix."ranks.hiderank = '0'".$sqlHideInactive." ORDER BY ".$dbprefix."ranks.ordernum DESC";
 	$result2 = $mysqli->query($query);
 	$arrMemberCountCat[$row['rankcategory_id']] = $result2->num_rows;
 	while($arrMembers = $result2->fetch_assoc()) {
@@ -188,17 +193,23 @@ while($row = $result->fetch_assoc()) {
 		$arrGamesPlayed = array_merge($arrGamesPlayed, $member->gamesPlayed());
 		
 		$dispDSL = floor((time()-$memberListInfo['lastlogin'])/86400);
+		if($memberListInfo['onia'] == 1) {
+			$dispDSL = "IA";	
+		}
 		
-		if($dispDSL >= 0 && $dispDSL <= $maxDSLIntervals) {
+		
+		if(is_numeric($dispDSL) && $dispDSL >= 0 && $dispDSL <= $maxDSLIntervals) {
 			$arrCountDSL[1]++;	
 		}
-		elseif($dispDSL > $maxDSLIntervals && $dispDSL <= ($maxDSLIntervals*2)) {
+		elseif(is_numeric($dispDSL) && $dispDSL > $maxDSLIntervals && $dispDSL <= ($maxDSLIntervals*2)) {
 			$arrCountDSL[2]++;
 		}
-		else {
+		elseif(is_numeric($dispDSL)) {
 			$arrCountDSL[3]++;
 		}
 
+		
+		
 		
 		if($memberListInfo['loggedin'] == 1 && (time()-$memberListInfo['lastseen']) < 600) {
 			$dispStatus = "<img src='".$MAIN_ROOT."themes/".$THEME."/images/onlinedot.png' onmouseover=\"showToolTip('".$memberListInfo['username']." is Online!')\" onmouseout='hideToolTip()'>";	

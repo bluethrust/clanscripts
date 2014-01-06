@@ -102,59 +102,88 @@ echo "
 					$(this).css('cursor', 'default');
 					
 					
-					$.post('".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/install.php', { pluginDir: $(this).attr('data-plugin') }, function(data) {
-					
-						postResult = JSON.parse(data);
-						
-						if(postResult['result'] == 'success') {
+					// Check for terms
+					var blnContinue = false;
+					var pluginFolder = $(this).attr('data-plugin');
+					var termsObj = $.ajax({
+						url: '".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/terms.php',
+						type: 'HEAD',
+						error: function() {
+							installPlugin(pluginFolder);
+						},
+						success: function() {
 							
-							$('#installMessage').html(\"<p class='main' align='center'>Successfully installed plugin!<br><br>Make sure to configure the API settings on the plugin's settings page.</p>\");
-							
-							
-						}
-						else {
-						
-							
-							var strErrorHTML = \"<ul>\";
-							
-							for(var x in postResult['errors']) {
-							
-								strErrorHTML += \"<li class='main'>\"+postResult['errors'][x]+\"</li>\";
-															
-							}
-
-							strErrorHTML += \"</ul>\";
-							
-							$('#installMessage').html(\"<p class='main'>Unable to install plugin because the following errors occurred:<br>\"+strErrorHTML+\"</p>\");
-							
-						
-						}
-						
-						$('#installMessage').dialog({
-						
-							title: 'Plugin Manager',
-							zIndex: 9999,
-							show: 'scale',
-							modal: true,
-							width: 450,
-							resizable: false,
-							buttons: {
-								'Ok': function() {
-									$(this).dialog('close');
-								}								
-							}
-						
+							$.post('".$MAIN_ROOT."plugins/'+pluginFolder+'/terms.php', { }, function(data) {
+							$('#termsMessage').html(data);
+														
 						});
 						
 						
-						reloadPluginLists();
-					
+						}
 					});
-					
+
 				}
 			
 			});
 		});
+		
+		
+		function installPlugin(pluginFolder) {
+		
+			$(document).ready(function() {
+			
+				$.post('".$MAIN_ROOT."plugins/'+pluginFolder+'/install.php', { pluginDir: pluginFolder }, function(data) {
+					
+					postResult = JSON.parse(data);
+					
+					if(postResult['result'] == 'success') {
+						
+						$('#installMessage').html(\"<p class='main' align='center'>Successfully installed plugin!<br><br>Make sure to configure the API settings on the plugin's settings page.</p>\");
+						
+						
+					}
+					else {
+					
+						
+						var strErrorHTML = \"<ul>\";
+						
+						for(var x in postResult['errors']) {
+						
+							strErrorHTML += \"<li class='main'>\"+postResult['errors'][x]+\"</li>\";
+														
+						}
+
+						strErrorHTML += \"</ul>\";
+						
+						$('#installMessage').html(\"<p class='main'>Unable to install plugin because the following errors occurred:<br>\"+strErrorHTML+\"</p>\");
+						
+					
+					}
+					
+					$('#installMessage').dialog({
+					
+						title: 'Plugin Manager',
+						zIndex: 9999,
+						show: 'scale',
+						modal: true,
+						width: 450,
+						resizable: false,
+						buttons: {
+							'Ok': function() {
+								$(this).dialog('close');
+							}								
+						}
+					
+					});
+					
+					
+					reloadPluginLists();
+				
+				});
+			
+			});
+
+		}
 				
 	</script>
 	

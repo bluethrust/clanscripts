@@ -139,7 +139,7 @@ if(!$_POST['submit']) {
 	
 	
 	$ignore_options = "<option value='Y'>Show</option><option value='I'>Don't Show</option>";
-	$iaoptions = "<option value='1'>Inactive</option><option value='0'>Not Inactive</option>";
+	$iaoptions = "<option value='1'>Inactive</option><option value='0'>Active</option>";
  
  
 	echo "

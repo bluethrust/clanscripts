@@ -231,10 +231,14 @@ else {
 	$dispLastSeenLink = $member->get_info("lastseenlink");	
 }
 
+$dispInactive = "";
+if($memberInfo['onia'] == 1) {
+	$dispInactive = "<div style='display: inline-block; vertical-align: middle' class='failedFont tinyFont'>&nbsp;&nbsp;&nbsp;INACTIVE</div>";
+}
 
 ?>
 
-<div class='breadCrumbTitle'><div style='display: inline-block'><?php echo $memberInfo['username']; ?>'s Profile</div><div style='display: inline-block; margin-left: 8px; vertical-align: middle'><?php echo $dispOnlineStatus; ?></div></div>
+<div class='breadCrumbTitle'><div style='display: inline-block'><?php echo $memberInfo['username']; ?>'s Profile</div><div style='display: inline-block; margin-left: 8px; vertical-align: middle'><?php echo $dispOnlineStatus; ?></div><?php echo $dispInactive; ?></div>
 <div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
 <a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <a href='<?php echo $MAIN_ROOT; ?>members.php'>Members</a> > <?php echo $memberInfo['username']; ?>'s Profile
 </div>
