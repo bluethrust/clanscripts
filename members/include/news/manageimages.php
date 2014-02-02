@@ -63,11 +63,11 @@ else {
 					</tr>
 					<tr>
 						<td class='formLabel'>Width:</td>
-						<td class='main'><input type='text' id='containerwidth' value='".$websiteInfo['hpimagewidth']."' class='textBox' style='width: 50px'> <select id='containerwidthunit' class='textBox'><option value='1'>px</option><option value='2'".$selectWidthUnit.">%</option></select></td>
+						<td class='main'><input type='text' id='containerwidth' value='".$websiteInfo['hpimagewidth']."' class='textBox' style='width: 50px'> <select id='containerwidthunit' class='textBox'><option value='1'>px</option><!-- <option value='2'".$selectWidthUnit.">%</option> --></select></td>
 					</tr>
 					<tr>
 						<td class='formLabel'>Height:</td>
-						<td class='main'><input type='text' id='containerheight' value='".$websiteInfo['hpimageheight']."' class='textBox' style='width: 50px'> <select id='containerheightunit' class='textBox'><option value='1'>px</option><option value='2'".$selectHeightUnit.">%</option></select></td>
+						<td class='main'><input type='text' id='containerheight' value='".$websiteInfo['hpimageheight']."' class='textBox' style='width: 50px'> <select id='containerheightunit' class='textBox'><option value='1'>px</option><!-- <option value='2'".$selectHeightUnit.">%</option> --></select></td>
 					</tr>
 					<tr>
 						<td class='formLabel'>Display Style:</td>

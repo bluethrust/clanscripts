@@ -59,7 +59,9 @@ $arrActions = array("sticky", "lock", "delete");
 if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array($_GET['action'], $arrActions)) {
 	
 	$topicInfo = $boardObj->objTopic->get_info();
-	
+	$boardObj->objPost->select($topicInfo['forumpost_id']);
+	$topicName = $boardObj->objPost->get_info_filtered("title");
+			
 	switch($_GET['action']) {
 		case "sticky":
 			$newStickyStatus = 0;
@@ -69,6 +71,7 @@ if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array(
 			
 			$boardObj->objTopic->update(array("stickystatus"), array($newStickyStatus));
 			$redirectURL = $MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id'];
+			$member->logAction("Stickied forum topic: <a href='".$MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id']."'>".$topicName."</a>");
 			break;
 		case "lock":
 			$newLockStatus = 0;
@@ -78,9 +81,11 @@ if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array(
 			
 			$boardObj->objTopic->update(array("lockstatus"), array($newLockStatus));
 			$redirectURL = $MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id'];
+			$member->logAction("Locked forum topic: <a href='".$MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id']."'>".$topicName."</a>");
 			break;
 		case "delete":
 			
+
 			$mysqli->query("DELETE FROM ".$dbprefix."forum_topicseen WHERE forumtopic_id = '".$topicInfo['forumtopic_id']."'");
 			$mysqli->query("DELETE FROM ".$dbprefix."forum_post WHERE forumtopic_id = '".$topicInfo['forumtopic_id']."'");
 			
@@ -89,6 +94,7 @@ if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array(
 			
 			$boardObj->objTopic->delete();
 			
+			$member->logAction("Deleted forum topic: ".$topicName);
 			
 			$redirectURL = $MAIN_ROOT."forum/viewboard.php?bID=".$topicInfo['forumboard_id'];
 			
@@ -110,11 +116,15 @@ elseif(isset($_GET['pID']) && $boardObj->objPost->select($_GET['pID']) && $_GET[
 	$postInfo = $boardObj->objPost->get_info_filtered();
 	$boardObj->objTopic->select($postInfo['forumtopic_id']);
 	
-	$topicInfo = $boardObj->objTopic->get_info();
+	$topicInfo = $boardObj->objTopic->get_info_filtered();
 	$dialogMessage = "";
 	if($postInfo['forumpost_id'] != $topicInfo['forumpost_id']) {
 		// Not First Post
 		$boardObj->objPost->delete();
+		
+		$arrPosts = $boardObj->objTopic->getAssociateIDs("ORDER BY dateposted DESC");
+		
+		$boardObj->objTopic->update(array("lastpost_id"), array($arrPosts[0]));
 		
 		$dialogMessage = "Successfully deleted forum post!";
 		
@@ -129,7 +139,7 @@ elseif(isset($_GET['pID']) && $boardObj->objPost->select($_GET['pID']) && $_GET[
 		}
 		else {
 			$boardObj->objTopic->delete();
-			$dialogMessage = "Successfully deleted forum postt!";
+			$dialogMessage = "Successfully deleted forum post!";
 		}
 		
 	}
@@ -147,6 +157,10 @@ elseif(isset($_GET['pID']) && $boardObj->objPost->select($_GET['pID']) && $_GET[
 		</script>
 	
 	";
+	
+	$boardObj->objPost->select($topicInfo['forumpost_id']);
+	
+	$member->logAction("Deleted post in topic: <a href='".$MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id']."'>".$boardObj->objPost->get_info_filtered("title")."</a>");
 	
 }
 elseif(isset($_GET['pID']) && $boardObj->objPost->select($_GET['pID']) && $_GET['action'] != "delete") {

@@ -183,8 +183,8 @@ if($websiteInfo['newsticker'] != "") {
 	$imageSliderObj->strDisplayStyle = $websiteInfo['hpimagetype'];
 	$imageSliderObj->intDisplayWidth = $websiteInfo['hpimagewidth'];
 	$imageSliderObj->intDisplayHeight = $websiteInfo['hpimageheight'];
-	$imageSliderObj->intDisplayWidthUnit = $websiteInfo['hpimagewidthunit'];
-	$imageSliderObj->intDisplayHeightUnit = $websiteInfo['hpimageheightunit'];
+	$imageSliderObj->strDisplayWidthUnit = $websiteInfo['hpimagewidthunit'];
+	$imageSliderObj->strDisplayHeightUnit = $websiteInfo['hpimageheightunit'];
 	$imageSliderObj->blnLoggedIn = constant('LOGGED_IN');
 	$imageSliderObj->strTheme = $websiteInfo['theme'];
 	

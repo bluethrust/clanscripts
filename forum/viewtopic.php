@@ -303,7 +303,7 @@ while($row = $result->fetch_assoc()) {
 		$medalObj = new Medal($mysqli);
 		$medalCount = ($websiteInfo['forum_medalcount'] == 0) ? 5 : $websiteInfo['forum_medalcount'];
 		
-		$arrMedals = $member->getMedalList(false, $websiteInfo['medalorder']);
+		$arrMedals = $postMemberObj->getMedalList(false, $websiteInfo['medalorder']);
 		
 		$dispMedalWidth = ($websiteInfo['forum_medalwidth'] == 0) ? "" : "width: ".$websiteInfo['forum_medalwidth'].$websiteInfo['forum_medalwidthunit'].";";
 		$dispMedalHeight = ($websiteInfo['forum_medalheight'] == 0) ? "" : "height: ".$websiteInfo['forum_medalheight'].$websiteInfo['forum_medalheightunit'].";";
@@ -341,7 +341,7 @@ while($row = $result->fetch_assoc()) {
 			<td class='boardPosterInfo' valign='top'><a name='".$postInfo['forumpost_id']."'></a>
 				<span class='boardPosterName'>".$postMemberObj->getMemberLink()."</span><br>
 				".$posterRankInfo['name']."<br>
-				<img src='".$postMemberInfo['avatar']."' class='boardPosterAvatar' style='margin-top: 5px; margin-bottom: 5px'><br>
+				<img src='".$postMemberInfo['avatar']."' style='width: 50px; height: 50px; margin-top: 5px; margin-bottom: 5px'><br>
 				Posts: ".$postMemberObj->countForumPosts()."
 				".$dispRankIMG."
 				".$dispMedals."

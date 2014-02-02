@@ -337,7 +337,7 @@ class BasicOrder extends Basic {
 			$addTo = -1;
 	
 	
-			if($this->arrObjInfo['ordernum'] == 1 AND $intHighestOrderNum != 1) {
+			if($this->arrObjInfo['ordernum'] == 1 && $intHighestOrderNum != 1) {
 				$strBeforeAfter = "after";
 				$addTo = 1;
 			}

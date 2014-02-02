@@ -91,7 +91,7 @@ if($_POST['submit']) {
 			echo "
 				<div style='display: none' id='successBox'>
 					<p align='center'>
-						Successfully Join the Tournament!
+						Successfully Joined the Tournament!
 					</p>
 				</div>
 			

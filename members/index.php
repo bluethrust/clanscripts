@@ -122,6 +122,13 @@ if($checkMember) {
 					";
 					
 				}
+				elseif(isset($_SESSION['lastConsoleCategory']) && $_SESSION['lastConsoleCategory']['catID'] == $categoryID && $_SESSION['lastConsoleCategory']['exptime'] > time()) {
+					$clickCategory = "
+						<script type='text/javascript'>
+							selectCategory('".$counter."');
+						</script>
+					";
+				}
 				elseif($memberInfo['defaultconsole'] == $categoryID && $clickCategory == "") {
 					$clickCategory = "
 					<script type='text/javascript'>
@@ -156,6 +163,8 @@ if($checkMember) {
 						$diplomacyRequestsCID = $consoleObj->findConsoleIDByName("View Diplomacy Requests");
 						$viewEventInvitationsCID = $consoleObj->findConsoleIDByName("View Event Invitations");
 						$viewInactiveRequestsCID = $consoleObj->findConsoleIDByName("View Inactive Requests");
+						$privateMessagesCID = $consoleObj->findConsoleIDByName("Private Messages");
+						
 						if($consoleInfo['console_id'] == $memberAppCID) {
 							$getUnseenApps = $mysqli->query("SELECT memberapp_id FROM ".$dbprefix."memberapps WHERE seenstatus = '0'");
 							$unseenApps = $getUnseenApps->num_rows;
@@ -171,20 +180,28 @@ if($checkMember) {
 							
 							
 						}
-						elseif($consoleInfo['console_id'] == $diplomacyRequestsCID) {
-							$diplomacyRequestsSQL = $mysqli->query("SELECT diplomacyrequest_id FROM ".$dbprefix."diplomacy_request WHERE confirmemail = '1'");
-							$countDiplomacyRequests = $diplomacyRequestsSQL->num_rows;
-							$dispPageTitle .= " (".$countDiplomacyRequests.")";
-						}
-						elseif($consoleInfo['console_id'] == $viewEventInvitationsCID) {
-							$eventInvitationsSQL = $mysqli->query("SELECT em.eventmember_id FROM ".$dbprefix."events_members em, ".$dbprefix."events e WHERE status = '0' AND em.event_id = e.event_id AND e.startdate > '".time()."' AND em.member_id = '".$memberInfo['member_id']."'");
-							$countEventInvitations = $eventInvitationsSQL->num_rows;
-							$dispPageTitle .= " (".$countEventInvitations.")";
-						}
-						elseif($consoleInfo['console_id'] == $viewInactiveRequestsCID) {
-							$iaRequestSQL = $mysqli->query("SELECT iarequest_id FROM ".$dbprefix."iarequest WHERE requeststatus = '0'");
-							$countIARequests = $iaRequestSQL->num_rows;
-							$dispPageTitle .= " (".$countIARequests.")";
+						
+						
+						switch($consoleInfo['console_id']) {
+							case $diplomacyRequestsCID:
+								$diplomacyRequestsSQL = $mysqli->query("SELECT diplomacyrequest_id FROM ".$dbprefix."diplomacy_request WHERE confirmemail = '1'");
+								$countDiplomacyRequests = $diplomacyRequestsSQL->num_rows;
+								$dispPageTitle .= " (".$countDiplomacyRequests.")";
+								break;
+							case $viewEventInvitationsCID:
+								$eventInvitationsSQL = $mysqli->query("SELECT em.eventmember_id FROM ".$dbprefix."events_members em, ".$dbprefix."events e WHERE status = '0' AND em.event_id = e.event_id AND e.startdate > '".time()."' AND em.member_id = '".$memberInfo['member_id']."'");
+								$countEventInvitations = $eventInvitationsSQL->num_rows;
+								$dispPageTitle .= " (".$countEventInvitations.")";
+								break;
+							case $viewInactiveRequestsCID:
+								$iaRequestSQL = $mysqli->query("SELECT iarequest_id FROM ".$dbprefix."iarequest WHERE requeststatus = '0'");
+								$countIARequests = $iaRequestSQL->num_rows;
+								$dispPageTitle .= " (".$countIARequests.")";
+								break;
+							case $privateMessagesCID:
+								$dispPageTitle .= "</a><br>";
+								$dispPageTitle .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/privatemessages/compose.php'>Compose Message";
+								break;
 						}
 						
 						

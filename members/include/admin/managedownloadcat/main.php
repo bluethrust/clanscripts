@@ -66,21 +66,21 @@ while($row = $result->fetch_assoc()) {
 		$dispUpArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
 	}
 	else {
-		$dispUpArrow = "<a href='javascript:void(0)' onclick=\"moveDownloadCat('up', '".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' width='24' height='24' title='Move Up'></a>";
+		$dispUpArrow = "<a href='javascript:void(0)' onclick=\"moveDownloadCat('up', '".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' class='manageListActionButton' title='Move Up'></a>";
 	}
 
 	if($x == $intHighestOrder) {
 		$dispDownArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
 	}
 	else {
-		$dispDownArrow = "<a href='javascript:void(0)' onclick=\"moveDownloadCat('down', '".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' width='24' height='24' title='Move Down'></a>";
+		$dispDownArrow = "<a href='javascript:void(0)' onclick=\"moveDownloadCat('down', '".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' class='manageListActionButton' title='Move Down'></a>";
 	}
 
 	if($row['specialkey'] != "") {
 		$dispDeleteButton = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
 	}
 	else {
-		$dispDeleteButton = "<a href='javascript:void(0)' onclick=\"deleteDownloadCat('".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' width='24' height='24' title='Delete Category'></a>";
+		$dispDeleteButton = "<a href='javascript:void(0)' onclick=\"deleteDownloadCat('".$row['downloadcategory_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Delete Category'></a>";
 	}
 	
 	
@@ -89,7 +89,7 @@ while($row = $result->fetch_assoc()) {
 		<td class='dottedLine".$addCSS."' width=\"76%\">&nbsp;&nbsp;<span class='main'><b><a href='console.php?cID=".$cID."&catID=".$row['downloadcategory_id']."&action=edit'>".$row['name']."</a></b></td>
 		<td align='center' class='dottedLine".$addCSS."' width=\"6%\">".$dispUpArrow."</td>
 		<td align='center' class='dottedLine".$addCSS."' width=\"6%\">".$dispDownArrow."</td>
-		<td align='center' class='dottedLine".$addCSS."' width=\"6%\"><a href='console.php?cID=".$cID."&catID=".$row['downloadcategory_id']."&action=edit'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' width='24' height='24' title='Edit Category'></a></td>
+		<td align='center' class='dottedLine".$addCSS."' width=\"6%\"><a href='console.php?cID=".$cID."&catID=".$row['downloadcategory_id']."&action=edit'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Edit Category'></a></td>
 		<td align='center' class='dottedLine".$addCSS."' width=\"6%\">".$dispDeleteButton."</td>
 	</tr>
 	";

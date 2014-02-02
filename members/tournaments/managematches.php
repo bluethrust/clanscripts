@@ -65,7 +65,7 @@ foreach($arrRounds as $roundNum) {
 ?>
 
 
-<div class='formDiv main' style='border: 0px; background: none'>
+<div class='formDiv main' style='overflow: auto; border: 0px; background: none'>
 
 	<p class='main'>
 		
@@ -91,7 +91,6 @@ foreach($arrRounds as $roundNum) {
 	</div>
 </div>
 <div id='changeSeedDiv' class='main' style='display: none'></div><div id='successBox' class='main' style='display: none'></div>
-
 <script type='text/javascript'>
 
 

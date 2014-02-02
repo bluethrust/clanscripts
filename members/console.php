@@ -114,6 +114,8 @@ if($checkMember) {
 		
 		$memberInfo = $member->get_info();
 		
+		$_SESSION['lastConsoleCategory'] = array("catID" => $consoleInfo['consolecategory_id'], "exptime" => time()+600);
+		
 		// Check for IA
 		
 		if($memberInfo['onia'] == 1 && $cID != $consoleObj->findConsoleIDByName("Cancel IA")) {

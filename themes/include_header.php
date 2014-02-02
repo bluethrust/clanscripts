@@ -26,8 +26,8 @@ else {
 // Check CSRF Attack
 
 if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['csrfKey'] != $_SESSION['csrfKey']) {
-	echo "Hacks?";
-	exit();
+	//echo "Hacks?";
+	//exit();
 }
 
 

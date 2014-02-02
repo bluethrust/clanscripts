@@ -154,7 +154,7 @@ class ImageSlider extends BasicOrder {
 			
 			echo "
 			
-				".$addLink.$addOverlay."<div class='hp_imgScrollContainer' style=\"background: url('".$this->arrObjInfo['imageurl']."'); width: ".$this->intDisplayWidth.$this->strDisplayWidthUnit."; height: ".$this->intDisplayHeight.$this->strDisplayHeightUnit."\"></div>".$closeLinkTag."
+				".$addLink."<div class='hp_imgScrollContainer' style=\"background: url('".$this->arrObjInfo['imageurl']."'); width: ".$this->intDisplayWidth.$this->strDisplayWidthUnit."; height: ".$this->intDisplayHeight.$this->strDisplayHeightUnit."\">".$addOverlay."</div>".$closeLinkTag."
 			
 			";
 			
@@ -190,7 +190,7 @@ class ImageSlider extends BasicOrder {
 			else {
 				
 				echo "
-					".$addLink.$addOverlay."<div class='hp_imgScrollContainer' style=\"background: url('".$this->arrObjInfo['imageurl']."'); width: ".$this->intDisplayWidth.$this->strDisplayWidthUnit."; height: ".$this->intDisplayHeight.$this->strDisplayHeightUnit."\"></div>".$closeLinkTag."
+					".$addLink."<div class='hp_imgScrollContainer' style=\"background: url('".$this->arrObjInfo['imageurl']."'); width: ".$this->intDisplayWidth.$this->strDisplayWidthUnit."; height: ".$this->intDisplayHeight.$this->strDisplayHeightUnit."\">".$addOverlay."</div>".$closeLinkTag."
 				";
 			}
 			

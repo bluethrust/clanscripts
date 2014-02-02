@@ -167,8 +167,6 @@ class BTUpload {
 		}
 
 		
-		print_r($this->arrErrors);
-		
 		return $blnUploadFile;
 	}
 	

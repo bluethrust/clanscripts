@@ -370,7 +370,7 @@ if(!$_POST['submit']) {
 			</tr>
 			<tr>
 				<td class='formLabel'><div style='padding-left: 3px'>Auto-Recruits:</div></td>
-				<td class='main'><input type='text' class='textBox' name='autodays' value='".$medalInfo['autorecruits']."' style='width: 40px'></td>
+				<td class='main'><input type='text' class='textBox' name='autorecruits' value='".$medalInfo['autorecruits']."' style='width: 40px'></td>
 			</tr>
 			<tr>
 				<td colspan='2' align='center'><br>

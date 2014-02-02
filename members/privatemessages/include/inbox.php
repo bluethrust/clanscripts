@@ -15,6 +15,8 @@
 include_once("../../../_setup.php");
 include_once("../../../classes/member.php");
 include_once("../../../classes/rank.php");
+include_once("../../../classes/pmfolder.php");
+include_once("../../../classes/privatemessage.php");
 
 
 // Start Page
@@ -28,29 +30,49 @@ $consoleInfo = $consoleObj->get_info_filtered();
 $member = new Member($mysqli);
 $member->select($_SESSION['btUsername']);
 
-$pmObj = new Basic($mysqli, "privatemessages", "pm_id");
-$multiMemPMObj = new Basic($mysqli, "privatemessage_members", "pmmember_id");
+$pmObj = new PrivateMessage($mysqli);
+$multiMemPMObj = $pmObj->multiMemPMObj;
 
 // Check Login
 $LOGIN_FAIL = true;
-if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj)) {
+if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj)) {	
 
 $memberInfo = $member->get_info_filtered();
 $arrPM = array();
 $arrPMMID = array();
 
-$result = $mysqli->query("SELECT pm_id, datesent FROM ".$dbprefix."privatemessages WHERE receiver_id = '".$memberInfo['member_id']."' AND deletereceiver = '0' ORDER BY datesent DESC");
-while($row = $result->fetch_assoc()) {
-	$arrPM[$row['pm_id']] = $row['datesent'];
+
+$pmFolderObj = new PMFolder($mysqli);
+$pmFolderObj->intMemberID = $memberInfo['member_id'];
+
+
+// Stick Folder Conditions in variables
+
+$isFolderSet = isset($_POST['folder']);
+$selectedFolder = $pmFolderObj->select($_POST['folder']);
+$condition1 = (!$selectedFolder || ($selectedFolder && !$pmFolderObj->isMemberFolder()));
+$arrStandardFolders = array(0, -1, -2);
+
+// Folder Checks
+if(!$isFolderSet) {
+	$_POST['folder'] = 0;
+	$pmFolderObj->setFolder($_POST['folder']);
+}
+elseif($isFolderSet && $condition1 && !in_array($_POST['folder'], $arrStandardFolders)) {
+	exit();
+}
+elseif(in_array($_POST['folder'], $arrStandardFolders)) {
+	$pmFolderObj->setFolder($_POST['folder']);	
 }
 
-$result = $mysqli->query("SELECT ".$dbprefix."privatemessage_members.*, ".$dbprefix."privatemessages.datesent FROM ".$dbprefix."privatemessage_members, ".$dbprefix."privatemessages WHERE ".$dbprefix."privatemessage_members.pm_id = ".$dbprefix."privatemessages.pm_id AND ".$dbprefix."privatemessage_members.member_id = '".$memberInfo['member_id']."' AND ".$dbprefix."privatemessage_members.deletestatus = '0' ORDER BY ".$dbprefix."privatemessages.datesent DESC");
-while($row = $result->fetch_assoc()) {
-	$arrPM[$row['pm_id']] = $row['datesent'];
-	$arrPMMID[$row['pm_id']] = $row['pmmember_id'];
-}
 
-arsort($arrPM);
+
+$pmFolderObj->setFolder($_POST['folder']);
+$arrFolderContents = $pmFolderObj->getFolderContents();
+$arrPM = $arrFolderContents[0];
+$arrPMMID = $arrFolderContents[1];
+
+
 echo "<table class='formTable' style='border-spacing: 0px'>";
 foreach($arrPM as $key => $value) {
 
@@ -72,12 +94,24 @@ foreach($arrPM as $key => $value) {
 	}
 	
 	$member->select($pmInfo['sender_id']);
-	$dispSender = $member->getMemberLink();
+	
+	if($_POST['folder'] == "-1" && $pmInfo['receiver_id'] != 0) {
+		$member->select($pmInfo['receiver_id']);
+		$dispSender = $member->getMemberLink();
+		$member->select($memberInfo['member_id']);
+	}
+	elseif($_POST['folder'] == "-1" && $pmInfo['receiver_id'] == 0) {
+		$dispSender = $pmObj->getRecipients(true);
+	}
+	else {
+		$dispSender = $member->getMemberLink();
+	}
+	
 
 	echo "
 	<tr>
 		<td class='pmInbox main solidLine".$useAltBG."' style='padding-left: 0px' width=\"5%\"><input type='checkbox' value='".$pmInfo['pm_id'].$addToPMValue."' class='textBox'></td>
-		<td class='pmInbox main solidLine".$useAltBG."' width=\"30%\">".$dispSender."</td>
+		<td class='pmInbox main solidLine".$useAltBG."' width=\"30%\"><div style='width: 85%; white-space:nowrap; overflow: hidden; text-overflow: ellipsis'>".$dispSender."</a></div></td>
 		<td class='pmInbox main solidLine".$useAltBG."' width=\"35%\"><a href='".$MAIN_ROOT."members/privatemessages/view.php?pmID=".$pmInfo['pm_id']."'>".filterText($pmInfo['subject'])."</a></td>
 		<td class='pmInbox main solidLine".$useAltBG."' width=\"30%\">".getPreciseTime($pmInfo['datesent'])."</td>
 	</tr>
@@ -91,7 +125,7 @@ if(count($arrPM) == 0) {
 	<tr>
 		<td class='main' colspan='4'>
 			<p align='center' style='font-style: italic'>
-				Your private message inbox is empty!
+				This folder is empty!
 			</p>
 		</td>
 	</tr>

@@ -18,65 +18,9 @@ include_once("../../classes/rank.php");
 include_once("../../classes/rankcategory.php");
 include_once("../../classes/squad.php");
 include_once("../../classes/tournament.php");
+include_once("../../classes/privatemessage.php");
+include_once("../../classes/pmfolder.php");
 
-
-// Function to Retrieve Multiple Recipient Names
-
-
-function getRecipients($pmID) {
-	global $mysqli, $MAIN_ROOT, $dbprefix;
-
-	$multiMemPMObj = new Basic($mysqli, "privatemessage_members", "pmmember_id");
-	$member = new Member($mysqli);
-	$rankCatObj = new RankCategory($mysqli);
-	$squadObj = new Squad($mysqli);
-	$tournamentObj = new Tournament($mysqli);
-
-	
-	
-	$arrGroups['list'] = array();
-	$arrGroups['rank'] = array();
-	$arrGroups['squad'] = array();
-	$arrGroups['tournament'] = array();
-	$arrGroups['rankcategory'] = array();
-	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessage_members WHERE pm_id = '".$pmID."'");
-	while($row = $result->fetch_assoc()) {
-		if($row['grouptype'] != "" && !in_array($row['group_id'], $arrGroups[$row['grouptype']])) {
-			$arrGroups[$row['grouptype']][] = $row['group_id'];
-
-			switch($row['grouptype']) {
-				case "rankcategory":
-					$dispName = ($rankCatObj->select($row['group_id'])) ? $rankCatObj->get_info_filtered("name")." - Category" : "";
-					break;
-				case "rank":
-					$dispName = ($member->objRank->select($row['group_id'])) ? $member->objRank->get_info_filtered("name")." - Rank" : "";
-					break;
-				case "squad":
-					$dispName = ($squadObj->select($row['group_id'])) ? "<a href='".$MAIN_ROOT."squads/profile.php?sID=".$row['group_id']."'>".$squadObj->get_info_filtered("name")." Members</a>" : "";
-					break;
-				case "tournament":
-					$dispName = ($tournamentObj->select($row['group_id'])) ? "<a href='".$MAIN_ROOT."tournaments/view.php?tID=".$row['group_id']."'>".$tournamentObj->get_info_filtered("name")." Players</a>" : "";
-					break;
-			}
-	
-	
-			$arrGroups['list'][] = $dispName;
-	
-	
-		}
-		elseif($row['grouptype'] == "") {
-			$member->select($row['member_id']);
-			$arrGroups['list'][] = $member->getMemberLink();
-		}
-	}
-	
-	
-	$dispToMember = implode(", ", $arrGroups['list']);
-	
-	return $dispToMember;
-
-}
 
 $ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
 
@@ -107,8 +51,8 @@ $member = new Member($mysqli);
 $member->select($_SESSION['btUsername']);
 
 $prevFolder = "../../";
-$PAGE_NAME = "Compose Message - ".$consoleTitle." - ";
-$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members'>My Account</a> > <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>".$consoleTitle."</a> > Compose Message";
+$PAGE_NAME = "View Message - ".$consoleTitle." - ";
+$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members'>My Account</a> > <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>".$consoleTitle."</a> > View Message";
 $EXTERNAL_JAVASCRIPT .= "
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/console.js'></script>
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/main.js'></script>
@@ -116,17 +60,14 @@ $EXTERNAL_JAVASCRIPT .= "
 
 include("../../themes/".$THEME."/_header.php");
 echo "
-<div class='breadCrumbTitle' id='breadCrumbTitle'>Compose Message</div>
+<div class='breadCrumbTitle' id='breadCrumbTitle'>View Message</div>
 <div class='breadCrumb' id='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
 $dispBreadCrumb
 </div>
 ";
 
-$pmObj = new BasicOrder($mysqli, "privatemessages", "pm_id");
-$multiMemPMObj = new Basic($mysqli, "privatemessage_members", "pmmember_id");
-
-$pmObj->set_assocTableName("privatemessage_members");
-$pmObj->set_assocTableKey("pmmember_id");
+$pmObj = new PrivateMessage($mysqli);
+$multiMemPMObj = $pmObj->multiMemPMObj;
 
 
 // Check Login
@@ -139,36 +80,50 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessage_members WHERE pm_id = '".$pmInfo['pm_id']."' AND member_id = '".$memberInfo['member_id']."'");
 	
+	$senderResult = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessage_members WHERE pm_id = '".$pmInfo['pm_id']."'");
+	
 	$blnMultiPM = false;
 	
 	
 	if($pmInfo['receiver_id'] == $memberInfo['member_id'] || $pmInfo['sender_id'] == $memberInfo['member_id'] || $result->num_rows > 0) {
-	
-
 		$member->select($pmInfo['sender_id']);
 		$dispFromMember = $member->getMemberLink();
 		
-		if($memberInfo['member_id'] == $pmInfo['receiver_id']) {
+		if(($memberInfo['member_id'] == $pmInfo['receiver_id']) || ($memberInfo['member_id'] == $pmInfo['sender_id'] && $senderResult->num_rows == 0)) {
 			$member->select($pmInfo['receiver_id']);
 			$dispToMember = $member->getMemberLink();
 			$pmObj->update(array("status"), array(1));	
 		}
 		elseif($result->num_rows > 0) {
+			
 			$row = $result->fetch_assoc();
 			$pmMemberID = $row['pmmember_id'];
 			$multiMemPMObj->select($pmMemberID);
 			$multiMemPMObj->update(array("seenstatus"), array(1));
 			$blnMultiPM = true;
-			$dispToMember = getRecipients($pmInfo['pm_id']);
+			$dispToMember = $pmObj->getRecipients(true);
 			
+		}
+		elseif($memberInfo['member_id'] == $pmInfo['sender_id'] && $senderResult->num_rows > 0) {
+			// Member is the sender			
+			$blnMultiPM = true;
+			$dispToMember = $pmObj->getRecipients(true);
 		}
 		
 		$dispPreviousMessages = "";
 		
 		
+		
+		// Folder Info
+		$pmFolderID = $pmObj->getFolder($memberInfo['member_id']);
+		$pmFolderObj = new PMFolder($mysqli);
+		$pmFolderObj->select($pmFolderID);
+		$pmFolderInfo = $pmFolderObj->get_info_filtered();
+		
+		
 		if($pmInfo['originalpm_id'] != 0) {
 			$result = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessages WHERE originalpm_id = '".$pmInfo['originalpm_id']."' AND pm_id != '".$pmInfo['pm_id']."' ORDER BY datesent DESC");
-			
+			$oldPMObj = new PrivateMessage($mysqli);
 	
 				
 			$dispPreviousMessages .= "
@@ -185,7 +140,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			
 			
 			while($row = $result->fetch_assoc()) {
-				
+				$oldPMObj->select($row['pm_id']);
 				
 				if($row['receiver_id'] != 0) {
 				
@@ -194,7 +149,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				}
 				else {
 					
-					$dispToPrevMember = getRecipients($row['pm_id']);
+					$dispToPrevMember = $oldPMObj->getRecipients(true);
 					$pmObj->select($row['pm_id']);
 					$arrReceivers = $pmObj->getAssociateIDs();
 					
@@ -263,7 +218,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			
 			$originalPMInfo = $pmObj->get_info_filtered();
 			$member->select($originalPMInfo['receiver_id']);
-			$dispToPrevMember = ($originalPMInfo['receiver_id'] != 0) ? $member->getMemberLink() : getRecipients($originalPMInfo['pm_id']);
+			$oldPMObj->select($originalPMInfo['pm_id']);
+			$dispToPrevMember = ($originalPMInfo['receiver_id'] != 0) ? $member->getMemberLink() : $oldPMObj->getRecipients(true);
 			
 			$member->select($originalPMInfo['sender_id']);
 			$dispFromPrevMember = $member->getMemberLink();
@@ -321,7 +277,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 			<div class='formDiv'>
 				<p style='padding: 0px; margin: 0px; padding-right: 20px; padding-top: 10px' class='main' align='right'>
-					<a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Return to Inbox</a>
+					<a href='".$MAIN_ROOT."members/console.php?cID=".$cID."&folder=".$pmFolderID."'>Return to ".$pmFolderInfo['name']."</a>
 				</p>
 			
 				<table class='formTable' style='margin-top: 0px'>

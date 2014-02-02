@@ -275,7 +275,7 @@ class ForumBoard extends BasicSort {
 		
 		if($this->intTableKeyValue != "") {
 		
-			$result = $this->MySQL->query("SELECT ft.forumpost_id, ft.lastpost_id, fp.dateposted FROM ".$this->MySQL->get_tablePrefix()."forum_topic ft,  ".$this->MySQL->get_tablePrefix()."forum_post fp WHERE forumboard_id = '".$this->intTableKeyValue."' AND fp.forumpost_id = ft.lastpost_id ORDER BY ".$sqlORDERBY.$sqlLIMIT);
+			$result = $this->MySQL->query("SELECT ft.forumpost_id, ft.lastpost_id, fp.dateposted FROM ".$this->MySQL->get_tablePrefix()."forum_topic ft,  ".$this->MySQL->get_tablePrefix()."forum_post fp WHERE ft.forumboard_id = '".$this->intTableKeyValue."' AND fp.forumpost_id = ft.lastpost_id ORDER BY ".$sqlORDERBY.$sqlLIMIT);
 			while($row = $result->fetch_assoc()) {
 				
 				//$this->objPost->select($row['lastpost_id']);

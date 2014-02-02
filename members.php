@@ -52,7 +52,7 @@ $rankObj = new Rank($mysqli);
 if($websiteInfo['maxdsl'] != 0) {
 	$maxDSLTime = time() - ($websiteInfo['maxdsl']*86400);
 	$time = time();
-	$result = $mysqli->query("UPDATE ".$dbprefix."members SET disabled = '1', disableddate = '".$time."' WHERE disabled = '0' AND onia = '0' AND lastlogin <= '".$maxDSLTime."'");
+	$result = $mysqli->query("UPDATE ".$dbprefix."members SET disabled = '1', disableddate = '".$time."' WHERE disabled = '0' AND rank_id != '1' AND onia = '0' AND lastlogin <= '".$maxDSLTime."'");
 	
 	$result = $mysqli->query("SELECT member_id FROM ".$dbprefix."members WHERE disableddate = '".$time."'");
 	while($row = $result->fetch_assoc()) {

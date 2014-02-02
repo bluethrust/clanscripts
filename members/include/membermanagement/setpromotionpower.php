@@ -41,6 +41,9 @@ $arrCIDs[] = $consoleObj->findConsoleIDByName("Demote Member");
 $arrCIDs[] = $consoleObj->findConsoleIDByName("Disable a Member");
 $arrCIDs[] = $consoleObj->findConsoleIDByName("Undisable Member");
 $arrCIDs[] = $consoleObj->findConsoleIDByName("Set Member's Rank");
+$arrCIDs[] = $consoleObj->findConsoleIDByName("Award Medal");
+$arrCIDs[] = $consoleObj->findConsoleIDByName("Revoke Medal");
+
 
 $sqlCID = "('".implode("','", $arrCIDs)."')";
 $memberoptions = "";
