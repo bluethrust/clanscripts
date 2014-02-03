@@ -111,7 +111,23 @@ elseif($row['newstype'] == 3) {
 }
 
 
+$checkHTMLConsoleObj = new ConsoleOption($mysqli);
+$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
+$checkHTMLConsoleObj->select($htmlNewsCID);
 
+
+if($member->select($newsInfo['lasteditmember_id'])) {
+	$checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj);
+	$dispLastEditTime = getPreciseTime($newsInfo['lasteditdate']);
+	$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";
+}
+
+
+$member->select($newsInfo['member_id']);
+
+if(!isset($checkHTMLAccess)) { $checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj); }
+
+$dispNews = ($checkHTMLAccess) ? parseBBCode($newsObj->get_info("newspost")) : nl2br(parseBBCode($newsInfo['newspost']));
 
 echo "
 
@@ -126,7 +142,7 @@ echo "
 		<br>
 		<div class='dottedLine' style='margin-top: 5px'></div>
 		<div class='postMessage'>
-			".nl2br(parseBBCode($newsInfo['newspost']))."
+			".$dispNews."
 		</div>
 		<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
 		<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>

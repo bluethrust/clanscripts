@@ -180,7 +180,7 @@ if(isset($_GET['newsID']) && $newsObj->select($_GET['newsID'])) {
 					<tr>
 						<td class='formLabel' valign='top'>Message:</td>
 						<td class='main'>
-							<textarea rows='10' cols='50' class='textBox' name='message'>".$newsInfo['newspost']."</textarea>
+							<textarea  style='width: 80%' rows='15' id='tinymceTextArea' class='textBox' name='message'>".$newsInfo['newspost']."</textarea>
 						</td>
 					</tr>
 					<tr>
@@ -194,6 +194,67 @@ if(isset($_GET['newsID']) && $newsObj->select($_GET['newsID'])) {
 		</form>
 		
 		<script type='text/javascript'>
+		
+		";
+		
+		$checkHTMLConsoleObj = new ConsoleOption($mysqli);
+		$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
+		$checkHTMLConsoleObj->select($htmlNewsCID);
+		if($member->hasAccess($checkHTMLConsoleObj)) {
+	
+			echo "
+			
+				$('document').ready(function() {
+					$('#tinymceTextArea').tinymce({
+				
+						script_url: '".$MAIN_ROOT."js/tiny_mce/tiny_mce.js',
+						theme: 'advanced',
+						plugins: 'autolink,emotions',
+						theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,emotions,|,quotebbcode,codebbcode,',
+						theme_advanced_buttons2: 'forecolorpicker,fontselect,fontsizeselect',
+						theme_advanced_resizing: true,
+						content_css: '".$MAIN_ROOT."themes/".$THEME."/btcs4.css',
+						theme_advanced_statusbar_location: 'none',
+						style_formats: [
+							{title: 'Quote', inline : 'div', classes: 'forumQuote'}
+						
+						],
+						setup: function(ed) {
+							ed.addButton('quotebbcode', {
+								
+								title: 'Insert Quote',
+								image: '".$MAIN_ROOT."js/tiny_mce/quote.png',
+								onclick: function() {
+									ed.focus();
+									innerText = ed.selection.getContent();
+									
+									ed.selection.setContent('[quote]'+innerText+'[/quote]');
+								}
+							});
+							
+							ed.addButton('codebbcode', {
+								
+								title: 'Insert Code',
+								image: '".$MAIN_ROOT."js/tiny_mce/code.png',
+								onclick: function() {
+									ed.focus();
+									innerText = ed.selection.getContent();
+									
+									ed.selection.setContent('[code]'+innerText+'[/code]');
+								}
+							
+							});
+						}
+					});
+					
+				});
+			
+			";
+			
+		}
+		
+		echo "
+		
 			function updateTypeDesc() {
 				$(document).ready(function() {
 					$('#typeDesc').hide();
