@@ -233,16 +233,16 @@ class Event extends Basic {
 			
 			$countErrors = 0;
 			
-			if($this->MySQL->query("DELETE FROM eventpositions WHERE event_id = '".$this->intTableKeyValue."'")) {
+			if($this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."eventpositions WHERE event_id = '".$this->intTableKeyValue."'")) {
 				$countErrors++;
 			}
 			
-			if($this->MySQL->query("DELETE FROM events_members WHERE event_id = '".$this->intTableKeyValue."'")) {
+			if($this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."events_members WHERE event_id = '".$this->intTableKeyValue."'")) {
 				$countErrors++;	
 			}
 			
 			
-			if($this->MySQL->query("DELETE FROM events WHERE event_id = '".$this->intTableKeyValue."'")) {
+			if($this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."events WHERE event_id = '".$this->intTableKeyValue."'")) {
 				$countErrors++;	
 			}
 		
