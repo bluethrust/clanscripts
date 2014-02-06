@@ -149,6 +149,15 @@ global $MAIN_ROOT;
 
 }
 
+function autoLinkImage($strText) {
+
+	$strText = preg_replace("/<img src=(\"|\')(.*)(\"|\')>/", "<a href='$2' target='_blank'><img src='$2'></a>", $strText);
+	$strText = preg_replace("/<img src=(\"|\')(.*)(\"|\') alt=(\"|\')(.*)(\"|\') \/>/", "<a href='$2' target='_blank'><img src='$2'></a>", $strText);
+	
+	
+	return $strText;
+}
+
 
 
 

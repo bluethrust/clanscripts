@@ -77,6 +77,52 @@ $boardObj->objPost->select($topicInfo['lastpost_id']);
 $lastPostInfo = $boardObj->objPost->get_info_filtered();
 
 $EXTERNAL_JAVASCRIPT .= "<script type='text/javascript' src='".$MAIN_ROOT."js/ace/src-min-noconflict/ace.js' charset='utf-8'></script>";
+
+
+// Image and Signuature Size Settings
+$setMaxImageWidthUnit = ($websiteInfo['forum_imagewidthunit'] == "%") ? "%" : "px";
+$setMaxImageWidth = ($websiteInfo['forum_imagewidth'] > 0) ? "max-width: ".$websiteInfo['forum_imagewidth'].$setMaxImageWidthUnit : "";
+
+$setMaxImageHeightUnit = ($websiteInfo['forum_imageheightunit'] == "%") ? "%" : "px";
+$setMaxImageHeight = ($websiteInfo['forum_imageheight'] > 0) ? "max-height: ".$websiteInfo['forum_imageheight'].$setMaxImageHeightUnit : "";
+
+$setMaxSigWidthUnit = ($websiteInfo['forum_sigwidthunit'] == "%") ? "%" : "px";
+$setMaxSigWidth = ($websiteInfo['forum_sigwidth'] > 0) ? "max-width: ".$websiteInfo['forum_sigwidth'].$setMaxSigWidthUnit : "";
+
+$setMaxSigHeightUnit = ($websiteInfo['forum_sigheightunit'] == "%") ? "%" : "px";
+$setMaxSigHeight = ($websiteInfo['forum_sigheight'] > 0) ? "max-height: ".$websiteInfo['forum_sigheight'].$setMaxSigHeightUnit : "";
+
+$editForumCSS = "";
+
+if($setMaxImageWidth != "" || $setMaxImageHeight != "") {
+	$editForumCSS .= "
+		.boardPostInfo img {
+			".$setMaxImageWidth.";
+			".$setMaxImageHeight.";
+		}	
+	";
+}
+
+if($setMaxSigWidth != "" || $setMaxSigHeight != "") {
+	$editForumCSS .= "
+		.forumSignatureContainer img {
+			".$setMaxSigWidth.";
+			".$setMaxSigHeight.";
+		}	
+	";
+}
+
+
+if($editForumCSS != "") {
+	$EXTERNAL_JAVASCRIPT .= "	
+		<style>
+			".$editForumCSS."		
+		</style>
+	";
+}
+
+
+
 // Start Page
 $PAGE_NAME = $postInfo['title']." - ".$boardInfo['name']." - ";
 $dispBreadCrumb = "";
@@ -268,6 +314,12 @@ while($row = $result->fetch_assoc()) {
 	$postMemberInfo = $postMemberObj->get_info_filtered();
 	$postMessage = $boardObj->objPost->get_info("message");
 	
+	$postMessage = str_replace("<?", "&lt;?", $postMessage);
+	$postMessage = str_replace("?>", "?&gt;", $postMessage);
+	$postMessage = str_replace("<script", "&lt;script", $postMessage);
+	$postMessage = str_replace("</script>", "&lt;/script&gt;", $postMessage);
+	
+	
 	$dispPostedOn = "";
 	if((time()-$postInfo['dateposted']) > (60*60*24)) {
 		$dispPostedOn = " on";
@@ -293,8 +345,8 @@ while($row = $result->fetch_assoc()) {
 	}
 	
 	
-	$dispRankWidth = ($websiteInfo['forum_rankwidth'] == 0) ? "" : "width: ".$websiteInfo['forum_rankwidth'].$websiteInfo['forum_rankwidthunit'].";";
-	$dispRankHeight = ($websiteInfo['forum_rankheight'] == 0) ? "" : "height: ".$websiteInfo['forum_rankheight'].$websiteInfo['forum_rankheightunit'].";";
+	$dispRankWidth = ($websiteInfo['forum_rankwidth'] <= 0) ? "" : "width: ".$websiteInfo['forum_rankwidth'].$websiteInfo['forum_rankwidthunit'].";";
+	$dispRankHeight = ($websiteInfo['forum_rankheight'] <= 0) ? "" : "height: ".$websiteInfo['forum_rankheight'].$websiteInfo['forum_rankheightunit'].";";
 	$dispRankDimensions = ($dispRankWidth != "" || $dispRankHeight != "") ? " style='".$dispRankWidth.$dispRankHeight."'" : "";
 	$dispRankIMG = ($websiteInfo['forum_showrank'] == 1 && $posterRankInfo['rank_id'] != 1) ? "<div style='text-align: center'><img src='".$posterRankInfo['imageurl']."'".$dispRankDimensions."></div>" : "";
 	$dispMedals = "";
@@ -305,8 +357,8 @@ while($row = $result->fetch_assoc()) {
 		
 		$arrMedals = $postMemberObj->getMedalList(false, $websiteInfo['medalorder']);
 		
-		$dispMedalWidth = ($websiteInfo['forum_medalwidth'] == 0) ? "" : "width: ".$websiteInfo['forum_medalwidth'].$websiteInfo['forum_medalwidthunit'].";";
-		$dispMedalHeight = ($websiteInfo['forum_medalheight'] == 0) ? "" : "height: ".$websiteInfo['forum_medalheight'].$websiteInfo['forum_medalheightunit'].";";
+		$dispMedalWidth = ($websiteInfo['forum_medalwidth'] <= 0) ? "" : "width: ".$websiteInfo['forum_medalwidth'].$websiteInfo['forum_medalwidthunit'].";";
+		$dispMedalHeight = ($websiteInfo['forum_medalheight'] <= 0) ? "" : "height: ".$websiteInfo['forum_medalheight'].$websiteInfo['forum_medalheightunit'].";";
 		$dispMedalDimensions = ($dispMedalWidth != "" || $dispMedalHeight != "") ?  " style='".$dispMedalWidth.$dispMedalHeight."'" : "";
 		
 		$i = 1;
@@ -335,13 +387,20 @@ while($row = $result->fetch_assoc()) {
 		
 	}
 	
+	$setAvatarWidth = ($websiteInfo['forum_avatarwidth'] > 0) ? $websiteInfo['forum_avatarwidth'] : "50";
+	$setAvatarWidthUnit = ($websiteInfo['forum_avatarwidthunit'] == "%") ? "%" : "px";
+	
+	$setAvatarHeight = ($websiteInfo['forum_avatarheight'] > 0) ? $websiteInfo['forum_avatarheight'] : "50";
+	$setAvatarHeightUnit = ($websiteInfo['forum_avatarheightunit'] == "%") ? "%" : "px";
+	
+	$dispForumPostText = ($websiteInfo['forum_linkimages'] == 1) ? autoLinkImage(parseBBCode($postMessage)) : parseBBCode($postMessage);
 	
 	echo "
 		<tr>
 			<td class='boardPosterInfo' valign='top'><a name='".$postInfo['forumpost_id']."'></a>
 				<span class='boardPosterName'>".$postMemberObj->getMemberLink()."</span><br>
 				".$posterRankInfo['name']."<br>
-				<img src='".$postMemberInfo['avatar']."' style='width: 50px; height: 50px; margin-top: 5px; margin-bottom: 5px'><br>
+				<img src='".$postMemberInfo['avatar']."' style='width: ".$setAvatarWidth.$setAvatarWidthUnit."; height: ".$setAvatarHeight.$setAvatarHeightUnit."; margin-top: 5px; margin-bottom: 5px'><br>
 				Posts: ".$postMemberObj->countForumPosts()."
 				".$dispRankIMG."
 				".$dispMedals."
@@ -349,7 +408,7 @@ while($row = $result->fetch_assoc()) {
 			<td class='boardPostInfo' valign='top'>
 			<div class='postTime'>Posted".$dispPostedOn." ".getPreciseTime($postInfo['dateposted'])."</div>
 			
-			".parseBBCode($postMessage).$dispLastEdit."
+			".$dispForumPostText.$dispLastEdit."
 			
 			</td>
 		</tr>
@@ -397,7 +456,7 @@ while($row = $result->fetch_assoc()) {
 	}
 
 	
-	if($postMemberInfo['forumsignature'] != "") {
+	if($postMemberInfo['forumsignature'] != "" && $websiteInfo['hidesignatures'] == 0) {
 		echo "
 		<tr>
 			<td class='boardPosterInfoExtra'></td>

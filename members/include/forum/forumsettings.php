@@ -47,15 +47,53 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid default posts per page.<br>";
 	}
 	
+	
+	// Check Avatar Width
+	if(!is_numeric($_POST['avatarwidth']) || $_POST['avatarwidth'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Avatar width must be a positive numeric value.<br>";
+	}
+	
+	// Check Avatar Height
+	if(!is_numeric($_POST['avatarheight']) || $_POST['avatarheight'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Avatar height must be a positive numeric value.<br>";
+	}
+	
+	// Check Image Width
+	if(!is_numeric($_POST['imagewidth']) || $_POST['imagewidth'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Max image width must be a positive numeric value.<br>";
+	}
+	
+	// Check Image Height
+	if(!is_numeric($_POST['imageheight']) || $_POST['imageheight'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Max image height must be a positive numeric value.<br>";
+	}
+	
+	// Check Sig Width
+	if(!is_numeric($_POST['sigwidth']) || $_POST['sigwidth'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Max signature width must be a positive numeric value.<br>";
+	}
+	
+	// Check Sig Height
+	if(!is_numeric($_POST['sigheight']) || $_POST['sigheight'] < 0) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Max signature height must be a positive numeric value.<br>";
+	}
+	
+	
 	if($_POST['showrank'] == 1) {
 		// Check Rank Width
-		if(!is_numeric($_POST['rankwidth'])) {
+		if(!is_numeric($_POST['rankwidth']) || $_POST['rankwidth'] < 0) {
 			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Rank width must be a numeric value. ".$_POST['rankwidth']."<br>";
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Rank width must be a numeric value.<br>";
 		}
 		
 		// Check Rank Height
-		if(!is_numeric($_POST['rankheight'])) {
+		if(!is_numeric($_POST['rankheight']) || $_POST['rankheight'] < 0) {
 			$countErrors++;
 			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Rank height must be a numeric value.<br>";
 		}
@@ -63,32 +101,42 @@ if($_POST['submit']) {
 	
 	if($_POST['showmedals']) {
 		// Check Medal Width
-		if(!is_numeric($_POST['medalwidth'])) {
+		if(!is_numeric($_POST['medalwidth']) || $_POST['medalwidth'] < 0) {
 			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal width must be a numeric value.<br>";
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal width must be a positive numeric value.<br>";
 		}
 		
 		// Check Medal Height
-		if(!is_numeric($_POST['medalheight'])) {
+		if(!is_numeric($_POST['medalheight']) || $_POST['medalheight'] < 0) {
 			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal height must be a numeric value.<br>";
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal height must be a positive numeric value.<br>";
 		}
 		
 		// Check Medal Count
-		if(!is_numeric($_POST['medalcount'])) {
+		if(!is_numeric($_POST['medalcount']) || $_POST['medalcount'] < 0) {
 			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal count must be a numeric value.<br>";
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Medal count must be a positive numeric value.<br>";
 		}
 	}
 	
 	if($countErrors == 0) {
-		$setRankWidthUnit = ($_POST['rankwidthunit'] == "px") ? "px" : "#";
-		$setRankHeightUnit = ($_POST['rankheightunit'] == "px") ? "px" : "#";
-		$setMedalWidthUnit = ($_POST['medalwidthunit'] == "px") ? "px" : "#";
-		$setMedalHeightUnit = ($_POST['medalheightunit'] == "px") ? "px" : "#";
+		$setRankWidthUnit = ($_POST['rankwidthunit'] == "px") ? "px" : "%";
+		$setRankHeightUnit = ($_POST['rankheightunit'] == "px") ? "px" : "%";
+		$setMedalWidthUnit = ($_POST['medalwidthunit'] == "px") ? "px" : "%";
+		$setMedalHeightUnit = ($_POST['medalheightunit'] == "px") ? "px" : "%";
+		$setAvatarWidthUnit = ($_POST['avatarwidthunit'] == "px") ? "px" : "%";
+		$setAvatarHeightUnit = ($_POST['avatarheightunit'] == "px") ? "px" : "%";
+		$setImageWidthUnit = ($_POST['imagewidthunit'] == "px") ? "px" : "%";
+		$setImageHeightUnit = ($_POST['imageheightunit'] == "px") ? "px" : "%";
+		$setSigWidthUnit = ($_POST['sigwidthunit'] == "px") ? "px" : "%";
+		$setSigHeightUnit = ($_POST['sigheightunit'] == "px") ? "px" : "%";
+		
 		
 		$setShowRank = ($_POST['showrank'] == 1) ? 1 : 0;
 		$setShowMedals = ($_POST['showmedals'] == 1) ? 1 : 0;
+		$setHideSignature =($_POST['hidesig'] == 1) ? 1 : 0;
+		$setAutoLinkImages = ($_POST['linkimages'] == 1) ? 1 : 0;
+		
 		
 		$arrRankColumns = array();
 		$arrRankValues = array();
@@ -104,8 +152,8 @@ if($_POST['submit']) {
 			$arrMedalValues = array($_POST['medalwidth'], $_POST['medalheight'], $setMedalWidthUnit, $setMedalHeightUnit, $_POST['medalcount']);
 		}
 		
-		$arrColumns = array_merge(array("forum_topicsperpage", "forum_postsperpage", "forum_showrank", "forum_showmedal"), $arrRankColumns, $arrMedalColumns);
-		$arrValues = array_merge(array($_POST['defaultopics'], $_POST['defaultposts'], $setShowRank, $setShowMedals), $arrRankValues, $arrMedalValues);
+		$arrColumns = array_merge(array("forum_topicsperpage", "forum_postsperpage", "forum_showrank", "forum_showmedal", "forum_avatarwidth", "forum_avatarheight", "forum_avatarwidthunit", "forum_avatarheightunit", "forum_imagewidth", "forum_imageheight", "forum_imagewidthunit", "forum_imageheightunit", "forum_linkimages", "forum_sigwidth", "forum_sigheight", "forum_sigwidthunit", "forum_sigheightunit", "forum_hidesignatures"), $arrRankColumns, $arrMedalColumns);
+		$arrValues = array_merge(array($_POST['defaultopics'], $_POST['defaultposts'], $setShowRank, $setShowMedals, $_POST['avatarwidth'], $_POST['avatarheight'], $setAvatarWidthUnit, $setAvatarHeightUnit, $_POST['imagewidth'], $_POST['imageheight'], $setImageWidthUnit, $setImageHeightUnit, $setAutoLinkImages, $_POST['sigwidth'], $_POST['sigheight'], $setSigWidthUnit, $setSigHeightUnit, $setHideSignature), $arrRankValues, $arrMedalValues);
 		
 		if($webInfoObj->update($arrColumns, $arrValues)) {
 			
@@ -150,6 +198,20 @@ if(!$_POST['submit']) {
 	
 	$checkShowRank = ($websiteInfo['forum_showrank'] == 1) ? " checked" : "";
 	$checkShowMedals = ($websiteInfo['forum_showmedal'] == 1) ? " checked" : "";
+	$checkLinkImages = ($websiteInfo['forum_linkimages'] == 1) ? " checked" : "";
+	$checkShowSignatures = ($websiteInfo['forum_hidesignatures'] == 1) ? " checked" : "";
+	
+	$checkImageWidthUnit = ($websiteInfo['forum_imagewidthunit'] == "%") ? " selected" : "";
+	$checkImageHeightUnit = ($websiteInfo['forum_imageheightunit'] == "%") ? " selected" : "";
+	$checkRankWidthUnit = ($websiteInfo['forum_rankwidthunit'] == "%") ? " selected" : "";
+	$checkRankHeightUnit = ($websiteInfo['forum_rankheightunit'] == "%") ? " selected" : "";
+	$checkMedalWidthUnit = ($websiteInfo['forum_medalwidthunit'] == "%") ? " selected" : "";
+	$checkMedalHeightUnit = ($websiteInfo['forum_medalheightunit'] == "%") ? " selected" : "";
+	$checkSigWidthUnit = ($websiteInfo['forum_sigwidthunit'] == "%") ? " selected" : "";
+	$checkSigHeightUnit = ($websiteInfo['forum_sigheightunit'] == "%") ? " selected" : "";
+	$checkAvatarWidthUnit = ($websiteInfo['forum_avatarwidthunit'] == "%") ? " selected" : "";
+	$checkAvatarHeightUnit = ($websiteInfo['forum_avatarheightunit'] == "%") ? " selected" : "";
+	
 	
 	echo "
 		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
@@ -197,6 +259,44 @@ if(!$_POST['submit']) {
 					</td>
 				</tr>
 				<tr>
+					<td class='formLabel'>Avatar Width:</td>
+					<td class='main'><input type='text' name='avatarwidth' style='width: 50px' value='".$websiteInfo['forum_avatarwidth']."' class='textBox'> <select name='avatarwidthunit' class='textBox'><option value='px'>px</option><option value='%'".$checkAvatarWidthUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Avatar Height:</td>
+					<td class='main'><input type='text' name='avatarheight' style='width: 50px' value='".$websiteInfo['forum_avatarheight']."' class='textBox'> <select name='avatarheightunit' class='textBox'><option value='px'>px</option><option value='%'".$checkAvatarHeightUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel dottedLine' colspan='2'><br>Image Display Settings</td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Max Image Width:</td>
+					<td class='main'><input type='text' name='imagewidth' style='width: 50px' value='".$websiteInfo['forum_imagewidth']."' class='textBox'> <select name='imagewidthunit' class='textBox'><option value='px'>px</option><option value='%'".$checkImageWidthUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Max Image Height:</td>
+					<td class='main'><input type='text' name='imageheight' style='width: 50px' value='".$websiteInfo['forum_imageheight']."' class='textBox'> <select name='imageheightunit' class='textBox'><option value='px'>px</option><option value='%'".$checkImageHeightUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Auto Link Images: <a href='javascript:void(0)' onmouseover=\"showToolTip('Auto link images to view full size.')\" onmouseout='hideToolTip()'>(?)</a></td>
+					<td class='main'><input type='checkbox' name='linkimages' value='1'".$checkLinkImages."></td>
+				</tr>
+				<tr>
+					<td class='formLabel dottedLine' colspan='2'><br>Signature Display Settings</td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Max Width:</td>
+					<td class='main'><input type='text' name='sigwidth' style='width: 50px' value='".$websiteInfo['forum_sigwidth']."' class='textBox'> <select name='sigwidthunit' class='textBox'><option value='px'>px</option><option value='%'".$checkSigWidthUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Max Height:</td>
+					<td class='main'><input type='text' name='sigheight' style='width: 50px' value='".$websiteInfo['forum_sigheight']."' class='textBox'> <select name='sigheightunit' class='textBox'><option value='px'>px</option><option value='%'".$checkSigHeightUnit.">%</option></select></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Hide Signatures:</td>
+					<td class='main'><input type='checkbox' name='hidesig' value='1'".$checkShowSignatures."></td>
+				</tr>
+				<tr>
 					<td class='formLabel dottedLine' colspan='2'><br>Rank Display Settings</td>
 				</tr>
 				<tr>
@@ -205,11 +305,11 @@ if(!$_POST['submit']) {
 				</tr>
 				<tr>
 					<td class='formLabel'>Rank Width:</td>
-					<td class='main'><input type='text' id='rankWidth' name='rankwidth' style='width: 50px' value='".$websiteInfo['forum_rankwidth']."' class='textBox'> <select name='rankwidthunit' id='rankWidthUnit' class='textBox'><option value='px'>px</option><option value='%'>%</option></select></td>
+					<td class='main'><input type='text' id='rankWidth' name='rankwidth' style='width: 50px' value='".$websiteInfo['forum_rankwidth']."' class='textBox'> <select name='rankwidthunit' id='rankWidthUnit' class='textBox'><option value='px'>px</option><option value='%'".$checkRankWidthUnit.">%</option></select></td>
 				</tr>
 				<tr>
-					<td class='formLabel'>Rank Width:</td>
-					<td class='main'><input type='text' id='rankHeight' name='rankheight' style='width: 50px' value='".$websiteInfo['forum_rankheight']."' class='textBox'> <select name='rankheightunit' id='rankHeightUnit' class='textBox'><option value='px'>px</option><option value='%'>%</option></select></td>
+					<td class='formLabel'>Rank Height:</td>
+					<td class='main'><input type='text' id='rankHeight' name='rankheight' style='width: 50px' value='".$websiteInfo['forum_rankheight']."' class='textBox'> <select name='rankheightunit' id='rankHeightUnit' class='textBox'><option value='px'>px</option><option value='%'".$checkRankHeightUnit.">%</option></select></td>
 				</tr>
 				<tr>
 					<td class='formLabel dottedLine' colspan='2'><br>Medal Display Settings</td>
@@ -220,11 +320,11 @@ if(!$_POST['submit']) {
 				</tr>
 				<tr>
 					<td class='formLabel'>Medal Width:</td>
-					<td class='main'><input type='text' name='medalwidth' id='medalWidth' style='width: 50px' value='".$websiteInfo['forum_medalwidth']."' class='textBox'> <select name='medalwidthunit' class='textBox' id='medalWidthUnit'><option value='px'>px</option><option value='%'>%</option></select></td>
+					<td class='main'><input type='text' name='medalwidth' id='medalWidth' style='width: 50px' value='".$websiteInfo['forum_medalwidth']."' class='textBox'> <select name='medalwidthunit' class='textBox' id='medalWidthUnit'><option value='px'>px</option><option value='%'".$checkMedalWidthUnit.">%</option></select></td>
 				</tr>
 				<tr>
-					<td class='formLabel'>Medal Width:</td>
-					<td class='main'><input type='text' name='medalheight' id='medalHeight' style='width: 50px' value='".$websiteInfo['forum_medalheight']."' class='textBox'> <select name='medalheightunit' class='textBox' id='medalHeightUnit'><option value='px'>px</option><option value='%'>%</option></select></td>
+					<td class='formLabel'>Medal Height:</td>
+					<td class='main'><input type='text' name='medalheight' id='medalHeight' style='width: 50px' value='".$websiteInfo['forum_medalheight']."' class='textBox'> <select name='medalheightunit' class='textBox' id='medalHeightUnit'><option value='px'>px</option><option value='%'".$checkMedalHeightUnit.">%</option></select></td>
 				</tr>
 				<tr>
 					<td class='formLabel'>Medal Count: <a href='javascript:void(0)' onmouseover=\"showToolTip('Use this field to set how many medal\'s to show.  If left blank, 5 medals will show.')\" onmouseout='hideToolTip()'>(?)</a></td>
