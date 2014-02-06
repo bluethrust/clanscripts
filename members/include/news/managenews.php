@@ -47,8 +47,19 @@ if(isset($_GET['newsID']) && $newsObj->select($_GET['newsID'])) {
 	</script>
 	";
 	
+	$checkHTMLConsoleObj = new ConsoleOption($mysqli);
+	$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
+	$checkHTMLConsoleObj->select($htmlNewsCID);
+	$blnAllowHTML = $member->hasAccess($checkHTMLConsoleObj);
 	
 	if($_POST['submit']) {
+		
+		if($blnAllowHTML) {
+			$_POST['message'] = str_replace("<?", "", $_POST['message']);
+			$_POST['message'] = str_replace("?>", "", $_POST['message']);
+			$_POST['message'] = str_replace("<script", "", $_POST['message']);
+			$_POST['message'] = str_replace("</script>", "", $_POST['message']);
+		}
 	
 		// Check News Type
 		//	1 - Public
@@ -200,7 +211,7 @@ if(isset($_GET['newsID']) && $newsObj->select($_GET['newsID'])) {
 		$checkHTMLConsoleObj = new ConsoleOption($mysqli);
 		$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
 		$checkHTMLConsoleObj->select($htmlNewsCID);
-		if($member->hasAccess($checkHTMLConsoleObj)) {
+		if($blnAllowHTML) {
 	
 			echo "
 			

@@ -56,7 +56,9 @@ $cID = $_GET['cID'];
 
 
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '2' ORDER BY dateposted DESC");
-	
+	$checkHTMLConsoleObj = new ConsoleOption($mysqli);
+	$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
+	$checkHTMLConsoleObj->select($htmlNewsCID);
 	if($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 			
@@ -81,6 +83,21 @@ $cID = $_GET['cID'];
 				$dispNewsType = "";
 			}
 			
+			$dispLastEdit = "";
+		
+			if($member->select($row['lasteditmember_id'])) {
+				$checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj);
+				$dispLastEditTime = getPreciseTime($row['lasteditdate']);
+				$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";
+			}
+			
+			$member->select($row['member_id']);
+			
+			if(!isset($checkHTMLAccess)) { $checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj); }
+			
+			$dispNews = ($checkHTMLAccess) ? parseBBCode($row['newspost']) : nl2br(parseBBCode(filterText($row['newspost'])));
+			
+			
 			echo "
 			
 				<div class='newsDiv' id='newsDiv_".$row['news_id']."'>
@@ -93,7 +110,7 @@ $cID = $_GET['cID'];
 					<br>
 					<div class='dottedLine' style='margin-top: 5px'></div>
 					<div class='postMessage'>
-						".nl2br(parseBBCode(filterText($row['newspost'])))."
+						".$dispNews."
 					</div>
 					<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
 					<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>

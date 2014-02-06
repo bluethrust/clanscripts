@@ -58,8 +58,19 @@ class ShoutBox {
 		}
 		
 		
+		$dispWidthPX = "px";
+		if($blnPercentWidth) {
+			$dispWidthPX = "%";	
+		}
+		
+		$dispHeightPX = "px";
+		if($blnPercentHeight) {
+			$dispHeightPX = "%";
+		}
+		
 		$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE newstype = '3'".$this->strSQLSort." ORDER BY dateposted");
 		while($row = $result->fetch_assoc()) {
+			
 			
 			if($this->memberObj->select($row['member_id'])) {
 				$memberLink = $this->memberObj->getMemberLink();
@@ -74,7 +85,7 @@ class ShoutBox {
 				
 				$shoutBoxInfo .= "
 					<b>".$memberLink.":</b><br>
-					".$dispPost."
+					<div style='word-wrap: break-word; width: ".$this->intDispWidth.$dispWidthPX."'>".$dispPost."</div>
 					".$dispTime."
 					".$dispManagePost."
 					<div class='dottedLine' style='margin: 5px 0px'></div>
@@ -86,18 +97,7 @@ class ShoutBox {
 
 		
 		$addToReturn = "";
-		$addToReturn2 = "";
-		
-		$dispWidthPX = "px";
-		if($blnPercentWidth) {
-			$dispWidthPX = "%";	
-		}
-		
-		$dispHeightPX = "px";
-		if($blnPercentHeight) {
-			$dispHeightPX = "%";
-		}
-		
+		$addToReturn2 = "";		
 		
 		$setMainShoutbox = "";
 		if($this->blnMainShoutbox) {

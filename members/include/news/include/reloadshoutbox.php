@@ -46,7 +46,7 @@ $shoutboxObj->blnUpdateShoutbox = true;
 
 if($member->authorizeLogin($_SESSION['btPassword'])) {
 
-	$mangeNewsCID = $consoleObj->findConsoleIDByName("Manage News");
+	$manageNewsCID = $consoleObj->findConsoleIDByName("Manage News");
 
 	$consoleObj->select($manageNewsCID);
 
