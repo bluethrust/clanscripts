@@ -456,7 +456,7 @@ while($row = $result->fetch_assoc()) {
 	}
 
 	
-	if($postMemberInfo['forumsignature'] != "" && $websiteInfo['hidesignatures'] == 0) {
+	if($postMemberInfo['forumsignature'] != "" && $websiteInfo['forum_hidesignatures'] == 0) {
 		echo "
 		<tr>
 			<td class='boardPosterInfoExtra'></td>
