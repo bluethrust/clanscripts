@@ -114,7 +114,7 @@ if($checkMember) {
 		
 		$memberInfo = $member->get_info();
 		
-		$_SESSION['lastConsoleCategory'] = array("catID" => $consoleInfo['consolecategory_id'], "exptime" => time()+600);
+		$_SESSION['lastConsoleCategory'] = array("catID" => $consoleInfo['consolecategory_id'], "exptime" => time()+300);
 		
 		// Check for IA
 		
