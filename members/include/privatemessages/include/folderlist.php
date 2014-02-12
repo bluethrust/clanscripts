@@ -22,12 +22,14 @@ echo "
 		<tr><td class='dottedLine' colspan='5'></td></tr>
 	";
 
-$intHighestOrder = $pmFolderObj->getHighestOrderNum();
+$pmFolderObj->setCategoryKeyValue($memberInfo['member_id']);
+$intHighestOrder = $pmFolderObj->getHighestSortNum();
 $arrFolderList = $pmFolderObj->listFolders($memberInfo['member_id']);
-$x = 1;
+$x = 0;
 $counter = 0;
 foreach($arrFolderList as $folderID => $folderName) {
-	
+	$pmFolderObj->select($folderID);
+	$pmFolderInfo = $pmFolderObj->get_info();
 	if($counter == 1) {
 		$addCSS = " alternateBGColor";
 		$counter = 0;
@@ -37,21 +39,17 @@ foreach($arrFolderList as $folderID => $folderName) {
 		$counter = 1;
 	}
 	
-	if($x == 1) {
-		$dispUpArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
+	$dispUpArrow = "<a href='javascript:void(0)' onclick=\"moveFolder('up', '".$folderID."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' class='manageListActionButton' title='Move Up'></a>";
+	$dispDownArrow = "<a href='javascript:void(0)' onclick=\"moveFolder('down', '".$folderID."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' class='manageListActionButton' title='Move Down'></a>";
+	
+	if($x == 0) {
+		$dispUpArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height='24'>";	
 	}
-	else {
-		$dispUpArrow = "<a href='javascript:void(0)' onclick=\"moveFolder('up', '".$folderID."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' class='manageListActionButton' title='Move Up'></a>";
-	}
+	
 
-	
-	if($x == $intHighestOrder) {
-		$dispDownArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
-	}
-	else {
-		$dispDownArrow = "<a href='javascript:void(0)' onclick=\"moveFolder('down', '".$folderID."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' class='manageListActionButton' title='Move Down'></a>";
-	}
-	
+	if($intHighestOrder == $pmFolderInfo['sortnum']) {
+		$dispDownArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height='24'>";
+	}	
 	
 	
 	echo "
@@ -70,5 +68,19 @@ foreach($arrFolderList as $folderID => $folderName) {
 echo "
 	</table>
 ";
+
+
+if($x == 0) {
+	
+	echo "
+		<div class='shadedBox' style='margin-top: 20px; width: 45%; margin-left: auto; margin-right: auto'>
+			<p class='main' align='center'>
+				<i>No PM Folders added yet!</i>
+			</p>
+		</div>
+	
+	";
+	
+}
 
 ?>

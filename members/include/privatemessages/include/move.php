@@ -33,9 +33,9 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 	if($member->hasAccess($consoleObj) && $pmFolderObj->select($_POST['folder']) && $pmFolderObj->isMemberFolder() && !in_array($_POST['folder'], $arrSpecialFolders)) {
 		
 		define('SHOW_FOLDERLIST', true);
-		
+		$pmFolderObj->setCategoryKeyValue($memberInfo['member_id']);
 		$pmFolderObj->move($_POST['folderDir']);
-		
+		$pmFolderObj->resortOrder();
 		$_GET['cID'] = $cID;
 		include("folderlist.php");
 	}

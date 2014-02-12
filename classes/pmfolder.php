@@ -1,9 +1,9 @@
 <?php
 
-	include_once("basicorder.php");
+	include_once("basicsort.php");
 	
 	
-	class PMFolder extends BasicOrder {
+	class PMFolder extends BasicSort {
 	
 		const INBOX_ID = 0;
 		const SENTBOX_ID = -1;
@@ -18,9 +18,10 @@
 			$this->strTableName = $this->MySQL->get_tablePrefix()."privatemessage_folders";
 			$this->intMemberID = 0;
 			
-			$this->strAssociateKeyName = "pm_id";
-			$this->strAssociateTableName = $this->MySQL->get_tablePrefix()."privatemessages";
+			//$this->strAssociateKeyName = "pm_id";
+			//$this->strAssociateTableName = $this->MySQL->get_tablePrefix()."privatemessages";
 			
+			$this->strCategoryKey = "member_id";
 			
 		}
 		
@@ -58,7 +59,7 @@
 			$returnArr = array();
 			if(isset($this->intMemberID) && is_numeric($this->intMemberID)) {
 
-				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_folders WHERE member_id = '".$this->intMemberID."' ORDER BY ordernum DESC");
+				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_folders WHERE member_id = '".$this->intMemberID."' ORDER BY sortnum");
 				while($row = $result->fetch_assoc()) {
 					$returnArr[$row['pmfolder_id']] = $row['name'];					
 				}

@@ -40,6 +40,7 @@ if($_POST['submit']) {
 	}
 	
 	// Check Folder Order
+	$pmFolderObj->setCategoryKeyValue($memberInfo['member_id']);
 	$intNewOrderSpot = $pmFolderObj->validateOrder($_POST['folderorder'], $_POST['beforeafter']);
 	
 	if($intNewOrderSpot === false) {
@@ -48,7 +49,7 @@ if($_POST['submit']) {
 	}
 	
 	if($countErrors == 0) {
-		$arrColumns = array("member_id", "name", "ordernum");
+		$arrColumns = array("member_id", "name", "sortnum");
 		$arrValues = array($memberInfo['member_id'], $_POST['foldername'], $intNewOrderSpot);
 		
 		if($pmFolderObj->addNew($arrColumns, $arrValues)) {
@@ -67,7 +68,7 @@ if($_POST['submit']) {
 			</script>
 			";
 			
-			
+			$pmFolderObj->resortOrder();
 		}
 		else {
 			$countErrors++;

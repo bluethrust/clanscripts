@@ -176,7 +176,11 @@ if($websiteInfo['newsticker'] != "") {
 			</div>
 			
 			
-			<div style='text-align: center; position: relative; margin-left: auto; margin-right: auto'>
+		";
+}
+
+echo "
+	<div style='text-align: center; position: relative; margin-left: auto; margin-right: auto'>
 			";
 	
 	$imageSliderObj = new ImageSlider($mysqli);
@@ -197,9 +201,7 @@ if($websiteInfo['newsticker'] != "") {
 			</div>
 		
 	";
-	
-	
-}
+
 
 $dispAnnouncements = "";
 $dispHPNews = "";
@@ -208,6 +210,11 @@ $dispHPNews = "";
 //<p class='main' style='font-size: 18px; font-weight: bold; padding-left: 15px'>Latest News</p>
 
 $result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE (newstype = '1' OR newstype = '2') AND hpsticky = '1' ORDER BY dateposted DESC");
+
+$checkHTMLConsoleObj = new ConsoleOption($mysqli);
+$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
+$checkHTMLConsoleObj->select($htmlNewsCID);
+
 while($row = $result->fetch_assoc()) {
 	
 	$newsObj = new News($mysqli);
@@ -241,6 +248,10 @@ while($row = $result->fetch_assoc()) {
 		
 		$member->select($newsInfo['member_id']);
 		
+		if(!isset($checkHTMLAccess)) { $checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj); }
+		
+		$dispNews = ($checkHTMLAccess) ? parseBBCode($newsObj->get_info("newspost")) : nl2br(parseBBCode(filterText($newsInfo['newspost'])));
+		
 		
 		$dispAnnouncements .= "
 			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
@@ -252,7 +263,7 @@ while($row = $result->fetch_assoc()) {
 				<br>
 				<div class='dottedLine' style='margin-top: 5px'></div>
 				<div class='postMessage'>
-					".nl2br(parseBBCode($newsInfo['newspost']))."
+					".$dispNews."
 				</div>
 				<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
 				<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
@@ -299,6 +310,11 @@ if($result->num_rows > 0) {
 		
 		$member->select($newsInfo['member_id']);
 		
+		if(!isset($checkHTMLAccess)) { $checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj); }
+		
+		$dispNews = ($checkHTMLAccess) ? parseBBCode($newsObj->get_info("newspost")) : nl2br(parseBBCode(filterText($newsInfo['newspost'])));
+		
+		
 		
 		$dispHPNews .= "		
 			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
@@ -310,7 +326,7 @@ if($result->num_rows > 0) {
 				<br>
 				<div class='dottedLine' style='margin-top: 5px'></div>
 				<div class='postMessage'>
-					".nl2br(parseBBCode($newsInfo['newspost']))."
+					".$dispNews."
 				</div>
 				<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
 				<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
