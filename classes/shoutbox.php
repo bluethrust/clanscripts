@@ -85,7 +85,7 @@ class ShoutBox {
 				
 				$shoutBoxInfo .= "
 					<b>".$memberLink.":</b><br>
-					<div style='word-wrap: break-word; width: ".$this->intDispWidth.$dispWidthPX."'>".$dispPost."</div>
+					<div style='word-wrap: break-word;'>".$dispPost."</div>
 					".$dispTime."
 					".$dispManagePost."
 					<div class='dottedLine' style='margin: 5px 0px'></div>

@@ -78,7 +78,7 @@ if($websiteInfo['debugmode'] == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 else {
-	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING && ~E_STRICT);
 	ini_set('display_errors', 1);
 }
 
