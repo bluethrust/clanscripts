@@ -204,7 +204,7 @@ else {
 $dispRankImg = "";
 if($rankInfo['imageurl'] != "") {
 	$dispRankImg = "
-		<div class='main' style='text-align: center; margin-top: 5px; width: 150px; padding: 0px'>
+		<div id='profilePageRankPic' class='main' style='margin-left: auto; margin-right: auto; text-align: center; margin-top: 5px; width: 150px; padding: 0px'>
 			<img src='".$rankInfo['imageurl']."' width='".$rankInfo['imagewidth']."' height='".$rankInfo['imageheight']."'>
 		</div>
 	";
@@ -238,34 +238,37 @@ if($memberInfo['onia'] == 1) {
 
 ?>
 
-<div class='breadCrumbTitle'><div style='display: inline-block'><?php echo $memberInfo['username']; ?>'s Profile</div><div style='display: inline-block; margin-left: 8px; vertical-align: middle'><?php echo $dispOnlineStatus; ?></div><?php echo $dispInactive; ?></div>
+<div class='breadCrumbTitle'><div style='display: inline-block'><?php echo $memberInfo['username']; ?>'s Profile</div><div id='profilePageOnlineStatus' style='display: inline-block; margin-left: 8px; vertical-align: middle'><?php echo $dispOnlineStatus; ?></div><?php echo $dispInactive; ?></div>
 <div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
 <a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <a href='<?php echo $MAIN_ROOT; ?>members.php'>Members</a> > <?php echo $memberInfo['username']; ?>'s Profile
 </div>
 
-<div style='position: relative; margin-left: auto; margin-right: auto; width: 95%; margin-top: 15px; border: s'>
+<div style='position: relative; margin-left: auto; margin-right: auto; width: 95%; margin-top: 15px'>
 	<div class='main userProfileLeft'>
 	
-		<p align='center'><img src='<?php echo $dispProfileImage; ?>' width='150' height='200' class='solidBox' style='padding: 0px; margin: 0px auto'></p>
-		<?php echo $dispRankImg; ?>
-		<div class='formTitle userProfileLeftBoxWidth' style='margin-top: 5px'>
-			<b>Profile Information:</b>
+		<div id='profilePagePicImage'>
+			<p align='center'><img src='<?php echo $dispProfileImage; ?>' width='150' height='200' class='solidBox' style='padding: 0px; margin: 0px auto'></p>
+			<?php echo $dispRankImg; ?>
 		</div>
-		<div class='solidBox tinyFont userProfileLeftBoxWidth' style='margin: 0px; border-top-width: 0px'>
-			<b>Last Seen:</b><br>
-			<?php echo $dispLastSeen; ?> on<br>
-			<?php echo $dispLastSeenLink; ?>
-			<br><br>
-			<b>Date Recruited:</b><br>
-			<?php echo getPreciseTime($memberInfo['datejoined']); ?><br><br>
-			<b>Profile Views:</b> <?php echo number_format($memberInfo['profileviews']); ?>
-			<?php echo $dispBirthday; ?>
-			<?php echo $dispSocialMedia; ?>
-			<?php echo $dispSendPM; ?>
+		<div id='profilePageProfileInfoSection'>
+			<div class='formTitle userProfileLeftBoxWidth' style='margin-top: 5px'>
+				<b>Profile Information:</b>
+			</div>
+			<div class='solidBox tinyFont userProfileLeftBoxWidth' style='margin: 0px; border-top-width: 0px'>
+				<b>Last Seen:</b><br>
+				<?php echo $dispLastSeen; ?> on<br>
+				<?php echo $dispLastSeenLink; ?>
+				<br><br>
+				<b>Date Recruited:</b><br>
+				<?php echo getPreciseTime($memberInfo['datejoined']); ?><br><br>
+				<b>Profile Views:</b> <?php echo number_format($memberInfo['profileviews']); ?>
+				<?php echo $dispBirthday; ?>
+				<?php echo $dispSocialMedia; ?>
+				<?php echo $dispSendPM; ?>
+				
 			
-		
+			</div>
 		</div>
-	
 	
 	
 	</div>

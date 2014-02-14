@@ -147,6 +147,7 @@ if($checkMember) {
 					<b>Menu Options - ".$consoleCatInfo['name']."</b>
 				</div>
 				<div style='padding-left: 5px; padding-bottom: 15px'>
+				<ul style='padding: 0px; padding-left: 15px'>
 				";
 				foreach($arrConsoleOptions as $consoleOptionID) {
 			
@@ -199,16 +200,16 @@ if($checkMember) {
 								$dispPageTitle .= " (".$countIARequests.")";
 								break;
 							case $privateMessagesCID:
-								$dispPageTitle .= "</a><br>";
-								$dispPageTitle .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/privatemessages/compose.php'>Compose Message";
+								$dispPageTitle .= "</a></li>";
+								$dispPageTitle .= "<li><a href='".$MAIN_ROOT."members/privatemessages/compose.php'>Compose Message";
 								break;
 						}
 						
 						
-						$dispConsoleOptions .= "<b>&middot;</b> <a href='console.php?cID=".$consoleInfo['console_id']."'>".$dispPageTitle."</a><br>";
+						$dispConsoleOptions .= "<li><a href='console.php?cID=".$consoleInfo['console_id']."'>".$dispPageTitle."</a></li>";
 					}
 				}
-				$dispConsoleOptions .= "</div></div>";
+				$dispConsoleOptions .= "</ul></div></div>";
 				
 			}
 					
@@ -222,10 +223,10 @@ if($checkMember) {
 		<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
 			$dispBreadCrumb
 		</div>
-			<div style='float: left; text-align: left; width: 35%; padding: 10px 0px 0px 40px'>
+			<div id='myAccountPageCategories' style='float: left; text-align: left; width: 35%; padding: 10px 0px 0px 40px'>
 				$dispConsoleCategories
 			</div>
-			<div style='float: right; text-align: left; width: 40%; padding: 10px 40px 0px 10px'>
+			<div id='myAccountPageOptions' style='float: right; text-align: left; width: 40%; padding: 10px 40px 0px 10px'>
 				$dispConsoleOptions
 			</div>
 		";

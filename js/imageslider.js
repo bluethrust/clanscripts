@@ -47,7 +47,13 @@
 		
 		
 		return this.each(function() {
+			
+			if($('#hpImageSliderWrapper').width() < settings['ContainerWidth']) {
+				settings['ImageWidth'] = $('#hpImageSliderWrapper').width()-30;
+			}
+			
 			var $this = $(this);
+						
 			var currentDivID, currentDotDiv, currentDotDivHover, intPrevID, prevDivID, prevDotDiv, prevDotDivHover, intIntervalID;
 			var intCurrentImage = 0;
 			
@@ -173,7 +179,6 @@
 				if(intCurrentImage > parseInt(settings['TotalImages'])) {
 					intCurrentImage = 0;
 				}
-				
 				
 				
 				intIntervalID = self.setTimeout(function() { switchImage(); }, parseInt(settings['SwitchDelay']));

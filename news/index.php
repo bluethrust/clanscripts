@@ -128,8 +128,8 @@ if($result->num_rows > 0) {
 				<div class='newsDiv' id='newsDiv_".$row['news_id']."'>
 					
 					<div class='postInfo'>
-						<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
-						<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($row['dateposted']).$dispNewsType."<br>
+						<div id='newsPostAvatar' style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
+						<div id='newsPostInfo' style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($row['dateposted']).$dispNewsType."<br>
 						<span class='subjectText'>".filterText($row['postsubject'])."</span></div>
 						<div style='clear: both'></div>
 					</div>

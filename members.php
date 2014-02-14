@@ -97,7 +97,8 @@ $gameObj = new Game($mysqli);
 	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Members
 </div>
 
-<table class='formTable'>
+<div id='tiltPhoneImg'><img src='<?php echo $MAIN_ROOT; ?>images/tiltphone.png'><p align='center'>need more space<br>tilt your phone!</p></div>
+<table class='formTable' id='membersPageTable'>
 <?php
 $maxDSLIntervals = floor($websiteInfo['maxdsl']/3);
 $arrCountDSL[1] = 0;
@@ -183,7 +184,7 @@ while($row = $result->fetch_assoc()) {
 			$gameObj->refreshImageSize();
 			$gameInfo = $gameObj->get_info_filtered();
 			$arrGameCount[] = $gameInfo['gamesplayed_id'];
-			$dispMainGame = "<img src='".$gameInfo['imageurl']."' width='".$gameInfo['imagewidth']."' height='".$gameInfo['imageheight']."' onmouseover=\"showToolTip('".$gameInfo['name']."')\" onmouseout='hideToolTip()'>";
+			$dispMainGame = "<div class='memberPageImage'><img src='".$gameInfo['imageurl']."' width='".$gameInfo['imagewidth']."' height='".$gameInfo['imageheight']."' onmouseover=\"showToolTip('".$gameInfo['name']."')\" onmouseout='hideToolTip()'></div>";
 		}
 		else {
 			$arrGameCount[] = "NotSet";	
@@ -225,13 +226,13 @@ while($row = $result->fetch_assoc()) {
 		
 		echo "
 			<tr>
-				<td class='main' align='center'><img src='".$rankListInfo['imageurl']."' width='".$rankListInfo['imagewidth']."' height='".$rankListInfo['imageheight']."'></td>
+				<td class='main' align='center'><div class='memberPageImage'><img src='".$rankListInfo['imageurl']."' width='".$rankListInfo['imagewidth']."' height='".$rankListInfo['imageheight']."'></div></td>
 				<td class='main'>".$member->getMemberLink()."</td>
 				<td class='main' align='center'>".$dispMainGame."</td>
 				";
 				if($tableCols == 5) { echo "<td class='main' align='center'>".$dispDSL."</td>"; }
 				echo "
-				<td class='main' align='center'>".$dispStatus."</td>
+				<td class='main' align='center'><div class='memberPageImage'>".$dispStatus."</div></td>
 			</tr>
 		";
 		
@@ -248,7 +249,7 @@ $totalMembers = array_sum($arrMemberCountCat);
 </table>
 <div style='margin: 20px auto'>
 
-	<table class='formTable' style='width: 85%; margin-left: auto; margin-right: auto'>
+	<table class='formTable' id='membersPageTable' style='width: 85%; margin-left: auto; margin-right: auto'>
 		<tr>
 			<td colspan='3' class='main dottedLine' align='center'><b>Total Members:</b> <?php echo $totalMembers; ?></td>
 		</tr>
@@ -257,15 +258,15 @@ $totalMembers = array_sum($arrMemberCountCat);
 				$rankCatObj->select($key);
 				$rankCatInfo = $rankCatObj->get_info_filtered();
 				
-				$totalBars = round(($value/$totalMembers)*250);
+				$totalBars = round(($value/$totalMembers)*100);
 				//$dispBars = "|".str_repeat("|", $totalBars);
-				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 250px'><div class='tinyFont' style='width: ".$totalBars."px; background-color: ".$rankCatInfo['color']."'>&nbsp;</div></div>";
+				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 90%'><div class='tinyFont' style='width: ".$totalBars."%; background-color: ".$rankCatInfo['color']."'>&nbsp;</div></div>";
 				
 				echo "
 					<tr>
-						<td class='main' style='font-weight: bold'>Total ".$rankCatInfo['name'].":</td>
-						<td class='main' style='font-weight: bold'>".$value." - ".(round($value/$totalMembers,2)*100)."%</td>
-						<td class='main'>".$dispBars."</td>
+						<td class='main' style='font-weight: bold; width: 40%'>Total ".$rankCatInfo['name'].":</td>
+						<td class='main' style='font-weight: bold; width: 20%'>".$value." - ".(round($value/$totalMembers,2)*100)."%</td>
+						<td class='main' style='width: 40%'>".$dispBars."</td>
 					</tr>
 				
 				";
@@ -278,7 +279,7 @@ $totalMembers = array_sum($arrMemberCountCat);
 </div>
 <div style='margin: 20px auto'>
 
-	<table class='formTable' style='width: 85%; margin-left: auto; margin-right: auto'>
+	<table class='formTable' id='membersPageTable' style='width: 85%; margin-left: auto; margin-right: auto'>
 		<tr>
 			<td colspan='3' class='main dottedLine' align='center'><b>- Game Statistics -</b></td>
 		</tr>
@@ -294,14 +295,14 @@ $totalMembers = array_sum($arrMemberCountCat);
 					$arrTotalGamesPlayed[$value] = 0;
 				}
 				
-				$totalBars = round(($arrTotalGamesPlayed[$value]/$totalMembers)*250);
-				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 250px'><div class='tinyFont alternateBGColor' style='width: ".$totalBars."px'>&nbsp;</div></div>";
+				$totalBars = round(($arrTotalGamesPlayed[$value]/$totalMembers))*100;
+				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 90%'><div class='tinyFont alternateBGColor' style='width: ".$totalBars."%'>&nbsp;</div></div>";
 				
 				echo "
 					<tr>
-						<td class='main' style='font-weight: bold'>Total ".$gameInfo['name']." Players:</td>
-						<td class='main' style='font-weight: bold'>".$arrTotalGamesPlayed[$value]." - ".(round($arrTotalGamesPlayed[$value]/$totalMembers,2)*100)."%</td>
-						<td class='main' style='letter-spacing: -4px'>".$dispBars."</td>
+						<td class='main' style='font-weight: bold; width: 40%'>Total ".$gameInfo['name']." Players:</td>
+						<td class='main' style='font-weight: bold; width: 20%'>".$arrTotalGamesPlayed[$value]." - ".(round($arrTotalGamesPlayed[$value]/$totalMembers,2)*100)."%</td>
+						<td class='main' style='letter-spacing: -4px; width: 40%'>".$dispBars."</td>
 					</tr>
 				
 				";
@@ -318,7 +319,7 @@ $totalMembers = array_sum($arrMemberCountCat);
 if($websiteInfo['maxdsl'] != 0) {
 	
 	echo "
-	<table class='formTable' style='width: 85%; margin-left: auto; margin-right: auto'>
+	<table class='formTable' id='membersPageTable' style='width: 85%; margin-left: auto; margin-right: auto'>
 		<tr>
 			<td colspan='3' class='main dottedLine' align='center'><b>- Activity Statistics -</b></td>
 		</tr>
@@ -348,15 +349,15 @@ if($websiteInfo['maxdsl'] != 0) {
 					$extraDSLMessage = "These members are in danger of being disabled due to inactivity.";
 				}
 				
-				$totalBars = round(($arrCountDSL[$i]/$totalMembers)*250);
-				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 250px'><div class='tinyFont' style='width: ".$totalBars."px; background-color: ".$dispColor."'>&nbsp;</div></div>";
+				$totalBars = round(($arrCountDSL[$i]/$totalMembers)*100);
+				$dispBars = "<div class='solidBox' style='position: reltaive; padding: 0px; margin: 0px; width: 90%'><div class='tinyFont' style='width: ".$totalBars."%; background-color: ".$dispColor."'>&nbsp;</div></div>";
 				
 				
 				echo "
 					<tr>
-						<td class='main' style='font-weight: bold'>".$dispTitle." <span onmouseover=\"showToolTip('Members who logged in within the last ".$lowEndDSL." to ".$highEndDSL." days. ".$extraDSLMessage."')\" onmouseout='hideToolTip()' style='cursor: help'>(?)</span>:</td>
-						<td class='main' style='font-weight: bold'>".$arrCountDSL[$i]." - ".(round($arrCountDSL[$i]/$totalMembers,2)*100)."%</td>
-						<td class='main' style='letter-spacing: -4px'>".$dispBars."</td>
+						<td class='main' style='font-weight: bold; width: 40%'>".$dispTitle." <span onmouseover=\"showToolTip('Members who logged in within the last ".$lowEndDSL." to ".$highEndDSL." days. ".$extraDSLMessage."')\" onmouseout='hideToolTip()' style='cursor: help'>(?)</span>:</td>
+						<td class='main' style='font-weight: bold; width: 20%'>".$arrCountDSL[$i]." - ".(round($arrCountDSL[$i]/$totalMembers,2)*100)."%</td>
+						<td class='main' style='letter-spacing: -4px; width: 40%'>".$dispBars."</td>
 					</tr>
 				
 				";

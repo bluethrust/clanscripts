@@ -55,7 +55,7 @@ $rankCatObj = new RankCategory($mysqli);
 	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Ranks
 </div>
 
-<table class='formTable' style='width: 75%; margin-left: auto; margin-right: auto'>
+<table id='rankPageTable' class='formTable' style='width: 75%; margin-left: auto; margin-right: auto'>
 <?php
 
 $result = $mysqli->query("SELECT rankcategory_id FROM ".$dbprefix."rankcategory WHERE hidecat = '0' ORDER BY ordernum DESC");

@@ -152,9 +152,10 @@ if($websiteInfo['newsticker'] != "") {
 	if($websiteInfo['newstickercolor'] != "") {
 		$setNewsTickerStyle .= "; color: ".$websiteInfo['newstickercolor'].";";	
 	}
-	
+	$setMarqueeTickerStyle = "";
 	if($websiteInfo['newstickersize'] != 0) {
 		$setNewsTickerStyle .= "; font-size: ".$websiteInfo['newstickersize']."px; height: ".$websiteInfo['newstickersize']."px;";
+		$setMarqueeTickerStyle = " style ='height: ".($websiteInfo['newstickersize']+5)."px;'";
 	}
 	
 	if($websiteInfo['newstickerbold'] == 1) {
@@ -171,7 +172,7 @@ if($websiteInfo['newsticker'] != "") {
 
 			<div id='hpNewsTicker'>
 			
-				<marquee scrollamount='3'><div id='tickerSpan' style='".$setNewsTickerStyle." position: relative; margin-left: auto; margin-right: auto;'>".$websiteInfo['newsticker']."</div></marquee>
+				<marquee scrollamount='3'".$setMarqueeTickerStyle."><div id='tickerSpan' style='".$setNewsTickerStyle." position: relative; margin-left: auto; margin-right: auto;'>".$websiteInfo['newsticker']."</div></marquee>
 			
 			</div>
 			
@@ -180,7 +181,7 @@ if($websiteInfo['newsticker'] != "") {
 }
 
 echo "
-	<div style='text-align: center; position: relative; margin-left: auto; margin-right: auto'>
+	<div id='hpImageSliderWrapper' style='text-align: center; position: relative; margin-left: auto; margin-right: auto'>
 			";
 	
 	$imageSliderObj = new ImageSlider($mysqli);
@@ -198,7 +199,7 @@ echo "
 		
 	
 	echo "	
-			</div>
+	</div>
 		
 	";
 
@@ -256,8 +257,8 @@ while($row = $result->fetch_assoc()) {
 		$dispAnnouncements .= "
 			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
 				<div class='postInfo'>
-					<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
-					<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
+					<div id='newsPostAvatar' style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
+					<div id='newsPostInfo' style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
 					<span class='subjectText'>".$newsInfo['postsubject']."</span></div>
 				</div>
 				<br>
@@ -319,8 +320,8 @@ if($result->num_rows > 0) {
 		$dispHPNews .= "		
 			<div class='newsDiv' id='newsDiv_".$newsInfo['news_id']."'>
 				<div class='postInfo'>
-					<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
-					<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
+					<div id='newsPostAvatar' style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
+					<div id='newsPostInfo' style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
 					<span class='subjectText'>".$newsInfo['postsubject']."</span></div>
 				</div>
 				<br>
