@@ -348,7 +348,7 @@ while($row = $result->fetch_assoc()) {
 	$dispRankWidth = ($websiteInfo['forum_rankwidth'] <= 0) ? "" : "width: ".$websiteInfo['forum_rankwidth'].$websiteInfo['forum_rankwidthunit'].";";
 	$dispRankHeight = ($websiteInfo['forum_rankheight'] <= 0) ? "" : "height: ".$websiteInfo['forum_rankheight'].$websiteInfo['forum_rankheightunit'].";";
 	$dispRankDimensions = ($dispRankWidth != "" || $dispRankHeight != "") ? " style='".$dispRankWidth.$dispRankHeight."'" : "";
-	$dispRankIMG = ($websiteInfo['forum_showrank'] == 1 && $posterRankInfo['rank_id'] != 1) ? "<div style='text-align: center'><img src='".$posterRankInfo['imageurl']."'".$dispRankDimensions."></div>" : "";
+	$dispRankIMG = ($websiteInfo['forum_showrank'] == 1 && $posterRankInfo['rank_id'] != 1) ? "<div id='forumShowRank' style='text-align: center'><img src='".$posterRankInfo['imageurl']."'".$dispRankDimensions."></div>" : "";
 	$dispMedals = "";
 	if($websiteInfo['forum_showmedal'] == 1) {
 		
@@ -398,12 +398,14 @@ while($row = $result->fetch_assoc()) {
 	echo "
 		<tr>
 			<td class='boardPosterInfo' valign='top'><a name='".$postInfo['forumpost_id']."'></a>
+				<div id='forumShowPosterName'>
 				<span class='boardPosterName'>".$postMemberObj->getMemberLink()."</span><br>
-				".$posterRankInfo['name']."<br>
-				<img src='".$postMemberInfo['avatar']."' style='width: ".$setAvatarWidth.$setAvatarWidthUnit."; height: ".$setAvatarHeight.$setAvatarHeightUnit."; margin-top: 5px; margin-bottom: 5px'><br>
-				Posts: ".$postMemberObj->countForumPosts()."
+				".$posterRankInfo['name']."
+				</div>
+				<div id='forumShowAvatar'><img src='".$postMemberInfo['avatar']."' style='width: ".$setAvatarWidth.$setAvatarWidthUnit."; height: ".$setAvatarHeight.$setAvatarHeightUnit."; margin-top: 5px; margin-bottom: 5px'></div>
+				<div id='forumShowPostCount'>Posts: ".$postMemberObj->countForumPosts()."</div>
 				".$dispRankIMG."
-				".$dispMedals."
+				<div id='forumShowMedals'>".$dispMedals."</div>
 			</td>
 			<td class='boardPostInfo' valign='top'>
 			<div class='postTime'>Posted".$dispPostedOn." ".getPreciseTime($postInfo['dateposted'])."</div>

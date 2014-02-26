@@ -120,14 +120,26 @@ while($row = $result->fetch_assoc()) {
 			$countErrors++;
 		}
 		
+		// Check Captcha
+		$filterIP = $mysqli->real_escape_string($IP_ADDRESS);
+		$result = $mysqli->query("SELECT * FROM ".$dbprefix."app_captcha WHERE ipaddress = '".$filterIP."' AND appcomponent_id = '-1'");
+		
+		if($result->num_rows > 0) {
+			$captchaRow = $result->fetch_assoc();
+			if($captchaRow['captchatext'] != strtolower($_POST['captchatext'])) {
+				$countErrors++;
+				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You entered incorrect text in the captcha box.<br>";
+			}
+		}
+		else {
+			$countErrors++;
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> *You entered incorrect text in the captcha box.<br>";
+		}
+		
 		
 		if($countErrors == 0) {
 			
 			$emailCode = md5(time().uniqid());
-			
-			
-			
-			
 			
 			
 			// Send E-mail Confirmation
@@ -278,6 +290,10 @@ Thanks,\n
 						</td>
 					</tr>
 					<tr>
+						<td class='formLabel' valign='top'>Captcha:</td>
+						<td class='main' valign='top'><input type='text' class='textBox' name='captchatext'>&nbsp;&nbsp;&nbsp<a href='javascript:void(0)' data-refresh='1'>Refresh Image</a><br><br><div id='request_diplomacy_captcha' style='margin-bottom: 25px'><img src='".$MAIN_ROOT."images/captcha.php?appCompID=-1' width='440' height='90'></div></td>
+					</tr>
+					<tr>
 						<td class='main' colspan='2' align='center'><br>
 							<input type='submit' name='submit' value='Send Request' class='submitButton' style='width: 125px'>
 						</td>
@@ -285,6 +301,28 @@ Thanks,\n
 				</table>
 			</form>
 		</div>
+		
+		<script type='text/javascript'>
+	
+			$(document).ready(function() {
+			
+				$(\"a[data-refresh='1']\").click(function() {
+
+					$('#request_diplomacy_captcha').fadeOut(250);
+					
+					
+					$.post('".$MAIN_ROOT."images/captcha.php?display=1&appCompID=-1', { }, function(data) {
+						$('#request_diplomacy_captcha').html(data);
+						$('#request_diplomacy_captcha').fadeIn(250);
+					});
+					
+				});
+			
+			});
+		
+		</script>
+		
+		
 		";
 	}
 ?>

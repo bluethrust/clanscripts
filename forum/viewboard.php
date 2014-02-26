@@ -220,11 +220,11 @@ foreach($arrSubForums as $boardID) {
 		$subForumObj->select($boardID);
 		$subForumInfo = $subForumObj->get_info_filtered();
 		$dispSubForums .= "
-			<tr class='boardRows'>
+			<tr class='boardRows".$newTopicBG."'>
 				<td class='boardName dottedLine".$newTopicBG."'><a href='viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a>".$dispNewTopicIMG."<br><span class='boardDescription'>".$subForumInfo['description'].$dispMoreSubForums."</span></td>
 				<td class='dottedLine boardLastPost".$newTopicBG."'>".$dispLastPost."</td>
-				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."</td>
-				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispPostCount."</td>
+				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."<span id='forumPageTopicCount' style='display: none'> Topics</span></td>
+				<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispPostCount."<span id='forumPagePostCount' style='display: none'> Posts</span></td>
 			
 			</tr>
 		";
@@ -337,10 +337,10 @@ foreach($arrPageTopics as $postID) {
 	
 	
 	echo "
-		<tr class='boardRows'>
+		<tr class='boardRows".$newTopicBG."'>
 			<td class='boardName dottedLine".$newTopicBG."'><a href='viewtopic.php?tID=".$postInfo['forumtopic_id']."'>".$postInfo['title']."</a>".$dispTopicIconsIMG."<br><span class='boardDescription'>by ".$dispTopicPoster." - ".getPreciseTime($postInfo['dateposted'])."</span></td>
-			<td class='boardTopicCount dottedLine".$newTopicBG."' align='center'>".$topicInfo['replies']."</td>
-			<td class='boardTopicCount dottedLine".$newTopicBG."' align='center'>".$topicInfo['views']."</td>
+			<td class='boardTopicCount dottedLine".$newTopicBG."' align='center'>".$topicInfo['replies']."<span id='forumPagePostCount' style='display: none'> Replies</span></td>
+			<td class='boardTopicCount dottedLine".$newTopicBG."' align='center'>".$topicInfo['views']."<span id='forumPagePostCount' style='display: none'> Views</span></td>
 			<td class='boardLastPost dottedLine".$newTopicBG."'>by ".$dispLastPoster."<br>".getPreciseTime($lastPostInfo['dateposted'])."</td>
 		</tr>
 	";

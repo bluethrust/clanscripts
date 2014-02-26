@@ -236,27 +236,29 @@ class BasicOrder extends Basic {
 	 */
 	
 	function resortOrder() {
+		
 		$counter = 1; // ordernum counter
 		$x = 0; // array counter
 		$arrUpdateID = array();
 		$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." ORDER BY ordernum");
-		while($row = $result->fetch_assoc()) {
-			$arrUpdateID[] = $row[$this->strTableKey];
-			$x++;
+		if($result) {
+			while($row = $result->fetch_assoc()) {
+				$arrUpdateID[] = $row[$this->strTableKey];
+				$x++;
+			}
+		
+			$intOriginalRank = $this->intTableKeyValue;
+			foreach($arrUpdateID as $intUpdateID) {
+				$arrUpdateCol[0] = "ordernum";
+				$arrUpdateVal[0] = $counter;
+				$this->select($intUpdateID);
+				$this->update($arrUpdateCol, $arrUpdateVal);
+				$counter++;
+			}
+		
+			$this->select($intOriginalRank);
 		}
-	
-		$intOriginalRank = $this->intTableKeyValue;
-		foreach($arrUpdateID as $intUpdateID) {
-			$arrUpdateCol[0] = "ordernum";
-			$arrUpdateVal[0] = $counter;
-			$this->select($intUpdateID);
-			$this->update($arrUpdateCol, $arrUpdateVal);
-			$counter++;
-		}
-	
-		$this->select($intOriginalRank);
-	
-	
+		
 		return true;
 	}
 	

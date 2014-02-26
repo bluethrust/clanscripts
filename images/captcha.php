@@ -4,11 +4,12 @@ include_once("../classes/member.php");
 include_once("../classes/basicorder.php");
 
 $member = new Member($mysqli);
+
 $appComponentObj = new BasicOrder($mysqli, "app_components", "appcomponent_id");
 $appComponentObj->set_assocTableName("app_selectvalues");
 $appComponentObj->set_assocTableKey("appselectvalue_id");
 
-if(!$appComponentObj->select($_GET['appCompID']) || ($appComponentObj->get_info("componenttype") != "captcha" && $appComponentObj->get_info("componenttype") != "captchaextra")) {
+if(($_GET['appCompID'] != -1 && !$appComponentObj->select($_GET['appCompID'])) || ($_GET['appCompID'] != -1 && ($appComponentObj->get_info("componenttype") != "captcha" && $appComponentObj->get_info("componenttype") != "captchaextra"))) {
 	exit();	
 }
 
@@ -18,7 +19,14 @@ if(isset($_GET['display'])) {
 }
 else {
 	header('Content-Type: image/png');
-	$appCompInfo = $appComponentObj->get_info_filtered();
+	
+	if($_GET['appCompID'] == -1) {
+		$appCompInfo['appcomponent_id'] = -1;
+	}
+	else {
+		$appCompInfo = $appComponentObj->get_info_filtered();
+	}
+	
 	
 	$captchaObj = new Basic($mysqli, "app_captcha", "appcaptcha_id");
 	$filterIP = $mysqli->real_escape_string($IP_ADDRESS);

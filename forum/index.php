@@ -144,11 +144,11 @@ while($row = $result->fetch_assoc()) {
 			
 			
 			$dispBoards .= "
-				<tr class='boardRows'>
+				<tr class='boardRows".$newTopicBG."'>
 					<td class='boardName dottedLine".$newTopicBG."'><a href='viewboard.php?bID=".$boardInfo['forumboard_id']."'>".$boardInfo['name']."</a>".$dispNewTopicIMG."<br><span class='boardDescription'>".$boardInfo['description'].$dispSubForums."</span></td>
 					<td class='dottedLine boardLastPost".$newTopicBG."'>".$dispLastPost."</td>
-					<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."</td>
-					<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispPostCount."</td>
+					<td class='dottedLine boardTopicCount".$newTopicBG."' align='center'>".$dispTopicCount."<span id='forumPageTopicCount' style='display: none'> Topics</span></td>
+					<td class='dottedLine boardTopicCount boardPostCount".$newTopicBG."' align='center'>".$dispPostCount."<span id='forumPagePostCount' style='display: none'> Posts</span></td>
 				
 				</tr>
 			";

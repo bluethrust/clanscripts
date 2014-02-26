@@ -87,7 +87,7 @@ if(!$_POST['submit']) {
 	$pmFolderObj->select($folderInfo['pmfolder_id']);
 	
 	$folderOptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessage_folders WHERE pmfolder_id != '".$folderInfo['pmfolder_id']."' AND member_id = '".$memberInfo['member_id']."' ORDER BY ordernum DESC");
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."privatemessage_folders WHERE pmfolder_id != '".$folderInfo['pmfolder_id']."' AND member_id = '".$memberInfo['member_id']."' ORDER BY sortnum DESC");
 	while($row = $result->fetch_assoc()) {
 		$dispSelected = ($findBeforeAfter[0] == $row['pmfolder_id']) ? " selected" : "";
 		$folderOptions .= "<option value='".$row['pmfolder_id']."'".$dispSelected.">".filterText($row['name'])."</option>";	
