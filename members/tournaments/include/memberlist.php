@@ -35,7 +35,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 	$memberInfo = $member->get_info();
 	$tmemberID = $tournamentObj->get_info("member_id");
 	
-	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1") {
+	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) {
 		
 		$tournamentPlayers = $tournamentObj->getPlayers();
 		$memberSQL = "('".implode("','", $tournamentPlayers)."')";

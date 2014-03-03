@@ -205,7 +205,7 @@ class Member extends Basic {
 	* - getTournamentList Function -
 	*
 	* Returns an array of tournament_id's for the selected member.  If the boolean value $creatorOnly is set to true, then it only
-	* groups tournaments where the member is the creator.  If left as false will only return the tournaments that the member is playing in
+	* groups tournaments where the member is the creator or manager.  If left as false will only return the tournaments that the member is playing in
 	*
 	*
 	*/
@@ -221,7 +221,12 @@ class Member extends Basic {
 					$returnArr[] = $row['tournament_id'];
 				}
 			
-			
+				$query = "SELECT tournament_id FROM ".$this->MySQL->get_tablePrefix()."tournament_managers WHERE member_id = '".$this->intTableKeyValue."'";
+				$result = $this->MySQL->query($query);
+				while($row = $result->fetch_assoc()) {
+					$returnArr[] = $row['tournament_id'];
+				}
+				
 			}
 			else {
 

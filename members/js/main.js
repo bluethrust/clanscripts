@@ -42,6 +42,9 @@ function selectCategory(intCategoryNum) {
 	$(document).ready(function() {
 		$(strOldCat).hide();
 		$(strNewCat).show();
+		
+		$('#myAccountPageCategories').removeClass("showConsoleCategories").addClass("hideConsoleCategories");
+		$('#myAccountPageOptions').removeClass("hideConsoleOptions").addClass("showConsoleOptions");
 	});
 	
 }
@@ -56,3 +59,10 @@ function sendPostData(arrData, strPageName) {
 	});
 
 }
+
+$(document).ready(function() {
+	$("div[data-goback='yes']").click(function() {
+		$('#myAccountPageCategories').removeClass('hideConsoleCategories').addClass('showConsoleCategories');
+		$('#myAccountPageOptions').removeClass('showConsoleOptions').addClass('hideConsoleOptions');
+	});
+});

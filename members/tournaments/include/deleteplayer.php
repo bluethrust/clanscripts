@@ -37,7 +37,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 	$tournamentInfo = $tournamentObj->get_info_filtered();
 	$maxPlayers = $tournamentInfo['playersperteam']*$tournamentInfo['maxteams'];
 	
-	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1") {
+	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) {
 		
 		if($tournamentObj->objPlayer->select($_POST['playerID']) && $tournamentObj->objPlayer->get_info("tournament_id") == $tID) {
 			

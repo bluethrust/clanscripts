@@ -43,7 +43,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 	$tournamentInfo = $tournamentObj->get_info_filtered();
 
 	
-	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1") {
+	if($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) {
 		
 		
 		if(!isset($_POST['roundSelected']) || !is_numeric($_POST['roundSelected'])) {

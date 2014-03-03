@@ -33,6 +33,7 @@ $countErrors = 0;
 $tournamentObj = new Tournament($mysqli);
 $gameObj = new Game($mysqli);
 
+$arrTimezones = DateTimeZone::listIdentifiers();
 
 if($_POST['submit']) {
 	
@@ -64,6 +65,12 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start time.<br>";
 	}
 	
+	// Check Timezone
+	
+	if(!in_array($_POST['starttimezone'], $arrTimezones)) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid timezone.<br>";
+	}
 	
 	// Format Date
 	$formattedDate = "";
@@ -157,8 +164,8 @@ if($_POST['submit']) {
 	
 	
 	if($countErrors == 0) {
-		$arrColumns = array("member_id", "gamesplayed_id", "name", "seedtype", "startdate", "eliminations", "playersperteam", "maxteams", "description", "password", "requirereplay", "access");
-		$arrValues = array($memberInfo['member_id'], $_POST['game'], $_POST['tournamentname'], $_POST['seedtype'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], md5($_POST['tournamentpassword']), $_POST['requirereplay'], $_POST['tournamentaccess']);
+		$arrColumns = array("member_id", "gamesplayed_id", "name", "seedtype", "startdate", "eliminations", "playersperteam", "maxteams", "description", "password", "requirereplay", "access", "timezone");
+		$arrValues = array($memberInfo['member_id'], $_POST['game'], $_POST['tournamentname'], $_POST['seedtype'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], md5($_POST['tournamentpassword']), $_POST['requirereplay'], $_POST['tournamentaccess'], $_POST['starttimezone']);
 		
 		if($tournamentObj->addNew($arrColumns, $arrValues)) {
 			
@@ -226,6 +233,16 @@ if(!$_POST['submit']) {
 		";
 	}
 	
+	
+	foreach($arrTimezones as $timeZone) {
+		
+		$tz = new DateTimeZone($timeZone);
+		$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
+		$dispSign = ($dispOffset < 0) ? "" : "+";
+		$timezoneoptions .= "<option value='".$timeZone."'>".str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")</option>";
+	}
+	
+	
 	echo "
 				Use the form below to create a tournament.
 				<table class='formTable'>
@@ -257,6 +274,9 @@ if(!$_POST['submit']) {
 							<select name='startampm' class='textBox'>
 								<option value='AM'>AM</option><option value='PM'>PM</option>
 							</select>
+							<select name='startimezone' class='textBox'>
+								".$timezoneoptions."
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -272,7 +292,7 @@ if(!$_POST['submit']) {
 					<tr>
 						<td class='formLabel' valign='top'>Extra Info:</td>
 						<td class='main'>
-							<textarea class='textbox' rows='5' cols='35' name='extrainfo'>".$_POST['extrainfo']."</textarea>
+							<textarea class='textBox' rows='5' cols='35' name='extrainfo'>".$_POST['extrainfo']."</textarea>
 						</td>
 					</tr>
 					<tr>

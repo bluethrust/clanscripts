@@ -35,7 +35,7 @@ $countErrors = 0;
 
 
 
-
+$arrTimezones = DateTimeZone::listIdentifiers();
 if($_POST['submit']) {
 	
 	// Check Title
@@ -58,6 +58,11 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start minute.<br>";
 		$countErrors++;
 	}
+	
+	
+	// Check Timezone
+	
+	
 	
 	
 	// Calc Start Date
@@ -114,8 +119,8 @@ if($_POST['submit']) {
 		
 		$eventObj = new Event($mysqli);
 		
-		$arrColumns = array("member_id", "title", "description", "location", "startdate", "publicprivate", "visibility", "messages", "invitepermission");
-		$arrValues = array($memberInfo['member_id'], $_POST['eventtitle'], $_POST['eventdetails'], $_POST['eventlocation'], $setStartTime, $inviteType, $_POST['visibility'], $allowMessages, $openInvites);
+		$arrColumns = array("member_id", "title", "description", "location", "startdate", "publicprivate", "visibility", "messages", "invitepermission", "timezone");
+		$arrValues = array($memberInfo['member_id'], $_POST['eventtitle'], $_POST['eventdetails'], $_POST['eventlocation'], $setStartTime, $inviteType, $_POST['visibility'], $allowMessages, $openInvites, $_POST['timezone']);
 		
 		if($eventObj->addNew($arrColumns, $arrValues)) {
 			echo "
@@ -188,6 +193,15 @@ if(!$_POST['submit']) {
 		";
 	}
 	
+	foreach($arrTimezones as $timeZone) {
+		
+		$tz = new DateTimeZone($timeZone);
+		$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
+		$dispSign = ($dispOffset < 0) ? "" : "+";
+		$timezoneoptions .= "<option value='".$timeZone."'>".str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")</option>";
+	}
+	
+	
 	echo "
 				Use the form below to add a new event.<br><br>
 				<table class='formTable'>
@@ -204,7 +218,7 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='formLabel'>Start Time:</td>
-						<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'>PM</option></select></td>
+						<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'>PM</option></select><select name='timezone' class='textBox'>".$timezoneoptions."</select></td>
 					</tr>
 					<tr>
 						<td class='formLabel'>Location:</td>

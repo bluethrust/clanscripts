@@ -66,7 +66,7 @@ if(count($arrTournaments) > 0) {
 			<div class='dottedLine' style='padding-bottom: 3px; margin-bottom: 5px'>
 			<b>Manage Tournament - ".$tournamentInfo['name']."</b>
 			</div>
-			<div style='padding-left: 5px'>
+			<div style='padding-left: 5px'><ul style='padding: 0px; padding-left: 15px'>
 			";
 			
 			
@@ -74,29 +74,32 @@ if(count($arrTournaments) > 0) {
 			$arrTournamentOptionsDispName = array("Manage Matches", "Manage Teams/Players", "Edit Tournament Info");
 			
 			if($tournamentInfo['seedtype'] != 3) {
-				$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManageMatches'>Manage Matches</a><br>";
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManageMatches'>Manage Matches</a></li>";
 			}
 			else {
-				$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManagePools'>Manage Pools</a><br>";
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManagePools'>Manage Pools</a></li>";
 			}
 			
 			if($tournamentInfo['playersperteam'] > 1) { 
-				$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManageTeams'>Manage Teams</a><br>"; 
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManageTeams'>Manage Teams</a></li>"; 
 			}
 			else {
-				$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManagePlayers'>Manage Players</a><br>";
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=ManagePlayers'>Manage Players</a></li>";
 			}
 			
 			
+			if($tournamentInfo['member_id'] == $memberInfo['member_id']) {
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=SetManagers'>Set Tournament Managers</a></li>";	
+			}
 			
-			$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=EditTournamentInfo'>Edit Tournament Info</a><br>";
-			$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."tournaments/view.php?tID=".$tournamentInfo['tournament_id']."'>View Tournament Page</a><br>";
-			$dispTournamentOptions .= "<b>&middot;</b> <a href='javascript:void(0)' onclick=\"deleteTournament('".$tournamentInfo['tournament_id']."')\">Delete Tournament</a><br>";			
-			$dispTournamentOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."tournaments/bracket.php?tID=".$tournamentInfo['tournament_id']."' target='_blank'>View Bracket</a>";
+			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=EditTournamentInfo'>Edit Tournament Info</a></li>";
+			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."tournaments/view.php?tID=".$tournamentInfo['tournament_id']."'>View Tournament Page</a></li>";
+			$dispTournamentOptions .= "<li><a href='javascript:void(0)' onclick=\"deleteTournament('".$tournamentInfo['tournament_id']."')\">Delete Tournament</a></li>";			
+			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."tournaments/bracket.php?tID=".$tournamentInfo['tournament_id']."' target='_blank'>View Bracket</a></li>";
 			if($tournamentInfo['seedtype'] == 3 && $tournamentObj->poolsComplete()) {
-				$dispTournamentOptions .= "<br><b>&middot;</b> <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=StartMatches'>Start Tournament Matches</a>";
+				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=StartMatches'>Start Tournament Matches</li>";
 			}
-			$dispTournamentOptions .= "</div></div>";
+			$dispTournamentOptions .= "</ul></div></div>";
 			
 		}
 		

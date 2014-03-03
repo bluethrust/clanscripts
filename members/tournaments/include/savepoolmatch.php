@@ -47,7 +47,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->objTeam->
 	$tmemberID = $tournamentInfo['member_id'];
 
 
-	if(($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1") && $poolInfo['tournament_id'] == $teamInfo['tournament_id'] && $poolTeamInfo['tournament_id'] == $teamInfo['tournament_id']) {
+	if(($memberInfo['member_id'] == $tmemberID || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) && $poolInfo['tournament_id'] == $teamInfo['tournament_id'] && $poolTeamInfo['tournament_id'] == $teamInfo['tournament_id']) {
 		
 		
 		// Check Match Score

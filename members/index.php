@@ -106,7 +106,7 @@ if($checkMember) {
 			if(count($arrConsoleOptions)) {
 				
 				
-				
+				$blnShowCategoryList = false;
 				$hideoptions = "";
 				if($counter > 0) {
 					$hideoptions = "style='display: none'";
@@ -134,7 +134,8 @@ if($checkMember) {
 					<script type='text/javascript'>
 						selectCategory('".$counter."');
 					</script>
-				";
+					";
+					$blnShowCategoryList = true;
 				}
 				
 				
@@ -224,10 +225,18 @@ if($checkMember) {
 			$dispBreadCrumb
 		</div>
 			<div id='myAccountPageCategories' style='float: left; text-align: left; width: 35%; padding: 10px 0px 0px 40px'>
-				$dispConsoleCategories
+				".$dispConsoleCategories."
 			</div>
 			<div id='myAccountPageOptions' style='float: right; text-align: left; width: 40%; padding: 10px 40px 0px 10px'>
-				$dispConsoleOptions
+				<div id='myAccountPageReturn' style='display: none' data-goback='yes'>
+					Return to Category List
+				</div>
+				
+				".$dispConsoleOptions."
+				
+				<div id='myAccountPageReturn' style='display: none' data-goback='yes'>
+					Return to Category List
+				</div>
 			</div>
 		";
 		
@@ -243,6 +252,18 @@ if($LOGIN_FAIL) {
 die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."login.php';</script>");
 }
 
+if($blnShowCategoryList || true) {
+
+	echo "
+		<script type='text/javascript'>
+			$(document).ready(function() {
+				$('#myAccountPageCategories').removeClass('hideConsoleCategories').addClass('showConsoleCategories');
+				$('#myAccountPageOptions').removeClass('showConsoleOptions').addClass('hideConsoleOptions');
+			});
+		</script>
+	";
+	
+}
 
 include("../themes/".$THEME."/_footer.php");
 

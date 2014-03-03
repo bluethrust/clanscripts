@@ -153,6 +153,34 @@ echo "
 		
 	</div>
 </div>
+
+<div class='formDiv' style='margin-top: 30px'>
+	<div class='dottedLine main' style='padding-bottom: 3px'><b>Unassigned Players:</b></div>
+	<p style='padding: 5px; margin: 0px'>
+		Below is a list of players who have joined the tournament but have not yet been added to a team.<br><br>
+		With selected: <select id='moveUnassignedPlayers' class='textBox'><option value='add'>Add to Selected Team</option><option value='delete'>Remove from Tournament</option></select> <input type='button' id='btnUnassignedPlayers' class='submitButton' value='GO'>
+	</p>
+	
+	<table class='formTable' style='border-spacing: 0px'>
+		<tr>
+			<td class='main' style='width: 5%' align='center'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' width='18' height='18' id='checkAllX' style='cursor: pointer'></td>
+			<td class='formTitle'>Player Name:</td>
+		</tr>
+	</table>
+	<div class='loadingSpiral' id='loadingSpiralUnassignedList'>
+		<p align='center'>
+			<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif'><br>Loading
+		</p>
+	</div>
+	<div id='manageTournamentTeamsUnassignedPlayers'>
+	";
+	define("SHOW_UNASSIGNEDPLAYERS", true);
+	include("include/unassignedplayers.php");
+	echo "
+	</div>
+	
+</div>
+
 <div id='errorMessage' style='display: none' class='main'><p align='center'>You can not add more players than the maximum players of <b>".$maxPlayers."</b>!<br><br>You can increase this amount from the <a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=EditTournamentInfo'>Edit Tournament Info</a> page.</p></div>
 
 
@@ -180,6 +208,60 @@ echo "
 <script type='text/javascript'>
 
 	$(document).ready(function() {
+	
+		var intCheckAll = 0;
+		
+		$('#checkAllX').click(function() {
+
+
+			if(intCheckAll == 0) {
+				$('input[data-unassignedplayer]').attr('checked', true);
+				intCheckAll = 1;
+			}
+			else {
+				$('input[data-unassignedplayer]').attr('checked', false);
+				intCheckAll = 0;
+			}
+			
+
+		});
+	
+		
+		$('#btnUnassignedPlayers').click(function() {
+		
+			var arrPlayerID = [];
+			
+			$('input[data-unassignedplayer]:checked').each(function() {
+				arrPlayerID.push(this.value);			
+				
+			});
+			
+			arrPlayerID = JSON.stringify(arrPlayerID);
+			var postAction;
+			
+			if($('#moveUnassignedPlayers').val() == \"add\") {
+				postAction = \"add\";
+			}
+			else if($('#moveUnassignedPlayers').val() == \"delete\") {
+				postAction = \"remove\";
+			}
+
+			$('#loadingSpiralUnassignedList').show();
+			$('#manageTournamentTeamsUnassignedPlayers').hide();
+			$.post('".$MAIN_ROOT."members/tournaments/include/unassignedplayers.php', { playerList: arrPlayerID, action: postAction, teamID: $('#selectteam').val(), tournamentID: '".$tID."' }, function(data) {
+
+				$('#manageTournamentTeamsUnassignedPlayers').html(data);
+			
+				if(postAction == \"add\") {
+					$('#selectteam').change();
+				}
+				
+				$('#manageTournamentTeamsUnassignedPlayers').fadeIn(250);
+				$('#loadingSpiralUnassignedList').hide();
+			});
+		
+			
+		});
 	
 		$('#addPlayersButton').click(function() {
 	
@@ -334,6 +416,19 @@ echo "
 				$('#playerListDiv').html(data);
 				$('#playerListDiv').fadeIn(250);
 				
+				
+				$('#loadingSpiralUnassignedList').show();
+				$('#manageTournamentTeamsUnassignedPlayers').hide();
+				
+				arrPlayerID = JSON.stringify(intPlayerID);
+				
+				$.post('".$MAIN_ROOT."members/tournaments/include/unassignedplayers.php', { playerList: arrPlayerID, teamID: $('#selectteam').val(), tournamentID: '".$tID."' }, function(data) {
+					$('#manageTournamentTeamsUnassignedPlayers').html(data);
+			
+					
+					$('#manageTournamentTeamsUnassignedPlayers').fadeIn(250);
+					$('#loadingSpiralUnassignedList').hide();
+				});
 				
 			});
 		

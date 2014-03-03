@@ -44,7 +44,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 		$dispTeamOrPlayer = "Team";
 	}
 	
-	if(($memberInfo['member_id'] == $tournamentInfo['member_id'] || $memberInfo['rank_id'] == "1") && $tournamentInfo['seedtype'] == 3) {
+	if(($memberInfo['member_id'] == $tournamentInfo['member_id'] || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) && $tournamentInfo['seedtype'] == 3) {
 	
 		echo "
 		

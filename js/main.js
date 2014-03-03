@@ -12,6 +12,62 @@
 
 var intShowToolTip = 0;
 
+
+function displayClock(intOffset, intHours, intMinutes, strDivID) {
+
+	var dateObj = new Date();
+	var intSeconds = dateObj.getSeconds();
+	var strAMPM = "AM";
+	var intSaveHours = intHours;
+	
+	if(intHours > 12) {
+		intHours = intHours-12;
+		strAMPM = "PM";
+	}
+	
+	if(intHours == 0) {
+		intHours = 12;
+	}
+	
+	dispMinutes = intMinutes;
+	if(intMinutes < 10) {
+		dispMinutes = "0"+intMinutes;
+	}
+	
+	strJQDivID = "#"+strDivID;
+	
+      
+	var strFullTime = intHours+":"+dispMinutes+" "+strAMPM;
+
+	if(!isNaN(intOffset)) {
+        currentTimestamp = dateObj.getTime()+(dateObj.getTimezoneOffset()*60*1000);
+
+	    dateObj.setTime(currentTimestamp+(intOffset*1000));
+	
+        var fullDate = (dateObj.getMonth()+1)+"/"+dateObj.getDate();      
+
+        strFullTime = fullDate+" "+strFullTime;
+	}
+
+
+	$(strJQDivID).html(strFullTime);
+	
+	
+	if(intSeconds == 59) {
+		intMinutes = intMinutes+1;
+		if(intMinutes == 60) {
+			intHours = intHours+1;
+			intMinutes = 0;
+			if(intHours > 24) {
+				intHours = 1;
+			}
+		}
+	}
+	
+	setTimeout(function(){ displayClock(intOffset,intSaveHours,intMinutes,strDivID) }, 1000);
+}
+
+/*
 function displayClock(intHours, intMinutes, strDivID) {
 
 	var dateObj = new Date();
@@ -52,7 +108,20 @@ function displayClock(intHours, intMinutes, strDivID) {
 	
 	setTimeout(function(){ displayClock(intSaveHours,intMinutes,strDivID) }, 1000);
 }
+*/
 
+function displayDate(intOffset, strDivID) {
+	
+	var dateObj = new Date();
+	var testTime = dateObj.getTime();
+	
+	dateObj.setTime(testTime+(intOffset*1000));
+	
+	var fullDate = (dateObj.getMonth()+1)+"/"+dateObj.getDate();
+	
+	setTimeout(function(){ displayClock(intOffset, strDivID) }, 1000);
+	
+}
 
 
 function popupDialog(strTitle, strLink, strDivId) {
@@ -185,5 +254,3 @@ function deleteShoutbox(intPostID, strPostLink, strUpdateDiv) {
 	});
 
 }
-
-

@@ -38,7 +38,7 @@ if(!isset($member) || substr($_SERVER['PHP_SELF'], -11) != "console.php") {
 else {
 	$memberInfo = $member->get_info();
 	$consoleObj->select($_GET['cID']);
-	if(!$member->hasAccess($consoleObj) && !$boardObj->memberIsMod($memberInfo) && $memberInfo['member_id'] != $postMemberID) {
+	if(!$member->hasAccess($consoleObj) && !$boardObj->memberIsMod($memberInfo['member_id']) && $memberInfo['member_id'] != $postMemberID) {
 		echo "
 			<script type='text/javascript'>
 				window.location = '".$MAIN_ROOT."members/console.php?cID=".$_GET['cID']."&noaccess=1'
@@ -56,7 +56,7 @@ $cID = $_GET['cID'];
 
 $arrActions = array("sticky", "lock", "delete");
 
-if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array($_GET['action'], $arrActions)) {
+if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID']) && in_array($_GET['action'], $arrActions) && ($boardObj->memberIsMod($memberInfo['member_id']) || $member->hasAccess($consoleObj))) {
 	
 	$topicInfo = $boardObj->objTopic->get_info();
 	$boardObj->objPost->select($topicInfo['forumpost_id']);

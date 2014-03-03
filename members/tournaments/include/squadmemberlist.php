@@ -38,7 +38,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $squadObj->select($_POST[
 
 	$memberInfo = $member->get_info_filtered();
 	$teamInfo = $tournamentObj->objTeam->get_info_filtered();
-	if($teamInfo['member_id'] == $memberInfo['member_id'] || $memberInfo['rank_id'] == 1) {
+	$tournamentObj->select($teamInfo['tournament_id']);
+	$tournamentInfo = $tournamentObj->get_info();
+	if($tournamentInfo['member_id'] == $memberInfo['member_id'] || $memberInfo['rank_id'] == 1 || $tournamentObj->isManager($memberInfo['member_id'])) {
 		
 		$arrSquadMembers = $squadObj->getMemberListSorted();
 	

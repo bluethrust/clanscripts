@@ -25,6 +25,7 @@ class Tournament extends Basic {
 	public $objMatch;
 	public $objTournamentPool;
 	public $objPoolMatch;
+	public $objManager;
 	protected $objMember;
 	protected $arrTeamIDs;
 	protected $arrRoundsPerTeams;
@@ -44,7 +45,7 @@ class Tournament extends Basic {
 		$this->objTournamentPool = new TournamentPool($sqlConnection);
 		$this->objPoolMatch = new Basic($sqlConnection, "tournamentpools_teams", "poolteam_id");
 		$this->objMember = new Member($sqlConnection);
-		
+		$this->objManager = new Basic($sqlConnection, "tournament_managers", "tournamentmanager_id");
 		
 		$this->arrRoundsPerTeams = array(
 				2 => 4, 
@@ -789,7 +790,7 @@ class Tournament extends Basic {
 	
 	
 	public function connect($connectURL, $connectPass) {
-	
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $connectURL);
 
@@ -812,8 +813,71 @@ class Tournament extends Basic {
 	}
 
 	
+	public function getManagers() {
+
+		$arrReturn = array();
+		if($this->intTableKeyValue != "") {
+			
+			$query = "SELECT ".$this->MySQL->get_tablePrefix()."tournament_managers.tournamentmanager_id, ".$this->MySQL->get_tablePrefix()."tournament_managers.member_id ".
+						"FROM ".$this->MySQL->get_tablePrefix()."tournament_managers, ".
+						$this->MySQL->get_tablePrefix()."members, ".$this->MySQL->get_tablePrefix()."ranks ".
+						"WHERE ".$this->MySQL->get_tablePrefix()."tournament_managers.member_id = ".$this->MySQL->get_tablePrefix()."members.member_id ".
+						"AND ".$this->MySQL->get_tablePrefix()."ranks.rank_id = ".$this->MySQL->get_tablePrefix()."members.rank_id ".
+						"AND ".$this->MySQL->get_tablePrefix()."tournament_managers.tournament_id = '".$this->intTableKeyValue."' ".
+						"ORDER BY ".$this->MySQL->get_tablePrefix()."ranks.ordernum DESC";
+			
+			//$result = $this->MySQL->query("SELECT ".$this->MySQL->get_tablePrefix()."tournament_managers.member_id FROM ".$this->MySQL->get_tablePrefix()."tournament_managers, ".$this->MySQL->get_tablePrefix()."members WHERE ".$this->MySQL->get_tablePrefix()."tournament_managers.member_id = ".$this->MySQL->get_tablePrefix()."members.member_id AND tournament_id = '".$this->intTableKeyValue."' ORDER BY ".$this->MySQL->get_tablePrefix()."members.username");	
+			$result = $this->MySQL->query($query);
+			while($row = $result->fetch_assoc()) {
+				$arrReturn[$row['tournamentmanager_id']] = $row['member_id'];		
+			}
+			
+		}
+		
+		return $arrReturn;
+	}
 	
+	public function addManager($mID) {
+		global $MAIN_ROOT;
+		$returnVal = false;
+		if($this->intTableKeyValue != "" && $this->objMember->select($mID) && $this->objManager->addNew(array("member_id", "tournament_id"), array($mID, $this->intTableKeyValue))) {
+			
+			$returnVal = true;
+			$this->objMember->postNotification("You have been added as a manager on the tournament: <a href='".$MAIN_ROOT."tournaments/view.php?tID=".$this->intTableKeyValue."'>".filterText($this->arrObjInfo['name'])."</a>.");
+			
+		}
 	
+		return $returnVal;
+	}
+	
+	public function deleteManager($mID) {
+		global $MAIN_ROOT;
+		$returnVal = false;
+		if($this->intTableKeyValue != "" && $this->objManager->select($mID) && $this->objManager->get_info("tournament_id") == $this->intTableKeyValue && $this->objManager->delete()) {
+			$returnVal = true;
+			
+			if($this->objMember->select($this->objManager->get_info("member_id"))) {
+				$this->objMember->postNotification("You have been removed as a manager on the tournament: <a href='".$MAIN_ROOT."tournaments/view.php?tID=".$this->intTableKeyValue."'>".filterText($this->arrObjInfo['name'])."</a>.");
+			}
+		
+		}
+		
+		return $returnVal;
+	}
+	
+	public function isManager($mID) {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "" && is_numeric($mID)) {
+			
+			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."tournament_managers WHERE tournament_id = '".$this->intTableKeyValue."' AND member_id = '".$mID."'");
+			if($result->num_rows > 0) {
+				$returnVal = true;	
+			}
+		}
+		
+		return $returnVal;
+	}
 }
 
 

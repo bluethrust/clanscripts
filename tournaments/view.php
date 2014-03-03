@@ -88,8 +88,31 @@ foreach($arrRounds as $roundNum) {
 
 $member->select($tournamentInfo['member_id']);
 $dispManager = $member->getMemberLink();
+$pluralManagers = "";
+$arrManagers = $tournamentObj->getManagers();
+foreach($arrManagers as $tMemberID) {
+	if($member->select($tMemberID)) {
+		$dispManager .= "<br>".$member->getMemberLink();
+		$pluralManagers = "s";
+	}
+}
 
-$dispStartDate = date("M j, Y g:i A", $tournamentInfo['startdate']);
+$dateTimeObj = new DateTime();
+$dateTimeObj->setTimestamp($tournamentInfo['startdate']);
+$includeTimezone = "";
+$dispTimezone = "";
+
+if($tournamentInfo['timezone'] != "") { 
+	$timeZoneObj = new DateTimeZone($tournamentInfo['timezone']);
+	$dateTimeObj->setTimezone($timeZoneObj);
+	$includeTimezone = " T"; 
+	$dispOffset = ((($timeZoneObj->getOffset($dateTimeObj))/60)/60);
+	$dispSign = ($dispOffset < 0) ? "" : "+";
+	
+	$dispTimezone = "<br>".str_replace("_", " ", $tournamentInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
+}
+
+$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone).$dispTimezone;
 
 if($tournamentInfo['startdate'] < time() && $tournamentObj->getTournamentWinner() == 0) {
 	$dispStatus = "<span class='successFont'>Started</span>";	
@@ -156,7 +179,7 @@ echo "
 				<p class='tinyFont'>
 					<b>Tournament Name:</b><br>
 					".$tournamentInfo['name']."<br><br>
-					<b>Manager:</b><br>
+					<b>Manager".$pluralManagers.":</b><br>
 					".$dispManager."<br><br>
 					<b>Start Date:</b><br>
 					".$dispStartDate."<br><br>

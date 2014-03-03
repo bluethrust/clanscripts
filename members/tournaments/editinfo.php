@@ -50,6 +50,7 @@ include_once("../../classes/game.php");
 
 $gameObj = new Game($mysqli);
 
+$arrTimezones = DateTimeZone::listIdentifiers();
 
 if($_POST['submit']) {
 
@@ -81,6 +82,12 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start time.<br>";
 	}
 
+	// Check Timezone
+	
+	if(!in_array($_POST['startimezone'], $arrTimezones)) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid timezone.<br>";
+	}
 
 	// Format Date
 	$formattedDate = "";
@@ -161,8 +168,8 @@ if($_POST['submit']) {
 
 
 	if($countErrors == 0) {
-		$arrColumns = array("gamesplayed_id", "name", "startdate", "eliminations", "playersperteam", "maxteams", "description", "requirereplay", "access");
-		$arrValues = array($_POST['game'], $_POST['tournamentname'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], $_POST['requirereplay'], $_POST['tournamentaccess']);
+		$arrColumns = array("gamesplayed_id", "name", "startdate", "eliminations", "playersperteam", "maxteams", "description", "requirereplay", "access", "timezone");
+		$arrValues = array($_POST['game'], $_POST['tournamentname'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], $_POST['requirereplay'], $_POST['tournamentaccess'], $_POST['startimezone']);
 		
 		if($_POST['tournamentpassword'] != "") {
 			$arrColumns[] = "password";
@@ -248,6 +255,18 @@ if(!$_POST['submit']) {
 		";
 	}
 
+	foreach($arrTimezones as $timeZone) {
+		
+		$tz = new DateTimeZone($timeZone);
+		$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
+		$dispSign = ($dispOffset < 0) ? "" : "+";
+
+		$dispSelected = ($tournamentInfo['timezone'] == $timeZone) ? " selected" : "";
+		
+		$timezoneoptions .= "<option value='".$timeZone."'".$dispSelected.">".str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")</option>";
+	
+	}
+	
 	echo "
 		Use the form below to edit tournament info.
 			<table class='formTable'>
@@ -314,6 +333,9 @@ if(!$_POST['submit']) {
 							<select name='startampm' class='textBox'>
 								<option value='AM'>AM</option><option value='PM'".$selectPM.">PM</option>
 							</select>
+							<select name='startimezone' class='textBox'>
+								".$timezoneoptions."
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -329,7 +351,7 @@ if(!$_POST['submit']) {
 					<tr>
 						<td class='formLabel' valign='top'>Extra Info:</td>
 						<td class='main'>
-							<textarea class='textbox' rows='5' cols='35' name='extrainfo'>".$tournamentInfo['description']."</textarea>
+							<textarea class='textBox' rows='5' cols='35' name='extrainfo'>".$tournamentInfo['description']."</textarea>
 						</td>
 					</tr>
 					<tr>
@@ -392,6 +414,8 @@ if(!$_POST['submit']) {
 	
 	echo "
 		</select>
+		
+		
 						</td>
 					</tr>
 					<tr>

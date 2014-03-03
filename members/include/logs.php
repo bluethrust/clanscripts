@@ -93,12 +93,12 @@ echo "
 	
 		<div style='float: left'>
 			<p class='main' style='padding-left: 10px'>
-				Display: <select id='showselect' class='textBox'>".$showoptions."</select> <input type='button' id='showselectButton' class='submitButton' style='width: 30px' value='GO'>
+				Display: <select id='showselect' class='textBox'>".$showoptions."</select> <input type='button' id='showselectButton' class='submitButton' value='GO'>
 			</p>
 		</div>
 		<div style='float: right'>
 			<p class='main' align='right' style='padding-right: 10px'>
-				<b>Page:</b> <select id='pageselect' class='textBox'>".$pageoptions."</select> <input type='button' id='pageselectButton' class='submitButton' style='width: 30px' value='GO'> &nbsp;&nbsp;&nbsp; ".$dispLinks." 
+				<b>Page:</b> <select id='pageselect' class='textBox'>".$pageoptions."</select> <input type='button' id='pageselectButton' class='submitButton' value='GO'> &nbsp;&nbsp;&nbsp; ".$dispLinks." 
 			</p>
 		</div>
 		

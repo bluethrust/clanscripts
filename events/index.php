@@ -115,12 +115,22 @@ echo "
 					
 					$objMember->select($eventInfo['member_id']);
 					
+					$dateTimeObj = new DateTime();
+					$dateTimeObj->setTimestamp($eventInfo['startdate']);
+					$includeTimezone = "";
+					
+					if($eventInfo['timezone'] != "") { 
+						$dateTimeObj->setTimezone(new DateTimeZone($eventInfo['timezone']));
+						$includeTimezone = " T"; 
+					}
+					
+					$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone);
 					
 					echo "
 					<tr>
 						<td class='main".$addCSS."' style='height: 30px; padding: 3px'><a href='info.php?eID=".$eventInfo['event_id']."'>".$eventInfo['title']."</a></td>
 						<td class='main".$addCSS."' style='height: 30px; padding: 3px' align='center'>".$objMember->getMemberLink()."</td>
-						<td class='main".$addCSS."' style='height: 30px; padding: 3px' align='center'>".date("M j, Y - g:i A T", $eventInfo['startdate'])."</td>
+						<td class='main".$addCSS."' style='height: 30px; padding: 3px' align='center'>".$dispStartDate."</td>
 					</tr>
 					
 					";

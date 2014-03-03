@@ -95,7 +95,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 	$tournamentInfo = $tournamentObj->get_info_filtered();
 	$memberInfo = $member->get_info_filtered();
 	
-	if($memberInfo['member_id'] == $tournamentInfo['member_id'] || $memberInfo['rank_id'] == "1") {
+	if($memberInfo['member_id'] == $tournamentInfo['member_id'] || $memberInfo['rank_id'] == "1" || $tournamentObj->isManager($memberInfo['member_id'])) {
 	
 	
 		switch($pID) {
@@ -127,6 +127,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 				break;
 			case "edittournamentinfo":
 				include("editinfo.php");
+				break;
+			case "setmanagers":
+				include("setmanagers.php");
 				break;
 			default:
 				echo "

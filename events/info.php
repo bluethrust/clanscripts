@@ -223,6 +223,23 @@ echo "
 		$dispEventPositions = "<i>None</i>";	
 	}
 	
+	$dateTimeObj = new DateTime();
+	$dateTimeObj->setTimestamp($eventInfo['startdate']);
+	$includeTimezone = "";
+	$dispTimezone = "";
+	
+	if($eventInfo['timezone'] != "") { 
+		$timeZoneObj = new DateTimeZone($eventInfo['timezone']);
+		$dateTimeObj->setTimezone($timeZoneObj);
+		$includeTimezone = " T"; 
+		$dispOffset = ((($timeZoneObj->getOffset($dateTimeObj))/60)/60);
+		$dispSign = ($dispOffset < 0) ? "" : "+";
+		
+		$dispTimezone = "<br>".str_replace("_", " ", $eventInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
+	}
+	
+	$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone).$dispTimezone;
+	
 echo "
 			</table>
 			</div>
@@ -242,8 +259,8 @@ echo "
 						<td class='main' style='padding-left: 5px; width: 70%' valign='top'>".$dispCreatorLink."</td>
 					</tr>
 					<tr>
-						<td class='main alternateBGColor' style='width: 30%'><b>When:</b></td>
-						<td class='main' style='padding-left: 5px; width: 70%'>".date("D F j, Y - g:i A T", $eventInfo['startdate'])."</td>
+						<td class='main alternateBGColor' style='width: 30%' valign='top'><b>When:</b></td>
+						<td class='main' style='padding-left: 5px; width: 70%'>".$dispStartDate."</td>
 					</tr>
 					<tr>
 						<td class='main alternateBGColor' style='width: 30%' valign='top'><b>Location:</b></td>
