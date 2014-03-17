@@ -46,14 +46,22 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 
 	foreach($arrPMIDS as $pmID) {
 	
+		$pmMID = "";
+		if(strpos($pmID, "_") !== false) {
+			$tempPMID = substr($pmID, 0, strpos($pmID, "_"));
+			$pmMID = str_replace($tempPMID."_", "", $pmID);
+			$pmID = $tempPMID;
+		}
+		
 		if($pmObj->select($pmID)) {
 			$tempPMInfo = $pmObj->get_info_filtered();
 			$arrRecipients = $pmObj->getRecipients();
 			
-			print_r($tempPMInfo);
 			
-			if($tempPMInfo['sender_id']  == $memberInfo['member_id']) {
+			
+			if($tempPMInfo['sender_id']  == $memberInfo['member_id'] && $pmMID == "") {
 				// Sender
+				echo "hi";
 				$pmObj->update(array("senderfolder_id"), array($_POST['newFolder']));
 			}
 			elseif($tempPMInfo['receiver_id'] == $memberInfo['member_id']) {
@@ -62,11 +70,13 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			}
 			elseif(in_array($memberInfo['member_id'], $arrRecipients)) {
 				// Receiver - Multi Member PM
+				
 				$tempKey = array_search($memberInfo['member_id'], $arrRecipients);
+
 				$pmObj->multiMemPMObj->select($tempKey);
 				
-				$pmObj->multiMemObj->update(array("pmfolder_id"), array($_POST['newFolder']));	
-			}		
+				$pmObj->multiMemPMObj->update(array("pmfolder_id"), array($_POST['newFolder']));	
+			}	
 			
 		}
 	

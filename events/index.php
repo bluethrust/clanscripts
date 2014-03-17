@@ -25,20 +25,6 @@ $consoleObj = new ConsoleOption($mysqli);
 $eventObj = new Event($mysqli);
 $member = new Member($mysqli);
 
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
-
 
 // Start Page
 $PAGE_NAME = "Events - ";
@@ -128,9 +114,9 @@ echo "
 					
 					echo "
 					<tr>
-						<td class='main".$addCSS."' style='height: 30px; padding: 3px'><a href='info.php?eID=".$eventInfo['event_id']."'>".$eventInfo['title']."</a></td>
-						<td class='main".$addCSS."' style='height: 30px; padding: 3px' align='center'>".$objMember->getMemberLink()."</td>
-						<td class='main".$addCSS."' style='height: 30px; padding: 3px' align='center'>".$dispStartDate."</td>
+						<td class='main".$addCSS."' style='padding: 3px'><a href='info.php?eID=".$eventInfo['event_id']."'>".$eventInfo['title']."</a></td>
+						<td class='main".$addCSS."' style='padding: 3px' align='center'>".$objMember->getMemberLink()."</td>
+						<td class='main".$addCSS."' style='padding: 3px' align='center'>".$dispStartDate."</td>
 					</tr>
 					
 					";

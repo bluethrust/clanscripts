@@ -96,64 +96,12 @@ if($_POST['submit']) {
 	
 	// Check Display Order
 	
-	if($_POST['beforeafter'] != "before" AND $_POST['beforeafter'] != "after") {
+	$intGameOrderNum = $gameObj->validateOrder($_POST['gameorder'], $_POST['beforeafter'], true, $gameObj->get_info("ordernum"));
+	
+	
+	if($intGameOrderNum === false) {
 		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> The selected an invalid display order. (before/after)<br>";
-	}
-	elseif($_POST['gameorder'] == "first") {
-	
-		// Check if this is really the first game being added
-		$result = $mysqli->query("SELECT * FROM ".$dbprefix."gamesplayed ORDER BY ordernum DESC");
-		$num_rows = $result->num_rows;
-	
-		if($num_rows > 0) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> The selected an invalid display order.<br>";
-		}
-		else {
-			$intGameOrderNum = 1;
-		}
-	
-	}
-	elseif($_POST['gameorder'] != "first") {
-		
-		// Check if its a real game selected
-		if(!$gameObj->select($_POST['gameorder'])) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> The selected an invalid display order. (game position)<br>";
-		}
-		else {
-			
-			
-			if($_POST['beforeafter'] == "before") {
-				$intTempGameOrder = $gameObj->get_info("ordernum")+1;
-			}
-			else {
-				$intTempGameOrder = $gameObj->get_info("ordernum")-1;
-			}
-			
-			
-			$resortOrder = false;
-			// Only update the medal order if its been changed
-			if($intTempGameOrder != $gameInfo['ordernum']) {
-				// Game was selected make some room for the new game and get a new ordernum
-				$intGameOrderNum = $gameObj->makeRoom($_POST['beforeafter']);
-				$resortOrder = true;
-				if(!is_numeric($intGameOrderNum)) {
-					$countErrors++;
-					$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> The selected an invalid display order. (game position)<br>";
-				}
-			}
-			else {
-				$intGameOrderNum = $gameInfo['ordernum'];	
-			}
-			
-	
-		}
-		
-		
-		
-	
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid category order.<br>";
 	}
 	
 	
@@ -558,7 +506,16 @@ if(!$_POST['submit']) {
 								var intCalcOp = $('#gpCalcOp').val();
 								var intFirstStatID = $('#gpFirstStatID').val();
 								var intSecondStatID = $('#gpSecondStatID').val();
-								var intRounding = $('#gpRounding').val();
+								var intRounding;
+								
+								if(strStatType == \"inputnum\") {
+									intRounding = $('#gpRoundingInputNumeric').val();
+								}
+								else {
+									intRounding = $('#gpRounding').val();
+								}
+								
+							
 						
 								var intHideStat = 0;
 								if($('#gpHideStat').is(':checked')) {
@@ -640,8 +597,16 @@ if(!$_POST['submit']) {
 							var intCalcOp = $('#gpCalcOp').val();
 							var intFirstStatID = $('#gpFirstStatID').val();
 							var intSecondStatID = $('#gpSecondStatID').val();
-							var intRounding = $('#gpRounding').val();
+							var intRounding;
 					
+							if(strStatType == \"inputnum\") {
+								intRounding = $('#gpRoundingInputNumeric').val();
+							}
+							else {
+								intRounding = $('#gpRounding').val();
+							}
+							
+							
 							var intHideStat = 0;
 							if($('#gpHideStat').is(':checked')) {
 								intHideStat = 1;

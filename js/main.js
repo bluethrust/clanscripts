@@ -12,7 +12,7 @@
 
 var intShowToolTip = 0;
 
-
+/*
 function displayClock(intOffset, intHours, intMinutes, strDivID) {
 
 	var dateObj = new Date();
@@ -67,7 +67,7 @@ function displayClock(intOffset, intHours, intMinutes, strDivID) {
 	setTimeout(function(){ displayClock(intOffset,intSaveHours,intMinutes,strDivID) }, 1000);
 }
 
-/*
+*/
 function displayClock(intHours, intMinutes, strDivID) {
 
 	var dateObj = new Date();
@@ -108,7 +108,7 @@ function displayClock(intHours, intMinutes, strDivID) {
 	
 	setTimeout(function(){ displayClock(intSaveHours,intMinutes,strDivID) }, 1000);
 }
-*/
+
 
 function displayDate(intOffset, strDivID) {
 	
@@ -253,4 +253,16 @@ function deleteShoutbox(intPostID, strPostLink, strUpdateDiv) {
 		
 	});
 
+}
+
+function embedPoll(MAINROOT, embedDivID, pollID) {
+
+	$(document).ready(function() {
+		
+		$.post(MAINROOT+'polls/embed.php', { pID: pollID }, function(data) {
+			$('#'+embedDivID).html(data);
+		});
+		
+	});
+	
 }

@@ -43,6 +43,7 @@ $('#breadCrumb').html(\"<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROO
 </script>
 ";
 
+$arrTimezones = DateTimeZone::listIdentifiers();
 $eventInfo = $eventObj->get_info_filtered();
 if($_POST['submit']) {
 	// Check Title
@@ -225,6 +226,22 @@ if(!$_POST['submit']) {
 		$dispInvitedOnlySelected = " selected";	
 	}
 	
+	
+	foreach($arrTimezones as $timeZone) {
+		
+		$tz = new DateTimeZone($timeZone);
+		$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
+		$dispSign = ($dispOffset < 0) ? "" : "+";
+		
+		$dispSelected = "";
+		if($timeZone == $eventInfo['timezone']) {
+			$dispSelected = " selected";	
+		}
+		
+		$timezoneoptions .= "<option value='".$timeZone."'".$dispSelected.">".str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")</option>";
+	}
+	
+	
 	echo "
 	
 		<form action='".$MAIN_ROOT."members/events/manage.php?eID=".$eventInfo['event_id']."&pID=EditInfo' method='post'>
@@ -254,7 +271,7 @@ if(!$_POST['submit']) {
 				</tr>
 				<tr>
 					<td class='formLabel'>Start Time</td>
-					<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'".$dispPMSelected.">PM</option></select></td>
+					<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'".$dispPMSelected.">PM</option></select> <select name='timezone' class='textBox'>".$timezoneoptions."</select></td>
 				</tr>
 				<tr>
 					<td class='formLabel'>Location:</td>

@@ -152,6 +152,7 @@ echo "
 		<input type='button' id='addPlayersButton' class='submitButton' value='Add Players' style='width: 100px; margin-top: 3px'>	
 		
 	</div>
+	<div style='clear: both'></div>
 </div>
 
 <div class='formDiv' style='margin-top: 30px'>

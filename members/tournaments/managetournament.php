@@ -109,7 +109,15 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 				include("managepools.php");
 				break;
 			case "deletetournament":
-				include("deletetournament.php");
+				if($memberInfo['member_id'] == $tournamentInfo['member_id']) {
+					include("deletetournament.php");
+				}
+				else {
+					echo "
+						<script type='text/javascript'>window.location = '".$MAIN_ROOT."members/console.php?cID=".$cID."';</script>
+					";
+				}
+				
 				break;
 			case "startmatches";
 				include("startmatches.php");
@@ -129,7 +137,14 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $tournamentObj->select($t
 				include("editinfo.php");
 				break;
 			case "setmanagers":
-				include("setmanagers.php");
+				if($memberInfo['member_id'] == $tournamentInfo['member_id']) {
+					include("setmanagers.php");
+				}
+				else {
+					echo "
+						<script type='text/javascript'>window.location = '".$MAIN_ROOT."members/console.php?cID=".$cID."';</script>
+					";
+				}
 				break;
 			default:
 				echo "

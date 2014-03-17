@@ -46,6 +46,7 @@ $('#breadCrumb').html(\"<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROO
 
 
 $customPageHTML = addslashes($customPageObj->get_info("pageinfo"));
+$addMenuItemCID = $consoleObj->findConsoleIDByName("Add Menu Item");
 
 echo "
 	<form action='console.php?cID=".$cID."' method='post'>
@@ -54,7 +55,7 @@ echo "
 				<strong>Unable to edit custom page because the following errors occurred:</strong><br><br>
 				<span id='errorInfo'></span>
 			</div>
-			Use the form below to edit the selected custom page.
+			Use the form below to edit the selected custom page.  In order to display a custom page in the menu, go to the <a href='".$MAIN_ROOT."members/console.php?cID=".$addMenuItemCID."'>Add Menu Item</a> page.
 			<br><br>
 			<table class='formTable'>
 				<tr>

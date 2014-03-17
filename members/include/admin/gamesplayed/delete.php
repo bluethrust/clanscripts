@@ -40,6 +40,9 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		
 		if($_POST['confirm'] == 1) {
 			$gameObj->delete();
+			
+			//$gameObj->resortOrder();
+			
 			include("main.php");
 		}
 		else {

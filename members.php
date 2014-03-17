@@ -97,7 +97,7 @@ $gameObj = new Game($mysqli);
 	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Members
 </div>
 
-<div id='tiltPhoneImg'><img src='<?php echo $MAIN_ROOT; ?>images/tiltphone.png'><p align='center'>need more space<br>tilt your phone!</p></div>
+<div id='tiltPhoneImg' style='display: none'><img src='<?php echo $MAIN_ROOT; ?>images/tiltphone.png'><p align='center'>need more space<br>tilt your phone!</p></div>
 <table class='formTable' id='membersPageTable'>
 <?php
 $maxDSLIntervals = floor($websiteInfo['maxdsl']/3);

@@ -105,7 +105,7 @@ class ConsoleOption extends BasicSort {
 			$result = $this->MySQL->query("SELECT allowdeny FROM ".$this->get_tablePrefix()."console_members WHERE console_id = '".$this->intTableKeyValue."' AND member_id IN ".$sqlMembers);
 			while($row = $result->fetch_assoc()) {
 				if($row['allowdeny'] == 0) {
-					$addTo += -1;	
+					$addTo += -1;
 				}
 				else {
 					$addTo += 1;

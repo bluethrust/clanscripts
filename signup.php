@@ -294,28 +294,34 @@ if($_POST['submit']) {
 				
 				
 				$memberInfo = $member->get_info();
-				$member->selectAdmin();
-				if($member->get_info("email") != "") {
-				
-					$siteDomain = $_SERVER['SERVER_NAME'];
-					
-					$toEmail = $member->get_info("email");
-					$subjectEmail = $websiteInfo['clanname'].": Member Application Accepted";
-					
-					$messageEmail = "A new member, ".$_POST['newusername'].", has signed up at your website: <a href='http://".$siteDomain.$MAIN_ROOT."'>".$websiteInfo['clanname']."</a>!";
-					
-					$fromEmail = "admin@".$siteDomain;
-					$headersEmail = "MIME-Version: 1.0\r\n";
-					$headersEmail .= "Content-type: text/html; charset=iso-8859-1\r\n";
-					$headersEmail .= "To: Website Admin <".$toEmail.">\r\n";
-					$headersEmail .= "From: ".$websiteInfo['clanname']." <".$fromEmail.">\r\n";
-					
-					mail($toEmail, $subjectEmail, $messageEmail, $headersEmail);
-					
-				}
-
+				//$member->selectAdmin();
 				$intViewMemberAppCID = $consoleObj->findConsoleIDByName("View Member Applications");
-				$member->postNotification("A new member has signed up!  Go to the <a href='".$MAIN_ROOT."members/console.php?cID=".$intViewMemberAppCID."'>View Member Applications</a> page to review the application.");
+				$consoleObj->select($intViewMemberAppCID);
+				$result = $mysqli->query("SELECT member_id FROM ".$dbprefix."members WHERE disabled = '0' AND email != ''");
+				while($row = $result->fetch_assoc()) {
+					$member->select($row['member_id']);
+					if($member->hasAccess($consoleObj)) {
+					
+						$siteDomain = $_SERVER['SERVER_NAME'];
+						
+						$toEmail = $member->get_info("email");
+						$subjectEmail = $websiteInfo['clanname'].": Member Application Accepted";
+						
+						$messageEmail = "A new member, ".$_POST['newusername'].", has signed up at your website: <a href='http://".$siteDomain.$MAIN_ROOT."'>".$websiteInfo['clanname']."</a>!";
+						
+						$fromEmail = "admin@".$siteDomain;
+						$headersEmail = "MIME-Version: 1.0\r\n";
+						$headersEmail .= "Content-type: text/html; charset=iso-8859-1\r\n";
+						$headersEmail .= "To: Website Admin <".$toEmail.">\r\n";
+						$headersEmail .= "From: ".$websiteInfo['clanname']." <".$fromEmail.">\r\n";
+						
+						mail($toEmail, $subjectEmail, $messageEmail, $headersEmail);
+						
+						$member->postNotification("A new member has signed up!  Go to the <a href='".$MAIN_ROOT."members/console.php?cID=".$intViewMemberAppCID."'>View Member Applications</a> page to review the application.");
+						
+					}
+				}
+				
 				$member->select($memberInfo['member_id']);
 				
 				

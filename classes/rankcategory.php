@@ -45,7 +45,7 @@ class RankCategory extends Rank {
 		
 		if($this->intTableKeyValue != "") {
 			
-			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."ranks WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."'");
+			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."ranks WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."' ORDER BY ordernum DESC");
 			while($row = $result->fetch_assoc()) {
 				
 				$arrRanks[] = $row['rank_id'];

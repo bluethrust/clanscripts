@@ -303,7 +303,7 @@ if(!$_POST['submit']) {
 					<tr>
 						<td class='main' colspan='2'>
 							<div class='dottedLine' style='width: 90%; padding-bottom: 3px; margin-top: 20px'><b>Member Access:</b></div>
-							<div style='width: 90%; padding-left: 3px; margin-bottom: 15px'>Use this section to set whether a specific member can or cannot access this board. Clicking the Allow or Deny buttons will not change the page. </div>
+							<div style='width: 90%; padding-left: 3px; margin-bottom: 15px'>Use this section to set whether a specific member can or cannot access this board.</div>
 						</td>
 					</tr>
 					<tr>

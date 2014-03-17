@@ -182,9 +182,12 @@ if(!$_POST['submit']) {
 	if($customFormInfo['specialform'] == "yes") {
 		$postResultsYes = " selected";	
 	}
+	$addMenuItemCID = $consoleObj->findConsoleIDByName("Add Menu Item");
 	
 	echo "
 		Use the form below to edit the selected custom form page.  Remember to hit the save button!
+		<br><br>
+		  In order to display a custom form page in the menu, go to the <a href='".$MAIN_ROOT."members/console.php?cID=".$addMenuItemCID."'>Add Menu Item</a> page.
 		<br><br>
 		<table class='formTable'>
 			<tr>

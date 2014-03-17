@@ -215,9 +215,9 @@ $result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE (newstype = '1' 
 $checkHTMLConsoleObj = new ConsoleOption($mysqli);
 $htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
 $checkHTMLConsoleObj->select($htmlNewsCID);
-
+$checkHTMLAccess = "";
 while($row = $result->fetch_assoc()) {
-	
+	unset($checkHTMLAccess);
 	$newsObj = new News($mysqli);
 	$newsInfo = filterArray($row);
 	
@@ -284,9 +284,10 @@ while($row = $result->fetch_assoc()) {
 
 $numOfNewsPosts = ($websiteInfo['hpnews'] == -1) ? "" : " LIMIT ".$websiteInfo['hpnews'];
 $result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '1' AND hpsticky = '0' ORDER BY dateposted DESC".$numOfNewsPosts);
-
+$checkHTMLAccess = "";
 if($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
+		unset($checkHTMLAccess);
 		$newsObj = new News($mysqli);
 		
 		$newsInfo = filterArray($row);

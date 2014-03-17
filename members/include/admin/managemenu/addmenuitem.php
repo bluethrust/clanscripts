@@ -441,6 +441,7 @@ if(!$_POST['submit']) {
 								<option value='shoutbox'>Shoutbox</option>
 								<option value='forumactivity'>Latest Forum Activity</option>
 								<option value='newestmembers'>Newest Members</option>
+								<option value='poll'>Poll</option>
 								<option value='login'>Default Login</option>
 								<option value='customcode'>Custom Block - Code Editor</option>
 								<option value='customformat'>Custom Block - WYSIWYG Editor</option>

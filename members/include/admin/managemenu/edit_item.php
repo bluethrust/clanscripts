@@ -45,7 +45,7 @@ $('#breadCrumb').html(\"<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROO
 </script>
 ";
 
-$arrItemTypes = array("link"=>"Link", "image"=>"Image", "top-players"=>"Top Players", "login"=>"Default Login", "shoutbox"=>"Shoutbox", "forumurl"=>"Forum Link", "forumactivity"=>"Latest Forum Activity", "newestmembers"=>"Newest Members", "customcode"=>"Custom Block - Code Editor", "customformat"=>"Custom Block - WYSIWYG Editor", "custompage"=>"Custom Page", "customform"=>"Custom Form", "downloads"=>"Download Page");
+$arrItemTypes = array("link"=>"Link", "image"=>"Image", "top-players"=>"Top Players", "login"=>"Default Login", "shoutbox"=>"Shoutbox", "forumurl"=>"Forum Link", "forumactivity"=>"Latest Forum Activity", "newestmembers"=>"Newest Members", "customcode"=>"Custom Block - Code Editor", "customformat"=>"Custom Block - WYSIWYG Editor", "custompage"=>"Custom Page", "customform"=>"Custom Form", "downloads"=>"Download Page", "poll" => "Poll");
 $arrCheckAlign = array("left", "center", "right");
 
 if($_POST['submit']) {
@@ -347,6 +347,10 @@ if($_POST['submit']) {
 					$arrItemValues = array($_POST['downloadpage'], $_POST['downloadpageprefix'], $linkTarget, $_POST['downloadpagealign']);
 					$menuItemObj->objCustomPage->update($arrItemColumns, $arrItemValues);
 					break;
+				case "poll":
+					$menuItemObj->update(array("itemtype_id"), array($_POST['poll']));
+					break;
+					
 			}
 	
 	
@@ -923,6 +927,35 @@ if(!$_POST['submit']) {
 					
 					";
 					
+					break;
+				case "poll":
+					
+					$polloptions = "";
+					$result = $mysqli->query("SELECT * FROM ".$dbprefix."polls ORDER BY dateposted DESC");
+					while($row = $result->fetch_assoc()) {
+						$dispSelected = "";
+						$dispPollQuestion = (strlen($row['question']) > 50) ? substr($row['question'], 0, 50)."..." : $row['question'];
+						if($menuItemInfo['itemtype_id'] == $row['poll_id']) {
+							$dispSelected = " selected";	
+						}
+						$polloptions .= "<option value='".$row['poll_id']."'".$dispSelected.">".filterText($dispPollQuestion)."</option>";
+					}
+					
+					echo "
+						
+							<tr>
+								<td class='main' colspan='2'><br>
+									<b>Poll Options:</b>
+									<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
+								</td>
+							</tr>
+							<tr>
+								<td class='formLabel'>Select Poll:</td>
+								<td class='main'><select name='poll' class='textBox'>".$polloptions."</select></td>
+							</tr>
+						
+					
+					";
 					break;
 				
 			}

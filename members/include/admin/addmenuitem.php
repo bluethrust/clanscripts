@@ -41,7 +41,7 @@ $countErrors = 0;
 
 if($_POST['submit']) {
 	
-	$arrItemTypes = array("link", "image", "top-players", "login", "shoutbox", "forumurl", "forumactivity", "newestmembers", "customcode", "customformat", "custompage", "customform", "downloads");
+	$arrItemTypes = array("link", "image", "top-players", "login", "shoutbox", "forumurl", "forumactivity", "newestmembers", "customcode", "customformat", "custompage", "customform", "downloads", "poll");
 	$arrCheckAlign = array("left", "center", "right");
 	
 	$menuCode = "";
@@ -225,6 +225,12 @@ if($_POST['submit']) {
 		
 	}
 	
+	// Check Poll
+	$pollObj = new Basic($mysqli, "polls", "poll_id");
+	if($_POST['itemtype'] == "poll" && !$pollObj->select($_POST['poll'])) {
+		$countErrors++;
+		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid poll.<br>";
+	}
 	
 	// Standard Checks
 	
@@ -332,6 +338,9 @@ if($_POST['submit']) {
 					$menuItemObj->objCustomPage->addNew($arrItemColumns, $arrItemValues);
 					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomPage->get_info("menucustompage_id")));					
 					break;
+				case "poll":
+					$menuItemObj->update(array("itemtype_id"), array($_POST['poll']));
+					break;
 			}
 			
 			
@@ -422,6 +431,16 @@ if(!$_POST['submit']) {
 		$downloadpageoptions .= "<option value='".$row['downloadcategory_id']."'>".filterText($row['name'])."</option>";		
 	}
 	
+	$polloptions = "";
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."polls ORDER BY dateposted DESC");
+	while($row = $result->fetch_assoc()) {
+		
+		$dispPollQuestion = (strlen($row['question']) > 50) ? substr($row['question'], 0, 50)."..." : $row['question'];
+			
+		$polloptions .= "<option value='".$row['poll_id']."'>".filterText($dispPollQuestion)."</option>";
+	}
+	
+	
 	if($result->num_rows == 0) {
 		$downloadpageoptions = "<option value=''>None<option>";	
 	}
@@ -480,6 +499,7 @@ if(!$_POST['submit']) {
 								<option value='shoutbox'>Shoutbox</option>
 								<option value='forumactivity'>Latest Forum Activity</option>
 								<option value='newestmembers'>Newest Members</option>
+								<option value='poll'>Poll</option>
 								<option value='login'>Default Login</option>
 								<option value='customcode'>Custom Block - Code Editor</option>
 								<option value='customformat'>Custom Block - WYSIWYG Editor</option>
@@ -711,6 +731,22 @@ if(!$_POST['submit']) {
 				
 				</div>
 				
+				<div id='pollOptions' style='display: none'>
+				
+					<table class='formTable'>
+						<tr>
+							<td class='main' colspan='2'>
+								<b>Poll Options:</b>
+								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
+							</td>
+						</tr>
+						<tr>
+							<td class='formLabel'>Select Poll:</td>
+							<td class='main'><select name='poll' class='textBox'>".$polloptions."</select></td>
+						</tr>
+					</table>
+				</div>
+				
 				<p align='center' style='margin-top: 50px'>
 					<input type='button' id='btnFakeSubmit' value='Add Menu Item' class='submitButton'>
 					<input type='submit' name='submit' value='submit' id='btnSubmit' style='display: none'>
@@ -748,30 +784,38 @@ if(!$_POST['submit']) {
 					$('#customFormatOptions').hide();
 					$('#downloadLinkOptions').hide();
 				
-					if($(this).val() == 'link') {
-						$('#linkOptions').show();
+					
+					switch($(this).val()) {
+						case 'link':
+							$('#linkOptions').show();
+							break;
+						case 'image':
+							$('#imageOptions').show();
+							break;
+						case 'customcode':
+							$('#customCodeOptions').show();
+							break;
+						case 'shoutbox':
+							$('#shoutBoxOptions').show();
+							break;
+						case 'customform':
+							$('#customFormOptions').show();
+							break;
+						case 'custompage':
+							$('#customPageOptions').show();
+							break;
+						case 'customformat':
+							$('#customFormatOptions').show();
+							break;
+						case 'downloads':
+							$('#downloadLinkOptions').show();
+							break;
+						case 'poll':
+							$('#pollOptions').show();
+							break;					
 					}
-					else if($(this).val() == 'image') {
-						$('#imageOptions').show();
-					}
-					else if($(this).val() == 'customcode') {
-						$('#customCodeOptions').show();
-					}
-					else if($(this).val() == 'shoutbox') {
-						$('#shoutBoxOptions').show();
-					}
-					else if($(this).val() == 'customform') {
-						$('#customFormOptions').show();
-					}
-					else if($(this).val() == 'custompage') {
-						$('#customPageOptions').show();
-					}
-					else if($(this).val() == 'customformat') {
-						$('#customFormatOptions').show();
-					}
-					else if($(this).val() == 'downloads') {
-						$('#downloadLinkOptions').show();
-					}
+					
+					
 					
 				});
 				

@@ -94,6 +94,7 @@ if($_POST['submit']) {
 
 
 if(!$_POST['submit']) {
+	$addMenuItemCID = $consoleObj->findConsoleIDByName("Add Menu Item");
 	
 	echo "
 	<form action='console.php?cID=".$cID."' method='post'>
@@ -115,7 +116,7 @@ if(!$_POST['submit']) {
 	}
 	
 	echo "
-		Fill out the form below to add a custom page.
+		Fill out the form below to add a custom page.  In order to display a custom form page in the menu, go to the <a href='".$MAIN_ROOT."members/console.php?cID=".$addMenuItemCID."'>Add Menu Item</a> page.
 		<br><br>
 		<table class='formTable'>
 			<tr>

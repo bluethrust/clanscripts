@@ -218,7 +218,7 @@ if(!$_POST['submit']) {
 					</tr>
 					<tr>
 						<td class='formLabel'>Start Time:</td>
-						<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'>PM</option></select><select name='timezone' class='textBox'>".$timezoneoptions."</select></td>
+						<td class='main'><select name='starthour' class='textBox'>".$houroptions."</select> : <select name='startminute' class='textBox'>".$minuteoptions."</select> <select name='ampm' class='textBox'><option value='am'>AM</option><option value='pm'>PM</option></select> <select name='timezone' class='textBox'>".$timezoneoptions."</select></td>
 					</tr>
 					<tr>
 						<td class='formLabel'>Location:</td>

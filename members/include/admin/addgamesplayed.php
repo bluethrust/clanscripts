@@ -383,7 +383,14 @@ if(!$_POST['submit']) {
 								var intCalcOp = $('#gpCalcOp').val();
 								var intFirstStatID = $('#gpFirstStatID').val();
 								var intSecondStatID = $('#gpSecondStatID').val();
-								var intRounding = $('#gpRounding').val();
+								var intRounding;
+								
+								if(strStatType == \"inputnum\") {
+									intRounding = $('#gpRoundingInputNumeric').val();
+								}
+								else {
+									intRounding = $('#gpRounding').val();
+								}
 								
 								var intHideStat = 0;
 								if($('#gpHideStat').is(':checked')) {
@@ -444,7 +451,14 @@ if(!$_POST['submit']) {
 							var intCalcOp = $('#gpCalcOp').val();
 							var intFirstStatID = $('#gpFirstStatID').val();
 							var intSecondStatID = $('#gpSecondStatID').val();
-							var intRounding = $('#gpRounding').val();
+							var intRounding;
+								
+							if(strStatType == \"inputnum\") {
+								intRounding = $('#gpRoundingInputNumeric').val();
+							}
+							else {
+								intRounding = $('#gpRounding').val();
+							}
 							
 							var intHideStat = 0;
 							if($('#gpHideStat').is(':checked')) {

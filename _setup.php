@@ -43,6 +43,8 @@ $PAGE_NAME = "";
 include_once($prevFolder."classes/btmysql.php");
 include_once($prevFolder."classes/basic.php");
 include_once($prevFolder."_functions.php");
+include_once($prevFolder."classes/ipban.php");
+
 
 $mysqli = new btmysql($dbhost, $dbuser, $dbpass, $dbname);
 
@@ -84,7 +86,7 @@ else {
 
 
 // Check for Ban
-
+/*
 $ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
 
 if($ipbanObj->select($IP_ADDRESS, false)) {
@@ -97,6 +99,12 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 		$ipbanObj->delete();
 	}
 
+}
+*/
+
+$ipbanObj = new IPBan($mysqli);
+if($ipbanObj->isBanned($IP_ADDRESS)) {
+	die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
 }
 
 ?>

@@ -492,12 +492,12 @@ class Member extends Basic {
 		$totalPMInbox = 0;
 		if($this->intTableKeyValue != "") {
 			if($showOnlyNew) {
-				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND status = '0' AND deletereceiver = '0'");
-				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND seenstatus = '0' AND deletestatus = '0'");
+				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND status = '0' AND deletereceiver = '0' AND receiverfolder_id = '0'");
+				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND seenstatus = '0' AND deletestatus = '0' AND receiverfolder_id = '0'");
 			}
 			else {
-				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND deletereceiver = '0'");
-				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND deletestatus = '0'");
+				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND deletereceiver = '0' AND receiverfolder_id = '0'");
+				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND deletestatus = '0' AND receiverfolder_id = '0'");
 			}
 			
 			$totalSinglePM = $result1->num_rows;			

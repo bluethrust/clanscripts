@@ -10,6 +10,8 @@ include_once($prevFolder."classes/menucategory.php");
 include_once($prevFolder."classes/menuitem.php");
 include_once($prevFolder."classes/customform.php");
 include_once($prevFolder."classes/forumboard.php");
+include_once($prevFolder."classes/poll.php");
+
 
 $arrLoginInfo = array();
 

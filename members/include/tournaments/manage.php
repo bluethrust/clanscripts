@@ -90,11 +90,11 @@ if(count($arrTournaments) > 0) {
 			
 			if($tournamentInfo['member_id'] == $memberInfo['member_id']) {
 				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=SetManagers'>Set Tournament Managers</a></li>";	
+				$dispTournamentOptions .= "<li><a href='javascript:void(0)' onclick=\"deleteTournament('".$tournamentInfo['tournament_id']."')\">Delete Tournament</a></li>";
 			}
 			
 			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=EditTournamentInfo'>Edit Tournament Info</a></li>";
-			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."tournaments/view.php?tID=".$tournamentInfo['tournament_id']."'>View Tournament Page</a></li>";
-			$dispTournamentOptions .= "<li><a href='javascript:void(0)' onclick=\"deleteTournament('".$tournamentInfo['tournament_id']."')\">Delete Tournament</a></li>";			
+			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."tournaments/view.php?tID=".$tournamentInfo['tournament_id']."'>View Tournament Page</a></li>";		
 			$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."tournaments/bracket.php?tID=".$tournamentInfo['tournament_id']."' target='_blank'>View Bracket</a></li>";
 			if($tournamentInfo['seedtype'] == 3 && $tournamentObj->poolsComplete()) {
 				$dispTournamentOptions .= "<li><a href='".$MAIN_ROOT."members/tournaments/managetournament.php?tID=".$tournamentInfo['tournament_id']."&pID=StartMatches'>Start Tournament Matches</li>";

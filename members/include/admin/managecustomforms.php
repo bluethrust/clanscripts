@@ -24,7 +24,7 @@ else {
 	}
 }
 $cID = $_GET['cID'];
-
+$intAddCustomPageID = $consoleObj->findConsoleIDByName("Add Custom Form Page");
 if($_GET['cfID'] == "") {
 	
 	

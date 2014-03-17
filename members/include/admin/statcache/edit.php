@@ -116,7 +116,6 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 						$_POST['firstStat'] = "";
 						$_POST['secondStat'] = "";
 						$_POST['calcOperation'] = "";
-						$_POST['rounding'] = "";
 					}
 					
 					$intInputText = 0;
@@ -264,6 +263,10 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 						<td class='main'><input type='checkbox' id='gpHideStat' class='textBox' value='1' onmouseover=\"showToolTip('Hide Stats to create more complex auto-calculated stats... Or if you just don\'t want this stat to be shown on the site.')\" onmouseout='hideToolTip()' ".$hideStatsChecked."></td>
 					</tr>
 					<tr>
+						<td class='formLabel'><div id='inputNumericRoundingTitle'>Rounding:</div></td>
+						<td class='main'><div id='inputNumericRoundingTxtBox'><input type='text' value='".$statInfo['rounding']."' id='gpRoundingInputNumeric' class='textBox' style='width: 30px' value='2'> decimals</div></td>
+					</tr>
+					<tr>
 						<td class='main' colspan='2'>
 							<div id='gpFormFormula' style='display: none'>
 								<br>
@@ -336,6 +339,16 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 								$('#gpFormRounding').hide();
 								$('#gpRoundingInput').hide();
 							
+							}
+							
+							
+							if($('#gpStatType').val() == \"inputnum\") {
+								$('#inputNumericRoundingTitle').show();
+								$('#inputNumericRoundingTxtBox').show();
+							}
+							else {
+								$('#inputNumericRoundingTitle').hide();
+								$('#inputNumericRoundingTxtBox').hide();							
 							}
 					
 						});
