@@ -27,103 +27,56 @@ else {
 
 $cID = $_GET['cID'];
 
-$dispError = "";
-$countErrors = 0;
 
-if($_POST['submit']) {
+
+$arrComponents = array(
+	"newusername" => array(
+		"display_name" => "New Username",
+		"type" => "text",
+		"sortorder" => 1,
+		"attributes" => array("class" => "textBox formInput"),
+		"validate" => array("NOT_BLANK", array("name" => "IS_NOT_SELECTABLE", "selectObj" => $member, "select_back" => "member_id")),
+		"db_name" => "username"
+	),
+	"submit" => array(
+		"type" => "submit",
+		"sortorder" => 2,
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"value" => "Change Username"
+	)
+
+);
+
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"saveObject" => $member,
+	"saveType" => "update",
+	"afterSave" => array("setMemberSessions"),
+	"saveMessage" => "Successfully changed username!",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"description" => "Use the form below to change your username."
+);
+
+
+// Validation Functions
+
+function validateUsername() {
+	global $formObj, $mysqli;
 	
-	
-	// Check If Blank
-	
-	if(trim($_POST['newusername']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Your username may not be blank.<br>";
-	}
-	
-	// Check for duplicate
 	$checkMemberObj = new Member($mysqli);
 	if($checkMemberObj->select($_POST['newusername'])) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> There is already a member with that username.<br>";
+		$formObj->errors[] = "There is already a member with that username.";
 	}
-	
-	
-	if($countErrors == 0) {
-		
-		if($member->update(array("username"), array($_POST['newusername']))) {
-			$memberInfo = $member->get_info_filtered();
-			$_SESSION['btUsername'] = $memberInfo['username'];
-			
-			echo "
-			
-				<div style='display: none' id='successBox'>
-					<p align='center'>
-						Successfully changed username!
-					</p>
-				</div>
-				
-				<script type='text/javascript'>
-					popupDialog('Change Username', '".$MAIN_ROOT."members', 'successBox');
-				</script>
-			
-			";
-			
-		}
-		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-		}
-		
-	}
-	
-	
-	if($countErrors > 0) {
-		$_POST['submit'] = false;	
-	}
-	
 	
 }
 
+// After Save Functions
 
+function setMemberSessions() {
+	global $member;
 
-if(!$_POST['submit']) {
-	
-
-	echo "
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-			<div class='formDiv'>
-			
-	";
-	
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to change username because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-				Use the form below to change your username.<br><br>
-				
-				<table class='formTable'>
-					<tr>
-						<td class='formLabel'>New Username:</td>
-						<td class='main'><input type='username' class='textBox' name='newusername' style='width: 125px'></td>
-					</tr>
-					<tr>
-						<td class='main' colspan='2' align='center'><br><br>
-							<input type='submit' name='submit' value='Change Username' class='submitButton' style='width: 140px'>
-						</td>
-					</tr>
-				</table>
-				
-			</div>
-		</form>
-	
-	";
-	
-	
+	$_SESSION['btUsername'] = $member->get_info_filtered("username");
 }
+
+?>

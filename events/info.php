@@ -17,9 +17,6 @@ $prevFolder = "../";
 
 include($prevFolder."_setup.php");
 
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/event.php");
-
 $consoleObj = new ConsoleOption($mysqli);
 $eventObj = new Event($mysqli);
 $member = new Member($mysqli);
@@ -100,13 +97,13 @@ elseif($eventInfo['visibility'] != 0) {
 	
 }
 
-
+$breadcrumbObj->setTitle($eventInfo['title']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Events", $MAIN_ROOT."events");
+$breadcrumbObj->addCrumb($eventInfo['title']);
+include($prevFolder."include/breadcrumb.php");
 echo "
-	<div class='breadCrumbTitle'>".$eventInfo['title']."</div>
-	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-		<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."events'>Events</a> > ".$eventInfo['title']."
-	</div>
-	
+
 	<div class='eventPageContainer'>
 		<div class='eventLeftContainer'>
 			<div class='eventTitle'>Invite List:</div>
@@ -276,7 +273,7 @@ echo "
 					</tr>
 					<tr>
 						<td class='main alternateBGColor' style='width: 30%' valign='top'><b>Details:</b></td>
-						<td class='main' style='padding-left: 5px; width: 70%' valign='top'>".$eventInfo['description']."</td>
+						<td class='main' style='padding-left: 5px; width: 70%' valign='top'>".nl2br($eventInfo['description'])."</td>
 					</tr>
 				</table>
 			

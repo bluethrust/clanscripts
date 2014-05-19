@@ -493,11 +493,11 @@ class Member extends Basic {
 		if($this->intTableKeyValue != "") {
 			if($showOnlyNew) {
 				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND status = '0' AND deletereceiver = '0' AND receiverfolder_id = '0'");
-				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND seenstatus = '0' AND deletestatus = '0' AND receiverfolder_id = '0'");
+				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND seenstatus = '0' AND deletestatus = '0' AND pmfolder_id = '0'");
 			}
 			else {
 				$result1 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessages WHERE receiver_id = '".$this->intTableKeyValue."' AND deletereceiver = '0' AND receiverfolder_id = '0'");
-				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND deletestatus = '0' AND receiverfolder_id = '0'");
+				$result2 = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."privatemessage_members WHERE member_id = '".$this->intTableKeyValue."' AND deletestatus = '0' AND pmfolder_id = '0'");
 			}
 			
 			$totalSinglePM = $result1->num_rows;			
@@ -861,6 +861,38 @@ class Member extends Basic {
 		}
 		
 		return $returnVal;
+	}
+	
+	
+	public function getAvatar($setWidth="", $setHeight="") {
+		global $MAIN_ROOT, $THEME;
+		
+		$checkURL = parse_url($this->arrObjInfo['avatar']);
+		
+		if($this->arrObjInfo['avatar'] == "") {
+			$avatarURL = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";	
+		}
+		elseif(!isset($checkURL['scheme']) || $checkURL['scheme'] = "") {
+			$avatarURL = $MAIN_ROOT.$this->arrObjInfo['avatar'];
+		}
+		
+		$arrStyle = array();
+		if($setWidth != "") {
+			$arrStyle['width'] = $setWidth;
+		}
+		
+		if($setHeight != "") {
+			$arrStyle['height'] = $setHeight;	
+		}
+		
+		$dispStyle = "style='";
+		foreach($arrStyle as $attr => $value) {
+			$dispStyle .= $attr.": ".$value.";";
+		}
+		$dispStyle .= "'";
+		
+		return "<img src='".$avatarURL."' ".$dispStyle.">";
+		
 	}
 	
 }

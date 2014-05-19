@@ -103,58 +103,34 @@ else {
 
 if(!$member->requestedIA()) {
 
-	if($_POST['submit']) {
+	$i = 1;
+	$arrComponents = array(
+		"reason" => array(
+			"display_name" => "Reason",
+			"type" => "textarea",
+			"tooltip" => "Leave a reason and for how long you will be inactive for a better chance of being approved.",
+			"attributes" => array("class" => "textBox formInput", "style" => "width: 35%", "rows" => "4"),
+			"db_name" => "reason",
+			"sortorder" => $i++),
+		"submit" => array(
+			"value" => "Send Request",
+			"attributes" => array("class" => "submitButton formSubmitButton"),
+			"sortorder" => $i++,
+			"type" => "submit")
+	);
+	
+	$requestIAObj = new Basic($mysqli, "iarequest", "iarequest_id");
+	$setupFormArgs = array(
+		"name" => "console-".$cID,
+		"components" => $arrComponents,
+		"saveObject" => $requestIAObj,
+		"saveType" => "add",
+		"saveAdditional" => array("member_id" => $memberInfo['member_id'], "requestdate" => time()),
+		"saveMessage" => "Inactive Request Sent!",
+		"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+		"description" => "Use the form below to request to be inactive.  When inactive, you will be able to log in, however you will not have access to any console options.  A higher ranking member will have to approve your request before your status is set to inactive."
+	);
 
-		$requestIAObj = new Basic($mysqli, "iarequest", "iarequest_id");
-		
-		if($requestIAObj->addNew(array("reason", "requestdate", "member_id"), array($_POST['reason'], time(), $memberInfo['member_id']))) {
-			
-			echo "
-			
-				<div style='display: none' id='successBox'>
-					<p align='center'>
-						Inactive Request Sent!
-					</p>
-				</div>
-				
-				<script type='text/javascript'>
-					popupDialog('Inactive Request', '".$MAIN_ROOT."members', 'successBox');
-				</script>
-			
-			";
-			
-		}
-		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-		}
-		
-	}
-	
-	if(!$_POST['submit']) {
-		
-		echo "	
-			<div class='formDiv'>
-				Use the form below to request to be inactive.  When inactive, you will be able to log in, however you will not have access to any console options.  A higher ranking member will have to approve your request before your status is set to inactive.
-				<br><br>
-				<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-					<table class='formTable'>
-						<tr>
-							<td class='formLabel' valign='top'>Reason: <a href='javascript:void(0)' onmouseover=\"showToolTip('Leave a reason and for how long you will be inactive for a better chance of being approved.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><textarea name='reason' style='width: 50%; height: 90px' class='textBox'>".$_POST['reason']."</textarea></td>
-						</tr>
-						<tr>
-							<td class='main' align='center' colspan='2'><br>
-								<input type='submit' name='submit' value='Send Request' class='submitButton'>
-							</td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		";
-		
-	}
-	
 }
 else {
 	// Already requested to be inactive
@@ -179,70 +155,74 @@ else {
 		$dispSendMessages = "  A higher ranking member must delete the request before you can issue another one.";
 	}
 	
-	echo "
+	$i = 1;
+	$arrComponents = array(
+		"requestinfosection" => array(
+			"type" => "section",
+			"sortorder" => $i++,
+			"options" => array("section_title" => "Request Information:")
+		),
+		"requestdate" => array(
+			"display_name" => "Request Date",
+			"type" => "custom",
+			"html" => "<div class='formInput'>".getPreciseTime($requestInfo['requestdate'])."</div>",
+			"sortorder" => $i++
+		),
+		"status" => array(
+			"display_name" => "Status",
+			"type" => "custom",
+			"html" => "<div class='formInput'>".$dispRequestStatus."</div>",
+			"sortorder" => $i++
+		),
+		"reason" => array(
+			"display_name" => "Reason",
+			"type" => "custom",
+			"html" => "<div class='formInput'>".nl2br($requestInfo['reason'])."</div>",
+			"sortorder" => $i++
+		),
+		"messagessection" => array(
+			"type" => "section",
+			"sortorder" => $i++,
+			"options" => array("section_title" => "Messages:")
+		),
+		"messages" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"html" => "<div id='loadingSpiral' style='display: none'><p align='center' class='main'><img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral2.gif'><br>Loading</p></div><div id='iaMessages'></div>"		
+		)
+	
+	);
+	
+	if($requestInfo['requeststatus'] == 0) {
+		$arrSendMesssageComponents = array(
+			"txtmessage" => array(
+				"display_name" => "Leave Message",
+				"attributes" => array("class" => "textBox formInput", "style" => "width: 35%", "rows" => "4", "id" => "txtMessage"),
+				"type" => "textarea",
+				"sortorder" => $i++		
+			),
+			"sendmessagebutton" => array(
+				"type" => "button",
+				"value" => "Send Message",
+				"attributes" => array("class" => "submitButton formSubmitButton", "id" => "btnSend"),
+				"sortorder" => $i++			
+			)
+		);
 		
-		<div class='formDiv'>
-			You currently have an open inactive request.".$dispSendMessages."<br><br>
-			
-			<table class='formTable'>
-				<tr>
-					<td class='main' colspan='2'>
-						<div class='dottedLine' style='padding-bottom: 3px'><b>Request Information:</b></div>
-					</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Request Date:</td>
-					<td class='main'>".getPreciseTime($requestInfo['requestdate'])."</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Status:</td>
-					<td class='main'>".$dispRequestStatus."</td>
-				</tr>
-				<tr>
-					<td class='formLabel' valign='top'>Reason:</td>
-					<td class='main' valign='top'>".$requestInfo['reason']."</td>
-				</tr>
-				<tr>
-					<td class='main' colspan='2'><br>
-						<div class='dottedLine' style='padding-bottom: 3px'><b>Messages:</b></div>
-					</td>
-				</tr>
-				<tr>
-					<td class='main' colspan='2'>
-						<div id='loadingSpiral' style='display: none'>
-							<p align='center' class='main'>
-								<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral2.gif'><br>Loading
-							</p>
-						</div>
-						<div id='iaMessages'></div>
-					</td>
-				</tr>
-				
-				";
-				
-				if($requestInfo['requeststatus'] == 0) {
-					echo "
-						<tr>
-							<td class='formLabel' valign='top'>Leave Message:</td>
-							<td class='main' valign='top'><textarea class='textBox' style='width: 50%; height: 90px' id='txtMessage'></textarea></td>
-						</tr>
-						<tr>
-							<td class='main' align='center' colspan='2'><br>
-								<input type='button' id='btnSend' value='Send Message' class='submitButton'>
-							</td>
-						</tr>
-				
-					";
-				}
-				else {
-					echo "<input type='hidden' id='btnSend'>";	
-				}
-				
-				echo "
-				
-			</table>
-		</div>
-		
+		$arrComponents = array_merge($arrComponents, $arrSendMesssageComponents);
+	}
+	else {
+		echo "<input type='hidden' id='btnSend'>";	
+	}
+	
+	$setupFormArgs = array(
+		"name" => "console-".$cID,
+		"description" => "You currently have an open inactive request.".$dispSendMessages,
+		"components" => $arrComponents
+	);
+	
+	
+	echo "		
 		<script type='text/javascript'>
 			
 			$(document).ready(function() {
@@ -272,9 +252,5 @@ else {
 	";
 	
 }
-	
-	
-
-
 
 ?>

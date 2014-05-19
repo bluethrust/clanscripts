@@ -47,16 +47,10 @@ if(($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSIO
 }
 
 
-?>
-
-<div class='breadCrumbTitle'>Sign Up</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Sign Up
-</div>
-
-
-<?php
-
+$breadcrumbObj->setTitle("Sign Up");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Sign Up");
+include($prevFolder."include/breadcrumb.php");
 
 $countErrors = 0;
 $dispError = "";
@@ -305,7 +299,7 @@ if($_POST['submit']) {
 						$siteDomain = $_SERVER['SERVER_NAME'];
 						
 						$toEmail = $member->get_info("email");
-						$subjectEmail = $websiteInfo['clanname'].": Member Application Accepted";
+						$subjectEmail = $websiteInfo['clanname'].": New Member Application";
 						
 						$messageEmail = "A new member, ".$_POST['newusername'].", has signed up at your website: <a href='http://".$siteDomain.$MAIN_ROOT."'>".$websiteInfo['clanname']."</a>!";
 						

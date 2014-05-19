@@ -18,9 +18,6 @@ $prevFolder = "../";
 
 include($prevFolder."_setup.php");
 
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/event.php");
-
 $consoleObj = new ConsoleOption($mysqli);
 $eventObj = new Event($mysqli);
 $member = new Member($mysqli);
@@ -28,7 +25,6 @@ $member = new Member($mysqli);
 
 // Start Page
 $PAGE_NAME = "Events - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 
@@ -44,14 +40,10 @@ if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION
 
 }
 
-
-
-echo "
-	<div class='breadCrumbTitle'>Events</div>
-	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-		<a href='".$MAIN_ROOT."'>Home</a> > Events
-	</div>
-";
+$breadcrumbObj->setTitle("Events");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Events");
+include($prevFolder."include/breadcrumb.php");
 ?>
 
 

@@ -65,12 +65,6 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start time.<br>";
 	}
 	
-	// Check Timezone
-	
-	if(!in_array($_POST['starttimezone'], $arrTimezones)) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid timezone.<br>";
-	}
 	
 	// Format Date
 	$formattedDate = "";
@@ -165,7 +159,7 @@ if($_POST['submit']) {
 	
 	if($countErrors == 0) {
 		$arrColumns = array("member_id", "gamesplayed_id", "name", "seedtype", "startdate", "eliminations", "playersperteam", "maxteams", "description", "password", "requirereplay", "access", "timezone");
-		$arrValues = array($memberInfo['member_id'], $_POST['game'], $_POST['tournamentname'], $_POST['seedtype'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], md5($_POST['tournamentpassword']), $_POST['requirereplay'], $_POST['tournamentaccess'], $_POST['starttimezone']);
+		$arrValues = array($memberInfo['member_id'], $_POST['game'], $_POST['tournamentname'], $_POST['seedtype'], $formattedDate, $_POST['eliminations'], $_POST['playersperteam'], $_POST['totalteams'], $_POST['extrainfo'], md5($_POST['tournamentpassword']), $_POST['requirereplay'], $_POST['tournamentaccess'], $_POST['startimezone']);
 		
 		if($tournamentObj->addNew($arrColumns, $arrValues)) {
 			
@@ -275,6 +269,7 @@ if(!$_POST['submit']) {
 								<option value='AM'>AM</option><option value='PM'>PM</option>
 							</select>
 							<select name='startimezone' class='textBox'>
+								<option value=''>[Use Default]</option>
 								".$timezoneoptions."
 							</select>
 						</td>

@@ -224,7 +224,7 @@
 				</tr>
 				<tr>
 					<td class='formLabel' valign='top'>Question:</td>
-					<td class='main'><textarea name='pollquestion' class='textBox' style='width: 60%; height: 20%'>".$pollInfo['question']."</textarea></td>
+					<td class='main'><textarea name='pollquestion' class='textBox' style='width: 60%; height: 30px'>".$pollInfo['question']."</textarea></td>
 				</tr>
 				<tr>
 					<td class='formLabel'>Access:</td>

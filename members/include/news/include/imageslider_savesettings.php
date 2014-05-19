@@ -57,7 +57,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	if($countErrors == 0) {
 		$arrColumns = array("hpimagetype", "hpimagewidth", "hpimageheight", "hpimagewidthunit", "hpimageheightunit");
 		$arrValues = array($displayType, $_POST['containerWidth'], $_POST['containerHeight'], $widthUnit, $heightUnit);
-		if($webInfoObj->update($arrColumns, $arrValues)) {
+		if($webInfoObj->multiUpdate($arrColumns, $arrValues)) {
 			echo "
 				
 				<script type='text/javascript'>

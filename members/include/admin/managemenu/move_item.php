@@ -11,7 +11,7 @@
  * License: http://www.bluethrust.com/license.php
  *
  */
-
+$prevFolder = "../../../../";
 include_once("../../../../_setup.php");
 include_once("../../../../classes/member.php");
 include_once("../../../../classes/rank.php");
@@ -61,7 +61,6 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		
 		";
 		
-		$webInfoObj->update(array("updatemenu"), array(time()));
 		
 	}
 	

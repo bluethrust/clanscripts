@@ -79,7 +79,16 @@
 				$pmTable = $this->MySQL->get_tablePrefix()."privatemessages";
 				$pmMultiTable = $this->MySQL->get_tablePrefix()."privatemessage_members";
 				
-				$result = $this->MySQL->query("SELECT pm_id, datesent FROM ".$pmTable." WHERE (senderfolder_id = '".$this->intTableKeyValue."' AND sender_id = '".$this->intMemberID."' AND deletesender = '0') OR (receiver_id = '".$this->intMemberID."' AND receiverfolder_id = '".$this->intTableKeyValue."' AND deletereceiver = '0')");
+				if($this->intTableKeyValue == -1) {
+					$filterSQL = "senderfolder_id = '".$this->intTableKeyValue."' AND sender_id = '".$this->intMemberID."' AND deletesender = '0'";	
+				}
+				else {
+					$filterSQL = "receiver_id = '".$this->intMemberID."' AND receiverfolder_id = '".$this->intTableKeyValue."' AND deletereceiver = '0'";
+				}
+				
+				
+				//echo "SELECT pm_id, datesent FROM ".$pmTable." WHERE (senderfolder_id = '".$this->intTableKeyValue."' AND sender_id = '".$this->intMemberID."' AND deletesender = '0') OR (receiver_id = '".$this->intMemberID."' AND receiverfolder_id = '".$this->intTableKeyValue."' AND deletereceiver = '0')";
+				$result = $this->MySQL->query("SELECT pm_id, datesent FROM ".$pmTable." WHERE ".$filterSQL);
 				while($row = $result->fetch_assoc()) {
 					$arrPM[$row['pm_id']] = $row['datesent'];
 				}

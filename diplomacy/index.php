@@ -19,9 +19,6 @@
 $prevFolder = "../";
 
 include($prevFolder."_setup.php");
-include($prevFolder."classes/member.php");
-
-
 
 // Classes needed for index.php
 
@@ -43,11 +40,13 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = "Diplomacy - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 $diplomacyStatusObj = new BasicOrder($mysqli, "diplomacy_status", "diplomacystatus_id");
 
+$breadcrumbObj->setTitle("Diplomacy");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Diplomacy");
 ?>
 
 <div class='breadCrumbTitle'>Diplomacy</div>

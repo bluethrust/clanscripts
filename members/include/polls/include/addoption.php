@@ -111,7 +111,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $blnConsoleCheck) {
 		
 			<div class='errorDiv main' style='display: none' id='dialogErrors'></div>
 			
-			<table class='formTable' style='width: 100%'>
+			<table class='formTable' style='width: 95%'>
 				<tr>
 					<td class='main'><b>Option Value:</b></td>
 					<td class='main'><input type='text' id='optionValue' class='textBox' style='width: 100%'></td>

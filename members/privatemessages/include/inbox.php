@@ -73,7 +73,7 @@ $arrPM = $arrFolderContents[0];
 $arrPMMID = $arrFolderContents[1];
 
 
-echo "<table class='formTable' style='border-spacing: 0px'>";
+echo "<table class='formTable' style='border-spacing: 0px; table-layout: fixed'>";
 foreach($arrPM as $key => $value) {
 
 	$pmObj->select($key);
@@ -89,8 +89,10 @@ foreach($arrPM as $key => $value) {
 	}
 	
 	$addToPMValue = "";
+	$addToPMURL = "";
 	if(isset($arrPMMID[$key])) {
-		$addToPMValue = "_".$arrPMMID[$key];	
+		$addToPMValue = "_".$arrPMMID[$key];
+		$addToPMURL = "&pmMID=".$arrPMMID[$key];	
 	}
 	
 	$member->select($pmInfo['sender_id']);
@@ -111,8 +113,8 @@ foreach($arrPM as $key => $value) {
 	echo "
 	<tr>
 		<td class='pmInbox main solidLine".$useAltBG."' style='padding-left: 0px' width=\"5%\"><input type='checkbox' value='".$pmInfo['pm_id'].$addToPMValue."' class='textBox'></td>
-		<td class='pmInbox main solidLine".$useAltBG."' width=\"30%\"><div style='width: 85%; white-space:nowrap; overflow: hidden; text-overflow: ellipsis'>".$dispSender."</a></div></td>
-		<td class='pmInbox main solidLine".$useAltBG."' width=\"35%\"><a href='".$MAIN_ROOT."members/privatemessages/view.php?pmID=".$pmInfo['pm_id']."'>".filterText($pmInfo['subject'])."</a></td>
+		<td class='pmInbox main solidLine".$useAltBG."' style='overflow: hidden' width=\"30%\"><div style='width: 85%; white-space:nowrap; overflow: hidden; text-overflow: ellipsis'>".$dispSender."</a></div></td>
+		<td class='pmInbox main solidLine".$useAltBG."' style='overflow: hidden' width=\"35%\"><div style='width: 85%; white-space:nowrap; overflow: hidden; text-overflow: ellipsis'><a href='".$MAIN_ROOT."members/privatemessages/view.php?pmID=".$pmInfo['pm_id'].$addToPMURL."'>".filterText($pmInfo['subject'])."</a></div></td>
 		<td class='pmInbox main solidLine".$useAltBG."' width=\"30%\">".getPreciseTime($pmInfo['datesent'])."</td>
 	</tr>
 	";

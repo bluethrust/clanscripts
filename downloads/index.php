@@ -16,9 +16,6 @@
 $prevFolder = "../";
 
 include_once($prevFolder."_setup.php");
-include_once($prevFolder."classes/download.php");
-include_once($prevFolder."classes/downloadcategory.php");
-
 
 $downloadCatObj = new DownloadCategory($mysqli);
 $downloadObj = new Download($mysqli);
@@ -49,13 +46,10 @@ $PAGE_NAME = $downloadCatInfo['name']." - Downloads - ";
 $dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
-echo "
-<div class='breadCrumbTitle'>".$downloadCatInfo['name']."</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px; margin-bottom: 25px'>
-	<a href='".$MAIN_ROOT."'>Home</a> > Downloads: ".$downloadCatInfo['name']."
-</div>
-
-";
+$breadcrumbObj->setTitle($downloadCatInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Downloads: ".$downloadCatInfo['name']);
+include($prevFolder."include/breadcrumb.php");
 
 $posterMemberObj = new Member($mysqli);
 $arrDownloads = $downloadCatObj->getAssociateIDs("ORDER BY dateuploaded DESC");
@@ -108,7 +102,11 @@ foreach($arrDownloads as $dlID) {
 	";
 }
 
-
+if(count($arrDownloads) == 0) {
+	
+	echo "<div class='shadedBox' style='width: 50%; margin: 20px auto'><p align='center' class='main'><i>No downloads added to ".$downloadCatInfo['name']." yet!</i></p></div>";
+	
+}
 
 include($prevFolder."themes/".$THEME."/_footer.php");
 

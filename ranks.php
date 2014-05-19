@@ -48,12 +48,13 @@ include($prevFolder."themes/".$THEME."/_header.php");
 $member = new Member($mysqli);
 $rankObj = new Rank($mysqli);
 $rankCatObj = new RankCategory($mysqli);
+
+$breadcrumbObj->setTitle("Ranks");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Ranks");
+include($prevFolder."include/breadcrumb.php");
 ?>
 
-<div class='breadCrumbTitle'>Ranks</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Ranks
-</div>
 
 <table id='rankPageTable' class='formTable' style='width: 75%; margin-left: auto; margin-right: auto'>
 <?php

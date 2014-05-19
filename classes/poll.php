@@ -333,7 +333,7 @@
 			else {
 				echo "
 					<p class='main' align='center'>
-						You do not have permission to view this poll.
+						You do not have permission to view this poll.<br><br>
 					</p>
 				";
 			}

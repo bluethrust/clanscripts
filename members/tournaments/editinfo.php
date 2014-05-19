@@ -82,13 +82,6 @@ if($_POST['submit']) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start time.<br>";
 	}
 
-	// Check Timezone
-	
-	if(!in_array($_POST['startimezone'], $arrTimezones)) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid timezone.<br>";
-	}
-
 	// Format Date
 	$formattedDate = "";
 	if($countErrors == 0) {
@@ -334,6 +327,7 @@ if(!$_POST['submit']) {
 								<option value='AM'>AM</option><option value='PM'".$selectPM.">PM</option>
 							</select>
 							<select name='startimezone' class='textBox'>
+								<option value=''>[Use Default]</option>
 								".$timezoneoptions."
 							</select>
 						</td>

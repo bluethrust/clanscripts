@@ -44,7 +44,9 @@ if($_POST['submit']) {
 	$updateColumns = array("memberregistration", "memberapproval");
 	$updateValues = array($setRegistration, $setMemberApproval);
 	
-	if($webInfoObj->update($updateColumns, $updateValues)) {
+	
+	
+	if($webInfoObj->multiUpdate($updateColumns, $updateValues)) {
 		
 		$member->logAction("Modified website registration options.");
 		

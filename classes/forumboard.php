@@ -27,6 +27,7 @@ class ForumBoard extends BasicSort {
 	public $objMemberAccess;
 	public $objRankAccess;
 	public $objMod;
+
 	
 	public function __construct($sqlConnection) {
 		$this->MySQL = $sqlConnection;
@@ -35,11 +36,8 @@ class ForumBoard extends BasicSort {
 		$this->strCategoryKey = "forumcategory_id";
 		
 		$this->objPost = new ForumPost($sqlConnection);
-		$this->objTopic = new BasicOrder($sqlConnection, "forum_topic", "forumtopic_id");
-		
-		$this->objTopic->set_assocTableName("forum_post");
-		$this->objTopic->set_assocTableKey("forumpost_id");
-		
+
+		$this->objTopic = $this->objPost->objTopic;
 		
 		$this->objMemberAccess = new Basic($sqlConnection, "forum_memberaccess", "forummemberaccess_id");
 		$this->objRankAccess = new Basic($sqlConnection, "forum_rankaccess", "forumrankaccess_id");
@@ -253,7 +251,7 @@ class ForumBoard extends BasicSort {
 			}
 			
 		}
-		
+		$this->memberID = $memberid;
 		return $returnVal;
 		
 	}
@@ -374,17 +372,90 @@ class ForumBoard extends BasicSort {
 
 	}
 	
+	public function getAllBoards() {
+		
+		$arrReturn = array();
+		$temp = $this->intTableKeyValue;
+		$dbprefix = $this->MySQL->get_tablePrefix();
+		$result = $this->MySQL->query("SELECT ".$dbprefix."forum_board.forumboard_id FROM ".$dbprefix."forum_board, ".$dbprefix."forum_category WHERE ".$dbprefix."forum_board.forumcategory_id = ".$dbprefix."forum_category.forumcategory_id AND ".$dbprefix."forum_board.subforum_id = '0' ORDER BY ".$dbprefix."forum_category.ordernum DESC, ".$dbprefix."forum_board.sortnum");
+		while($row = $result->fetch_assoc()) {
+			$this->select($row['forumboard_id']);
+			$arrReturn[] = $row['forumboard_id'];
+
+			$arrReturn = array_unique(array_merge($arrReturn, $this->getAllSubForums()));
+		}
+		
+		$this->select($intTableKeyValue);
+
+		
+		return $arrReturn;
+	}
+	
+	
 	public function getSubForums() {
 		
 		$arrReturn = array();
 		if($this->intTableKeyValue != "") {
-			
 			$result = $this->MySQL->query("SELECT forumboard_id FROM ".$this->strTableName." WHERE subforum_id = '".$this->intTableKeyValue."' ORDER BY sortnum");
 			while($row = $result->fetch_assoc()) {
 				$arrReturn[] = $row['forumboard_id'];
 			}
 						
 		}
+		return $arrReturn;
+	}
+	
+	
+	function isSubforum() {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "" && $this->arrObjInfo['subforum_id'] != 0) {
+			$returnVal = true;
+		}
+
+		return $returnVal;
+		
+	}
+	
+	function calcBoardDepth($boardDepth=0) {
+		
+		
+		if($this->isSubforum()) {
+			$temp = $this->intTableKeyValue;
+			$boardDepth++;
+			
+			$this->select($this->arrObjInfo['subforum_id']);
+			$boardDepth = $this->calcBoardDepth($boardDepth);
+			
+			$this->select($temp);
+		}
+
+		return $boardDepth;
+	}
+	
+	
+	/*
+	 * Returns all sub-forum IDs not just ones directly under the selected forum 
+	 */
+	public function getAllSubForums($arrIDs=array()) {
+		
+		$arrReturn = array();
+		if($this->intTableKeyValue != "") {
+			$temp = $this->intTableKeyValue;
+			$subForums = $this->getSubForums();
+			$arrReturn = array_merge($arrIDs, $subForums);
+			foreach($subForums as $boardID) {
+				$this->select($boardID);
+				if(count($this->getSubForums()) > 0) {
+					$arrReturn = $this->getAllSubForums($arrReturn);
+				}
+			}
+			
+			$arrReturn = array_unique($arrReturn);
+			
+			$this->select($temp);
+		}
+		
 		return $arrReturn;
 	}
 	
@@ -414,7 +485,7 @@ class ForumBoard extends BasicSort {
 	
 		$strBeforeAfter = strtolower($strBeforeAfter);
 		$newSortNum = "false";
-		if($this->intTableKeyValue != "" AND ($strBeforeAfter == "before" OR $strBeforeAfter == "after")) {
+		if($this->intTableKeyValue != "" && ($strBeforeAfter == "before" OR $strBeforeAfter == "after")) {
 			$consoleInfo = $this->arrObjInfo;
 			$startSaving = false;
 			$x = 1;
@@ -584,6 +655,26 @@ class ForumBoard extends BasicSort {
 			$this->arrObjInfo['subforum_id'] = $subforumID;
 			
 		}
+		
+	}
+	
+	
+	public function showSearchForm() {
+		global $MAIN_ROOT;
+		$searchLabel = "Search";
+
+		if($this->intTableKeyValue != "") {
+			$filterBoard = $this->intTableKeyValue;
+			$searchLabel = "Search Board";
+		}
+		
+		if(is_numeric($this->objTopic->get_info("forumtopic_id"))) {
+			$filterTopic = $this->objTopic->get_info("forumtopic_id");
+			$searchLabel = "Search Topic";
+		}
+		
+		define("SHOW_FORUMSEARCH", true);
+		include("templates/searchform.php");
 		
 	}
 	

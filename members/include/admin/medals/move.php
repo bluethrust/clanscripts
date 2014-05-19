@@ -34,13 +34,15 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 
 	$memberInfo = $member->get_info_filtered();
 
-	if($member->hasAccess($consoleObj) && $medalObj->select($_POST['mID'])) {
+	if($member->hasAccess($consoleObj) && $medalObj->select($_POST['itemID'])) {
 		
-		define('MEMBERRANK_ID', $memberInfo['rank_id']);
+		define("LOGGED_IN", true);
 		
-		$medalObj->move($_POST['mDir']);
+		$medalObj->move($_POST['moveDir']);
 		
 		include("main.php");
+		include("../../../console.managelist.list.php");
+		
 	}
 	
 	

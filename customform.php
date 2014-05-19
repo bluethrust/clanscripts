@@ -51,18 +51,11 @@ $PAGE_NAME = $customPageInfo['name']." - ";
 $dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
+$breadcrumbObj->setTitle($customPageInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb($customPageInfo['name']);
 
-
-?>
-
-<div class='breadCrumbTitle'><?php echo $customPageInfo['name']; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px; margin-bottom: 20px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <?php echo $customPageInfo['name']; ?>
-</div>
-
-
-<?php 
-
+include($prevFolder."include/breadcrumb.php");
 
 $arrComponents = $customFormObj->getComponents();
 $dispError = "";

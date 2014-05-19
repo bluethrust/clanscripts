@@ -57,6 +57,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		if($squadMemberInfo['avatar'] == "") {
 			$squadMemberInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";
 		}
+		else {
+			$squadMemberInfo['avatar'] = $MAIN_ROOT.$squadMemberInfo['avatar'];
+		}
 		
 		if(trim($row['message']) == "") {
 			$row['message'] = "None";	
@@ -65,11 +68,15 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		echo "
 			<div class='newsDiv'>
-				<img src='".$squadMemberInfo['avatar']."' class='avatarImg'>
+			
 				<div class='postInfo'>
-					From: ".$member->getMemberLink()." - ".getPreciseTime($row['datesent'])."<br>
-					Squad: <b><a href='".$MAIN_ROOT."squads/profile.php?sID=".$row['squad_id']."'>".$squadInfo['name']."</a></b><br>
-					Starting Rank: ".$squadObj->objSquadRank->get_info_filtered("name")."
+					<div id='newsPostAvatar' style='float: left'><img src='".$squadMemberInfo['avatar']."' class='avatarImg'></div>
+					<div id='newsPostInfo' style='float: left; margin-left: 15px'>
+						From: ".$member->getMemberLink()." - ".getPreciseTime($row['datesent'])."<br>
+						Squad: <b><a href='".$MAIN_ROOT."squads/profile.php?sID=".$row['squad_id']."'>".$squadInfo['name']."</a></b><br>
+						Starting Rank: ".$squadObj->objSquadRank->get_info_filtered("name")."
+					</div>
+					<div style='clear: both'></div>
 				</div>
 				<br>
 				<div class='dottedLine' style='margin-top: 5px'></div>

@@ -39,828 +39,506 @@ $menuItemObj = new MenuItem($mysqli);
 $dispError = "";
 $countErrors = 0;
 
-if($_POST['submit']) {
-	
-	$arrItemTypes = array("link", "image", "top-players", "login", "shoutbox", "forumurl", "forumactivity", "newestmembers", "customcode", "customformat", "custompage", "customform", "downloads", "poll");
-	$arrCheckAlign = array("left", "center", "right");
-	
-	$menuCode = "";
-	$linkURL = "";
-	$linkTarget = "";
-	
+$itemTypeOptions = array(
+	"link" => "Link", 
+	"image" => "Image", 
+	"custompage" => "Custom Page", 
+	"customform" => "Custom Form Page",
+	"downloads" => "Download Page",
+	"top-players" => "Top Players", 
+	"shoutbox" => "Shoutbox", 
+	"forumactivity" => "Latest Forum Activity", 
+	"newestmembers" => "Newest Members", 
+	"poll" => "Poll",
+	"login" => "Default Login", 
+	"customcode" => "Custom Block - Code Editor", 
+	"customformat" => "Custom Block - WYSIWYG Editor" 
+);
 
-	// Checks for Links
-	if($_POST['itemtype'] == "link") {
-		
-		//Check Link URL
-		if(trim($_POST['linkurl']) == "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not enter a blank link url.<br>";
-		}
-		else {
-			$linkURL = $_POST['linkurl'];	
-		}
-		
-		// Check Link Target Window
-		if($_POST['targetwindow'] != "" && $_POST['targetwindow'] != "_blank") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid link target window.<br>";
-		}
-		else {
-			$linkTarget = $_POST['targetwindow'];	
-		}
-		
-		// Check Align
-		
-		if(!in_array($_POST['linkalign'], $arrCheckAlign)) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid text align.<br>";
-		}
-		
-	}
-	
-	// Checks for Images
-	if($_POST['itemtype'] == "image") {
-		
-		// Check Image
-		if($_FILES['menuimagefile']['name'] != "") {
-			$btUploadObj = new BTUpload($_FILES['menuimagefile'], "menuitem_", "../images/menu/", array(".jpg", ".png", ".bmp", ".gif"));
-		}
-		else {
-			$btUploadObj = new BTUpload($_POST['menuimageurl'], "menuitem_", "../images/menu/", array(".jpg", ".png", ".bmp", ".gif"), 4, true);
-		}
-		
-		
+$textAlignOptions = array("left" => "Left", "center" => "Center", "right" => "Right");
 
-		$linkURL = $_POST['imagelinkurl'];
-		
-		// Check Link Target Window
-		if($_POST['imagelinktargetwindow'] != "" && $_POST['imagelinktargetwindow'] != "_blank") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid image link target window.<br>";
-		}
-		else {
-			$linkTarget = $_POST['imagelinktargetwindow'];
-		}
-		
-		// Check Align
-		
-		if(!in_array($_POST['imagealign'], $arrCheckAlign)) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid image align.<br>";
-		}
-		
-		if(!is_numeric($_POST['imagewidth']) && trim($_POST['imagewidth']) != "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Image width must be a number.<br>";
-		}
-		
-		if(!is_numeric($_POST['imageheight']) && trim($_POST['imageheight']) != "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Image height must be a number.<br>";
-		}
-		
-		// Waiting for other checks before uploading image
-	}
-	
-	// Check Shoutbox
-	if($_POST['itemtype'] == "shoutbox") {
 
-		// Check width
-		if(!is_numeric($_POST['shoutboxwidth']) && trim($_POST['shoutboxwidth']) != "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Shoutbox width must be a number.<br>";
-		}
-		
-		// Check height
-		if(!is_numeric($_POST['shoutboxheight']) && trim($_POST['shoutboxheight']) != "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Shoutbox height must be a number.<br>";
-		}
-		
-		// Check textbox
-		if(!is_numeric($_POST['shoutboxtextbox']) && trim($_POST['shoutboxtextbox']) != "") {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Shoutbox textbox width must be a number.<br>";
-		}
-		
-		if($_POST['shoutboxwidthpercent'] != "1") {
-			$_POST['shoutboxwidthpercent'] = 0;
-		}
-		
-		if($_POST['shoutboxheightpercent'] != "1") {
-			$_POST['shoutboxheightpercent'] = 0;
-		}
-		
-	}
+$menuCatOptions = array();
+$arrMenuCats = $menuCatObj->get_entries(array(), "sortnum");
+foreach($arrMenuCats as $menuCatInfo) {
+	$menuCatOptions[$menuCatInfo['menucategory_id']] = $menuCatInfo['name'];
+}
+
+
+if(count($arrMenuCats) == 0) {
+	echo "
+	<div style='display: none' id='errorBox'>
+		<p align='center'>
+			You must add a menu category before adding any items!
+		</p>
+	</div>
 	
-	if($_POST['itemtype'] == "customform") {
-		$customFormObj = new CustomForm($mysqli);
-		if(!$customFormObj->select($_POST['customform'])) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid custom form page.<br>";
-		}
-		
-		if($_POST['customformtargetwindow'] != "") {
-			$linkTarget = "_blank";	
-		}
-		
-		// Check Align
-		
-		if(!in_array($_POST['customformalign'], $arrCheckAlign)) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid text align.<br>";
-		}
-		
-	}
+	<script type='text/javascript'>
+		popupDialog('Add New Menu Item', '".$MAIN_ROOT."members', 'errorBox');
+	</script>
+	";
 	
-	
-	
-	if($_POST['itemtype'] == "custompage") {
-		$customPageObj = new Basic($mysqli, "custompages", "custompage_id");
-		if(!$customPageObj->select($_POST['custompage'])) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid custom page.<br>";
-		}
-		
-		if($_POST['custompagetargetwindow'] != "") {
-			$linkTarget = "_blank";
-		}
-		
-		// Check Align
-		
-		if(!in_array($_POST['custompagealign'], $arrCheckAlign)) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid text align.<br>";
-		}
-		
-	}
-	
-	if($_POST['itemtype'] == "customcode") {
-		$menuCode = $_POST['custommenuinfo'];	
-	}
-	
-	if($_POST['itemtype'] == "customformat") {
-		$menuCode = $_POST['wysiwygHTML'];	
-	}
-	
-	if($_POST['itemtype'] == "downloads") {
-		$downloadCatObj = new DownloadCategory($mysqli);
-		if(!$downloadCatObj->select($_POST['downloadpage'])) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid download page.<br>";
-		}
-		
-		if($_POST['downloadpagetargetwindow'] != "") {
-			$linkTarget = "_blank";
-		}
-		
-		// Check Align
-		
-		if(!in_array($_POST['downloadpagealign'], $arrCheckAlign)) {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid text align.<br>";
-		}
-		
-		
-	}
-	
-	// Check Poll
-	$pollObj = new Basic($mysqli, "polls", "poll_id");
-	if($_POST['itemtype'] == "poll" && !$pollObj->select($_POST['poll'])) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid poll.<br>";
-	}
-	
-	// Standard Checks
-	
-	// Check Item Name
-	if(trim($_POST['itemname']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not enter a blank item name.<br>";
-	}
-	
-	// Check Menu Category
-	if(!$menuCatObj->select($_POST['menucategory'])) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid menu category.<br>";
-	}
-	
-	// Check Display Order
-	
-	$menuItemObj->setCategoryKeyValue($_POST['menucategory']);
-	$intSortNum = $menuItemObj->validateOrder($_POST['displayorder'], $_POST['beforeafter']);
-	if($intSortNum === false) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid display order.<br>";
-	}
-	
-	// Check Item Type
-	if(!in_array($_POST['itemtype'], $arrItemTypes)) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid item type.<br>";
-	}
-	
-	// Check Show when
-	if($_POST['accesstype'] != "0" && $_POST['accesstype'] != "1" && $_POST['accesstype'] != "2") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid access type.<br>";
-	}
-	
-	if($_POST['hideitem'] != "1") {
-		$_POST['hideitem'] = 0;	
+	exit();
+}
+
+$selectMenuCat = isset($_GET['mcID']) ? $_GET['mcID'] : "";
+$displayOrderOptions = array();
+if(isset($_POST['menucategory'])) {
+	$arrMenuItems = $menuItemObj->get_entries(array("menucategory_id" => $_POST['menucategory']), "sortnum");
+	foreach($arrMenuItems as $eachMenuItem) {
+		$displayOrderOptions[$eachMenuItem['menuitem_id']] = $eachMenuItem['name'];
 	}
 
-	if($countErrors == 0 && $_POST['itemtype'] == "image" && $btUploadObj->uploadFile()) {
-		$imageUploadURL = "images/menu/".$btUploadObj->getUploadedFileName();
+	if(count($displayOrderOptions) == 0) {
+		$displayOrderOptions['first'] = "(first item)";	
 	}
-	elseif($countErrors == 0 && $_POST['itemtype'] == "image") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b>  Unable to upload selected image.  Make sure it's the correct file extension and not too big.<br>";
-	}
-	
-	
-	if($countErrors == 0) {
+}
 
-		$arrColumns = array("menucategory_id", "name", "itemtype", "accesstype", "hide", "sortnum");
-		$arrValues = array($_POST['menucategory'], $_POST['itemname'], $_POST['itemtype'], $_POST['accesstype'], $_POST['hideitem'], $intSortNum);
+
+$i = 1;
+// Link Options
+include("managemenu/include/linkoptions.php");
+
+
+// Image Options
+include("managemenu/include/imageoptions.php");
+
+
+// Custom Page Options
+include("managemenu/include/custompageoptions.php");
+
+
+// Custom Form Page Options
+include("managemenu/include/customformoptions.php");
+
+
+// Download Page Options
+include("managemenu/include/downloadoptions.php");
+
+
+// Shoutbox Options
+include("managemenu/include/shoutboxoptions.php");
+
+// Poll Options
+include("managemenu/include/polloptions.php");
+
+
+// Custom Code Editor
+include("managemenu/include/customcodeoptions.php");
+
+
+// Custom Code Editor - WYSIWYG
+include("managemenu/include/customcodeformatoptions.php");
+
+
+// Global Link Options - Target Window, Text Align and Prefix
+$globalLinkOptionsNeeded = array("link", "custompage", "customform", "downloads");
+foreach($globalLinkOptionsNeeded as $optionName) {
+	$globalLinkOptions[$optionName] = array(
+		"targetwindow_".$optionName => array(
+			"type" => "select",
+			"display_name" => "Target Window",
+			"sortorder" => $i++,
+			"attributes" => array("class" => "textBox formInput"),
+			"options" => array("" => "Same Window", "_blank" => "New Window")
+		),
+		"textalign_".$optionName => array(
+			"type" => "select",
+			"display_name" => "Text-align",
+			"attributes" => array("class" => "textBox formInput"),
+			"options" => $textAlignOptions,
+			"sortorder" => $i++
+		),
+		"prefix_".$optionName => array(
+			"type" => "text",
+			"display_name" => "Prefix",
+			"tooltip" => "Text to display before the link, i.e. a bullet point or dash.",
+			"sortorder" => $i++,
+			"attributes" => array("class" => "textBox formInput")
+		)
+	);
+}
+
+
+$linkOptionComponents = array_merge($linkOptionComponents, $globalLinkOptions['link']);
+$customPageOptionComponents = array_merge($customPageOptionComponents, $globalLinkOptions['custompage']);
+$customFormOptionComponents = array_merge($customFormOptionComponents, $globalLinkOptions['customform']);
+$downloadOptionComponents = array_merge($downloadOptionComponents, $globalLinkOptions['downloads']);
+
+$i = 1;
+$arrComponents = array(
+
+	"generalinfo" => array(
+		"type" => "section",
+		"options" => array("section_title" => "General Information:"),
+		"sortorder" => $i++
+	),
+	"itemname" => array(
+		"type" => "text",
+		"attributes" => array("class" => "textBox formInput"),
+		"validate" => array("NOT_BLANK"),
+		"db_name" => "name",
+		"sortorder" => $i++,
+		"display_name" => "Item Name"
+	),
+	"menucategory" => array(
+		"type" => "select",
+		"display_name" => "Menu Category",
+		"sortorder" => $i++,
+		"validate" => array("RESTRICT_TO_OPTIONS"),
+		"db_name" => "menucategory_id",
+		"attributes" => array("class" => "textBox formInput", "id" => "menuCats"),
+		"options" => $menuCatOptions,
+		"value" => $selectMenuCat
+	),
+	"displayorder" => array(
+		"type" => "beforeafter",
+		"display_name" => "Display Order",
+		"attributes" => array("class" => "textBox formInput"),
+		"sortorder" => $i++,
+		"validate" => array("RESTRICT_TO_OPTIONS", array("name" => "VALIDATE_ORDER", "set_category" => $_POST['menucategory'], "orderObject" => $menuItemObj)),
+		"db_name" => "sortnum",
+		"options" => $displayOrderOptions
+	),
+	"itemtype" => array(
+		"type" => "select",
+		"display_name" => "Item Type",
+		"validate" => array("RESTRICT_TO_OPTIONS"),
+		"db_name" => "itemtype",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "textBox formInput", "id" => "itemType"),
+		"options" => $itemTypeOptions
+	),
+	"accesstype" => array(
+		"type" => "select",
+		"display_name" => "Show when",
+		"sortorder" => $i++,
+		"validate" => array("RESTRICT_TO_OPTIONS"),
+		"db_name" => "accesstype",
+		"options" => array("Always", "Logged In"),
+		"attributes" => array("class" => "textBox formInput")
+	),
+	"hide" => array(
+		"type" => "checkbox",
+		"display_name" => "Hide",
+		"attributes" => array("class" => "textBox formInput"),
+		"value" => 1,
+		"sortorder" => $i++,
+		"db_name" => "hide"
+	),
+	"linkinformation" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Link Information:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "linkOptions"),
+		"components" => $linkOptionComponents,
+		"validate" => array("validateMenuItem_Links")
+	),
+	"imageinformation" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Image Information:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "imageOptions", "style" => "display: none"),
+		"components" => $imageOptionComponents,
+		"validate" => array("validateMenuItem_Images")
+	),
+	"custompageoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Custom Page Options:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "customPageOptions", "style" => "display: none"),
+		"components" => $customPageOptionComponents,
+		"validate" => array(
+			array(
+				"name" => 
+				array(
+					"function" => "validateMenuItem_CustomPageTypes", 
+					"args" => array("custompage", &$customPageOptionComponents)
+				)
+			)
+		)
+	),
+	"customformoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Custom Form Options:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "customFormOptions", "style" => "display: none"),
+		"components" => $customFormOptionComponents,
+		"validate" => array(
+			array(
+				"name" => 
+				array(
+					"function" => "validateMenuItem_CustomPageTypes", 
+					"args" => array("customform", &$customFormOptionComponents)
+				)
+			)
+		)
+	),
+	"downloadoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Download Page Options:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "downloadLinkOptions", "style" => "display: none"),
+		"components" => $downloadOptionComponents,
+		"validate" => array(
+			array(
+				"name" => 
+				array(
+					"function" => "validateMenuItem_CustomPageTypes", 
+					"args" => array("downloads", &$downloadOptionComponents)
+				)
+			)
+		)
+	),
+	"shoutboxoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Shoutbox Information:", "section_description" => "<b><u>NOTE:</u></b> Leave all fields blank to keep the theme's default settings."),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "shoutBoxOptions", "style" => "display: none"),
+		"components" => $shoutboxOptionComponents
+	),
+	"polloptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Poll Options:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "pollOptions", "style" => "display: none"),
+		"components" => $pollOptionComponents
+	),
+	"customcodeoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Menu Item Code:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "customCodeOptions", "style" => "display: none"),
+		"components" => $customCodeOptionComponents
+	),
+	"customformatoptions" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Menu Item Information:"),
+		"sortorder" => $i++,
+		"attributes" => array("id" => "customFormatOptions", "style" => "display: none"),
+		"components" => $customWYSIWYGOptionComponents
+	),
+	"fakeSubmit" => array(
+		"type" => "button",
+		"attributes" => array("class" => "submitButton formSubmitButton", "id" => "btnFakeSubmit"),
+		"value" => "Add Menu Item",
+		"sortorder" => $i++
+	),
+	"submit" => array(
+		"type" => "submit",
+		"value" => "submit",
+		"attributes" => array("style" => "display: none", "id" => "btnSubmit"),
+		"sortorder" => $i++
+	)
+
+);
+
+
+$afterJS = "
+
+	$(document).ready(function() {		
 		
-		if($menuItemObj->addNew($arrColumns, $arrValues)) {
-						
-			$menuItemInfo = $menuItemObj->get_info_filtered();
+		$('#menuCats').change(function() {
+			$('#displayOrder').html(\"<option value''>Loading...</option>\");
+			$.post('".$MAIN_ROOT."members/include/admin/managemenu/include/menuitemlist.php', { menuCatID: $('#menuCats').val() }, function(data) {
+				$('select[name=displayorder]').html(data);
+			});
+		});
+				
+		$('#menuCats').change();
+
+
+		$('#itemType').change(function() {
+					
+			$('#linkOptions').hide();
+			$('#imageOptions').hide();
+			$('#shoutBoxOptions').hide();
+			$('#customPageOptions').hide();
+			$('#customFormOptions').hide();
+			$('#customCodeOptions').hide();
+			$('#customFormatOptions').hide();
+			$('#downloadLinkOptions').hide();
+			$('#pollOptions').hide();
 			
-			switch($_POST['itemtype']) {
-				case "link":
-					$arrItemColumns = array("menuitem_id", "link", "linktarget", "prefix", "textalign");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], $linkURL, $linkTarget, $_POST['linkprefix'], $_POST['linkalign']);
-					$menuItemObj->objLink->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objLink->get_info("menulink_id")));
+			switch($(this).val()) {
+				case 'link':
+					$('#linkOptions').show();
 					break;
-				case "image":
-					$arrItemColumns = array("menuitem_id", "imageurl", "width", "height", "link", "linktarget", "imagealign");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], $imageUploadURL, $_POST['imagewidth'], $_POST['imageheight'], $linkURL, $linkTarget, $_POST['imagealign']);
-					$menuItemObj->objImage->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objImage->get_info("menuimage_id")));
+				case 'image':
+					$('#imageOptions').show();
 					break;
-				case "shoutbox":
-					$arrItemColumns = array("menuitem_id", "width", "height", "percentwidth", "percentheight", "textboxwidth");
-					$arrItemValues = arraY($menuItemInfo['menuitem_id'], $_POST['shoutboxwidth'], $_POST['shoutboxheight'], $_POST['shoutboxwidthpercent'], $_POST['shoutboxheightpercent'], $_POST['shoutboxtextbox']);
-					$menuItemObj->objShoutbox->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objShoutbox->get_info("menushoutbox_id")));
+				case 'customcode':
+					$('#customCodeOptions').show();
 					break;
-				case "customform":
-					$arrItemColumns = array("menuitem_id", "custompage_id", "prefix", "linktarget", "textalign");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], $_POST['customform'], $_POST['customformprefix'], $linkTarget, $_POST['customformalign']);
-					$menuItemObj->objCustomPage->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomPage->get_info("menucustompage_id")));
+				case 'shoutbox':
+					$('#shoutBoxOptions').show();
 					break;
-				case "custompage":
-					$arrItemColumns = array("menuitem_id", "custompage_id", "prefix", "linktarget", "textalign");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], $_POST['custompage'], $_POST['custompageprefix'], $linkTarget, $_POST['custompagealign']);
-					$menuItemObj->objCustomPage->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomPage->get_info("menucustompage_id")));
+				case 'customform':
+					$('#customFormOptions').show();
 					break;
-				case "customcode":
-					$arrItemColumns = array("menuitem_id", "blocktype", "code");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], "code", $menuCode);
-					$menuItemObj->objCustomBlock->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomBlock->get_info("menucustomblock_id")));
+				case 'custompage':
+					$('#customPageOptions').show();
 					break;
-				case "customformat":
-					$arrItemColumns = array("menuitem_id", "blocktype", "code");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], "format", $menuCode);
-					$menuItemObj->objCustomBlock->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomBlock->get_info("menucustomblock_id")));
+				case 'customformat':
+					$('#customFormatOptions').show();
 					break;
-				case "downloads":
-					$arrItemColumns = array("menuitem_id", "custompage_id", "prefix", "linktarget", "textalign");
-					$arrItemValues = array($menuItemInfo['menuitem_id'], $_POST['downloadpage'], $_POST['downloadpageprefix'], $linkTarget, $_POST['downloadpagealign']);
-					$menuItemObj->objCustomPage->addNew($arrItemColumns, $arrItemValues);
-					$menuItemObj->update(array("itemtype_id"), array($menuItemObj->objCustomPage->get_info("menucustompage_id")));					
+				case 'downloads':
+					$('#downloadLinkOptions').show();
 					break;
-				case "poll":
-					$menuItemObj->update(array("itemtype_id"), array($_POST['poll']));
-					break;
+				case 'poll':
+					$('#pollOptions').show();
+					break;					
 			}
 			
 			
-			echo "
-				<div style='display: none' id='successBox'>
-					<p align='center'>
-						Successfully Added New Menu Item: <b>".$menuItemInfo['name']."</b>!
-					</p>
-				</div>
-				
-				<script type='text/javascript'>
-					popupDialog('Add New Menu Item', '".$MAIN_ROOT."members', 'successBox');
-				</script>
-			";
-			
-		}
-		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to database! Please contact the website administrator.<br>";
-		}
+		});
 		
-	}
+		$('#itemType').change();
+		
+		$('#shoutBoxWidthPercent').change(function() {
+					
+			if($(this).val() == '0') {
+				$('#shoutBoxTextBoxWidth').html('pixels');
+			}
+			else {
+				$('#shoutBoxTextBoxWidth').html('percent');
+			}
+		
+		});
+		
+		$('#btnFakeSubmit').click(function() {
+			$('#menuCodeEditor_code').val(menuCodeEditor.getValue());
+			$('#btnSubmit').click();
+		
+		});
+		
+	});
+		
 	
-	
-	if($countErrors > 0) {
-		$_POST = filterArray($_POST);
-		$_POST['submit'] = false;	
-	}
-	
-	
-}
+";
 
 
-if(!$_POST['submit']) {
-	
-	$menucatoptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."menu_category ORDER BY sortnum");
-	while($row = $result->fetch_assoc()) {
-		
-		$dispSelected = "";
-		if(isset($_GET['mcID']) && $_GET['mcID'] == $row['menucategory_id']) {
-			$dispSelected = " selected";	
-		}
-		
-		$menucatoptions .= "<option value='".$row['menucategory_id']."'".$dispSelected.">".$row['name']."</option>";	
-	}	
-	
-	if($result->num_rows == 0) {
-		echo "
-		<div style='display: none' id='errorBox'>
-			<p align='center'>
-				You must add a menu category before adding any items!
-			</p>
-		</div>
-		
-		<script type='text/javascript'>
-			popupDialog('Add New Menu Item', '".$MAIN_ROOT."members', 'errorBox');
-		</script>
-		";
-		
-		exit();
-	}
-	
-	
-	$customformoptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."customform ORDER BY name");
-	while($row = $result->fetch_assoc()) {
-		$customformoptions .= "<option value='".$row['customform_id']."'>".filterText($row['name'])."</option>";	
-	}
-	
-	if($result->num_rows == 0) {
-		$customformoptions = "<option value=''>None</option>";	
-	}
-	
-	$custompageoptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."custompages ORDER BY pagename");
-	while($row = $result->fetch_assoc()) {
-		$custompageoptions .= "<option value='".$row['custompage_id']."'>".filterText($row['pagename'])."</option>";
-	}
-	
-	if($result->num_rows == 0) {
-		$custompageoptions = "<option value=''>None</option>";
-	}
-	
-	$downloadpageoptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."downloadcategory WHERE specialkey = '' ORDER BY ordernum DESC");
-	while($row = $result->fetch_assoc()) {
-		$downloadpageoptions .= "<option value='".$row['downloadcategory_id']."'>".filterText($row['name'])."</option>";		
-	}
-	
-	$polloptions = "";
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."polls ORDER BY dateposted DESC");
-	while($row = $result->fetch_assoc()) {
-		
-		$dispPollQuestion = (strlen($row['question']) > 50) ? substr($row['question'], 0, 50)."..." : $row['question'];
-			
-		$polloptions .= "<option value='".$row['poll_id']."'>".filterText($dispPollQuestion)."</option>";
-	}
-	
-	
-	if($result->num_rows == 0) {
-		$downloadpageoptions = "<option value=''>None<option>";	
-	}
-	
-	echo "
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post' enctype='multipart/form-data'>
-			<div class='formDiv'>
 
-			";
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to add new menu item because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-				Use the form below to add a menu item.
-				<table class='formTable'>
-					<tr>
-						<td class='main' colspan='2'>
-							<b>General Information:</b>
-							<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Item Name:</td>
-						<td class='main'><input type='text' name='itemname' class='textBox' value='".$_POST['itemname']."' style='width: 200px'></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Menu Category:</td>
-						<td class='main'>
-							<select name='menucategory' id='menuCats' class='textBox'>".$menucatoptions."</select>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel' valign='top'>Display Order:</td>
-						<td class='main'>
-							<select name='beforeafter' class='textBox'><option value='before'>Before</option><option value='after'>After</option></select><br>
-							<select name='displayorder' id='displayOrder' class='textBox'></select>					
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Item Type:</td>
-						<td class='main'>
-							<select name='itemtype' id='itemType' class='textBox'>
-								<option value='link'>Link</option>
-								<option value='image'>Image</option>
-								<option value='custompage'>Custom Page</option>
-								<option value='customform'>Custom Form Page</option>
-								<option value='downloads'>Download Page</option>
-								<option value='top-players'>Top Players</option>
-								<option value='shoutbox'>Shoutbox</option>
-								<option value='forumactivity'>Latest Forum Activity</option>
-								<option value='newestmembers'>Newest Members</option>
-								<option value='poll'>Poll</option>
-								<option value='login'>Default Login</option>
-								<option value='customcode'>Custom Block - Code Editor</option>
-								<option value='customformat'>Custom Block - WYSIWYG Editor</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Show when:</td>
-						<td class='main'>
-							<select name='accesstype' class='textBox'><option value='0'>Always</option><option value='1'>Logged In</option><option value='2'>Logged Out</option></select>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Hide:</td>
-						<td class='main'><input type='checkbox' name='hideitem' value='1'></td>
-					</tr>
-				</table>
-				
-				<div id='linkOptions'>
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Link Information:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Link URL:</td>
-							<td class='main'><input type='text' name='linkurl' value='".$_POST['linkurl']."' class='textBox' style='width: 200px'></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Target Window:</td>
-							<td class='main'><select name='targetwindow' class='textBox'><option value=''>Same Window</option><option value='_blank'>New Window</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Text-align:</td>
-							<td class='main'><select name='linkalign' class='textBox'><option value='left'>Left</option><option value='center'>Center</option><option value='right'>Right</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Prefix: <a href='javascript:void(0)' onmouseover=\"showToolTip('Text to display before the link, i.e. a bullet point or dash.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='linkprefix' value='".$_POST['linkprefix']."' class='textBox'></td>
-						</tr>
-					</table>
-				</div>
-				
-				
-				<div id='customFormOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Custom Form Options:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Custom Form:</td>
-							<td class='main'><select name='customform' class='textBox'>".$customformoptions."</select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Target Window:</td>
-							<td class='main'><select name='customformtargetwindow' class='textBox'><option value=''>Same Window</option><option value='_blank'>New Window</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Text-align:</td>
-							<td class='main'><select name='customformalign' class='textBox'><option value='left'>Left</option><option value='center'>Center</option><option value='right'>Right</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Prefix: <a href='javascript:void(0)' onmouseover=\"showToolTip('Text to display before the link, i.e. a bullet point or dash.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='customformprefix' value='".$_POST['customformprefix']."' class='textBox'></td>
-						</tr>
-					</table>
-				</div>
-				
-				
-				
-				
-				<div id='customPageOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Custom Page Options:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Custom Page:</td>
-							<td class='main'><select name='custompage' class='textBox'>".$custompageoptions."</select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Target Window:</td>
-							<td class='main'><select name='custompagetargetwindow' class='textBox'><option value=''>Same Window</option><option value='_blank'>New Window</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Text-align:</td>
-							<td class='main'><select name='custompagealign' class='textBox'><option value='left'>Left</option><option value='center'>Center</option><option value='right'>Right</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Prefix: <a href='javascript:void(0)' onmouseover=\"showToolTip('Text to display before the link, i.e. a bullet point or dash.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='custompageprefix' value='".$_POST['custompageprefix']."' class='textBox'></td>
-						</tr>
-					</table>
-				</div>
-				
-				<div id='shoutBoxOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Shoutbox Information:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-								<div style='padding-left: 3px; margin-bottom: 10px'><b>NOTE:</b> Leave all fields blank to keep the theme's default settings.</div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Width:</td>
-							<td class='main'><input type='text' name='shoutboxwidth' value='".$_POST['shoutboxwidth']."' class='textBox' style='width: 40px'>&nbsp;&nbsp;&nbsp;<select name='shoutboxwidthpercent' class='textBox' id='shoutBoxWidthPercent'><option value='0'>pixels</option><option value='1'>percent</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Height:</td>
-							<td class='main'><input type='text' name='shoutboxheight' value='".$_POST['shoutboxheight']."' class='textBox' style='width: 40px'>&nbsp;&nbsp;&nbsp;<select name='shoutboxheightpercent' class='textBox'><option value='0'>pixels</option><option value='1'>percent</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Textbox Width:</td>
-							<td class='main'><input type='text' name='textboxwidth' value='".$_POST['textboxwidth']."' class='textBox' style='width: 40px'> <span id='shoutBoxTextBoxWidth'>pixels</span></td>
-						</tr>
-					</table>
-				</div>
-				
-				<div id='imageOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Image Information:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel' valign='top'>Image:</td>
-							<td class='main'>
-								File:<br><input type='file' name='menuimagefile' class='textBox' style='width: 250px; border: 0px'><br>
-								<span style='font-size: 10px'>File Types: .jpg, .gif, .png, .bmp | <a href='javascript:void(0)' onmouseover=\"showToolTip('The file size upload limit is controlled by your PHP settings in the php.ini file.')\" onmouseout='hideToolTip()'>File Size: ".ini_get("upload_max_filesize")."B or less</a></span>
-								<p><b><i>OR</i></b></p>
-								URL:<br><input type='text' name='menuimageurl' value='".$_POST['menuimageurl']."' class='textBox' style='width: 250px'>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Width: <a href='javascript:void(0)' onmouseover=\"showToolTip('Leave blank if you want to use the default image width.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='imagewidth' value='".$_POST['imagewidth']."' class='textBox' style='width: 40px'></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Height: <a href='javascript:void(0)' onmouseover=\"showToolTip('Leave blank if you want to use the default image height.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='imageheight' value='".$_POST['imageheight']."' class='textBox' style='width: 40px'></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Link URL: <a href='javascript:void(0)' onmouseover=\"showToolTip('Leave blank if you don\'t want your image linking to anything.')\" onmouseout='hideToolTip()'>(?)</a></td>
-							<td class='main'><input type='text' name='imagelinkurl' value='".$_POST['imagelinkurl']."' class='textBox' style='width: 200px'></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Target Window:</td>
-							<td class='main'><select name='imagelinktargetwindow' class='textBox'><option value=''>Same Window</option><option value='_blank'>New Window</option></select></td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Image Align:</td>
-							<td class='main'><select name='imagealign' class='textBox'><option value='left'>Left</option><option value='center'>Center</option><option value='right'>Right</option></select></td>
-						</tr>
-					</table>
-				</div>
-				
-				<div id='customCodeOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main'>
-								<b>Menu Item Code:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='main'>
-								<div style='background-color: white; position: relative'><div id='customMenuEditor' class='codeEditor'>".$_POST['custommenuinfo']."</div></div>
-								<textarea id='customMenuInfo' name='custommenuinfo' style='display: none'></textarea>
-							</td>
-						</tr>
-					</table>
-				</div>
-				
-				
-				<div id='customFormatOptions' style='display: none'>
-					<table class='formTable'>
-						<tr>
-							<td class='main'>
-								<b>Menu Item Information:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='main' align='center'>
-								<textarea id='tinymceTextArea' name='wysiwygHTML' style='width: 80%' rows='15'>".$_POST['wysiwygHTML']."</textarea>
-							</td>
-						</tr>
-					</table>
-				</div>
-				
-				<div id='downloadLinkOptions' style='display: none'>
-				
-				<table class='formTable'>
-					<tr>
-						<td class='main' colspan='2'>
-							<b>Download Page Options:</b>
-							<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Download Page:</td>
-						<td class='main'><select name='downloadpage' class='textBox'>".$downloadpageoptions."</select></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Target Window:</td>
-						<td class='main'><select name='downloadpagetargetwindow' class='textBox'><option value=''>Same Window</option><option value='_blank'>New Window</option></select></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Text-align:</td>
-						<td class='main'><select name='downloadpagealign' class='textBox'><option value='left'>Left</option><option value='center'>Center</option><option value='right'>Right</option></select></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Prefix: <a href='javascript:void(0)' onmouseover=\"showToolTip('Text to display before the link, i.e. a bullet point or dash.')\" onmouseout='hideToolTip()'>(?)</a></td>
-						<td class='main'><input type='text' name='downloadpageprefix' value='".$_POST['downloadpageprefix']."' class='textBox'></td>
-					</tr>
-				</table>
-				
-				
-				</div>
-				
-				<div id='pollOptions' style='display: none'>
-				
-					<table class='formTable'>
-						<tr>
-							<td class='main' colspan='2'>
-								<b>Poll Options:</b>
-								<div class='dottedLine' style='width: 100%; margin-bottom: 5px'></div>
-							</td>
-						</tr>
-						<tr>
-							<td class='formLabel'>Select Poll:</td>
-							<td class='main'><select name='poll' class='textBox'>".$polloptions."</select></td>
-						</tr>
-					</table>
-				</div>
-				
-				<p align='center' style='margin-top: 50px'>
-					<input type='button' id='btnFakeSubmit' value='Add Menu Item' class='submitButton'>
-					<input type='submit' name='submit' value='submit' id='btnSubmit' style='display: none'>
-				</p>
-				
-			</div>
-		</form>
-		
-		<script type='text/javascript'>
-		
-			var customMenuEditor = ace.edit('customMenuEditor');
-			customMenuEditor.getSession().setMode('ace/mode/php');
-			customMenuEditor.setTheme('ace/theme/eclipse');
-			customMenuEditor.setHighlightActiveLine(false);
-			customMenuEditor.setShowPrintMargin(false);
-		
-			$(document).ready(function() {
-					
-				$('#menuCats').change(function() {
-					$('#displayOrder').html(\"<option value''>Loading...</option>\");
-					$.post('".$MAIN_ROOT."members/include/admin/managemenu/include/menuitemlist.php', { menuCatID: $('#menuCats').val() }, function(data) {
-						$('#displayOrder').html(data);
-					});
-				});
-				
-				
-				$('#itemType').change(function() {
-					
-					$('#linkOptions').hide();
-					$('#imageOptions').hide();
-					$('#shoutBoxOptions').hide();
-					$('#customPageOptions').hide();
-					$('#customFormOptions').hide();
-					$('#customCodeOptions').hide();
-					$('#customFormatOptions').hide();
-					$('#downloadLinkOptions').hide();
-				
-					
-					switch($(this).val()) {
-						case 'link':
-							$('#linkOptions').show();
-							break;
-						case 'image':
-							$('#imageOptions').show();
-							break;
-						case 'customcode':
-							$('#customCodeOptions').show();
-							break;
-						case 'shoutbox':
-							$('#shoutBoxOptions').show();
-							break;
-						case 'customform':
-							$('#customFormOptions').show();
-							break;
-						case 'custompage':
-							$('#customPageOptions').show();
-							break;
-						case 'customformat':
-							$('#customFormatOptions').show();
-							break;
-						case 'downloads':
-							$('#downloadLinkOptions').show();
-							break;
-						case 'poll':
-							$('#pollOptions').show();
-							break;					
-					}
-					
-					
-					
-				});
-				
-				$('#btnFakeSubmit').click(function() {
-					$('#customMenuInfo').val(customMenuEditor.getValue());
-					$('#btnSubmit').click();				
-				});
-				
-				
-				$('#shoutBoxWidthPercent').change(function() {
-					
-					if($(this).val() == '0') {
-						$('#shoutBoxTextBoxWidth').html('pixels');
-					}
-					else {
-						$('#shoutBoxTextBoxWidth').html('percent');
-					}
-				
-				});
-				
-				
-				
-	
-				$('#tinymceTextArea').tinymce({
-			
-					script_url: '".$MAIN_ROOT."js/tiny_mce/tiny_mce.js',
-					theme: 'advanced',
-					theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,code,|,forecolorpicker,fontselect,fontsizeselect',
-					theme_advanced_resizing: true
-				
-				});
-			
 
-				
-				$('#menuCats').change();
-			
-			});
-
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"description" => "Use the form below to add a menu item.",
+	"saveObject" => $menuItemObj,
+	"saveMessage" => "Successfully Added New Menu Item: <b>".filterText($_POST['itemname'])."</b>!",
+	"saveType" => "add",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post", "enctype" => "multipart/form-data"),
+	"embedJS" => $afterJS,
+	"afterSave" => array(
+		array(
+			"function" => "saveMenuItem", 
+			"args" => array(
+				&$linkOptionComponents, 
+				&$menuItemObj->objLink, 
+				array(	"linkurl_link" => "link", 
+						"targetwindow_link" => "linktarget", 
+						"textalign_link" => "textalign", 
+						"prefix_link" => "prefix"), 
+				"menulink_id", 
+				"link")
+		),
+		array(
+			"function" => "saveMenuItem", 
+			"args" => array(
+				&$imageOptionComponents, 
+				&$menuItemObj->objImage, 
+				array(	"imagefile_image" => "imageurl", 
+						"width_image" => "width", 
+						"height_image" => "height", 
+						"linkurl_image" => "link",
+						"targetwindow_image" => "linktarget",
+						"textalign_image" => "imagealign"), 
+				"menuimage_id", 
+				"image")
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$customPageOptionComponents,
+				&$menuItemObj->objCustomPage,
+				array(	"custompage" => "custompage_id",
+						"targetwindow_custompage" => "linktarget",
+						"textalign_custompage" => "textalign",
+						"prefix_custompage" => "prefix"),
+				"menucustompage_id",
+				"custompage"
+			)
 		
-		</script>
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$customFormOptionComponents,
+				&$menuItemObj->objCustomPage,
+				array(	"customform" => "custompage_id",
+						"targetwindow_customform" => "linktarget",
+						"textalign_customform" => "textalign",
+						"prefix_customform" => "prefix"),
+				"menucustompage_id",
+				"customform"
+			)
 		
-	";
-	
-	
-}
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$downloadOptionComponents,
+				&$menuItemObj->objCustomPage,
+				array(	"downloadpage" => "custompage_id",
+						"targetwindow_downloads" => "linktarget",
+						"textalign_downloads" => "textalign",
+						"prefix_downloads" => "prefix"),
+				"menucustompage_id",
+				"downloads"
+			)
+		
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$shoutboxOptionComponents,
+				&$menuItemObj->objShoutbox,
+				array(	"width_shoutbox" => "width",
+						"height_shoutbox" => "height",
+						"textboxwidth_shoutbox" => "textboxwidth"),
+				"menushoutbox_id",
+				"shoutbox",
+				array("percentwidth" => $_POST['widthunit_shoutbox'], "percentheight" => $_POST['heightunit_shoutbox'])
+			)
+		
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$customCodeOptionComponents,
+				&$menuItemObj->objCustomBlock,
+				array("customcode" => "code"),
+				"menucustomblock_id",
+				"customcode",
+				array("blocktype" => "code")
+			)
+		),
+		array(
+			"function" => "saveMenuItem",
+			"args" => array(
+				&$customWYSIWYGOptionComponents,
+				&$menuItemObj->objCustomBlock,
+				array("wysiwygEditor" => "code"),
+				"menucustomblock_id",
+				"customformat",
+				array("blocktype" => "format")
+			)
+		),
+		"savePoll"
+	)
+);
 
+define("MANAGEMENU_FUNCTIONS", true);
+include("managemenu/_functions.php");
 
 ?>

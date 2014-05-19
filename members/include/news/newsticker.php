@@ -48,7 +48,7 @@ if($_POST['submit']) {
 	$arrColumns = array("newsticker", "newstickercolor", "newstickersize", "newstickerbold", "newstickeritalic");
 	$arrValues = array($_POST['newsticker'], $_POST['newstickercolor'], $_POST['fontsize'], $setBoldText, $setItalicText);
 	
-	if($webInfoObj->update($arrColumns, $arrValues)) {
+	if($webInfoObj->multiUpdate($arrColumns, $arrValues)) {
 	
 		echo "
 		<div style='display: none' id='successBox'>

@@ -118,15 +118,10 @@ if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION
 
 }
 
-
-
-echo "
-	<div class='breadCrumbTitle'>Poll Results</div>
-	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-		<a href='".$MAIN_ROOT."'>Home</a> > Poll Results
-	</div>
-";
-
+$breadcrumbObj->setTitle("Poll Results");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Poll Results");
+include($prevFolder."include/breadcrumb.php");
 
 $member->select($pollInfo['member_id']);
 $dispPollCreator = $member->getMemberLink();
@@ -218,10 +213,11 @@ elseif($pollInfo['accesstype'] == "memberslimited") {
 					<table class='formTable'>
 						";
 			
+			$memberVoters = 0;
 			$counter = 0;
 			foreach($pollObj->getVoterInfo() as $memberID => $voteInfo) {
 				if($member->select($memberID)) {
-					
+					$memberVoters++;
 					if($counter == 0) {
 						$addCSS = "";
 						$counter = 1;	
@@ -235,6 +231,9 @@ elseif($pollInfo['accesstype'] == "memberslimited") {
 					
 					if($pollMemberInfo['profilepic'] == "") {
 						$pollMemberInfo['profilepic'] = $MAIN_ROOT."themes/".$THEME."/images/defaultprofile.png";
+					}
+					else {
+						$pollMemberInfo['profilepic'] = $MAIN_ROOT.$pollMemberInfo['profilepic'];
 					}
 					
 					$dispVoteDetails = "";
@@ -270,6 +269,19 @@ elseif($pollInfo['accesstype'] == "memberslimited") {
 					";
 				}
 			}
+			
+			if($memberVoters == 0) {
+
+				echo "
+				
+					<p align='center'>
+						No members have voted.
+					</p>
+				
+				";
+				
+			}
+			
 			
 			echo "
 					</table>

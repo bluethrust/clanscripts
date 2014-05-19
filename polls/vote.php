@@ -46,6 +46,7 @@
 			$blnVote = true;
 		}
 		elseif($pollInfo['accesstype'] == "public") {
+			$memberID = ($member->authorizeLogin($_SESSION['btPassword'])) ? $member->get_info("member_id") : "";
 			$blnVote = true;	
 		}
 		

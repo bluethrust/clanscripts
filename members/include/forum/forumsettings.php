@@ -152,10 +152,10 @@ if($_POST['submit']) {
 			$arrMedalValues = array($_POST['medalwidth'], $_POST['medalheight'], $setMedalWidthUnit, $setMedalHeightUnit, $_POST['medalcount']);
 		}
 		
-		$arrColumns = array_merge(array("forum_topicsperpage", "forum_postsperpage", "forum_showrank", "forum_showmedal", "forum_avatarwidth", "forum_avatarheight", "forum_avatarwidthunit", "forum_avatarheightunit", "forum_imagewidth", "forum_imageheight", "forum_imagewidthunit", "forum_imageheightunit", "forum_linkimages", "forum_sigwidth", "forum_sigheight", "forum_sigwidthunit", "forum_sigheightunit", "forum_hidesignatures"), $arrRankColumns, $arrMedalColumns);
+		$arrSettingNames = array_merge(array("forum_topicsperpage", "forum_postsperpage", "forum_showrank", "forum_showmedal", "forum_avatarwidth", "forum_avatarheight", "forum_avatarwidthunit", "forum_avatarheightunit", "forum_imagewidth", "forum_imageheight", "forum_imagewidthunit", "forum_imageheightunit", "forum_linkimages", "forum_sigwidth", "forum_sigheight", "forum_sigwidthunit", "forum_sigheightunit", "forum_hidesignatures"), $arrRankColumns, $arrMedalColumns);
 		$arrValues = array_merge(array($_POST['defaultopics'], $_POST['defaultposts'], $setShowRank, $setShowMedals, $_POST['avatarwidth'], $_POST['avatarheight'], $setAvatarWidthUnit, $setAvatarHeightUnit, $_POST['imagewidth'], $_POST['imageheight'], $setImageWidthUnit, $setImageHeightUnit, $setAutoLinkImages, $_POST['sigwidth'], $_POST['sigheight'], $setSigWidthUnit, $setSigHeightUnit, $setHideSignature), $arrRankValues, $arrMedalValues);
-		
-		if($webInfoObj->update($arrColumns, $arrValues)) {
+			
+		if($webInfoObj->multiUpdate($arrSettingNames, $arrValues)) {
 			
 			echo "
 			

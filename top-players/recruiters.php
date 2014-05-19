@@ -45,14 +45,14 @@ $dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 $member = new Member($mysqli);
-?>
 
-<div class='breadCrumbTitle'>Top Players: Recruiters</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Top Players: Recruiters
-</div>
+$breadcrumbObj->setTitle("Top Players: Recruiters");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Top Players: Recruiters");
 
-<?php
+include($prevFolder."include/breadcrumb.php");
+
+
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."members WHERE disabled = '0' AND rank_id != '1'");
 	while($row = $result->fetch_assoc()) {
 		$member->select($row['member_id']);

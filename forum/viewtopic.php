@@ -18,11 +18,6 @@ $prevFolder = "../";
 
 include($prevFolder."_setup.php");
 
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/forumboard.php");
-include_once($prevFolder."classes/downloadcategory.php");
-include_once($prevFolder."classes/download.php");
-
 $consoleObj = new ConsoleOption($mysqli);
 $boardObj = new ForumBoard($mysqli);
 $member = new Member($mysqli);
@@ -42,7 +37,7 @@ $attachmentObj = new Download($mysqli);
 
 $downloadCatObj->selectBySpecialKey("forumattachments");
 
-
+$moveTopicCID = $consoleObj->findConsoleIDByName("Move Topic");
 
 $ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
 
@@ -78,54 +73,13 @@ $lastPostInfo = $boardObj->objPost->get_info_filtered();
 
 $EXTERNAL_JAVASCRIPT .= "<script type='text/javascript' src='".$MAIN_ROOT."js/ace/src-min-noconflict/ace.js' charset='utf-8'></script>";
 
-
-// Image and Signuature Size Settings
-$setMaxImageWidthUnit = ($websiteInfo['forum_imagewidthunit'] == "%") ? "%" : "px";
-$setMaxImageWidth = ($websiteInfo['forum_imagewidth'] > 0) ? "max-width: ".$websiteInfo['forum_imagewidth'].$setMaxImageWidthUnit : "";
-
-$setMaxImageHeightUnit = ($websiteInfo['forum_imageheightunit'] == "%") ? "%" : "px";
-$setMaxImageHeight = ($websiteInfo['forum_imageheight'] > 0) ? "max-height: ".$websiteInfo['forum_imageheight'].$setMaxImageHeightUnit : "";
-
-$setMaxSigWidthUnit = ($websiteInfo['forum_sigwidthunit'] == "%") ? "%" : "px";
-$setMaxSigWidth = ($websiteInfo['forum_sigwidth'] > 0) ? "max-width: ".$websiteInfo['forum_sigwidth'].$setMaxSigWidthUnit : "";
-
-$setMaxSigHeightUnit = ($websiteInfo['forum_sigheightunit'] == "%") ? "%" : "px";
-$setMaxSigHeight = ($websiteInfo['forum_sigheight'] > 0) ? "max-height: ".$websiteInfo['forum_sigheight'].$setMaxSigHeightUnit : "";
-
-$editForumCSS = "";
-
-if($setMaxImageWidth != "" || $setMaxImageHeight != "") {
-	$editForumCSS .= "
-		.boardPostInfo img {
-			".$setMaxImageWidth.";
-			".$setMaxImageHeight.";
-		}	
-	";
-}
-
-if($setMaxSigWidth != "" || $setMaxSigHeight != "") {
-	$editForumCSS .= "
-		.forumSignatureContainer img {
-			".$setMaxSigWidth.";
-			".$setMaxSigHeight.";
-		}	
-	";
-}
-
-
-if($editForumCSS != "") {
-	$EXTERNAL_JAVASCRIPT .= "	
-		<style>
-			".$editForumCSS."		
-		</style>
-	";
-}
-
+define("RESIZE_FORUM_IMAGES", true);
+include("forum_image_resize.php");
 
 
 // Start Page
 $PAGE_NAME = $postInfo['title']." - ".$boardInfo['name']." - ";
-$dispBreadCrumb = "";
+
 include($prevFolder."themes/".$THEME."/_header.php");
 
 // Check Private Forum
@@ -243,13 +197,31 @@ if($blnPageSelect) {
 	";
 }
 
-echo "
-<div class='breadCrumbTitle'>".$postInfo['title']."</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-<a href='".$MAIN_ROOT."'>Home</a> > <a href='index.php'>Forum</a> > <a href='viewboard.php?bID=".$boardInfo['forumboard_id']."'>".$boardInfo['name']."</a> > ".$postInfo['title']."
-</div>
+$breadcrumbObj->setTitle($postInfo['title']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Forum", $MAIN_ROOT."forum");
+if($boardInfo['subforum_id'] != 0) {
+	$subForumObj = new ForumBoard($mysqli);
+	$subForumID = $boardInfo['subforum_id'];
+	$submForumBC = array();
+	while($subForumID != 0) {
+		$subForumObj->select($subForumID);
+		$subForumInfo = $subForumObj->get_info_filtered();
+		$subForumID = $subForumInfo['subforum_id'];
+		//$dispBreadCrumbChain = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a> > ".$dispBreadCrumbChain;
+		$subForumBC[] = array("link" => $MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id'], "value" => $subForumInfo['name']);
+	}
 
-";
+	krsort($subForumBC);
+	foreach($subForumBC as $bcInfo) {
+		$breadcrumbObj->addCrumb($bcInfo['value'], $bcInfo['link']);
+	}
+
+}
+$breadcrumbObj->addCrumb($boardInfo['name'], $MAIN_ROOT."forum/viewboard.php?bID=".$boardInfo['forumboard_id']);
+$breadcrumbObj->addCrumb($postInfo['title']);
+include($prevFolder."include/breadcrumb.php");
+
 
 $blnManagePosts = false;
 $dispManagePosts = "";
@@ -281,7 +253,7 @@ if($LOGGED_IN) {
 		}
 		
 		$dispManagePosts .= "<b>&raquo <a href='javascript:void(0)' onclick='deleteTopic()'>DELETE TOPIC</a> &laquo;</b>&nbsp;&nbsp;&nbsp;";
-
+		$dispManagePosts .= "<b>&raquo <a href='".$MAIN_ROOT."members/console.php?cID=".$moveTopicCID."&topicID=".$_GET['tID']."'>MOVE TOPIC</a> &laquo;</b>&nbsp;&nbsp;&nbsp;";
 	}
 
 
@@ -289,7 +261,7 @@ if($LOGGED_IN) {
 
 
 
-
+/*
 echo "
 <table class='forumTable' style='margin-top: 25px'>
 	<tr>
@@ -301,217 +273,31 @@ echo "
 		</td>
 	</tr>
 </table>
+";
+*/
 
-<table class='forumTable'>	
+$boardObj->showSearchForm();
+echo "
+<div class='formDiv' style='background: none; border: 0px; overflow: auto'>
+	<div style='float: left'>".$dispPageSelectTop."</div>
+	<div style='float: right'>".$dispManagePosts.$dispPostReply."</div>
+</div>
 ";
 
-$countManagablePosts = 0;
+define("SHOW_FORUMPOST", true);
 $result = $mysqli->query("SELECT forumpost_id FROM ".$dbprefix."forum_post WHERE forumtopic_id = '".$topicInfo['forumtopic_id']."' ORDER BY dateposted LIMIT ".$intOffset.", ".$NUM_PER_PAGE);
 while($row = $result->fetch_assoc()) {
 	$boardObj->objPost->select($row['forumpost_id']);
-	$postInfo = $boardObj->objPost->get_info_filtered();
-	$postMemberObj->select($postInfo['member_id']);
-	$postMemberInfo = $postMemberObj->get_info_filtered();
-	$postMessage = $boardObj->objPost->get_info("message");
-	
-	$postMessage = str_replace("<?", "&lt;?", $postMessage);
-	$postMessage = str_replace("?>", "?&gt;", $postMessage);
-	$postMessage = str_replace("<script", "&lt;script", $postMessage);
-	$postMessage = str_replace("</script>", "&lt;/script&gt;", $postMessage);
-	
-	
-	$dispPostedOn = "";
-	if((time()-$postInfo['dateposted']) > (60*60*24)) {
-		$dispPostedOn = " on";
-	}
-	
-	$checkURL = parse_url($postMemberInfo['avatar']);
-	
-	if($postMemberInfo['avatar'] == "") {
-		$postMemberInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";	
-	}
-	elseif(!isset($checkURL['scheme']) || $checkURL['scheme'] = "") {
-		$postMemberInfo['avatar'] = $MAIN_ROOT.$postMemberInfo['avatar'];
-	}
-	
-	$posterRankObj->select($postMemberInfo['rank_id']);
-	$posterRankInfo = $posterRankObj->get_info_filtered();
-	
-	$dispLastEdit = "";
-	if($postInfo['lastedit_date'] != 0) {
-		$postMemberObj->select($postInfo['lastedit_member_id']);
-		$dispLastEdit = "<br><br><span class='tinyFont' style='font-style: italic'>Last edited by ".$postMemberObj->getMemberLink()." - ".getPreciseTime($postInfo['lastedit_date'])."</span>";	
-		$postMemberObj->select($postInfo['member_id']);
-	}
-	
-	
-	$dispRankWidth = ($websiteInfo['forum_rankwidth'] <= 0) ? "" : "width: ".$websiteInfo['forum_rankwidth'].$websiteInfo['forum_rankwidthunit'].";";
-	$dispRankHeight = ($websiteInfo['forum_rankheight'] <= 0) ? "" : "height: ".$websiteInfo['forum_rankheight'].$websiteInfo['forum_rankheightunit'].";";
-	$dispRankDimensions = ($dispRankWidth != "" || $dispRankHeight != "") ? " style='".$dispRankWidth.$dispRankHeight."'" : "";
-	$dispRankIMG = ($websiteInfo['forum_showrank'] == 1 && $posterRankInfo['rank_id'] != 1) ? "<div id='forumShowRank' style='text-align: center'><img src='".$posterRankInfo['imageurl']."'".$dispRankDimensions."></div>" : "";
-	$dispMedals = "";
-	if($websiteInfo['forum_showmedal'] == 1) {
-		
-		$medalObj = new Medal($mysqli);
-		$medalCount = ($websiteInfo['forum_medalcount'] == 0) ? 5 : $websiteInfo['forum_medalcount'];
-		
-		$arrMedals = $postMemberObj->getMedalList(false, $websiteInfo['medalorder']);
-		
-		$dispMedalWidth = ($websiteInfo['forum_medalwidth'] <= 0) ? "" : "width: ".$websiteInfo['forum_medalwidth'].$websiteInfo['forum_medalwidthunit'].";";
-		$dispMedalHeight = ($websiteInfo['forum_medalheight'] <= 0) ? "" : "height: ".$websiteInfo['forum_medalheight'].$websiteInfo['forum_medalheightunit'].";";
-		$dispMedalDimensions = ($dispMedalWidth != "" || $dispMedalHeight != "") ?  " style='".$dispMedalWidth.$dispMedalHeight."'" : "";
-		
-		$i = 1;
-		foreach($arrMedals as $medalID) {
-			$medalObj->select($medalID);
-			$medalInfo = $medalObj->get_info_filtered();
-			$resultMedal = $mysqli->query("SELECT * FROM ".$dbprefix."medals_members WHERE member_id = '".$postMemberInfo['member_id']."' AND medal_id = '".$medalInfo['medal_id']."'");
-			$rowMedal = $resultMedal->fetch_assoc();
-			
-			$dispDateAwarded = "<b>Date Awarded:</b><br>".getPreciseTime($rowMedal['dateawarded']);
-			
-			$dispReason = "";
-			if($rowMedal['reason'] != "") {
-				$dispReason = "<br><br><b>Awarded for:</b><br>".filterText($rowMedal['reason']);
-			}
-			
-			$dispMedalMessage = "<b>".$medalInfo['name']."</b><br><br>".$dispDateAwarded.$dispReason;
-			
-			
-			$dispMedals .= "<div style='text-align: center; margin: 5px 0px'><img src='".$medalInfo['imageurl']."'".$dispMedalDimensions." onmouseover=\"showToolTip('".$dispMedalMessage."')\" onmouseout='hideToolTip()'></div>";
-			
-			$i++;
-			if($i > $medalCount) { break; }
-		}
-		
-		
-	}
-	
-	$setAvatarWidth = ($websiteInfo['forum_avatarwidth'] > 0) ? $websiteInfo['forum_avatarwidth'] : "50";
-	$setAvatarWidthUnit = ($websiteInfo['forum_avatarwidthunit'] == "%") ? "%" : "px";
-	
-	$setAvatarHeight = ($websiteInfo['forum_avatarheight'] > 0) ? $websiteInfo['forum_avatarheight'] : "50";
-	$setAvatarHeightUnit = ($websiteInfo['forum_avatarheightunit'] == "%") ? "%" : "px";
-	
-	$dispForumPostText = ($websiteInfo['forum_linkimages'] == 1) ? autoLinkImage(parseBBCode($postMessage)) : parseBBCode($postMessage);
-	
-	echo "
-		<tr>
-			<td class='boardPosterInfo' valign='top'><a name='".$postInfo['forumpost_id']."'></a>
-				<div id='forumShowPosterName'>
-				<span class='boardPosterName'>".$postMemberObj->getMemberLink()."</span><br>
-				".$posterRankInfo['name']."
-				</div>
-				<div id='forumShowAvatar'><img src='".$postMemberInfo['avatar']."' style='width: ".$setAvatarWidth.$setAvatarWidthUnit."; height: ".$setAvatarHeight.$setAvatarHeightUnit."; margin-top: 5px; margin-bottom: 5px'></div>
-				<div id='forumShowPostCount'>Posts: ".$postMemberObj->countForumPosts()."</div>
-				".$dispRankIMG."
-				<div id='forumShowMedals'>".$dispMedals."</div>
-			</td>
-			<td class='boardPostInfo' valign='top'>
-			<div class='postTime'>Posted".$dispPostedOn." ".getPreciseTime($postInfo['dateposted'])."</div>
-			
-			".$dispForumPostText.$dispLastEdit."
-			
-			</td>
-		</tr>
-		";
-	
-	$arrAttachments = $boardObj->objPost->getPostAttachments();
-	
-	
-	if(count($arrAttachments) > 0 && $blnShowAttachments) {
-
-		echo "
-			<tr>
-				<td class='boardPosterInfoExtra'></td>
-				<td class='boardPostExtraRow'>
-					<div class='forumAttachmentsContainer'>
-						<b>Attachments:</b><br>
-					";
-				
-				foreach($arrAttachments as $downloadID) {
-					$attachmentObj->select($downloadID);
-					$attachmentInfo = $attachmentObj->get_info_filtered();
-					$addS = ($attachmentInfo['downloadcount'] != 1) ? "s" : "";
-					$dispFileSize = $attachmentInfo['filesize']/1024;
-					
-					if($dispFileSize < 1) {
-						$dispFileSize = $attachmentInfo['filesize']."B";	
-					}
-					elseif(($dispFileSize/1024) < 1) {
-						$dispFileSize = round($dispFileSize, 2)."KB";	
-					}
-					else {
-						$dispFileSize = round(($dispFileSize/1024),2)."MB";
-					}
-					
-					echo "<a href='".$MAIN_ROOT."downloads/file.php?dID=".$downloadID."'>".$attachmentInfo['filename']."</a> - downloaded ".$attachmentInfo['downloadcount']." time".$addS." - ".$dispFileSize."<br>";
-					
-				}
-		
-				echo "
-					</div>
-				</td>
-			</tr>
-		";
-		
-	}
-
-	
-	if($postMemberInfo['forumsignature'] != "" && $websiteInfo['forum_hidesignatures'] == 0) {
-		echo "
-		<tr>
-			<td class='boardPosterInfoExtra'></td>
-			<td class='boardPostExtraRow'>
-				<div class='forumSignatureContainer'>".parseBBCode($postMemberObj->get_info("forumsignature"))."</div>
-			</td>
-		</tr>
-		";
-	}
-	
-	
-	echo "
-		<tr>
-			<td class='boardPosterInfoFooter'></td>
-			<td class='boardPostInfoFooter'>
-				";
-		
-		if($blnManagePosts || $postMemberInfo['member_id'] == $memberInfo['member_id']) {
-
-			echo "&raquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$intManagePostsCID."&pID=".$postInfo['forumpost_id']."'>EDIT POST</a> &laquo;&nbsp&nbsp;&nbsp;";
-			echo "&raquo; <a href='javascript:void(0)' onclick=\"deletePost('".$postInfo['forumpost_id']."')\">DELETE POST</a> &laquo;&nbsp&nbsp;&nbsp;";
-			$countManagablePosts++;
-			
-		}
-		
-		if($LOGGED_IN && $topicInfo['lockstatus'] == 0) { 
-			echo "&raquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$intPostTopicCID."&bID=".$topicInfo['forumboard_id']."&tID=".$topicInfo['forumtopic_id']."&quote=".$postInfo['forumpost_id']."'>QUOTE</a> &laquo;"; 
-		}
-		
-	echo "
-			</td>
-		</tr>
-		<tr>
-			<td colspan='2' style='font-size: 5px'><br></td>
-		</tr>
-	
-	";
-	
-	
+	$boardObj->objPost->blnManageable = $blnManagePosts;
+	$boardObj->objPost->show();
 }
 
 echo "
-<tr>
-	<td class='main' colspan='2' align='right'>
-		".$dispPageSelectBottom.$dispManagePosts.$dispPostReply."
-		<div style='clear: both'></div>
-	</td>
-</tr>
-</table>
-
-
+<div class='formDiv' style='background: none; border: 0px; overflow: auto'>
+	<div style='float: left'>".$dispPageSelectBottom."</div>
+	<div style='float: right'>".$dispManagePosts.$dispPostReply."</div>
+</div>
 ";
-
 
 
 if($blnPageSelect) {

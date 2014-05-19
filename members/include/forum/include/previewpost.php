@@ -43,6 +43,19 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	if($memberInfo['avatar'] == "") {
 		$memberInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";
 	}
+	else {
+		$memberInfo['avatar'] = $MAIN_ROOT.$memberInfo['avatar'];
+	}
+	
+	$dispSetAvatarWidth = "";
+	$dispSetAvatarHeight = "";
+	if($websiteInfo['forum_avatarwidth'] > 0) {
+		$dispSetAvatarWidth = " width: ".$websiteInfo['forum_avatarwidth'].$websiteInfo['forum_avatarwidthunit'].";";
+	}
+	
+	if($websiteInfo['forum_avatarheight'] > 0) {
+		$dispSetAvatarHeight = " height: ".$websiteInfo['forum_avatarheight'].$websiteInfo['forum_avatarheightunit'].";";
+	}
 	
 	echo "
 		<div class='breadCrumbTitle'>Preview - ".filterText($_POST['previewSubject'])."</div>
@@ -51,7 +64,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				<td class='boardPosterInfo' valign='top'>
 					<span class='boardPosterName'>".$member->getMemberLink()."</span><br>
 					".$posterRankInfo['name']."<br>
-					<img src='".$memberInfo['avatar']."' style='margin-top: 5px; margin-bottom: 5px'><br>
+					<img src='".$memberInfo['avatar']."' style='margin-top: 5px; margin-bottom: 5px;".$dispSetAvatarWidth.$dispSetAvatarHeight."'><br>
 					Posts: ".$member->countForumPosts()."
 				</td>
 				<td class='boardPostInfo' valign='top'>

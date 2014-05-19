@@ -343,7 +343,7 @@ class BasicSort extends Basic {
 			$addTo = 1;
 	
 	
-			if($this->arrObjInfo['sortnum'] == $intHighestOrderNum AND $intHighestOrderNum != 1) {
+			if($this->arrObjInfo['sortnum'] == $intHighestOrderNum && $intHighestOrderNum != 1) {
 				$strBeforeAfter = "after";
 				$addTo = -1;
 			}

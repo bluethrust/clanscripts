@@ -63,8 +63,6 @@
 				}
 			}
 			
-			
-			$_SESSION['csrfKey'] = md5(uniqid());
 		?>
 
 		
@@ -91,10 +89,4 @@
 
 			setTimeout("reloadShoutbox()", 20000);
 		
-			$(document).ready(function() {
-				$("form").append("<input type='hidden' name='csrfKey' value='<?php echo $_SESSION['csrfKey']; ?>'>");
-			});
-		
 		</script>
-		
-		

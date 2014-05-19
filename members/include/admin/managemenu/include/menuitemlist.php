@@ -40,7 +40,8 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			$_POST['itemID'] = "";
 		}
 		else {
-			$menuCatObj->select($_POST['itemID']);
+			
+			$menuItemObj->select($_POST['itemID']);			
 			$selectItemID = $menuItemObj->findBeforeAfter();
 			$selectItemID = $selectItemID[0];
 		}
@@ -54,6 +55,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 				if($selectItemID == $row['menuitem_id']) {
 					$dispSelected = " selected";
 				}
+				echo $selectItemID;
 				$orderoptions .= "<option value='".$row['menuitem_id']."'".$dispSelected.">".filterText($row['name'])."</option>";
 			}
 			

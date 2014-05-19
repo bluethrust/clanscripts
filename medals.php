@@ -42,18 +42,17 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = "Medals - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 $member = new Member($mysqli);
 $medalObj = new Medal($mysqli);
 
+$breadcrumbObj->setTitle("Medals");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Medals");
+include($prevFolder."include/breadcrumb.php");
 ?>
 
-<div class='breadCrumbTitle'>Medals</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Medals
-</div>
 
 <table class='formTable' style='width: 75%; margin-left: auto; margin-right: auto'>
 	<tr>

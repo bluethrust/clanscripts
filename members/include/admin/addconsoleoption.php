@@ -23,9 +23,9 @@ else {
 	}
 }
 
-include($prevFolder."classes/btupload.php");
-include($prevFolder."classes/consolecategory.php");
-include($prevFolder."classes/rankcategory.php");
+include_once($prevFolder."classes/btupload.php");
+include_once($prevFolder."classes/consolecategory.php");
+include_once($prevFolder."classes/rankcategory.php");
 
 $cID = $_GET['cID'];
 $rankCatObj = new RankCategory($mysqli);

@@ -112,16 +112,20 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			$numOfNewsPosts = $_POST['numOfNewsPosts'];
 		}
 		
-		
+		if(!is_numeric($_POST['newsPostsPerPage']) && $_POST['newsPostsPerPage'] > 0) {
+			$countErrors++;
+			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> News Posts Per Page must be a positive numeric value.";	
+		}
 		
 		
 		
 		if($countErrors == 0) {
 			
-			$updateCols = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode", "hideinactive", "hpnews");
-			$updateVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode'], $_POST['hideInactive'], $numOfNewsPosts);
+			$updateSettings = array("clanname", "clantag", "logourl", "forumurl", "theme", "maxdiplomacy", "failedlogins", "maxdsl", "lowdsl", "meddsl", "highdsl", "medalorder", "debugmode", "hideinactive", "hpnews", "news_postsperpage");
+			$updateSettingVals = array($_POST['clanName'], $_POST['clanTag'], $_POST['logoURL'], $_POST['forumURL'], $_POST['themeName'], $_POST['maxDiplomacy'], $_POST['failedLogins'], $_POST['maxDSL'], $_POST['lowDSL'], $_POST['medDSL'], $_POST['highDSL'], $_POST['medalOrder'], $_POST['debugMode'], $_POST['hideInactive'], $numOfNewsPosts, $_POST['newsPostsPerPage']);
 			
-			if(!$webInfoObj->update($updateCols, $updateVals)) {
+			
+			if(!$webInfoObj->multiUpdate($updateSettings, $updateSettingVals)) {
 				$countErrors++;
 				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save the information to the database.<br>";
 			}

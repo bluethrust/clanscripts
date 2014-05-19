@@ -48,19 +48,13 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = $customPageInfo['pagename']." - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
+$breadcrumbObj->setTitle($customPageInfo['pagename']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb($customPageInfo['pagename']);
+include($prevFolder."include/breadcrumb.php");
 
-
-?>
-
-<div class='breadCrumbTitle'><?php echo $customPageInfo['pagename']; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px; margin-bottom: 20px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <?php echo $customPageInfo['pagename']; ?>
-</div>
-
-<?php 
 
 echo $customPageInfo['pageinfo'];
 

@@ -68,6 +68,8 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				$member->select($squadAppInfo['member_id']);
 				$member->postNotification("Congratulations!  Your application for the squad <b>".$squadInfo['name']."</b> has been approved.  View the Squads section of <a href='".$MAIN_ROOT."members'>My Account</a> to <a href='".$MAIN_ROOT."members/console.php?cID=".$intViewSquadsCID."'>View Your Squads</a>.");
 			
+				$mysqli->query("DELETE FROM ".$dbprefix."squadinvites WHERE receiver_id = '".$squadAppInfo['member_id']."'");
+				
 				echo "
 					<script type='text/javascript'>
 						$(document).ready(function() {
@@ -134,18 +136,11 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		include("applist.php");
 	}
 	else {
-		if($squadObj->select($_POST['sID'])) { echo "yes squadObj<br>"; } else { echo "no squadObj<br>"; }
-		
-		if($squadObj->memberHasAccess($memberInfo['member_id'], "acceptapps")) {
-			echo "yes access<br>";
-		} else { echo "no access<br>";
-		}
-		
-		if($squadAppObj->select($_POST['saID'])) {
-			echo "yes squadAppObj<br>";
-		} else { echo "no squadAppObj<br>";
-		}
-		
+		echo "
+			<script type='text/javascript'>
+				window.location = '".$MAIN_ROOT."members/console.php?cID=".$cID."'
+			</script>
+		";
 	}
 	
 	

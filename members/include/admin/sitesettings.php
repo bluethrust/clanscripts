@@ -113,6 +113,13 @@ else {
 
 $webInfoObj->select(1);
 $websiteInfo = $webInfoObj->get_info_filtered();
+$selectNewsPostsPerPage = array();
+foreach(array(10,25,50,100) as $value) {
+	if($value == $websiteInfo['news_postsperpage']) {
+		$selectNewsPostsPerPage[$value] = " selected";
+	}
+}
+
 
 ?>
 
@@ -178,6 +185,10 @@ $websiteInfo = $webInfoObj->get_info_filtered();
 		<tr>
 			<td class='formLabel'>Hide Inactive Members: <a href='javascript:void(0)' onmouseover="showToolTip('If set to Yes, inactive members will be hidden on the Members page.')" onmouseout='hideToolTip()'>(?)</a></td>
 			<td class='main'><select id='showinactive' class='textBox'><option value='0'>No</option><option value='1'<?php echo $selectHideInactive; ?>>Yes</option></select></td>
+		</tr>
+		<tr>
+			<td class='formLabel'>News Posts Per Page:</td>
+			<td class='main'><select id='newsPostsPerPage' class='textBox'><option value='10'<?php echo $selectNewsPostsPerPage[10]; ?>>10</option><option value='25'<?php echo $selectNewsPostsPerPage[25]; ?>>25</option><option value='50'<?php echo $selectNewsPostsPerPage[50]; ?>>50</option><option value='100'<?php echo $selectNewsPostsPerPage[100]; ?>>100</option></select></td>
 		</tr>
 		<tr>
 			<td class='formLabel'>Show News on Homepage:</td>
@@ -472,7 +483,7 @@ $websiteInfo = $webInfoObj->get_info_filtered();
 
 			$('#loadingspiral').show();
 
-			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val(), hideInactive: $('#showinactive').val(), showHPNews: $('#showNewsPosts').val(), numOfNewsPosts: $('#numOfNewsPosts').val(), customNewsAmount: $('#customNewsAmount').val() }, function(data) {
+			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/sitesettings_submit.php", { clanName: $('#clanname').val(), clanTag: $('#clantag').val(), logoURL: $('#logourl').val(), forumURL: $('#forumurl').val(), themeName: $('#theme').val(), maxDiplomacy: $('#maxdiplomacy').val(), failedLogins: $('#failedlogins').val(), maxDSL: $('#maxdsl').val(), lowDSL: $('#lowdsl').val(), medDSL: $('#meddsl').val(), highDSL: $('#highdsl').val(), medalOrder: $('#medalorder').val(), debugMode: $('#debugmode').val(), hideInactive: $('#showinactive').val(), showHPNews: $('#showNewsPosts').val(), numOfNewsPosts: $('#numOfNewsPosts').val(), customNewsAmount: $('#customNewsAmount').val(), newsPostsPerPage: $('#newsPostsPerPage').val() }, function(data) {
 				$('#postResponse').html(data);
 				$('#loadingspiral').hide();
 			});

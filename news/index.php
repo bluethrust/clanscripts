@@ -62,31 +62,47 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 
 // Start Page
 $PAGE_NAME = "News - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
-?>
-
-<div class='breadCrumbTitle'>News</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > News
-</div>
 
 
-
-<?php
+$breadcrumbObj->setTitle("News");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("News");
+include($prevFolder."include/breadcrumb.php");
 
 $showPrivateSQL = "";
 if(LOGGED_IN) {
 	$showPrivateSQL = " OR newstype = '2'";
 }
 
+
+// Calc Pages
 $result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '1'".$showPrivateSQL." ORDER BY dateposted DESC");
+$totalPosts = $result->num_rows;
+
+$websiteInfo['news_postsperpage'] = ($websiteInfo['news_postsperpage'] <= 0) ? 1 : $websiteInfo['news_postsperpage'];
+
+$totalPages = ceil($totalPosts/$websiteInfo['news_postsperpage']);
+
+if(!isset($_GET['page']) || $_GET['page'] > $totalPages) {
+	$sqlLimit = " LIMIT 0, ".$websiteInfo['news_postsperpage'];
+	$_GET['page'] = 1;
+}
+else {
+	$sqlLimit = " LIMIT ".($_GET['page']-1)*$websiteInfo['news_postsperpage'].", ".$websiteInfo['news_postsperpage'];	
+}
+
+
+
+$result = $mysqli->query("SELECT * FROM ".$dbprefix."news WHERE newstype = '1'".$showPrivateSQL." ORDER BY dateposted DESC ".$sqlLimit);
 $checkHTMLConsoleObj = new ConsoleOption($mysqli);
 $htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
 $checkHTMLConsoleObj->select($htmlNewsCID);
+$checkHTMLAccess = "";
 if($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
-
+		unset($checkHTMLAccess);
+		
 		$newsObj->select($row['news_id']);
 		$member->select($row['member_id']);
 		$posterInfo = $member->get_info_filtered();
@@ -148,6 +164,26 @@ if($result->num_rows > 0) {
 
 	}
 
+	
+	if($_GET['page'] <= $totalPages) {
+		$nextPage = $_GET['page']+1;
+		$prevPage = $_GET['page']-1;
+		
+		
+		$dispPrevPage = ($prevPage > 0) ? "<a href='".$MAIN_ROOT."news/?page=".$prevPage."'>NEWER ENTRIES</a>" : "";	
+		$dispNextPage = ($nextPage <= $totalPages) ? "<a href='".$MAIN_ROOT."news/?page=".$nextPage."'>OLDER ENTRIES</a>" : "";
+		
+		$pageSpacer = ($dispPrevPage != "" && $dispNextPage != "") ? "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" : "";
+		
+		
+		
+		echo "
+			<p align='center' class='largeFont'>
+				<b>".$dispPrevPage.$pageSpacer.$dispNextPage."</b>
+			</p>
+		";
+	}
+	
 }
 else {
 

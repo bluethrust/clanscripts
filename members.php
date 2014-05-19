@@ -90,13 +90,12 @@ $rankCatObj = new RankCategory($mysqli);
 
 $gameObj = new Game($mysqli);
 
+$breadcrumbObj->setTitle("Members");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Members");
+include($prevFolder."include/breadcrumb.php");
+
 ?>
-
-<div class='breadCrumbTitle'>Members</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Members
-</div>
-
 <div id='tiltPhoneImg' style='display: none'><img src='<?php echo $MAIN_ROOT; ?>images/tiltphone.png'><p align='center'>need more space<br>tilt your phone!</p></div>
 <table class='formTable' id='membersPageTable'>
 <?php

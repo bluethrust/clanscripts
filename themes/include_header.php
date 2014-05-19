@@ -1,17 +1,6 @@
 <?php
 
-
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/rank.php");
-include_once($prevFolder."classes/consoleoption.php");
-include_once($prevFolder."classes/game.php");
-include_once($prevFolder."classes/shoutbox.php");
-include_once($prevFolder."classes/menucategory.php");
-include_once($prevFolder."classes/menuitem.php");
-include_once($prevFolder."classes/customform.php");
-include_once($prevFolder."classes/forumboard.php");
-include_once($prevFolder."classes/poll.php");
-
+include_once($prevFolder."plugins/mods.php");
 
 $arrLoginInfo = array();
 
@@ -27,15 +16,23 @@ else {
 
 // Check CSRF Attack
 
+/*
 if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['csrfKey'] != $_SESSION['csrfKey']) {
 	//echo "Hacks?";
 	//exit();
+}
+*/
+
+if((!isset($_COOKIE['btUsername']) || !isset($_COOKIE['btPassword'])) && isset($_SESSION['btRememberMe']) && $_SESSION['btRememberMe'] == 1 && isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
+	$cookieExpTime = time()+((60*60*24)*3);
+	setcookie("btUsername", $_SESSION['btUsername'], $cookieExpTime);
+	setcookie("btPassword", $_SESSION['btPassword'], $cookieExpTime);
 }
 
 
 //$menuXML = new SimpleXMLElement($dispHTTP.$siteDomain.$MAIN_ROOT."themes/".$THEME."/themeinfo.xml", NULL, true);
 $menuXML = new SimpleXMLElement($prevFolder."themes/".$THEME."/themeinfo.xml", NULL, true);
-if(isset($_SESSION['btUsername']) AND isset($_SESSION['btPassword'])) {
+if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 
 	$memberObj = new Member($mysqli);
 	if($memberObj->select($_SESSION['btUsername'])) {
@@ -270,5 +267,7 @@ else {
 $blnDisplayNewsTicker = false;
 
 define("LOGIN_BOX", $dispLoginBox);
+
+$breadcrumbObj = new BreadCrumb();
 
 ?>

@@ -211,7 +211,7 @@ if(isset($_GET['newsID']) && $newsObj->select($_GET['newsID'])) {
 		$checkHTMLConsoleObj = new ConsoleOption($mysqli);
 		$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
 		$checkHTMLConsoleObj->select($htmlNewsCID);
-		if($blnAllowHTML) {
+		if($blnAllowHTML && $newsInfo['newstype'] != 3) {
 	
 			echo "
 			

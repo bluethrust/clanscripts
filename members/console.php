@@ -17,12 +17,6 @@
 $prevFolder = "../";
 include("../_setup.php");
 
-// Classes needed for console.php
-include_once("../classes/member.php");
-include_once("../classes/rank.php");
-include_once("../classes/consoleoption.php");
-include_once("../classes/btplugin.php");
-
 // Check for valid Console Option
 
 $consoleObj = new ConsoleOption($mysqli);
@@ -67,7 +61,6 @@ foreach($arrPlugins as $pluginPageInfo) {
 $consoleInfo = $consoleObj->get_info_filtered();
 $consoleTitle = $consoleInfo['pagetitle'];
 $PAGE_NAME = $consoleTitle." - ";
-$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members/index.php?select=".$consoleInfo['consolecategory_id']."'>My Account</a> > ".$consoleTitle;
 $EXTERNAL_JAVASCRIPT .= "
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/console.js'></script>
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/main.js'></script>
@@ -100,6 +93,12 @@ if($consoleInfo['pagetitle'] == "Home Page Images") {
 
 
 include("../themes/".$THEME."/_header.php");
+
+$breadcrumbObj->setTitle($consoleTitle);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("My Account", $MAIN_ROOT."members/index.php?select=".$consoleInfo['consolecategory_id']);
+$breadcrumbObj->addCrumb($consoleTitle);
+$hooksObj->addHook("breadcrumb", "resetConsoleBreadcrumb");
 
 $member = new Member($mysqli);
 
@@ -145,18 +144,14 @@ if($checkMember) {
 		
 		
 		if($member->hasAccess($consoleObj) || ($consoleInfo['pagetitle'] == "Manage Forum Posts" && !isset($_GET['noaccess']))) {
-			$getClanInfo = $mysqli->query("SELECT * FROM ".$dbprefix."websiteinfo WHERE websiteinfo_id = '1'");
-			$arrClanInfo = $getClanInfo->fetch_assoc();
+			//$getClanInfo = $mysqli->query("SELECT * FROM ".$dbprefix."websiteinfo WHERE websiteinfo_id = '1'");
+			$arrClanInfo = $websiteInfo;//$getClanInfo->fetch_assoc();
 			// Console Security
 
 			define("PREVENT_HACK", $arrClanInfo['preventhack']);
-			echo "
-				<div class='breadCrumbTitle' id='breadCrumbTitle'>$consoleTitle</div>
-				<div class='breadCrumb' id='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-					$dispBreadCrumb
-				</div>
-			";
-		
+			
+			include($prevFolder."include/breadcrumb.php");
+			
 			if(isset($_GET['action']) && $_GET['action'] == "edit") {
 				echo "
 				<p align='right' style='margin-bottom: 10px; margin-right: 20px;'>&laquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$cID."'>Go Back</a></p>
@@ -175,9 +170,15 @@ if($checkMember) {
 			else {
 				$include_file = $consoleInfo['filename'];	
 			}
-			
+						
+			$formObj = new Form();
 			require($include_file);
-		
+			if(isset($setupFormArgs)) {
+				include("console.form.php");
+			}
+			elseif(isset($setupManageListArgs)) {
+				include("console.managelist.php");	
+			}
 			
 			
 			if(isset($_GET['action']) && $_GET['action'] == "edit") {

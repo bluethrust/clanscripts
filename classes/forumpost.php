@@ -18,14 +18,20 @@ include_once("basic.php");
 
 class ForumPost extends Basic {
 	
+	public $objTopic;
+	public $blnManageable = false;
 	
 	public function __construct($sqlConnection) {
 		
 		$this->MySQL = $sqlConnection;
 		$this->strTableName = $this->MySQL->get_tablePrefix()."forum_post";
 		$this->strTableKey = "forumpost_id";
-			
 		
+		$this->objTopic = new BasicOrder($sqlConnection, "forum_topic", "forumtopic_id");
+		
+		$this->objTopic->set_assocTableName("forum_post");
+		$this->objTopic->set_assocTableKey("forumpost_id");
+				
 	}
 	
 	
@@ -45,6 +51,13 @@ class ForumPost extends Basic {
 		
 	}
 	
+	public function select($intIDNum, $numericIDOnly = true) {
+
+		$this->blnManageable = false;
+		
+		return parent::select($intIDNum, $numericIDOnly);
+	}
+	
 	public function getPostAttachments() {
 	
 		$returnArr = array();
@@ -62,6 +75,36 @@ class ForumPost extends Basic {
 		
 	}
 	
+	public function show($template="") {
+		global $websiteInfo, $MAIN_ROOT, $dbprefix, $mysqli, $member;
+		if($template == "") {
+			
+			include("templates/post.php");
+			
+		}
+		else {
+			include("templates/".$template);
+		}
+		
+	}
+
+	public function getTopicInfo($filtered=false) {
+		$returnArr = array();
+		if($this->intTableKeyValue != "") {
+		
+			$temp = $this->intTableKeyValue;
+			$tempManage = $this->blnManageable;
+			$this->objTopic->select($this->arrObjInfo['forumtopic_id']);
+			$this->select($this->objTopic->get_info("forumpost_id"));
+			
+			$returnArr = $filtered ? $this->get_info_filtered() : $this->get_info();
+			
+			$this->select($temp);
+			$this->blnManageable = $tempManage;
+		}
+		
+		return $returnArr;
+	}
 	
 }
 

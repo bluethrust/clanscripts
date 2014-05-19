@@ -80,15 +80,12 @@ $memberInfo = "";
 if(!$LOGIN_FAIL) {
 	$memberInfo = $member->get_info_filtered();
 }
-?>
 
-<div class='breadCrumbTitle'><?php echo $newsInfo['postsubject']; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <a href='<?php echo $MAIN_ROOT; ?>news'>News</a> > <?php echo $newsInfo['postsubject']; ?>
-</div>
-
-
-<?php
+$breadcrumbObj->setTitle("News");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("News", $MAIN_ROOT."news");
+$breadcrumbObj->addCrumb($newsInfo['postsubject']);
+include($prevFolder."include/breadcrumb.php");
 
 $member->select($newsInfo['member_id']);
 $posterInfo = $member->get_info_filtered();

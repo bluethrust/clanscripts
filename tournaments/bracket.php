@@ -72,7 +72,7 @@ if($tournamentInfo['seedtype'] == 3) {
 	</head>
 	<body>
 		<div id='toolTip'></div>
-		
+		<div id='toolTipWidth'></div>
 		<div class='tournamentBracket'>
 		
 			<?php
@@ -306,7 +306,7 @@ if($tournamentInfo['seedtype'] == 3) {
 				if($tournamentWinner !== false) {
 					
 					$tournamentObj->objTeam->select($tournamentWinner);
-				
+					
 					
 					$dispSeed = "#".$tournamentObj->objTeam->get_info("seed");
 					
@@ -324,6 +324,43 @@ if($tournamentInfo['seedtype'] == 3) {
 							$dispWinner = $winnerInfo['displayname'];
 						}
 						
+						
+					}
+					else {
+						
+						$teamInfo = $tournamentObj->objTeam->get_info_filtered();
+						
+						$dispPlayerList = "";
+						$arrTeamPlayers = $tournamentObj->getTeamPlayers($teamInfo['tournamentteam_id'], true);
+						foreach($arrTeamPlayers as $playerID) {
+							$tournamentObj->objPlayer->select($playerID);
+
+							$playerInfo = $tournamentObj->objPlayer->get_info_filtered();
+							if(is_numeric($playerInfo['member_id']) && $member->select($playerInfo['member_id'])) {
+								
+								$dispPlayerList .= "<b>&middot;</b> ".$member->getMemberLink()."<br>";
+								
+							}
+							else {
+								
+								$dispPlayerList .= "<b>&middot;</b> ".$playerInfo['displayname']."<br>";
+								
+							}
+							
+							
+						}
+						
+						if($dispPlayerList == "") {
+							$dispPlayerList = "No Players on Team";
+						}
+							
+					
+						$dispWinner = "<span style='cursor: pointer' onmouseover=\"showToolTip('".addslashes($dispPlayerList)."')\" onmouseout='hideToolTip()'>".$teamInfo['name']."</span>";
+						
+						
+								
+						
+						//$dispWinner = $tournamentObj->objTeam->get_info_filtered("name");
 						
 					}
 					

@@ -95,7 +95,7 @@ class PrivateMessage extends BasicOrder {
 	}
 	
 		// Gets folder based on Member ID
-		function getFolder($memberID) {
+		function getFolder($memberID, $multiPM=false) {
 			
 			$returnVal = "";
 			
@@ -103,10 +103,10 @@ class PrivateMessage extends BasicOrder {
 				
 				$arrRecipients = $this->getRecipients();
 				
-				if($this->arrObjInfo['sender_id'] == $memberID) {
+				if($this->arrObjInfo['sender_id'] == $memberID && !$multiPM) {
 					$returnVal = $this->arrObjInfo['senderfolder_id'];
 				}
-				elseif($this->arrObjInfo['receiver_id'] == $memberID) {
+				elseif($this->arrObjInfo['receiver_id'] == $memberID && !$multiPM) {
 					$returnVal = $this->arrObjInfo['receiverfolder_id'];
 				}
 				elseif($this->arrObjInfo['receiver_id'] == 0 && in_array($memberID, $arrRecipients)) {

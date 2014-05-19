@@ -193,6 +193,7 @@ if(!$_POST['submit']) {
 		";
 	}
 	
+	$timezoneoptions = "<option value=''>[Use Default]</option>";
 	foreach($arrTimezones as $timeZone) {
 		
 		$tz = new DateTimeZone($timeZone);

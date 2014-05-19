@@ -20,9 +20,12 @@ include("_setup.php");
 include_once("classes/member.php");
 
 // Start Page
-$dispBreadCrumb = "<a href='".$MAIN_ROOT."'>Home</a> > Log In";
+
 include("themes/".$THEME."/_header.php");
 
+$breadcrumbObj->setTitle("Log In");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Log In");
 
 if($_POST['submit']) {
 	$login_username = $_POST['user'];
@@ -79,41 +82,42 @@ if(!$_POST['submit'] && !constant("LOGGED_IN")) {
 		$errorMessage = "You must be logged in to view this page!";
 	}
 
+include($prevFolder."include/breadcrumb.php");
 echo "
-<div class='breadCrumbTitle'>LOG IN</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	$dispBreadCrumb
-</div>
 
-<div style='text-align: center'>
-<div class='shadedBox' style='width: 40%; margin-bottom: 20px; margin-top: 50px; margin-left: auto; margin-right: auto;'>
-	<p class='main' align='center'>
-		$errorMessage
-	</p>
-</div>
 
-<div class='shadedBox' style='width: 40%; margin-bottom: 50px; margin-top: 20px; margin-left: auto; margin-right: auto;'>
-	<p class='main' align='center'>
-		<form action='".$MAIN_ROOT."login.php' method='post'>
-			<table class='formTable' style='width: 100%'>
-				<tr>
-					<td class='main'>Username:</td>
-					<td class='main'><input type='text' class='textBox' name='user'></td>
-				</tr>
-				<tr>
-					<td class='main'>Password:</td>
-					<td class='main'><input type='password' class='textBox' name='pass'></td>
-				</tr>
-				<tr>
-					<td colspan='2' align='center'><br>
-						<input type='submit' name='submit' value='Log In' class='submitButton'>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</p>
-</div>
-</div>
+	<div class='shadedBox' style='width: 40%; margin-bottom: 20px; margin-top: 50px; margin-left: auto; margin-right: auto;'>
+		<p class='main' align='center'>
+			$errorMessage
+		</p>
+	</div>
+	
+	<div class='shadedBox' style='width: 40%; margin-bottom: 50px; margin-top: 20px; margin-left: auto; margin-right: auto;'>
+		<p class='main' align='center'>
+			<form action='".$MAIN_ROOT."login.php' method='post' style='margin-left: auto; margin-right: auto'>
+				<table class='formTable' style='width: auto; margin-left: auto; margin-right: auto'>
+					<tr>
+						<td class='main' style='width: 45%'>Username:</td>
+						<td class='main'><input type='text' class='textBox' name='user'></td>
+					</tr>
+					<tr>
+						<td class='main'>Password:</td>
+						<td class='main'><input type='password' class='textBox' name='pass'></td>
+					</tr>
+					<tr>
+						<td class='main'>Remember Me:</td>
+						<td class='main'><input type='checkbox' name='rememberme' value='1'></td>
+					</tr>
+					<tr>
+						<td colspan='2' align='center'><br>
+							<input type='submit' name='submit' value='Log In' class='submitButton'>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</p>
+	</div>
+
 
 ";
 

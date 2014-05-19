@@ -56,14 +56,12 @@ $dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 $member = new Member($mysqli);
-?>
 
-<div class='breadCrumbTitle'>Top Players: <?php echo $gameInfo['name']; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Top Players: <?php echo $gameInfo['name']; ?>
-</div>
+$breadcrumbObj->setTitle("Top Players: ".$gameInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Top Players: ".$gameInfo['name']);
 
-<?php
+include($prevFolder."include/breadcrumb.php");
 
 	$gameStatObj = new Basic($mysqli, "gamestats", "gamestats_id");
 	$arrGameStats = $gameObj->getAssociateIDs("ORDER BY ordernum");

@@ -162,11 +162,14 @@ $arrPlayers = $tournamentObj->getPlayers();
 
 $totalEntrants = count($arrPlayers);
 
+$breadcrumbObj->setTitle($tournamentInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Tournaments", $MAIN_ROOT."tournaments");
+$breadcrumbObj->addCrumb($tournamentInfo['name']);
+
+include($prevFolder."include/breadcrumb.php");
+
 echo "
-	<div class='breadCrumbTitle'>".$tournamentInfo['name']."</div>
-	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-		<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."tournaments'>Tournaments</a> > ".$tournamentInfo['name']."
-	</div>
 	
 	<div class='tournamentProfileContainer'>
 	

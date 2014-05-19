@@ -115,7 +115,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		
 		// Folder Info
-		$pmFolderID = $pmObj->getFolder($memberInfo['member_id']);
+		$multiPM = isset($_GET['pmMID']);
+
+		$pmFolderID = $pmObj->getFolder($memberInfo['member_id'], $multiPM);
 		$pmFolderObj = new PMFolder($mysqli);
 		$pmFolderObj->select($pmFolderID);
 		$pmFolderInfo = $pmFolderObj->get_info_filtered();
@@ -190,7 +192,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 					<tr>
 						<td class='formLabel' valign='top'>Message:</td>
 						<td class='main'>
-							".nl2br(parseBBCode($row['message']))."
+							<div style='position: relative; word-wrap:break-word'>
+								".nl2br(parseBBCode($row['message']))."
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -255,7 +259,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				<tr>
 					<td class='formLabel' valign='top'>Message:</td>
 					<td class='main'>
+					<div style='position: relative; word-wrap:break-word'>
 						".nl2br(parseBBCode($originalPMInfo['message']))."
+					</div>
 					</td>
 				</tr>
 				<tr>
@@ -280,7 +286,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 					<a href='".$MAIN_ROOT."members/console.php?cID=".$cID."&folder=".$pmFolderID."'>Return to ".$pmFolderInfo['name']."</a>
 				</p>
 			
-				<table class='formTable' style='margin-top: 0px'>
+				<table class='formTable' style='margin-top: 0px; table-layout: fixed'>
 					<tr>
 						<td class='formLabel'>To:</td>
 						<td class='main'>
@@ -309,7 +315,9 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 					<tr>
 						<td class='formLabel' valign='top'>Message:</td>
 						<td class='main'>
+						<div style='position: relative; word-wrap:break-word'>
 							".nl2br(parseBBCode($pmInfo['message']))."
+						</div>
 						</td>
 					</tr>
 					<tr>

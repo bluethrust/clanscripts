@@ -62,7 +62,6 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = $squadInfo['name']." - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 $member->select($squadInfo['member_id']);
@@ -268,13 +267,13 @@ if($blnManageShoutbox) {
 }
 
 
-echo "
+$breadcrumbObj->setTitle($squadInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Squads", $MAIN_ROOT."squads");
+$breadcrumbObj->addCrumb($squadInfo['name']);
+include($prevFolder."include/breadcrumb.php");
 
-		<div class='breadCrumbTitle'>".$squadInfo['name']."</div>
-		<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-			<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."squads'>Squads</a> > ".$squadInfo['name']."
-		</div>
-		
+echo "	
 		<div class='squadContainer'>
 		
 			<div class='squadLeftColumn'>

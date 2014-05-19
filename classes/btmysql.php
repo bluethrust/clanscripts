@@ -16,6 +16,23 @@ class btMySQL extends MySQLi {
 
 	protected $bt_TablePrefix;
 	protected $bt_TestingMode;
+
+	
+	public function __construct($host, $username, $passwd, $dbname = "", $port, $socket) {
+
+		$host = !isset($host) ? ini_get("mysqli.default_host") : $host;
+		$username = !isset($username) ? ini_get("mysqli.default_user") : $username;
+		$passwd = !isset($passwd) ? ini_get("mysqli.default_pw") : $passwd;
+		$port = !isset($port) ? ini_get("mysqli.default_port") : $port;
+		$socket = !isset($socket) ? ini_get("mysqli.default_socket") : $socket;
+		
+		parent::__construct($host, $username, $passwd, $dbname, $port, $socket);
+		
+		$this->query("SET SESSION sql_mode = ''");
+		
+		
+	}
+	
 	
 	public function set_tablePrefix($tablePrefix) {
 		$this->bt_TablePrefix = $tablePrefix;

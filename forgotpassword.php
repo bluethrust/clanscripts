@@ -71,34 +71,34 @@ if(trim($_SERVER['HTTPS']) == "" || $_SERVER['HTTPS'] == "off") {
 $url=$dispHTTP.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
 $forgotPassObj = new Basic($mysqli, "forgotpass", "rqid");
 $memberObj = new Member($mysqli);
-?>
 
-<div class='breadCrumbTitle'>Forgot Password</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px; margin-bottom: 20px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Forgot Password
-</div>
+$breadcrumbObj->setTitle("Forgot Password");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Forgot Password");
+include($prevFolder."include/breadcrumb.php");
+?>
 
 <?php
 if ($stage == "start"  && $countErrors == 0) {
 echo "
 <form action='forgotpassword.php?stage=send' method='post'>
-<input type='hidden' name='validator' value='20473833234' />
-<div class='formDiv'>
-This form will help you in resetting a forgotten password. It will send an email to your accounts registered email address. In that email will be a link you must click. The link will bring you back here and allow you to set a new password.
-<table class='formTable'>
-<tr>
-<td class='formLabel'>Username:</td>
-<td class='main'><input type='text' class='textBox' name='username'></td>
-</tr>
-<tr>
-<td class='formLabel'>Account Email:</td>
-<td class='main'><input type='text' class='textBox' name='email'></td>
-</tr>
-<tr>
-<td class='main' colspan='2' align='center'><br><input type='submit' class='submitButton' value='Request Change'></td>
-</tr>
-</table>
-</div>
+	<input type='hidden' name='validator' value='20473833234' />
+	<div class='formDiv'>
+		This form will help you in resetting a forgotten password. It will send an email to your accounts registered email address. In that email will be a link you must click. The link will bring you back here and allow you to set a new password.
+			<table class='formTable'>
+				<tr>
+					<td class='formLabel'>Username:</td>
+					<td class='main'><input type='text' class='textBox' name='username'></td>
+				</tr>
+				<tr>
+					<td class='formLabel'>Account Email:</td>
+					<td class='main'><input type='text' class='textBox' name='email'></td>
+				</tr>
+				<tr>
+					<td class='main' colspan='2' align='center'><br><input type='submit' class='submitButton' value='Request Change'></td>
+				</tr>
+		</table>
+	</div>
 </form>
 ";
 }
@@ -289,7 +289,6 @@ if($dispError != "") {
 		<strong>Unable to recover password because the following errors occurred:</strong><br><br>
 		$dispError
 		<br>
-		Total Errors: $countErrors
 		</div>
 		";
 	}

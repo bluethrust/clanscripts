@@ -1,123 +1,61 @@
-<?php
+<?php 
 
-/*
- * Bluethrust Clan Scripts v4
- * Copyright 2014
- *
- * Author: Bluethrust Web Development
- * E-mail: support@bluethrust.com
- * Website: http://www.bluethrust.com
- *
- * License: http://www.bluethrust.com/license.php
- *
- */
+	/*
+	 * Bluethrust Clan Scripts v4
+	 * Copyright 2014
+	 *
+	 * Author: Bluethrust Web Development
+	 * E-mail: support@bluethrust.com
+	 * Website: http://www.bluethrust.com
+	 *
+	 * License: http://www.bluethrust.com/license.php
+	 *
+	 */
 
-if(!isset($member)) {
-	exit();
-}
-else {
-	$memberInfo = $member->get_info_filtered();
-	$consoleObj->select($_GET['cID']);
-	if(!$member->hasAccess($consoleObj)) {
-		exit();
+	if(!defined("LOGGED_IN") || !LOGGED_IN) { die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."'</script>"); }
+	
+	$arrItems = array();
+	$arrMedals = $medalObj->get_entries(array(), "ordernum DESC");
+	$x = 0;
+	foreach($arrMedals as $medalInfo) {
+				
+		$actionsInfo = array();
+		if($x != 0) {
+			$actionsInfo[] = "moveup";
+		}
+		
+		if($x != (count($arrMedals)-1)) {
+			$actionsInfo[] = "movedown";	
+		}
+		
+		$actionsInfo[] = "edit";
+		$actionsInfo[] = "delete";
+		
+		$x++;
+		
+		
+		$arrItems[] = array(
+			"display_name" => $medalInfo['name'],
+			"item_id" => $medalInfo['medal_id'],
+			"type" => "listitem",
+			"edit_link" => $MAIN_ROOT."members/console.php?cID=".$cID."&mID=".$medalInfo['medal_id']."&action=edit",
+			"actions" => $actionsInfo
+		);
+		
+		
 	}
-}
-
-
-
-echo "
-<script type='text/javascript'>
-
-$(document).ready(function() {
-$('#breadCrumb').html(\"<a href='".$MAIN_ROOT."'>Home</a> > <a href='".$MAIN_ROOT."members'>My Account</a> > Manage Medals\");
-});
-
-</script>
-";
-
-include_once($prevFolder."classes/medals.php");
-
-$cID = $_GET['cID'];
-
-
-if($cID == "") {
-	$cID = $consoleObj->findConsoleIDByName("Manage Medals");	
-}
-
-
-$intAddNewMedalCID = $consoleObj->findConsoleIDByName("Add New Medal");
-
-$medalObj = new Medal($mysqli);
-
-
-
-$intHighestOrder = $medalObj->getHighestOrderNum();
-$counter = 0;
-$x = 1;
-$result = $mysqli->query("SELECT * FROM ".$dbprefix."medals ORDER BY ordernum DESC");
-while($row = $result->fetch_assoc()) {
-	if($counter == 1) {
-		$addCSS = " alternateBGColor";
-		$counter = 0;
-	}
-	else {
-		$addCSS = "";
-		$counter = 1;
-	}
-
-	if($x == 1) {
-		$dispUpArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
-	}
-	else {
-		$dispUpArrow = "<a href='javascript:void(0)' onclick=\"moveMedal('up', '".$row['medal_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' width='24' height='24' title='Move Up'></a>";
-	}
-
-	if($x == $intHighestOrder) {
-		$dispDownArrow = "<img src='".$MAIN_ROOT."images/transparent.png' width='24' height'24'>";
-	}
-	else {
-		$dispDownArrow = "<a href='javascript:void(0)' onclick=\"moveMedal('down', '".$row['medal_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' width='24' height='24' title='Move Down'></a>";
-	}
-
-
-	$dispMedals .= "
-	<tr>
-		<td class='dottedLine".$addCSS."' width=\"76%\">&nbsp;&nbsp;<span class='main'><b><a href='console.php?cID=".$cID."&mID=".$row['medal_id']."&action=edit'>".$row['name']."</a></b></td>
-		<td align='center' class='dottedLine".$addCSS."' width=\"6%\">".$dispUpArrow."</td>
-		<td align='center' class='dottedLine".$addCSS."' width=\"6%\">".$dispDownArrow."</td>
-		<td align='center' class='dottedLine".$addCSS."' width=\"6%\"><a href='console.php?cID=".$cID."&mID=".$row['medal_id']."&action=edit'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' width='24' height='24' title='Edit Medal'></a></td>
-		<td align='center' class='dottedLine".$addCSS."' width=\"6%\"><a href='javascript:void(0)' onclick=\"deleteMedal('".$row['medal_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' width='24' height='24' title='Delete Medal'></a></td>
-	</tr>
-	";
-
-	$x++;
-}
-
-
-if($x == 1) {
-	$dispMedals = "<tr><td colspan='5'><br><p align='center' class='main'><i>No medals added yet!</i></p></td></tr>";
-}
-
-echo "
-
-
-<table class='formTable' style='border-spacing: 1px; margin-left: auto; margin-right: auto'>
-<tr>
-<td class='main' colspan='2' align='right'>
-&raquo; <a href='".$MAIN_ROOT."members/console.php?cID=".$intAddNewMedalCID."'>Add New Medal</a> &laquo;<br><br>
-</td>
-</tr>
-<tr>
-<td class='formTitle' width=\"76%\">Medal Name:</td>
-<td class='formTitle' width=\"24%\">Actions:</td>
-</tr>
-</table>
-<table class='formTable' style='border-spacing: 0px; margin-top: 0px; margin-left: auto; margin-right: auto'>
-<tr><td colspan='5' class='dottedLine'></td></tr>
-".$dispMedals."
-</table>
-
-
-";
-
+	
+	$addMedalCID = $consoleObj->findConsoleIDByName("Add New Medal");
+	$setupManageListArgs = array(
+		"item_title" => "Medal Name:",
+		"add_new_link" => array("url" => $MAIN_ROOT."members/console.php?cID=".$addMedalCID, "name" => "Add New Medal"),
+		"actions" => array("moveup", "movedown", "edit", "delete"),
+		"move_link" => $MAIN_ROOT."members/include/admin/medals/move.php",
+		"delete_link" => $MAIN_ROOT."members/include/admin/medals/delete.php",
+		"items" => $arrItems,
+		"confirm_delete" => true
+	);
+	
+	
+	
 ?>

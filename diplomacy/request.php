@@ -17,8 +17,6 @@
 $prevFolder = "../";
 
 include($prevFolder."_setup.php");
-include($prevFolder."classes/member.php");
-
 
 $ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
 
@@ -36,8 +34,11 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = "Diplomacy Request - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
+
+$breadcrumbObj->setTitle("Diplomacy Request");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Diplomacy Request");
 
 $result = $mysqli->query("SELECT ipaddress FROM ".$dbprefix."diplomacy_request WHERE ipaddress = '".$IP_ADDRESS."'");
 if($result->num_rows >= $websiteInfo['maxdiplomacy']) {
@@ -65,13 +66,9 @@ while($row = $result->fetch_assoc()) {
 	$statusoptions .= "<option value='".$row['diplomacystatus_id']."'>".filterText($row['name'])."</option>";	
 	$arrStatuses[] = $row['diplomacystatus_id'];
 }
+
+include($prevFolder."include/breadcrumb.php");
 ?>
-
-<div class='breadCrumbTitle'>Diplomacy Request</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Diplomacy Request
-</div>
-
 
 <div style='margin: 25px auto; '>
 

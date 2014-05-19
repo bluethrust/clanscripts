@@ -35,14 +35,16 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 
 	$memberInfo = $member->get_info_filtered();
 
-	if($member->hasAccess($consoleObj) && $medalObj->select($_POST['mID'])) {
+	if($member->hasAccess($consoleObj) && $medalObj->select($_POST['itemID'])) {
 		
-		define("MEMBERRANK_ID", $memberInfo['rank_id']);
+		define("LOGGED_IN", true);
 		
 		
 		if($_POST['confirm'] == 1) {
 			$medalObj->delete();
 			include("main.php");
+			include("../../../console.managelist.list.php");
+			
 		}
 		else {
 			$medalName = $medalObj->get_info_filtered("name");
@@ -50,7 +52,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		}
 		
 	}
-	elseif(!$medalObj->select($_POST['mID'])) {
+	elseif(!$medalObj->select($_POST['itemID'])) {
 		
 		echo "<p align='center'>Unable find the selected medal.  Please try again or contact the website administrator.</p>";
 		

@@ -214,7 +214,11 @@ if($rankInfo['imageurl'] != "") {
 $dispBirthday = "";
 if($memberInfo['birthday'] != 0) {
 	
-	$formatBirthday = date("M j, Y", $memberInfo['birthday']);
+	$bdayDate = new DateTime();
+	$bdayDate->setTimestamp($memberInfo['birthday']);
+	$bdayDate->setTimezone(new DateTimeZone("UTC"));
+	
+	$formatBirthday = $bdayDate->format("M j, Y");
 	$calcAge = floor((time()-$memberInfo['birthday'])/(31536000));
 	$dispBirthday = "<br><br>
 	<b>Birthday:</b><br>
@@ -236,12 +240,12 @@ if($memberInfo['onia'] == 1) {
 	$dispInactive = "<div style='display: inline-block; vertical-align: middle' class='failedFont tinyFont'>&nbsp;&nbsp;&nbsp;INACTIVE</div>";
 }
 
+$breadcrumbObj->setTitle("<div style='display: inline-block'>".$memberInfo['username']."'s Profile</div><div id='profilePageOnlineStatus' style='display: inline-block; margin-left: 8px; vertical-align: middle'>".$dispOnlineStatus."</div>".$dispInactive);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Members", $MAIN_ROOT."members.php");
+$breadcrumbObj->addCrumb($memberInfo['username']."'s Profile");
+include($prevFolder."include/breadcrumb.php");
 ?>
-
-<div class='breadCrumbTitle'><div style='display: inline-block'><?php echo $memberInfo['username']; ?>'s Profile</div><div id='profilePageOnlineStatus' style='display: inline-block; margin-left: 8px; vertical-align: middle'><?php echo $dispOnlineStatus; ?></div><?php echo $dispInactive; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <a href='<?php echo $MAIN_ROOT; ?>members.php'>Members</a> > <?php echo $memberInfo['username']; ?>'s Profile
-</div>
 
 <div style='position: relative; margin-left: auto; margin-right: auto; width: 95%; margin-top: 15px'>
 	<div class='main userProfileLeft'>

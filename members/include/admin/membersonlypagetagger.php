@@ -115,9 +115,10 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	}
 	elseif($_POST['setSectionStatus'] == 1 && ($_POST['pageID'] == "profile" || $_POST['pageID'] == "forum") && ($_POST['pageStatusValue'] == 1 || $_POST['pageStatusValue'] == 0)) {
 		
-		$columnName = "private".$_POST['pageID'];
-		$arrColumn = array($columnName);
+		$settingName = "private".$_POST['pageID'];
+		$arrColumn = array("value");
 		$arrValue = array($_POST['pageStatusValue']);
+		$webInfoObj->select($webInfoObj->get_key($settingName));
 		if($webInfoObj->update($arrColumn, $arrValue)) {
 			echo "<span class='successFont'><i>section privacy updated!</i></span>";	
 		}

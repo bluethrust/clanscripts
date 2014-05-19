@@ -227,7 +227,7 @@ if(!$_POST['submit']) {
 			<table class='formTable'>
 				<tr>
 					<td class='formLabel' valign='top'>Question:</td>
-					<td class='main'><textarea name='pollquestion' class='textBox' style='width: 60%; height: 20%'>".$_POST['pollquestion']."</textarea></td>
+					<td class='main'><textarea name='pollquestion' class='textBox' style='width: 60%; height: 30px'>".$_POST['pollquestion']."</textarea></td>
 				</tr>
 				<tr>
 					<td class='formLabel'>Access:</td>
@@ -377,7 +377,7 @@ if(!$_POST['submit']) {
 	
 						$('#addModifyOptionDiv').dialog({
 							title: 'Add Poll Option',
-							width: 350,
+							width: 400,
 							show: 'scale',
 							modal: true,
 							zIndex: 99999,

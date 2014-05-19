@@ -17,8 +17,6 @@
 $prevFolder = "../";
 
 include($prevFolder."_setup.php");
-include($prevFolder."classes/member.php");
-
 
 $diplomacyObj = new Basic($mysqli, "diplomacy", "diplomacy_id");
 
@@ -87,14 +85,14 @@ else {
 
 // Start Page
 $PAGE_NAME = $diplomacyInfo['clanname']." - Diplomacy - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
-?>
 
-<div class='breadCrumbTitle'><?php echo $diplomacyInfo['clanname']; ?></div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > <a href='<?php echo $MAIN_ROOT; ?>diplomacy'>Diplomacy</a> > <?php echo $diplomacyInfo['clanname']; ?>
-</div>
+$breadcrumbObj->setTitle($diplomacyInfo['clanname']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Diplomacy", $MAIN_ROOT."diplomacy");
+$breadcrumbObj->addCrumb($diplomacyInfo['clanname']);
+include($prevFolder."include/breadcrumb.php");
+?>
 
 <div style='margin: 25px auto; '>
 	

@@ -121,8 +121,8 @@ if($_POST['submit']) {
 	
 	if($countErrors == 0) {
 		
-		$arrColumns = array("title", "description", "location", "startdate", "publicprivate", "visibility", "messages", "invitepermission");
-		$arrValues = array($_POST['eventtitle'], $_POST['eventdetails'], $_POST['eventlocation'], $setStartTime, $inviteType, $_POST['visibility'], $allowMessages, $openInvites);
+		$arrColumns = array("title", "description", "location", "startdate", "publicprivate", "visibility", "messages", "invitepermission", "timezone");
+		$arrValues = array($_POST['eventtitle'], $_POST['eventdetails'], $_POST['eventlocation'], $setStartTime, $inviteType, $_POST['visibility'], $allowMessages, $openInvites, $_POST['timezone']);
 		
 		if($eventObj->update($arrColumns, $arrValues)) {
 			
@@ -226,7 +226,7 @@ if(!$_POST['submit']) {
 		$dispInvitedOnlySelected = " selected";	
 	}
 	
-	
+	$timezoneoptions = "<option value=''>[Use Default']</option>";
 	foreach($arrTimezones as $timeZone) {
 		
 		$tz = new DateTimeZone($timeZone);

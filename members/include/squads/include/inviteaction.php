@@ -82,7 +82,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			$member->postNotification("<b>".$memberLink."</b> has accepted the invitation to join <b><a href='".$MAIN_ROOT."squads/profile.php?sID=".$squadInfo['squad_id']."'>".$squadInfo['name']."</a></b>");
 			
 			
-			
+			$mysqli->query("DELETE FROM ".$dbprefix."squadapps WHERE member_id = '".$memberInfo['member_id']."'");
 			
 			echo "
 				<script type='text/javascript'>

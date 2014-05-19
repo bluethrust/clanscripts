@@ -43,12 +43,14 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 $PAGE_NAME = "Squads - ";
 $dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
+
+$breadcrumbObj->setTitle("Squads");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Squads");
+include($prevFolder."include/breadcrumb.php");
+
 ?>
 
-<div class='breadCrumbTitle'>Squads</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-	<a href='<?php echo $MAIN_ROOT; ?>'>Home</a> > Squads
-</div>
 		
 <div style='margin: 0px auto; '>
 <table class='formTable' style='margin-left: auto; margin-right: auto'>

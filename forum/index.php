@@ -17,9 +17,6 @@ $prevFolder = "../";
 
 include($prevFolder."_setup.php");
 
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/forumboard.php");
-
 $consoleObj = new ConsoleOption($mysqli);
 $boardObj = new ForumBoard($mysqli);
 $subForumObj = new ForumBoard($mysqli);
@@ -48,7 +45,6 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 // Start Page
 $PAGE_NAME = "Forum - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 // Check Private Forum
@@ -66,16 +62,15 @@ $LOGGED_IN = false;
 if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {
 	$memberInfo = $member->get_info_filtered();
 	$LOGGED_IN = true;
-
 }
 
+$breadcrumbObj->setTitle("Forum");
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Forum");
+include($prevFolder."include/breadcrumb.php");
 
-echo "
-	<div class='breadCrumbTitle'>Forum</div>
-	<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-		<a href='".$MAIN_ROOT."'>Home</a> > Forum
-	</div>
-	
+$boardObj->showSearchForm();
+echo "	
 	<table class='forumTable'>
 ";
 
@@ -200,9 +195,6 @@ if($result->num_rows == 0) {
 echo "</table>";
 
 
-?>
 
-
-<?php
 include($prevFolder."themes/".$THEME."/_footer.php");
 ?>

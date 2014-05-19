@@ -16,6 +16,8 @@
 // This setup page should not be changed.  Edit _config.php to configure your website.
 
 ini_set('display_errors', 0);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.gc_maxlifetime', 60*60*24*3);
 
 if(get_magic_quotes_gpc() == 1) {
 	foreach($_GET as $key=>$value) { $_GET[$key] = stripslashes($value); }
@@ -23,30 +25,25 @@ if(get_magic_quotes_gpc() == 1) {
 }
 
 
-if(isset($_COOKIE['btSessionID']) && $_COOKIE['btSessionID'] != "") {
-	session_id($_COOKIE['btSessionID']);
+if(isset($_COOKIE['btUsername']) && isset($_COOKIE['btPassword'])) {
 	session_start();
-	ini_set('session.use_only_cookies', 1);
+	$_SESSION['btUsername'] = $_COOKIE['btUsername'];
+	$_SESSION['btPassword'] = $_COOKIE['btPassword'];
 }
 else {
 	session_start();
-	ini_set('session.use_only_cookies', 1);
-	if(isset($_SESSION['btRememberMe']) && $_SESSION['btRememberMe'] == 1 && (!isset($_COOKIE['btSessionID']) || $_COOKIE['btSessionID'] == "")) {
-		$cookieExpTime = time()+((60*60*24)*3);
-		setcookie("btSessionID", session_id(), $cookieExpTime);
-	}
+}
+
+if(!isset($_SESSION['csrfKey'])) {
+	$_SESSION['csrfKey'] = md5(uniqid());
 }
 
 include($prevFolder."_config.php");
 $PAGE_NAME = "";
-
-include_once($prevFolder."classes/btmysql.php");
-include_once($prevFolder."classes/basic.php");
 include_once($prevFolder."_functions.php");
-include_once($prevFolder."classes/ipban.php");
-
 
 $mysqli = new btmysql($dbhost, $dbuser, $dbpass, $dbname);
+
 
 $mysqli->set_tablePrefix($dbprefix);
 $mysqli->set_testingMode(true);
@@ -54,7 +51,7 @@ $mysqli->set_testingMode(true);
 $logObj = new Basic($mysqli, "logs", "log_id");
 
 // Get Clan Info
-$webInfoObj = new Basic($mysqli, "websiteinfo", "websiteinfo_id");
+$webInfoObj = new WebsiteInfo($mysqli);
 
 $webInfoObj->select(1);
 
@@ -80,31 +77,17 @@ if($websiteInfo['debugmode'] == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 else {
-	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING && ~E_STRICT);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 	ini_set('display_errors', 1);
 }
 
 
 // Check for Ban
-/*
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
-*/
 
 $ipbanObj = new IPBan($mysqli);
 if($ipbanObj->isBanned($IP_ADDRESS)) {
 	die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
 }
 
+$hooksObj = new btHooks();
 ?>

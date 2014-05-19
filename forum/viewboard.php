@@ -18,9 +18,6 @@ $prevFolder = "../";
 
 include($prevFolder."_setup.php");
 
-include_once($prevFolder."classes/member.php");
-include_once($prevFolder."classes/forumboard.php");
-
 $consoleObj = new ConsoleOption($mysqli);
 $boardObj = new ForumBoard($mysqli);
 $member = new Member($mysqli);
@@ -61,7 +58,6 @@ $boardInfo = $boardObj->get_info_filtered();
 
 // Start Page
 $PAGE_NAME = $boardInfo['name']." - Forum - ";
-$dispBreadCrumb = "";
 include($prevFolder."themes/".$THEME."/_header.php");
 
 // Check Private Forum
@@ -233,26 +229,32 @@ foreach($arrSubForums as $boardID) {
 
 }
 
+$breadcrumbObj->setTitle($boardInfo['name']);
+$breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
+$breadcrumbObj->addCrumb("Forum", $MAIN_ROOT."forum");
 $dispBreadCrumbChain = "";
 if($boardInfo['subforum_id'] != 0) {
-
 	$subForumID = $boardInfo['subforum_id'];
+	$submForumBC = array();
 	while($subForumID != 0) {
 		$subForumObj->select($subForumID);
 		$subForumInfo = $subForumObj->get_info_filtered();
 		$subForumID = $subForumInfo['subforum_id'];
-		$dispBreadCrumbChain = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a> > ".$dispBreadCrumbChain;
+		//$dispBreadCrumbChain = "<a href='".$MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id']."'>".$subForumInfo['name']."</a> > ".$dispBreadCrumbChain;
+		$subForumBC[] = array("link" => $MAIN_ROOT."forum/viewboard.php?bID=".$subForumInfo['forumboard_id'], "value" => $subForumInfo['name']);
 	}
-	
+
+	krsort($subForumBC);
+	foreach($subForumBC as $bcInfo) {
+		$breadcrumbObj->addCrumb($bcInfo['value'], $bcInfo['link']);
+	}
+
 }
+$breadcrumbObj->addCrumb($boardInfo['name']);
+include($prevFolder."include/breadcrumb.php");
 
+$boardObj->showSearchForm();
 echo "
-<div class='breadCrumbTitle'>".$boardInfo['name']."</div>
-<div class='breadCrumb' style='padding-top: 0px; margin-top: 0px'>
-<a href='".$MAIN_ROOT."'>Home</a> > <a href='index.php'>Forum</a> > ".$dispBreadCrumbChain.$boardInfo['name']."
-</div>
-
-
 <table class='forumTable'>
 ";
 

@@ -39,8 +39,8 @@ $arrGames = $gameObj->getGameList();
 $gameStatsObj = new Basic($mysqli, "gamestats", "gamestats_id");
 $memberGameStatObj = new Basic($mysqli, "gamestats_members", "gamestatmember_id");
 
-if($_POST['submit']) {
-	
+function saveGameStats() {
+	global $mysqli, $dbprefix, $memberInfo, $member, $arrGames, $gameObj, $memberGameStatObj, $gameStatsObj;
 	$mysqli->query("DELETE FROM ".$dbprefix."gamestats_members WHERE member_id = '".$memberInfo['member_id']."'");
 	foreach($arrGames as $gameID) {
 		
@@ -50,7 +50,7 @@ if($_POST['submit']) {
 			
 			$arrGameStats = $gameObj->getAssociateIDs("ORDER BY ordernum");
 			foreach($arrGameStats as $gameStatsID) {
-				echo $gameStatsID."<br>";
+
 				$gameStatsObj->select($gameStatsID);
 				
 				if($gameStatsObj->get_info("stattype") == "input") {
@@ -62,151 +62,97 @@ if($_POST['submit']) {
 					
 					$postVal = "stat_".$gameStatsID;
 					
-					if($memberGameStatObj->addNew(array("gamestats_id", "member_id", $statType, "dateupdated"), array($gameStatsID, $memberInfo['member_id'], $_POST[$postVal], time()))) {
-						
-						echo "
-						
-							<div style='display: none' id='successBox'>
-							<p align='center'>
-							Successfully Edited Game Stats
-							</p>
-							</div>
-							
-							<script type='text/javascript'>
-							popupDialog('Edit My Game Stats', '".$MAIN_ROOT."members', 'successBox');
-							</script>
-					
-						";
-						
-					}
-					else {
-						$countErrors++;
-						$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-					}
-					
-					
+					$memberGameStatObj->addNew(array("gamestats_id", "member_id", $statType, "dateupdated"), array($gameStatsID, $memberInfo['member_id'], $_POST[$postVal], time()));
+
 				}
 
 			}
 		
-			
 		}
 		
 	}
 	
-	
 }
 
 
-if(!$_POST['submit']) {
-	
-	$dispGamesPlayed = "
-		<tr>
-			<td class='main' colspan='2' align='center'>
-				<p style='font-size: italic'>
-					There are no games added to the website.  Please ask the website administrator to add some!
-				</p>
-			</td>
-		</tr>
-	";
-	
-	$countGamesPlayed = 0;
-	if(count($arrGames) > 0) {
-		$dispGamesPlayed = "";
+// Setup Form
+$i = 1;
+$arrComponents = array();
+
+foreach($arrGames as $gameID) {
+	$gameObj->select($gameID);
+	$arrGameStats = $gameObj->getAssociateIDs("ORDER BY ordernum");
+
+	if($member->playsGame($gameID) && count($arrGameStats) > 0) {
+		$arrComponents['customsection_'.$gameID] = array(
+			"type" => "section",
+			"options" => array("section_title" => $gameObj->get_info_filtered("name")),
+			"sortorder" => $i++
+		);
 		
-		foreach($arrGames as $gameID) {
-			
-			if($member->playsGame($gameID)) {
-				$countGamesPlayed++;
-				$gameObj->select($gameID);
-				$dispGamesPlayed .= "
-					<tr>
-						<td colspan='2' class='main'><br>
-							<b>".$gameObj->get_info_filtered("name")."</b>
-							<div class='dottedLine' style='width: 90%; padding-top: 3px'></div>
-						</td>
-					</tr>
-				";
-				
-				$arrGameStats = $gameObj->getAssociateIDs("ORDER BY ordernum");
-				foreach($arrGameStats as $gameStatsID) {
-					
-					$gameStatsObj->select($gameStatsID);
-					
-					$gameStatInfo = $gameStatsObj->get_info_filtered();
-					if($gameStatInfo['stattype'] == "input") {
-						
-						$textBoxWidth = "30px";
-						$blnText = false;
-						if($gameStatInfo['textinput'] == 1) {
-							$textBoxWidth = "200px";	
-							$blnText = true;
-						}
-						
-						$gameStatValue = $member->getGameStatValue($gameStatsID, $blnText);
-						$dispGamesPlayed .= "
-							<tr>
-								<td class='formLabel' valign='top'>".$gameStatInfo['name'].":</td>
-								<td class='main' valign='top'><input type='text' class='textBox' name='stat_".$gameStatsID."' value='".$gameStatValue."' style='width: ".$textBoxWidth."'></td>
-							</tr>
-						
-						";
-					
-					}
-					
+		foreach($arrGameStats as $gameStatsID) {
+			$gameStatsObj->select($gameStatsID);	
+			$gameStatsInfo = $gameStatsObj->get_info_filtered();
+			if($gameStatsInfo['stattype'] == "input") {
+				$textBoxWidth = array("style" => "width: 5%");
+				$blnText = false;
+				if($gameStatInfo['textinput'] == 1) {
+					$textBoxWidth = array();	
+					$blnText = true;
 				}
+				$gameStatValue = $member->getGameStatValue($gameStatsID, $blnText);
 				
+				$arrComponents['stat_'.$gameStatsID] = array(
+					"display_name" => $gameStatsInfo['name'],
+					"attributes" => array_merge(array("class" => "formInput textBox"), $textBoxWidth),
+					"value" => $gameStatValue,
+					"sortorder" => $i++
+				);
 			}
-
-		}
-		
-		if($dispGamesPlayed != "") {
-			
-			$dispGamesPlayed .= "
-				<tr>
-					<td class='main' colspan='2' align='center'><br>
-						<input type='submit' name='submit' value='Save' style='width: 100px' class='submitButton'>
-					</td>
-				</tr>
-			";
-			
 		}
 		
 	}
-	
-	if($countGamesPlayed == 0 && count($arrGames) > 0) {
-
-		$dispGamesPlayed = "
-		
-		<tr>
-			<td class='main' colspan='2' align='center'>
-				<div style='width: 40%; margin-left: auto; margin-right: auto' class='shadedBox'>
-				<p style='font-size: italic' align='center'>
-					You need to set which games you play in your <a href='".$MAIN_ROOT."members/console.php?cID=".$intEditProfileCID."'>profile</a>!
-				</p>
-				</div>
-			</td>
-		</tr>
-		
-		";
-		
-	}
-	
-	
-	echo "
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-			<div class='formDiv'>
-				Use the form below to edit your game stats.
-				<table class='formTable'>
-					".$dispGamesPlayed."
-				</table>
-			
-			</div>
-		</form>
-	";
 	
 }
 
+
+$additionalNote = "";
+if($i == 1) {
+	$customHTML = "
+		<div class='shadedBox' style='margin-top: 40px; margin-left: auto; margin-right: auto; width: 45%'>
+			<p align='center'>
+				You need to set which games you play in your <a href='".$MAIN_ROOT."members/console.php?cID=".$intEditProfileCID."'>profile</a>!
+			</p>
+		</div>
+	";
+	
+	$arrComponents['nogamesmessage'] = array(
+		"type" => "custom",
+		"html" => $customHTML,
+		"sortorder" => $i++
+	);
+
+	$additionalNote = "<br><br><b><u>NOTE:</u></b> If you have selected which games you play in your profile, there might not be any stats associated with them.";
+}
+else {
+
+	$arrComponents['submit'] = array(
+		"type" => "submit",
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"value" => "Save Stats",
+		"sortorder" => $i++
+	);
+	
+}
+
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"afterSave" => array("saveGameStats"),
+	"saveMessage" => "Successfully saved game stats!",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"description" => "Use the form below to edit your game stats.".$additionalNote
+);
 
 
 ?>

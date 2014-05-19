@@ -142,6 +142,9 @@ class BTUpload {
 		if($this->checkExtensions() && $this->checkFileSize()) {
 			$this->strUploadedFileName = uniqid($this->strFilePrefix).$this->strFileExt;
 			
+
+			//print_r($this->arrFile);
+			
 			if(!$this->blnOutsideLink) {
 				$blnUploadFile = move_uploaded_file($this->arrFile['tmp_name'], $this->strNewFileLoc.$this->strUploadedFileName);
 			}
@@ -160,6 +163,7 @@ class BTUpload {
 			if(!$blnUploadFile) {
 				$this->arrErrors[] = "Can't Upload";
 			}
+			
 			
 		}
 		else {

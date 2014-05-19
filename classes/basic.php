@@ -54,10 +54,8 @@ class Basic {
 			$checkID = is_numeric($intIDNum);
 		}
 		
-		
 
 		if($checkID) {
-
 			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$this->strTableKey." = '$intIDNum'");
 			if($result->num_rows > 0) {
 				$this->arrObjInfo = $result->fetch_assoc();
@@ -68,6 +66,85 @@ class Basic {
 
 		
 		return $returnVal;
+	}
+	
+	
+/*
+	 * Get multi rows, returns an array of get_info_filtered, 
+	 * 
+	 * Format filterArgs array as array[columnName] = value
+	 * 
+	 */
+	
+	public function get_entries($filterArgs=array(), $orderBy="", $blnNotFiltered=true, $filterComparators=array()) {
+		
+		$returnVal = false;
+		$returnArr = array();
+		$arrSelect = array();
+		$selectBackID = "";
+		
+		if($this->intTableKeyValue != "") {
+			$selectBackID = $this->intTableKeyValue;
+		}
+		
+		$setSQL = "";
+		if(count($filterArgs) > 0) {
+			
+			$arrSQL = array();
+			foreach($filterArgs as $columnName => $value) {
+				
+			$setComparator = isset($filterComparators[$columnName]) ? $filterComparators[$columnName] : "=";
+				
+				$arrSQL[] = $columnName." ".$setComparator." ?";
+				
+			}
+			
+			$setSQL = implode(" AND ", $arrSQL);
+			
+			if($setSQL != "") {
+				$setSQL = " WHERE ".$setSQL;	
+			}
+		}
+		
+		if($orderBy != "") {
+			$orderBy = "ORDER BY ".$orderBy;
+		}
+		
+		$query = "SELECT ".$this->strTableKey." FROM ".$this->strTableName.$setSQL." ".$orderBy;
+		$stmt = $this->MySQL->prepare($query);
+		$returnID = "";
+
+		if($stmt) {
+
+			if(count($filterArgs) > 0) {
+				$this->MySQL->bindParams($stmt, $filterArgs);
+			}
+			
+			$stmt->execute();
+			$stmt->bind_result($result);
+			
+			while($stmt->fetch()) {
+				
+				$arrSelect[] = $result;	
+				
+			}
+			
+			$stmt->close();
+
+		}
+
+		foreach($arrSelect as $selectKey) {
+			$this->select($selectKey);
+			$returnArr[] = $blnNotFiltered ? $this->get_info_filtered() : $this->get_info();
+		}
+		
+		
+		if($selectBackID != "") {
+			$this->select($selectBackID);
+		}
+		
+		return $returnArr;
+		
 	}
 	
 	
@@ -115,7 +192,6 @@ class Basic {
 		
 			
 			$stmt = $this->MySQL->bindParams($stmt, $arrValues);
-			
 			
 		}
 		

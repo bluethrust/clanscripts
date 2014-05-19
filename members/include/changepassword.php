@@ -23,116 +23,54 @@ else {
 	}
 }
 
-
-
 $cID = $_GET['cID'];
 
-$dispError = "";
-$countErrors = 0;
+$arrComponents = array(
+	"currentpassword" => array(
+		"display_name" => "Current Password",
+		"type" => "password",
+		"sortorder" => 1,
+		"attributes" => array("class" => "textBox formInput"),
+		"validate" => array("NOT_BLANK", "changePasswordChecks")
+	),
+	"newpassword" => array(
+		"display_name" => "New Password",
+		"type" => "password",
+		"sortorder" => 2,
+		"attributes" => array("class" => "textBox formInput", "id" => "newpassword"),
+		"validate" => array("NOT_BLANK", array("name" => "EQUALS_VALUE", "value" => $_POST['newpassword1']), array("name" => "CHECK_LENGTH", "min_length" => 4))
+	),
+	"newpassword1" => array(
+		"display_name" => "Re-type New Password",
+		"type" => "custom",
+		"html" => "<input type='password' id='newpassword1' name='newpassword1' class='textBox formInput'><span id='checkPassword' class='formInput' style='padding-left: 5px'></span>",
+		"sortorder" => 3,
+		"attributes" => array("class" => "textBox formInput", "id" => "newpassword1"),
+		"validate" => array("NOT_BLANK")
+	),
+	"submit" => array(
+		"type" => "submit",
+		"sortorder" => 4,
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"value" => "Change Password"
+	)
+
+);
+
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"afterSave" => array("savePassword"),
+	"saveMessage" => "Successfully changed password!",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"description" => "Use the form below to change your password."
+);
 
 
-if($_POST['submit']) {
-	
-	// Check length
-	
-	if(strlen($_POST['newpassword']) < 4) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Your password must be at least 4 characters long.<br>";
-	}
-	
-	
-	if($_POST['newpassword'] != $_POST['newpassword1']) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Your passwords did not match.<br>";
-	}
-	
-	if(!$member->authorizeLogin($_POST['currentpassword'], 1)) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You entered an incorrect current password.<br>";
-	}
-	
-	
-	if($countErrors == 0) {
-		
-		if($member->set_password($_POST['newpassword'])) {
-			$memberInfo = $member->get_info_filtered();
-			$_SESSION['btPassword'] = $memberInfo['password'];
-			
-			echo "
-			
-				<div style='display: none' id='successBox'>
-					<p align='center'>
-						Successfully changed password!
-					</p>
-				</div>
-				
-				<script type='text/javascript'>
-					popupDialog('Change Password', '".$MAIN_ROOT."members', 'successBox');
-				</script>
-			
-			";
-			
-		}
-		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-		}
-		
-	}
-	
-	
-	if($countErrors > 0) {
-		$_POST['submit'] = false;	
-	}
-	
-	
-}
+$formObj->prefillValues = false;
 
 
-
-if(!$_POST['submit']) {
-
-	echo "
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-			<div class='formDiv'>
-			
-	";
-	
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to change password because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-				Use the form below to change your password.<br><br>
-				
-				<table class='formTable'>
-					<tr>
-						<td class='formLabel'>Current Password:</td>
-						<td class='main'><input type='password' class='textBox' name='currentpassword' style='width: 125px'></td>
-					</tr>
-					<tr>
-						<td class='formLabel' valign='top'>New Password:</td>
-						<td class='tinyFont'><input type='password' id='newpassword' name='newpassword' class='textBox' style='width: 125px'><br>(Minimum 4 characters)</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Re-type New Password:</td>
-						<td class='main'><input type='password' id='newpassword1' name='newpassword1' class='textBox' style='width: 125px'><span id='checkPassword' style='padding-left: 5px'></span></td>
-					</tr>
-					<tr>
-						<td class='main' colspan='2' align='center'><br><br>
-							<input type='submit' name='submit' value='Change Password' class='submitButton' style='width: 140px'>
-						</td>
-					</tr>
-				</table>
-				
-			</div>
-		</form>
+echo "
 		<script type='text/javascript'>
 			
 			$(document).ready(function() {
@@ -161,10 +99,27 @@ if(!$_POST['submit']) {
 			
 			});
 		
-		</script>
-	
-	
+		</script>	
 	";
-	
-	
+
+
+// Change Password Check
+
+function changePasswordChecks() {
+	global $formObj, $member;
+	if(!$member->authorizeLogin($_POST['currentpassword'], 1)) {
+		$formObj->errors[] = "You entered an incorrect current password.";
+	}
 }
+
+
+// Custom Save Function
+
+function savePassword() {
+	global $member;	
+	$member->set_password($_POST['newpassword']);
+	$_SESSION['btPassword'] = $member->get_info("password");
+}
+
+	
+?>
