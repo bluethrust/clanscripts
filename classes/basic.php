@@ -70,6 +70,51 @@ class Basic {
 	
 	
 /*
+	 * Select by multiple arguments.
+	 * 
+	 * Format argument array as array[columnName] = value
+	 * 
+	 */
+	
+	public function selectByMulti($arrWhats) {
+		
+		$returnVal = false;
+		if(is_array($arrWhats)) {
+			
+			$arrSQL = array();
+			foreach($arrWhats as $columnName => $value) {
+				$arrSQL[] = $columnName." = ?";
+			}
+			
+			$setSQL = implode(" AND ", $arrSQL);
+
+			$query = "SELECT ".$this->strTableKey." FROM ".$this->strTableName." WHERE ".$setSQL;
+			$stmt = $this->MySQL->prepare($query);
+			$returnID = "";
+
+			if($stmt) {
+	
+				$this->MySQL->bindParams($stmt, $arrWhats);
+				$stmt->execute();
+				$stmt->bind_result($result);
+				$stmt->fetch();	
+				$returnID = $result;			
+				$stmt->close();
+
+			}
+		
+			
+
+			$returnVal = $this->select($returnID);	
+			
+			
+		}
+		
+		return $returnVal;
+	}
+	
+	
+	/*
 	 * Get multi rows, returns an array of get_info_filtered, 
 	 * 
 	 * Format filterArgs array as array[columnName] = value

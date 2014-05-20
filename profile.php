@@ -99,6 +99,30 @@ if(constant("LOGGED_IN")) {
 
 $dispSocialMedia = "";
 
+
+$memberSocialInfo = $member->objSocial->getMemberSocialInfo(true);
+
+foreach($memberSocialInfo as $socialID => $socialInfo) {
+	
+	$dispSocialIconDimensions = "";
+	$member->objSocial->select($socialID);
+	$tempSocialInfo = $member->objSocial->get_info_filtered();
+	
+	if($tempSocialInfo['iconwidth'] != 0) {
+		$dispSocialIconDimensions .= "width: ".$tempSocialInfo['iconwidth']."px;";
+	}
+	
+	if($tempSocialInfo['iconheight'] != 0) {
+		$dispSocialIconDimensions .= "height: ".$tempSocialInfo['iconheight']."px;";
+	}
+	
+	
+	
+	$dispSocialMedia .= "<a href='".$socialInfo."' target='_blank'><img class='socialMediaProfileIcons' src='".$MAIN_ROOT.$tempSocialInfo['icon']."' style='margin-right: 5px; ".$dispSocialIconDimensions."'></a>";
+	
+}
+
+/*
 if($memberInfo['facebook'] != "") {
 	
 	$dispSocialMedia .= "<a href='".$memberInfo['facebook']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/facebook.png' width='24' height='24' style='margin-right: 5px'></a>";
@@ -128,7 +152,7 @@ if($memberInfo['twitch'] != "") {
 	$dispSocialMedia .= "<a href='http://www.twitch.tv/".$memberInfo['twitch']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/twitch.png' width='24' height='24' style='margin-right: 5px'></a>";
 	
 }
-
+*/
 
 
 if($dispSocialMedia != "") {

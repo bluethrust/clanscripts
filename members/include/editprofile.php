@@ -36,6 +36,8 @@ $gameObj = new Game($mysqli);
 $arrGames = $gameObj->getGameList();
 $consoleCatSettingObj = new Basic($mysqli, "consolecategory", "consolecategory_id");
 
+$arrSocialMediaInfo = $member->objSocial->get_entries(array(), "ordernum DESC");
+
 
 // Setup Default Console Category Select Options
 	
@@ -98,10 +100,11 @@ function filterSignature() {
 	
 }
 
+
 // Save Custom Values
 
 function saveCustomValues() {
-	global $mysqli, $member, $arrGames, $gameMemberObj, $dbprefix, $memberInfo;
+	global $mysqli, $member, $arrGames, $gameMemberObj, $dbprefix, $memberInfo, $arrSocialMediaInfo;
 	
 	// Save Custom Profile Options
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."profileoptions ORDER BY sortnum");
@@ -111,6 +114,25 @@ function saveCustomValues() {
 		$member->setProfileValue($row['profileoption_id'], $_POST[$postVal]);
 
 	}
+	
+	// Save Social Media Info
+	
+	foreach($arrSocialMediaInfo as $socialMediaInfo) {
+		$postVal = "socialmedia_".$socialMediaInfo['social_id'];	
+		if($member->objSocial->objSocialMember->selectByMulti(array("member_id" => $memberInfo['member_id'], "social_id" => $socialMediaInfo['social_id']))) {
+			$arrColumns = array("value");
+			$arrValues = array($_POST[$postVal]);
+			$member->objSocial->objSocialMember->update($arrColumns, $arrValues);
+		}
+		else {
+			$arrColumns = array("social_id", "member_id", "value");
+			$arrValues = array($socialMediaInfo['social_id'], $memberInfo['member_id'], $_POST[$postVal]);
+			$member->objSocial->objSocialMember->addNew($arrColumns, $arrValues);			
+		}
+		
+	}
+	
+	
 	
 	// Save Games Played
 	
@@ -232,7 +254,7 @@ $arrComponents = array(
 		"db_name" => "forumsignature",
 		"validate" => array("filterSignature")
 	),
-	"forumsettings" => array(
+	"contactsettings" => array(
 		"type" => "section",
 		"options" => array("section_title" => "Contact/Social Media Information:"),
 		"sortorder" => $i++
@@ -244,52 +266,33 @@ $arrComponents = array(
 		"value" => $memberInfo['email'],
 		"sortorder" => $i++,
 		"db_name" => "email"
-	),
-	"facebook" => array(
+	)
+	
+);
+
+
+// Social Media Info
+
+$arrSocialMediaComponents = array();
+$memberSocialInfo = $member->objSocial->getMemberSocialInfo();
+foreach($arrSocialMediaInfo as $socialMediaInfo) {
+
+	$dispSocialMediaValue = (isset($memberSocialInfo[$socialMediaInfo['social_id']])) ? $memberSocialInfo[$socialMediaInfo['social_id']] : "";
+	
+	$tempComponentName = "socialmedia_".$socialMediaInfo['social_id'];
+	
+	$arrSocialMediaComponents[$tempComponentName] = array(
 		"type" => "text",
-		"display_name" => "Facebook",
-		"tooltip" => "Enter entire Facebook URL.",
+		"display_name" => $socialMediaInfo['name'],
+		"tooltip" => $socialMediaInfo['tooltip'],
 		"attributes" => array("class" => "textBox formInput"),
-		"value" => $memberInfo['facebook'],
 		"sortorder" => $i++,
-		"db_name" => "facebook"
-	),
-	"twitter" => array(
-		"type" => "text",
-		"display_name" => "Twitter",
-		"tooltip" => "Enter your Twitter username.",
-		"attributes" => array("class" => "textBox formInput"),
-		"value" => $memberInfo['twitter'],
-		"sortorder" => $i++,
-		"db_name" => "twitter"
-	),
-	"youtube" => array(
-		"type" => "text",
-		"display_name" => "Youtube",
-		"tooltip" => "Enter your Youtube username.",
-		"attributes" => array("class" => "textBox formInput"),
-		"value" => $memberInfo['youtube'],
-		"sortorder" => $i++,
-		"db_name" => "youtube"
-	),
-	"googleplus" => array(
-		"type" => "text",
-		"display_name" => "Google Plus",
-		"tooltip" => "Enter entire Google Plus URL.",
-		"attributes" => array("class" => "textBox formInput"),
-		"value" => $memberInfo['googleplus'],
-		"sortorder" => $i++,
-		"db_name" => "googleplus"
-	),
-	"twitch" => array(
-		"type" => "text",
-		"display_name" => "Twitch",
-		"tooltip" => "Enter entire your Twitch username.",
-		"attributes" => array("class" => "textBox formInput"),
-		"value" => $memberInfo['twitch'],
-		"sortorder" => $i++,
-		"db_name" => "twitch"
-	),
+		"value" => $dispSocialMediaValue
+	);
+	
+}
+
+$arrBirthdayComponents = array(
 	"birthdaysection" => array(
 		"type" => "section",
 		"options" => array("section_title" => "Birthday:"),
@@ -363,7 +366,7 @@ if(count($arrGames) > 0) {
 	$mainGamePlayed['maingame']['options'] = $mainGameOptions;
 	
 	
-	$arrComponents = array_merge($arrComponents, $gamesPlayedSection, $mainGamePlayed, $gamesPlayedOptions);
+	$arrComponents = array_merge($arrComponents, $arrSocialMediaComponents, $arrBirthdayComponents, $gamesPlayedSection, $mainGamePlayed, $gamesPlayedOptions);
 }
 
 

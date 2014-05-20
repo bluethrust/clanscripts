@@ -18,10 +18,12 @@ include_once("profileoption.php");
 include_once("rank.php");
 include_once("medal.php");
 include_once("forumboard.php");
+include_once("social.php");
 class Member extends Basic {
 
 	protected $objProfileOption;
 	public $objRank;
+	public $objSocial;
 	
 	function __construct($sqlConnection) {
 		$this->MySQL = $sqlConnection;
@@ -30,6 +32,7 @@ class Member extends Basic {
 		
 		$this->objProfileOption = new ProfileOption($sqlConnection);
 		$this->objRank = new Rank($sqlConnection);
+		$this->objSocial = new Social($sqlConnection);
 	}
 	
 	
@@ -60,7 +63,9 @@ class Member extends Basic {
 			}
 
 		}
-				
+
+		$this->objSocial->memberID = $this->intTableKeyValue;
+		
 		return $returnVal;
 		
 	}
@@ -894,6 +899,9 @@ class Member extends Basic {
 		return "<img src='".$avatarURL."' ".$dispStyle.">";
 		
 	}
+	
+	
+	
 	
 }
 
