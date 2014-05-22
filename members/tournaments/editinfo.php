@@ -92,14 +92,16 @@ if($_POST['submit']) {
 		elseif($_POST['startampm'] == "PM" && $_POST['starthour'] != 12) {
 			$tempHour += 12;
 		}
-
+		$tempTimezone = date_default_timezone_get();
+		
+		date_default_timezone_set("UTC");
 		$tempDate = $_POST['startdate'];
 		$tempYear = date("Y", $tempDate);
 		$tempMonth = date("n", $tempDate);
 		$tempDay = date("j", $tempDate);
 
 		$formattedDate = mktime($tempHour, $_POST['startminute'], 0, $tempMonth, $tempDay, $tempYear);
-
+		date_default_timezone_set($tempTimezone);
 	}
 
 
@@ -226,11 +228,17 @@ if(!$_POST['submit']) {
 		$gameoptions = "<option value='0'>No Games Added!</option>";
 	}
 
-	$dispDate = date("M j, Y", $tournamentInfo['startdate']);
+		
+	$dateTimeObj = new DateTime();
+	$dateTimeObj->setTimestamp($tournamentInfo['startdate']);
+	
+	
 
-	$dispHour = date("g", $tournamentInfo['startdate']);
-	$dispMinute = date("i", $tournamentInfo['startdate']);
-	$dispAMPM = date("A", $tournamentInfo['startdate']);
+	$dateTimeObj->setTimezone(new DateTimeZone("UTC"));
+	$dispDate = $dateTimeObj->format("M j, Y");
+	$dispHour = $dateTimeObj->format("g");
+	$dispMinute = $dateTimeObj->format("i");
+	$dispAMPM = $dateTimeObj->format("A");
 	
 	
 	echo "

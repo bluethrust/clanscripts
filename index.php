@@ -92,7 +92,7 @@ $mysqli->query("UPDATE ".$dbprefix."members SET loggedin = '0' WHERE loggedin = 
 $result = $mysqli->query("SELECT member_id FROM ".$dbprefix."members WHERE loggedin = '1' AND rank_id != '1' AND disabled != '1'");
 
 if($result->num_rows > $websiteInfo['mostonline']) {
-	$webInfoObj->update(array("mostonline", "mostonlinedate"), array($result->num_rows, time()));	
+	$webInfoObj->multiUpdate(array("mostonline", "mostonlinedate"), array($result->num_rows, time()));	
 }
 
 $membersOnlineCount = $result->num_rows;

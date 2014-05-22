@@ -77,13 +77,15 @@ include($prevFolder."include/breadcrumb.php");
 			$dateTimeObj = new DateTime();
 			$dateTimeObj->setTimestamp($row['startdate']);
 			$includeTimezone = "";
+			$dateTimeObj->setTimezone(new DateTimeZone("UTC"));
+			$dispStartDate = $dateTimeObj->format("M j, Y g:i A");
 			
 			if($row['timezone'] != "") { 
 				$dateTimeObj->setTimezone(new DateTimeZone($row['timezone']));
 				$includeTimezone = " T"; 
 			}
 			
-			$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone);
+			$dispStartDate .= $dateTimeObj->format($includeTimezone);
 			
 			if($row['startdate'] < time() && $tournamentObj->getTournamentWinner() == 0) {
 				$dispStatus = "<img src='".$MAIN_ROOT."themes/".$THEME."/images/bluedot.png' title='Started'>";	

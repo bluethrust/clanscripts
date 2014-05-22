@@ -66,7 +66,9 @@ if($_POST['submit']) {
 	
 	
 	// Calc Start Date
+	$tempTimezone = date_default_timezone_get();
 	
+	date_default_timezone_set("UTC");
 	$startMonth = date("n", ($_POST['startdate']/1000));
 	$startDay = date("j", ($_POST['startdate']/1000));
 	$startYear = date("Y", ($_POST['startdate']/1000));
@@ -79,7 +81,7 @@ if($_POST['submit']) {
 	}
 	
 	$setStartTime = mktime($startHour, $_POST['startminute'], 0, $startMonth, $startDay, $startYear);
-	
+	date_default_timezone_set($tempTimezone);
 	if($setStartTime < time()) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start date.<br>";
 		$countErrors++;

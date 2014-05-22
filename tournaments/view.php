@@ -105,14 +105,16 @@ $dispTimezone = "";
 if($tournamentInfo['timezone'] != "") { 
 	$timeZoneObj = new DateTimeZone($tournamentInfo['timezone']);
 	$dateTimeObj->setTimezone($timeZoneObj);
-	$includeTimezone = " T"; 
+	$includeTimezone = " T";
 	$dispOffset = ((($timeZoneObj->getOffset($dateTimeObj))/60)/60);
 	$dispSign = ($dispOffset < 0) ? "" : "+";
 	
-	$dispTimezone = "<br>".str_replace("_", " ", $tournamentInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
+	$dispTimezone = $dateTimeObj->format(" T")."<br>".str_replace("_", " ", $tournamentInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
 }
 
-$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone).$dispTimezone;
+$dateTimeObj->setTimezone(new DateTimeZone("UTC"));
+
+$dispStartDate = $dateTimeObj->format("M j, Y g:i A").$dispTimezone;
 
 if($tournamentInfo['startdate'] < time() && $tournamentObj->getTournamentWinner() == 0) {
 	$dispStatus = "<span class='successFont'>Started</span>";	

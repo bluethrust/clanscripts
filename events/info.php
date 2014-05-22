@@ -232,10 +232,10 @@ echo "
 		$dispOffset = ((($timeZoneObj->getOffset($dateTimeObj))/60)/60);
 		$dispSign = ($dispOffset < 0) ? "" : "+";
 		
-		$dispTimezone = "<br>".str_replace("_", " ", $eventInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
+		$dispTimezone = $dateTimeObj->format(" T")."<br>".str_replace("_", " ", $eventInfo['timezone'])." (UTC".$dispSign.$dispOffset.")";
 	}
-	
-	$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone).$dispTimezone;
+	$dateTimeObj->setTimezone("UTC");
+	$dispStartDate = $dateTimeObj->format("M j, Y g:i A").$dispTimezone;
 	
 echo "
 			</table>

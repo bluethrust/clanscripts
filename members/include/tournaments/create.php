@@ -77,13 +77,15 @@ if($_POST['submit']) {
 			$tempHour += 12;
 		}
 		
+		$tempTimezone = date_default_timezone_get();
+		date_default_timezone_set("UTC");
 		$tempDate = $_POST['startdate'];
 		$tempYear = date("Y", $tempDate);
 		$tempMonth = date("n", $tempDate);
 		$tempDay = date("j", $tempDate);
 		
 		$formattedDate = mktime($tempHour, $_POST['startminute'], 0, $tempMonth, $tempDay, $tempYear);
-
+		date_default_timezone_set($tempTimezone);
 		
 	}
 	

@@ -9,9 +9,10 @@
 	$downloadCatObj = new DownloadCategory($mysqli);
 	$attachmentObj = new Download($mysqli);
 	$consoleObj = new ConsoleOption($mysqli);
+	$topicObj = new Basic($mysqli, "forum_topic", "forumtopic_id");
 	
 	$intManagePostsCID = $consoleObj->findConsoleIDByName("Manage Forum Posts");
-	
+	$intPostTopicCID = $consoleObj->findConsoleIDByName("Post Topic");
 	$downloadCatObj->selectBySpecialKey("forumattachments");
 	
 	
@@ -23,6 +24,8 @@
 	
 	$postInfo = $this->get_info_filtered();
 	$topicInfo = $this->getTopicInfo();
+	$topicObj->select($postInfo['forumtopic_id']);
+	$topicInfo['forumboard_id'] = $topicObj->get_info("forumboard_id");
 	
 	$posterMemberObj->select($postInfo['member_id']);
 	$postMemberInfo = $posterMemberObj->get_info_filtered();

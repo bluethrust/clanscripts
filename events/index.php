@@ -99,10 +99,10 @@ include($prevFolder."include/breadcrumb.php");
 					
 					if($eventInfo['timezone'] != "") { 
 						$dateTimeObj->setTimezone(new DateTimeZone($eventInfo['timezone']));
-						$includeTimezone = " T"; 
+						$dispTimezone = $dateTimeObj->format(" T"); 
 					}
-					
-					$dispStartDate = $dateTimeObj->format("M j, Y g:i A".$includeTimezone);
+					$dateTimeObj->setTimezone("UTC");
+					$dispStartDate = $dateTimeObj->format("M j, Y g:i A").$dispTimezone;
 					
 					echo "
 					<tr>

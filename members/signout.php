@@ -20,8 +20,8 @@ if($memberObj->select($_SESSION['btUsername']) && $memberObj->authorizeLogin($_S
 	$memberObj->update(array("loggedin"), array(0));
 }
 
-setcookie("btUsername", "", time()-3600);
-setcookie("btPassword", "", time()-3600);
+setcookie("btUsername", "", time()-3600, $MAIN_ROOT);
+setcookie("btPassword", "", time()-3600, $MAIN_ROOT);
 $_SESSION['btPassword'] = "";
 $_SESSION['btUsername'] = "";
 $_SESSION['btRememberMe'] = "";

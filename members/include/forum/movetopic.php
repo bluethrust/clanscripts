@@ -185,8 +185,8 @@ $breadcrumb = $breadcrumbObj->getBreadcrumb();
 
 
 		$('#breadCrumb').html("<?php echo $breadcrumbObj->getBreadcrumb(); ?>");
-		$('#consoleTopBackButton').attr('href', '<?php echo $MAIN_ROOT; ?>forum/viewtopic.php?tID=<?php echo $_GET['tID']; ?>');
-		$('#consoleBottomBackButton').attr('href', '<?php echo $MAIN_ROOT; ?>forum/viewtopic.php?tID=<?php echo $_GET['tID']; ?>');
+		$('#consoleTopBackButton').attr('href', '<?php echo $MAIN_ROOT; ?>forum/viewtopic.php?tID=<?php echo $_GET['topicID']; ?>');
+		$('#consoleBottomBackButton').attr('href', '<?php echo $MAIN_ROOT; ?>forum/viewtopic.php?tID=<?php echo $_GET['topicID']; ?>');
 		
 	});
 

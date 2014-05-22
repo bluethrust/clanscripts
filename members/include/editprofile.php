@@ -248,7 +248,7 @@ $arrComponents = array(
 	"wysiwygHTML" => array(
 		"type" => "richtextbox",
 		"display_name" => "Signature",
-		"attributes" => array("id" => "tinymceTextarea", "style" => "width: 100%", "rows" => "10"),
+		"attributes" => array("id" => "tinymceTextarea", "style" => "width: 90%", "rows" => "10"),
 		"value" => $memberInfo['forumsignature'],
 		"sortorder" => $i++,
 		"db_name" => "forumsignature",
