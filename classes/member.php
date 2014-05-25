@@ -70,12 +70,12 @@ class Member extends Basic {
 		
 	}
 	
-	function authorizeLogin($check_password, $convertMD5=0) {
+	function authorizeLogin($check_password, $encryptPW=0) {
 		
 		$checkRealPassword = $this->arrObjInfo['password'];
 		$checkRealPassword2 = $this->arrObjInfo['password2'];
 		
-		if($convertMD5 == 1) {
+		if($encryptPW == 1) {
 			
 			$checkPass = crypt($check_password, $checkRealPassword2);
 			

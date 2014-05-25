@@ -47,7 +47,7 @@ while($row = $result->fetch_assoc()) {
 
 
 $boardOptions = "<option value='select'>[SELECT]</option>";
-$result = $mysqli->query("SELECT forumcategory_id FROM forum_category ORDER BY ordernum DESC");
+$result = $mysqli->query("SELECT forumcategory_id FROM ".$dbprefix."forum_category ORDER BY ordernum DESC");
 while($row = $result->fetch_assoc()) {
 	
 	
