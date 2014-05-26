@@ -106,6 +106,53 @@ class ForumPost extends Basic {
 		return $returnArr;
 	}
 	
+	
+	public function getLink() {
+		global $websiteInfo, $MAIN_ROOT, $memberInfo;
+		
+		$returnVal = "";
+		if($this->intTableKeyValue != "") {
+			
+			// Figure out num of posts
+			$query = "SELECT * FROM ".$this->strTableName." WHERE forumtopic_id = '".$this->arrObjInfo['forumtopic_id']."' ORDER BY dateposted";
+			$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE forumtopic_id = '".$this->arrObjInfo['forumtopic_id']."' ORDER BY dateposted");
+			$totalPosts = $result->num_rows;
+
+			// Find the post ranking within the result set
+			$findDepthResult = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE forumtopic_id = '".$this->arrObjInfo['forumtopic_id']."' AND dateposted <= '".$this->arrObjInfo['dateposted']."'");
+			$postRanking = $findDepthResult->num_rows;
+			
+			// Figure out posts per page
+			if($memberInfo['postsperpage'] > 0) {
+				$postsPerPage = $memberInfo['postsperpage'];
+			}
+			elseif($websiteInfo['forum_postsperpage'] > 0) {
+				$postsPerPage = $websiteInfo['forum_postsperpage'];
+			}
+			else {
+				$postsPerPage = 25;
+			}
+			
+			// Total Pages
+			$totalPages = ceil($totalPosts/$postsPerPage);
+		
+			
+			$returnVal = $MAIN_ROOT."forum/viewtopic.php?tID=".$this->arrObjInfo['forumtopic_id'];
+			
+			if($totalPages > 1) {
+				$pageNumber = ceil($postRanking/$postsPerPage);
+				$returnVal .= "&pID=".$pageNumber;
+			}
+			
+			$returnVal .= "#".$this->intTableKeyValue;
+			
+		}
+
+		
+		return $returnVal;
+	}
+	
+	
 }
 
 

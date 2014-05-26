@@ -102,11 +102,10 @@
 	$setAvatarHeightUnit = ($websiteInfo['forum_avatarheightunit'] == "%") ? "%" : "px";
 	
 	$dispForumPostText = ($websiteInfo['forum_linkimages'] == 1) ? autoLinkImage(parseBBCode($postMessage)) : parseBBCode($postMessage);
-	
-	
+
 	
 	echo "<div class='forumPostContainer'>
-			<div class='forumPostPosterInfo main'>
+			<div class='forumPostPosterInfo main'><a name='".$postInfo['forumpost_id']."'></a>
 				<span class='boardPosterName'>".$posterMemberObj->getMemberLink()."</span><br>
 				".$posterRankInfo['name']."
 				<div id='forumShowAvatar'>".$posterMemberObj->getAvatar($setAvatarWidth.$setAvatarWidthUnit, $setAvatarHeight.$setAvatarHeightUnit)."</div>
@@ -122,7 +121,7 @@
 				
 			
 			</div>
-			<div class='forumPostNewSection'></div>
+			<div class='forumPostNewSection' style='display: none'></div>
 			<div class='forumPostPosterInfo'></div>
 			<div class='forumPostMessageExtras'>
 				";

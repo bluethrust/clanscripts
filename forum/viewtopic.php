@@ -98,7 +98,7 @@ $memberInfo = array();
 
 
 $LOGGED_IN = false;
-$NUM_PER_PAGE = 25;
+$NUM_PER_PAGE = $websiteInfo['forum_postsperpage'];
 if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {
 	$memberInfo = $member->get_info_filtered();
 	$LOGGED_IN = true;
