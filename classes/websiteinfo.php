@@ -20,7 +20,7 @@ class WebsiteInfo extends Basic {
 	
 	public function select($intIDNum, $numericIDOnly=true) {
 		$temp = $this->arrObjInfo;
-		$returnVal = parent::select($intIDNum, $numerIDOnly);
+		$returnVal = parent::select($intIDNum, $numericIDOnly);
 		
 		
 		if($this->blnRefreshInfo) {
