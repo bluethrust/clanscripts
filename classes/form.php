@@ -126,7 +126,7 @@
 						$displayForm .= "<textarea name='".$componentName."' ".$dispAttributes.">".$componentInfo['value']."</textarea>";
 						break;
 					case "richtextbox":
-						$afterJS .= $this->richTextboxJS($componentInfo['attributes']['id']);
+						$afterJS .= $this->richTextboxJS($componentInfo['attributes']['id'], $componentInfo['allowHTML']);
 						$displayForm .= "
 							<div class='formInput' style='width: 100%'>
 								<textarea name='".$componentName."' ".$dispAttributes.">".$componentInfo['value']."</textarea>
@@ -701,8 +701,10 @@
 		 * - richTextboxJS -
 		 */
 		
-		private function richTextboxJS($componentID) {
+		private function richTextboxJS($componentID, $allowHTML=false) {
 			global $MAIN_ROOT, $THEME;
+			
+			$addHTML = ($allowHTML) ? ",code" : "";
 			
 			$returnVal = "
 
@@ -710,7 +712,7 @@
 				$(document).ready(function() {	
 					$('#".$componentID."').tinymce({
 					
-							script_url: '".$MAIN_ROOT."js/tiny_mce/tiny_mce.js',
+							script_url: '".MAIN_ROOT."js/tiny_mce/tiny_mce.js',
 							theme: 'advanced',
 							plugins: 'autolink,emotions,advimagescale',
 							cleanup_on_startup: true,
@@ -719,10 +721,10 @@
 							advimagescale_loading_callback: function(imgNode) {
 						        alert('resized to ' + imgNode.width + 'x' + imgNode.height);
 						    },
-							theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,emotions,|,quotebbcode,codebbcode,',
+							theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,emotions,|,quotebbcode,codebbcode".$addHTML.",',
 							theme_advanced_buttons2: 'forecolorpicker,fontselect,fontsizeselect',
 							theme_advanced_resizing: true,
-							content_css: '".$MAIN_ROOT."themes/".$THEME."/btcs4.css',
+							content_css: '".MAIN_ROOT."themes/".THEME."/btcs4.css',
 							theme_advanced_statusbar_location: 'none',
 							style_formats: [
 								{title: 'Quote', inline : 'div', classes: 'forumQuote'}
@@ -732,7 +734,7 @@
 								ed.addButton('quotebbcode', {
 									
 									title: 'Insert Quote',
-									image: '".$MAIN_ROOT."js/tiny_mce/quote.png',
+									image: '".MAIN_ROOT."js/tiny_mce/quote.png',
 									onclick: function() {
 										ed.focus();
 										innerText = ed.selection.getContent();
@@ -744,7 +746,7 @@
 								ed.addButton('codebbcode', {
 									
 									title: 'Insert Code',
-									image: '".$MAIN_ROOT."js/tiny_mce/code.png',
+									image: '".MAIN_ROOT."js/tiny_mce/code.png',
 									onclick: function() {
 										ed.focus();
 										innerText = ed.selection.getContent();

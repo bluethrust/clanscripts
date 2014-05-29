@@ -49,9 +49,6 @@ if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 			}
 
 
-
-
-
 			$actualPageNameLoc = strrpos($PAGE_NAME," - ");
 			$actualPageName = substr($PAGE_NAME, 0, $actualPageNameLoc);
 
@@ -59,7 +56,6 @@ if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 				$actualPageName = "Home Page";
 			}
 
-			
 
 			$lastSeenLink = "<a href='".$dispHTTP.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']."'>".$actualPageName."</a>";
 			$arrUpdateColLastSeen = array("lastseen", "lastseenlink");
@@ -80,63 +76,6 @@ if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 
 			$consoleOptionObj = new ConsoleOption($mysqli);
 
-			// Shoutbox
-
-			$manageNewsCID = $consoleOptionObj->findConsoleIDByName("Manage News");
-
-			$consoleOptionObj->select($manageNewsCID);
-
-			if($memberObj->hasAccess($consoleOptionObj)) {
-				$mainShoutboxObj->strEditLink = $MAIN_ROOT."members/console.php?cID=".$manageNewsCID."&newsID=";
-				$mainShoutboxObj->strDeleteLink = $MAIN_ROOT."members/include/news/include/deleteshoutpost.php";
-
-			}
-
-			$postShoutboxCID = $consoleOptionObj->findConsoleIDByName("Post in Shoutbox");
-
-			$consoleOptionObj->select($postShoutboxCID);
-
-			if($memberObj->hasAccess($consoleOptionObj)) {
-				$mainShoutboxObj->strPostLink = $MAIN_ROOT."members/include/news/include/postshoutbox.php";
-			}
-
-
-			// PMs
-
-			$pmCID = $consoleOptionObj->findConsoleIDByName("Private Messages");
-
-			
-			$totalPMs = $memberObj->countPMs();
-			$totalNewPMs = $memberObj->countPMs(true);
-			
-			$alertPM = 0;
-			
-			if($totalNewPMs > 0) {
-				$dispPMCount = "<b>(".$totalNewPMs.")</b> <img src='".$MAIN_ROOT."themes/".$THEME."/images/pmalert.gif'>";
-				$intPMCount = $totalNewPMs;
-				$alertPM = 1;
-			}
-			else {
-				$dispPMCount = "(".$totalPMs.")";
-				$intPMCount = $totalPMs;
-			}
-			
-			$arrLoginInfo['memberID'] = $memberID;
-			$arrLoginInfo['memberInfo'] = $memberObj->get_info_filtered();
-			$arrLoginInfo['rankInfo'] = $rankObj->get_info_filtered();
-			$arrLoginInfo['memberUsername'] = $memberUsername;
-			$arrLoginInfo['memberRank'] = $memberRank;
-			$arrLoginInfo['pmCID'] = $pmCID;
-			$arrLoginInfo['pmCountDisp'] = $dispPMCount;
-			$arrLoginInfo['pmCount'] = $intPMCount;
-			$arrLoginInfo['pmAlert'] = $alertPM;
-			$arrLoginInfo['pmLink'] = "<a href='".$MAIN_ROOT."members/console.php?cID=".$arrLoginInfo['pmCID']."' id='pmLoggedInLink'>PM Inbox ".$arrLoginInfo['pmCountDisp']."</a>";
-			
-			define("LOGIN_INFO", $arrLoginInfo);
-
-			$dispLoginBox = dispLoggedIn($arrLoginInfo);
-
-			
 			
 			// Members Only Tagger			
 			

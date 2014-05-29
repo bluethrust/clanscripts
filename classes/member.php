@@ -869,16 +869,19 @@ class Member extends Basic {
 	}
 	
 	
-	public function getAvatar($setWidth="", $setHeight="") {
+	
+	
+	protected function getMemberPicture($setWidth="", $setHeight="", $db_name, $defaultpic, $cssClass=array()) {
 		global $MAIN_ROOT, $THEME;
 		
-		$checkURL = parse_url($this->arrObjInfo['avatar']);
+		$checkURL = parse_url($this->arrObjInfo[$db_name]);
 		
-		if($this->arrObjInfo['avatar'] == "") {
-			$avatarURL = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";	
+		$avatarURL = $this->arrObjInfo[$db_name];
+		if($this->arrObjInfo[$db_name] == "") {
+			$avatarURL = $MAIN_ROOT."themes/".$THEME."/images/".$defaultpic;
 		}
 		elseif(!isset($checkURL['scheme']) || $checkURL['scheme'] = "") {
-			$avatarURL = $MAIN_ROOT.$this->arrObjInfo['avatar'];
+			$avatarURL = $MAIN_ROOT.$this->arrObjInfo[$db_name];
 		}
 		
 		$arrStyle = array();
@@ -887,20 +890,39 @@ class Member extends Basic {
 		}
 		
 		if($setHeight != "") {
-			$arrStyle['height'] = $setHeight;	
+			$arrStyle['height'] = $setHeight;
 		}
 		
-		$dispStyle = "style='";
-		foreach($arrStyle as $attr => $value) {
-			$dispStyle .= $attr.": ".$value.";";
+		$dispStyle = "";
+		if(count($arrStyle) > 0) {
+			$dispStyle = " style='";
+			foreach($arrStyle as $attr => $value) {
+				$dispStyle .= $attr.": ".$value.";";
+			}
+			$dispStyle .= "'";
 		}
-		$dispStyle .= "'";
 		
-		return "<img src='".$avatarURL."' ".$dispStyle.">";
+		$dispClass = "";
+		if(count($cssClass) > 0) {
+			$dispClass = " class='";
+			foreach($cssClass as $class) {
+				$dispClass .= $class." ";	
+			}
+			$dispClass .= "'";
+		}
+		
+		return "<img src='".$avatarURL."'".$dispStyle.$dispClass.">";
 		
 	}
 	
+	public function getAvatar($setWidth="", $setHeight="") {
+		return $this->getMemberPicture($setWidth, $setHeight, "avatar", "defaultavatar.png");
+	}
 	
+	
+	public function getProfilePic($setWidth="", $setHeight="") {
+		return $this->getMemberPicture($setWidth, $setHeight, "profilepic", "defaultprofile.png");
+	}
 	
 	
 }

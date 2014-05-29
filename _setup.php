@@ -19,6 +19,8 @@ ini_set('display_errors', 0);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.gc_maxlifetime', 60*60*24*3);
 
+date_default_timezone_set("UTC");
+
 if(get_magic_quotes_gpc() == 1) {
 	foreach($_GET as $key=>$value) { $_GET[$key] = stripslashes($value); }
 	foreach($_POST as $key=>$value) { $_POST[$key] = stripslashes($value); }
@@ -77,7 +79,7 @@ if($websiteInfo['debugmode'] == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 else {
-	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+	//ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 	ini_set('display_errors', 1);
 }
 
@@ -90,4 +92,9 @@ if($ipbanObj->isBanned($IP_ADDRESS)) {
 }
 
 $hooksObj = new btHooks();
+
+
+define("BASE_DIRECTORY", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT);
+define("MAIN_ROOT", $MAIN_ROOT);
+define("THEME", $THEME);
 ?>

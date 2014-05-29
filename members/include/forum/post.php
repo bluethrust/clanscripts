@@ -108,7 +108,15 @@ if(isset($_GET['tID']) && $boardObj->objTopic->select($_GET['tID'])) {
 	
 	$boardObj->objPost->select($topicInfo['forumpost_id']);
 	$postInfo = $boardObj->objPost->get_info_filtered();
+	
 	$dispTopicName = "<tr><td colspan='2' class='largeFont'><b>".$postInfo['title']."</b><input type='hidden' id='postSubject' value='".$postInfo['title']."'><br><br></td></tr>";
+	$arrTopicName = array(
+		"type" => "custom",
+		"sortorder" => 1,
+		"html" => "<span class='largeFont'><b>".$postInfo['title']."</b></span><input type='hidden' id='postSubject' value='".$postInfo['title']."'>"	
+	);
+	
+	
 	$addToForm = "&tID=".$_GET['tID'];
 	echo "
 	<script type='text/javascript'>
@@ -136,12 +144,13 @@ else {
 	</script>
 	";
 	
-	$dispTopicName = "
-	<tr>
-		<td class='formLabel'>Topic:</td>
-		<td class='main'><input type='text' name='topicname' id='postSubject' class='textBox' value='".$_POST['topicname']."' style='width: 250px'></td>
-	</tr>
-	";
+
+	$arrTopicName = array(
+		"type" => "text",
+		"sortorder" => 1,
+		"attributes" => array("class" => "formInput textBox"),
+		"display_name" => "Topic"			
+	);
 	
 	$postActionWord = "topic";
 }
@@ -196,305 +205,129 @@ if(isset($_GET['quote']) && $boardObj->objPost->select($_GET['quote'])) {
 	[quote]<a href='".$MAIN_ROOT."forum/viewtopic.php?tID=".$quotedInfo['forumtopic_id']."#".$quotedInfo['forumpost_id']."'>Originally posted by ".$quotedMember->get_info_filtered("username").":</a><br>".$boardObj->objPost->get_info("message")."<br>[/quote]";
 }
 
-
-$dispError = "";
-$countErrors = 0;
-
-if($_POST['submit']) {
-
-	$_POST['wysiwygHTML'] = str_replace("<?", "&lt;?", $_POST['wysiwygHTML']);
-	$_POST['wysiwygHTML'] = str_replace("?>", "?&gt;", $_POST['wysiwygHTML']);
-	$_POST['wysiwygHTML'] = str_replace("<script", "&lt;script", $_POST['wysiwygHTML']);
-	$_POST['wysiwygHTML'] = str_replace("</script>", "&lt;/script&gt;", $_POST['wysiwygHTML']);
-
-
-	
-	
-	if(!$blnPostReply && trim($_POST['topicname']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not enter a blank topic title.<br>";	
-	}
-	
-
-	if(trim($_POST['wysiwygHTML']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not make a blank post.<br>";
-	}
-	
-	
-	if($blnCheckForumAttachments) {
-		$arrDownloadID = array();
-		$arrDLColumns = array("downloadcategory_id", "member_id", "dateuploaded", "filename", "mimetype", "filesize", "splitfile1", "splitfile2");
-		for($i=1;$i<=$_POST['numofattachments'];$i++) {
-				
-			$tempPostName = "forumattachment_".$i;
-			if($_FILES[$tempPostName]['name'] != "" && $attachmentObj->uploadFile($_FILES[$tempPostName], $prevFolder."downloads/files/forumattachment/", $forumAttachmentCatID)) {
-				
-				$splitFiles = $attachmentObj->getSplitNames();
-				$fileSize = $attachmentObj->getFileSize();
-				$mimeType = $attachmentObj->getMIMEType();
-				
-				$arrDLValues = array($forumAttachmentCatID, $memberInfo['member_id'], time(), $_FILES[$tempPostName]['name'], $mimeType, $fileSize, "downloads/files/forumattachment/".$splitFiles[0], "downloads/files/forumattachment/".$splitFiles[1]);
-				
-				if($attachmentObj->addNew($arrDLColumns, $arrDLValues)) {
-					$arrDownloadID[] = $attachmentObj->get_info("download_id");
-				}	
-			}
-			elseif($_FILES[$tempPostName]['name'] != "") {
-				$countErrors++;
-				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to upload attachment #".$i.": ".$_FILES[$tempPostName]['name'].".<br>";
-			}
-			
-		}
-	}
-	
-	
-	if($countErrors == 0) {
+$i=2;
+$arrComponents = array(
+	"topicname" => $arrTopicName,
+	"message" => array(
+		"type" => "richtextbox",
+		"sortorder" => $i++,
+		"display_name" => "Message",
+		"attributes" => array("id" => "richTextarea", "style" => "width: 90%", "rows" => "10"),
+		"value" => $dispQuote,
+		"db_name" => "message"
+	)
 		
-		if(!$blnPostReply) {
-			// New Topic
-			$arrTopicColumns = array("forumboard_id");
-			$arrTopicValues = array($_GET['bID']);
+);
 
-			if($boardObj->objTopic->addNew($arrTopicColumns, $arrTopicValues)) {
 
-				$_GET['tID'] = $boardObj->objTopic->get_info("forumtopic_id");
+if($blnCheckForumAttachments) {
+	
+	$arrAttachmentComponents = array(
+		"attachments" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => "Attachments",
+			"html" => "<div class='formInput'><div id='attachmentsDiv' style='margin-bottom: 10px'>
+							<input type='file' name='forumattachment_1' class='textBox' style='border: 0px'>
+						</div>
+						<a href='javascript:void(0)' id='addMoreAttachments'>Add More Attachments</a></div>
+						<input type='hidden' id='numOfAttachments' value='1' name='numofattachments'>"
 				
-			}
-			else {
-				$countErrors++;
-				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to create new topic.<br>";
-			}
-		}
+		)
 			
-		if($countErrors == 0) {
-		
-			$arrPostColumns = array("member_id", "dateposted", "title", "message", "forumtopic_id");
-			$arrPostValues = array($memberInfo['member_id'], time(), $_POST['topicname'], $_POST['wysiwygHTML'], $_GET['tID']);
-			
-			if($boardObj->objPost->addNew($arrPostColumns, $arrPostValues)) {
-				// New Post Sucessfull --> Update Topic Info
-				$newPostID = $boardObj->objPost->get_info("forumpost_id");
-				$arrTopicColumns = array("lastpost_id");
-				$arrTopicValues = array($newPostID);
-				if(!$blnPostReply) {
-					// New Topic --> Need to set initial post id
-					$arrTopicColumns[] ="forumpost_id";
-					$arrTopicValues[] = $newPostID;
-				}
-				else {
-					// Reply --> Need to increase reply count
-					$newReplyCount = $topicInfo['replies']+1;
-					$arrTopicColumns[] = "replies";
-					$arrTopicValues[] = $newReplyCount;					
-				}
-
-				if($boardObj->objTopic->update($arrTopicColumns, $arrTopicValues)) {
-					
-					echo "
-					
-						<script type='text/javascript'>
-							window.location = '".$MAIN_ROOT."forum/viewtopic.php?tID=".$_GET['tID']."';
-						</script>
-						
-					";
-					
-					
-					if($blnCheckForumAttachments) {
-						$forumAttachmentObj = new Basic($mysqli, "forum_attachments", "forumattachment_id");
-						foreach($arrDownloadID as $downloadID) {
-							$forumAttachmentObj->addNew(array("download_id", "forumpost_id"), array($downloadID, $newPostID));
-						}
-					}
-					
-				}
-				else {
-					// Unable to update topic
-					$countErrors++;
-					$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-					
-				}
-
-			}
-			else {
-				// Unable to make post
-				$countErrors++;
-				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-			}
-			
-			
-			
-		}
-
-		
-	}
+	);
 	
 	
-	if($countErrors > 0) {
-
-		$_POST['submit'] = false;
-		$_POST['wysiwygHTML'] = addslashes($_POST['wysiwygHTML']);
-		$_POST['topicname'] = filterText($_POST['topicname']);
-		
-	}
+	
+	$arrComponents = array_merge($arrComponents, $arrAttachmentComponents);
 	
 }
 
-if(!$_POST['submit']) {
-	
-	echo "
-	
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."&bID=".$_GET['bID'].$addToForm."' enctype='multipart/form-data' method='post'>
-			<div class='formDiv'>
-			";
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to post ".$postActionWord." because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-				<table class='formTable'>
-					".$dispTopicName."
-					<tr>
-						<td class='formLabel' valign='top'>Message:</td>
-						<td class='main' valign='top'>
-							<textarea id='tinymceTextArea' name='wysiwygHTML' style='width: 80%' rows='15'>".$dispQuote.$_POST['wysiwygHTML']."</textarea>
-						</td>
-					</tr>
-					";
-	
-	if($blnCheckForumAttachments) {
-		
-		echo "
-		
-			<tr>
-				<td class='formLabel' valign='top' >Attachments:</td>
-				<td class='main'>
-					<div id='attachmentsDiv' style='margin-bottom: 10px'>
-						<input type='file' name='forumattachment_1' class='textBox' style='border: 0px'>
+
+$arrPostButtons = array(
+	"submit" => array(
+		"type" => "submit",
+		"sortorder" => $i++,
+		"value" => "Post",
+		"attributes" => array("class" => "formSubmitButton submitButton")		
+	),
+	"preview" => array(
+		"type" => "button",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "formSubmitButton submitButton", "id" => "btnPreview"),
+		"value" => "Preview"
+	),
+	"preview_section" => array(
+		"type" => "custom",
+		"sortorder" => $i++,
+		"html" => "<div id='loadingSpiral' class='loadingSpiral'>
+						<p align='center'>
+							<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif'><br>Loading
+						</p>
 					</div>
-					<a href='javascript:void(0)' id='addMoreAttachments'>Add More Attachments</a>
-					<input type='hidden' id='numOfAttachments' value='1' name='numofattachments'>
-				</td>
-			</tr>
-		
-		";
+					<div id='previewPost'></div>"			
+	)
+);
 
-	}
-	
-	echo "
-					<tr>
-						<td colspan='2' align='center' class='main'><br>
-							<input type='submit' name='submit' value='Post' class='submitButton' style='width: 100px'><br><br>
-							<input type='button' id='btnPreview' value='Preview Post' class='submitButton' style='width: 100px'>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div id='loadingSpiral' class='loadingSpiral'>
-				<p align='center'>
-					<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif'><br>Loading
-				</p>
-			</div>
-			<div id='previewPost'></div>
-		</form>
-	
-		
-		<script type='text/javascript'>
+$arrComponents = array_merge($arrComponents, $arrPostButtons);
 
+$setupFormArgs = array(
+		"name" => "console-".$cID,
+		"components" => $arrComponents,
+		"description" => "",
+		"saveObject" => $boardObj->objPost,
+		"saveMessage" => "Successfully posted new ".$postActionWord."!",
+		"saveType" => "add",
+		"saveLink" => $MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id'],
+		"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID."&bID=".$_GET['bID'].$addToForm, "method" => "post")
+);
+
+
+
+echo "
+	<script type='text/javascript'>
+	
+	
+		$(document).ready(function() {
+		
 			var numOfAttachments = 1;
+			$('#addMoreAttachments').click(function() {
+				numOfAttachments++;
+				
+				if(numOfAttachments <= ".ini_get("max_file_uploads").") {
+	
+					$('#attachmentsDiv').append(\"<br><input type='file' name='forumattachment_\"+numOfAttachments+\"' class='textBox' style='border: 0px'>\");
+					$('#numOfAttachments').val(numOfAttachments);
+				
+				}
+				else {
+					$('#addMoreAttachments').html('Maximum number of attachments reached!');		
+				}
+				
+				$('#testattachments').html($('#attachmentsDiv').html());
+				
+			});
 		
-			$('document').ready(function() {
-				$('#tinymceTextArea').tinymce({
-			
-					script_url: '".$MAIN_ROOT."js/tiny_mce/tiny_mce.js',
-					theme: 'advanced',
-					plugins: 'autolink,emotions',
-					theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,emotions,|,quotebbcode,codebbcode,',
-					theme_advanced_buttons2: 'forecolorpicker,fontselect,fontsizeselect',
-					theme_advanced_resizing: true,
-					content_css: '".$MAIN_ROOT."themes/".$THEME."/btcs4.css',
-					theme_advanced_statusbar_location: 'none',
-					style_formats: [
-						{title: 'Quote', inline : 'div', classes: 'forumQuote'}
+		
+			$('#btnPreview').click(function() {
 					
-					],
-					setup: function(ed) {
-						ed.addButton('quotebbcode', {
-							
-							title: 'Insert Quote',
-							image: '".$MAIN_ROOT."js/tiny_mce/quote.png',
-							onclick: function() {
-								ed.focus();
-								innerText = ed.selection.getContent();
-								
-								ed.selection.setContent('[quote]'+innerText+'[/quote]');
-							}
-						});
-						
-						ed.addButton('codebbcode', {
-							
-							title: 'Insert Code',
-							image: '".$MAIN_ROOT."js/tiny_mce/code.png',
-							onclick: function() {
-								ed.focus();
-								innerText = ed.selection.getContent();
-								
-								ed.selection.setContent('[code]'+innerText+'[/code]');
-							}
-						
-						});
-					}
+				$('#loadingSpiral').show();
+				$.post('".$MAIN_ROOT."members/include/forum/include/previewpost.php', { wysiwygHTML: $('#richTextarea').val(), previewSubject: $('#postSubject').val() }, function(data) {
+					$('#previewPost').hide();
+					$('#previewPost').html(data);
+					$('#loadingSpiral').hide();
+					$('#previewPost').fadeIn(250);
+				
+					$('html, body').animate({
+						scrollTop:$('#previewPost').offset().top
+					}, 1000);
+					
 				});
 			
-				$('#addMoreAttachments').click(function() {
-					numOfAttachments++;
-					
-					if(numOfAttachments <= ".ini_get("max_file_uploads").") {
-
-						$('#attachmentsDiv').append(\"<br><input type='file' name='forumattachment_\"+numOfAttachments+\"' class='textBox' style='border: 0px'>\");
-						$('#numOfAttachments').val(numOfAttachments);
-					
-					}
-					else {
-						$('#addMoreAttachments').html('Maximum number of attachments reached!');		
-					}
-					
-					$('#testattachments').html($('#attachmentsDiv').html());
-					
-				});
-				
-				$('#btnPreview').click(function() {
-				
-					$('#loadingSpiral').show();
-					$.post('".$MAIN_ROOT."members/include/forum/include/previewpost.php', { wysiwygHTML: $('#tinymceTextArea').val(), previewSubject: $('#postSubject').val() }, function(data) {
-						$('#previewPost').hide();
-						$('#previewPost').html(data);
-						$('#loadingSpiral').hide();
-						$('#previewPost').fadeIn(250);
-					
-						$('html, body').animate({
-							scrollTop:$('#previewPost').offset().top
-						}, 1000);
-						
-					});
-				
-				});
-				
-
 			});
 			
-		</script>
-		
-		
-	";
-	
-}
-
+		});
+	</script>
+";
 
 ?>

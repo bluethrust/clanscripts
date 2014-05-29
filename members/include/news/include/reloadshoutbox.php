@@ -70,8 +70,8 @@ if($result->num_rows > 0) {
 		echo "
 			<script type='text/javascript'>
 				$(document).ready(function() {
-					$('div[data-shoutbox=main]').animate({
-						scrollTop:$('div[data-shoutbox=main]')[0].scrollHeight
+					$('#".filterText($_POST['divID'])."').animate({
+						scrollTop:$('#".filterText($_POST['divID'])."')[0].scrollHeight
 					}, 1000);
 				});
 			</script>

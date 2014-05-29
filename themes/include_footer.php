@@ -67,8 +67,7 @@
 
 		
 		<script type='text/javascript'>
-
-
+		
 			function reloadShoutbox() {
 				$(document).ready(function() {
 

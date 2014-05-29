@@ -134,7 +134,62 @@ class ShoutBox {
 	}
 	
 	
+	public function prepareLinks($memberObj) {
+		
+		$this->memberObj->select($_SESSION['btUsername']);
+		$consoleObj = new ConsoleOption($this->MySQL);
+		$manageNewsCID = $consoleObj->findConsoleIDByName("Manage News");
+		$consoleObj->select($manageNewsCID);
+		
+		if(LOGGED_IN && $this->memberObj->hasAccess($consoleObj)) {
+			$this->strEditLink = MAIN_ROOT."members/console.php?cID=".$manageNewsCID."&newsID=";
+			$this->strDeleteLink = MAIN_ROOT."members/include/news/include/deleteshoutpost.php";
+		}
+		
+		$postInShoutboxCID = $consoleObj->findConsoleIDByName("Post in Shoutbox");
+		$consoleObj->select($postInShoutboxCID);
+		
+		if(LOGGED_IN && $this->memberObj->hasAccess($consoleObj)) {
+			$this->strPostLink = MAIN_ROOT."members/include/news/include/postshoutbox.php";
+		}
+		
+	}
 	
+	public function getShoutboxJS() {
+		
+		
+		$returnVal = "
+		
+			<script type='text/javascript'>
+							
+				$(document).ready(function() {
+						$('#".$this->strDivID."').animate({
+							scrollTop:$('#".$this->strDivID."')[0].scrollHeight
+						}, 1000);
+					
+		
+					$('#".$this->strDivID."_message').keypress(function(eventObj) {
+						if(eventObj.which == 13) {
+							if($('#".$this->strDivID."_message').val() != \"\") {
+								$('#".$this->strDivID."_postShoutbox input[type=button]').click();
+							}
+							return false;
+						}
+						else {
+							return true;
+						}
+					});					
+				
+				
+				});
+			
+			</script>
+		
+		";
+		
+		
+		return $returnVal;
+	}
 	
 }
 
