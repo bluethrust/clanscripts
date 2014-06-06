@@ -62,6 +62,7 @@ class Medal extends Rank {
 	public function delete() {
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
+			$info = $this->arrObjInfo;
 			$countErrors = 0;
 			$result = $this->MySQL->query("DELETE FROM ".$this->strTableName." WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."'");
 	
@@ -78,7 +79,8 @@ class Medal extends Rank {
 			$this->resortOrder();
 			
 			if($countErrors == 0) {
-				$returnVal = true;	
+				$returnVal = true;
+				unlink(BASE_DIRECTORY.$info['imageurl']);
 			}
 			
 	

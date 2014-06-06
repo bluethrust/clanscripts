@@ -30,6 +30,9 @@
 		public $beforeAfter = false;
 		public $isContainer = false;
 		public $embedJS;
+		public $attachmentForm;
+		public $attachmentObj;
+		private $arrDeleteFiles = array();
 		
 		/*
 		 * Components Array Example
@@ -71,7 +74,7 @@
 			$this->saveLink = $args['saveLink'];
 			$this->saveAdditional = $args['saveAdditional'];
 			$this->embedJS = $args['embedJS'];
-			
+			$this->attachmentForm = false;
 			
 			if(isset($args['wrapper'])) {
 				$this->wrapper = $args['wrapper'];	
@@ -79,6 +82,11 @@
 			
 			if(isset($args['beforeAfter'])) {
 				$this->beforeAfter = $args['beforeAfter'];	
+			}
+
+			if(isset($args['mysql'])) {
+				$this->attachmentObj = new Download($args['mysql']);
+				$this->attachmentForm = true;	
 			}
 			
 		}
@@ -132,6 +140,7 @@
 								<textarea name='".$componentName."' ".$dispAttributes.">".$componentInfo['value']."</textarea>
 							</div>
 						";
+						unset($GLOBALS['richtextEditor']);
 						break;
 					case "codeeditor":
 						$afterJS .= $this->codeEditorJS($componentInfo['attributes']['id']);
@@ -471,21 +480,50 @@
 				if($componentInfo['type'] == "file" && $_POST[$componentName] == "") {
 					// Check Upload
 					$uploadFile = "noupload";
+					$outsideLink = false;
 					if($_FILES[$componentName."_file"]['name'] != "") {
 						$uploadFile = new BTUpload($_FILES[$componentName."_file"], $componentInfo['options']['file_prefix'], $componentInfo['options']['save_loc'], $componentInfo['options']['file_types']);
 					}
 					elseif($_POST[$componentName."_url"] != "") {
 						$uploadFile = new BTUpload($_POST[$componentName."_url"], $componentInfo['options']['file_prefix'], $componentInfo['options']['save_loc'], $componentInfo['options']['file_types'], $componentInfo['options']['ext_length'], true);
+						$outsideLink = true;
 					}
 					
 					if($uploadFile != "noupload") {
 						
-						if(!$uploadFile->uploadFile()) {
-							$this->errors[] = "Unable to upload ".$componentInfo['display_name'].". Make sure that the file is not too big and correct extension.";	
+						
+						
+						if($this->attachmentForm) {
+							$this->attachmentObj->setUploadObj($uploadFile);
+							$this->attachmentObj->setCategory($componentInfo['options']['download_category']);
+							
+							if(!$this->attachmentObj->uploadFile()) {
+								$this->errors[] = "Unable to upload ".$componentInfo['display_name'].". Make sure that the file is not too big and correct extension.";	
+							}
+							else {
+								$_POST[$componentName] = $componentInfo['options']['append_db_value'].$uploadFile->getUploadedFileName();
+							}
+							
+							
+							
 						}
 						else {
-							$_POST[$componentName] = $componentInfo['options']['append_db_value'].$uploadFile->getUploadedFileName();
+							if(!$uploadFile->uploadFile()) {
+								$this->errors[] = "Unable to upload ".$componentInfo['display_name'].". Make sure that the file is not too big and correct extension.";	
+							}
+							else {
+								$_POST[$componentName] = $componentInfo['options']['append_db_value'].$uploadFile->getUploadedFileName();
+								// Check if updating, and delete old file
+								
+								if($this->saveType != "add" && $componentInfo['db_name'] != "" && $this->objSave->get_info($componentInfo['db_name']) != "") {
+									$this->arrDeleteFiles[] = $this->objSave->get_info($componentInfo['db_name']);
+								}
+								
+							}
 						}
+						
+						
+						
 					}
 					elseif($componentInfo['value'] != "") {
 						$_POST[$componentName] = $componentInfo['value'];	
@@ -565,6 +603,15 @@
 				}
 				elseif($this->objSave != "") {
 					$this->blnSaveResult = $this->objSave->update($arrColumns, $arrValues);
+					
+					
+					if(count($this->arrDeleteFiles) > 0) {
+						foreach($this->arrDeleteFiles as $file) {
+							unlink(BASE_DIRECTORY.$file);
+						}
+					}
+					
+					
 				}
 				else {
 					$this->blnSaveResult = true;
@@ -702,11 +749,12 @@
 		 */
 		
 		private function richTextboxJS($componentID, $allowHTML=false) {
-			global $MAIN_ROOT, $THEME;
+			global $MAIN_ROOT, $THEME, $hooksObj;
 			
 			$addHTML = ($allowHTML) ? ",code" : "";
 			
-			$returnVal = "
+			
+			$GLOBALS['richtextEditor'] = "
 
 			
 				$(document).ready(function() {	
@@ -763,8 +811,12 @@
 					});
 
 			";
+			$GLOBALS['rtCompID'] = $componentID;
+			$hooksObj->run("form_richtexteditor");
 			
-			return $returnVal;
+			unset($GLOBALS['rtCompID']);
+			
+			return $GLOBALS['richtextEditor'];
 		}
 		
 		private function datepickerJS($componentID, $componentOptions) {

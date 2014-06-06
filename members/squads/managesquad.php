@@ -34,17 +34,23 @@ if($ipbanObj->select($IP_ADDRESS, false)) {
 
 
 // Start Page
+
+$member = new Member($mysqli);
+$member->select($_SESSION['btUsername']);
+
 $consoleObj = new ConsoleOption($mysqli);
+
+$manageAllSquadsCID = $consoleObj->findConsoleIDByName("Manage All Squads");
+$consoleObj->select($manageAllSquadsCID);
+
+$blnManageAllSquads = $member->hasAccess($consoleObj);
+
 
 $cID = $consoleObj->findConsoleIDByName("View Your Squads");
 $consoleObj->select($cID);
 $consoleInfo = $consoleObj->get_info_filtered();
 $consoleTitle = $consoleInfo['pagetitle'];
 
-
-
-$member = new Member($mysqli);
-$member->select($_SESSION['btUsername']);
 
 $squadObj = new Squad($mysqli);
 $arrSquadPrivileges = $squadObj->arrSquadPrivileges;
@@ -64,7 +70,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 	$blnShowPage = false;
 	// Check Squad ID
 	
-	if($squadObj->select($_GET['sID']) && $squadObj->memberHasAccess($memberInfo['member_id'], $pID)) {
+	if(($squadObj->select($_GET['sID']) && $squadObj->memberHasAccess($memberInfo['member_id'], $pID)) || $blnManageAllSquads) {
 		$blnShowPage = true;		
 	}
 	elseif($squadObj->select($_GET['sID']) && !$squadObj->memberHasAccess($memberInfo['member_id'], $pID)) {
@@ -80,7 +86,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 	}
 	
 	if($pID == "closesquad") {
-		if($memberInfo['member_id'] == $squadObj->get_info("member_id")) {
+		if($memberInfo['member_id'] == $squadObj->get_info("member_id") || $blnManageAllSquads) {
 			$blnShowPage = true;	
 		}
 	}

@@ -263,6 +263,19 @@ class ImageSlider extends BasicOrder {
 		
 	}
 	
+	public function delete() {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+		
+			$info = $this->arrObjInfo;
+			$returnVal = parent::delete();
+			
+			unlink(BASE_DIRECTORY.$info['imageurl']);
+		}
+		
+	}
+	
 	
 }
 

@@ -77,7 +77,7 @@ if(in_array($consoleInfo['pagetitle'], $arrTinyMCEPages)) {
 	$EXTERNAL_JAVASCRIPT .= "
 	
 	<script type='text/javascript' src='".$MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>
-	
+	<script type='text/javascript' src='".$MAIN_ROOT."js/ckeditor/ckeditor.js'></script>
 	
 	";	
 }

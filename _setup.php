@@ -41,6 +41,10 @@ if(!isset($_SESSION['csrfKey'])) {
 }
 
 include($prevFolder."_config.php");
+define("BASE_DIRECTORY", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT);
+define("MAIN_ROOT", $MAIN_ROOT);
+define("THEME", $THEME);
+
 $PAGE_NAME = "";
 include_once($prevFolder."_functions.php");
 
@@ -79,7 +83,8 @@ if($websiteInfo['debugmode'] == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 else {
-	//ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+	//ini_set('error_reporting', E_ALL);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 	ini_set('display_errors', 1);
 }
 
@@ -92,9 +97,4 @@ if($ipbanObj->isBanned($IP_ADDRESS)) {
 }
 
 $hooksObj = new btHooks();
-
-
-define("BASE_DIRECTORY", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT);
-define("MAIN_ROOT", $MAIN_ROOT);
-define("THEME", $THEME);
 ?>

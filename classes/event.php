@@ -26,7 +26,7 @@ class Event extends Basic {
 	public $objEventMessageComment;
 	public $arrPositionOptions = array("modchat", "invitemembers", "manageinvites", "postmessages", "managemessages", "attendenceconfirm", "editinfo", "eventpositions");
 	public $arrInviteStatus = array(0 => "Invited", 1 => "Attending", 2 => "Maybe", 3 => "Not Attending");
-
+	protected $blnManageAllEvents;
 	
 	public function __construct($sqlConnection) {
 	
@@ -39,6 +39,32 @@ class Event extends Basic {
 		$this->objEventMessage = new News($sqlConnection, "eventmessages", "eventmessage_id", "eventmessage_comment", "comment_id");
 		$this->objEventMessageComment = $this->objEventMessage->objComment;
 		
+		$this->blnManageAllEvents = false;
+		$this->checkManageAllEvents();
+		
+	}
+	
+	
+	public function checkManageAllEvents() {
+		
+		$this->blnManageAllEvents = false;
+		if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
+			$member = new Member($this->MySQL);
+			$consoleObj = new ConsoleOption($this->MySQL);
+			
+			$manageAllEventsCID = $consoleObj->findConsoleIDByName("Manage All Events");
+			if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {
+				$consoleObj->select($manageAllEventsCID);
+				$this->blnManageAllEvents = $member->hasAccess($consoleObj);
+			}
+		}
+		
+		return $this->blnManageAllEvents;
+		
+	}
+	
+	public function getManageAllStatus() {
+		return $this->blnManageAllEvents;	
 	}
 	
 	
@@ -146,7 +172,7 @@ class Event extends Basic {
 		if($this->intTableKeyValue != "") {
 		
 			// Check if member is the creator, if so he has access.
-			if($memberID == $this->arrObjInfo['member_id']) {
+			if($memberID == $this->arrObjInfo['member_id'] || $this->blnManageAllEvents) {
 				$returnVal = true;				
 			}
 			else {

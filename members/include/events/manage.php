@@ -44,7 +44,12 @@ while($row = $result->fetch_assoc()) {
 
 $sqlEvents = "('".implode("','", $arrEvents)."')";
 
-$query = "SELECT * FROM ".$dbprefix."events WHERE member_id = '".$memberInfo['member_id']."' OR event_id IN ".$sqlEvents." ORDER BY title";
+if($eventObj->getManageAllStatus()) {
+	$query = "SELECT * FROM ".$dbprefix."events ORDER BY title";
+}
+else {
+	$query = "SELECT * FROM ".$dbprefix."events WHERE member_id = '".$memberInfo['member_id']."' OR event_id IN ".$sqlEvents." ORDER BY title";
+}
 
 $result = $mysqli->query($query);
 while($row = $result->fetch_assoc()) {
@@ -88,7 +93,7 @@ while($row = $result->fetch_assoc()) {
 	</div>
 	<div style='padding-left: 5px'>
 	";
-	if($row['member_id'] == $memberInfo['member_id']) {
+	if($row['member_id'] == $memberInfo['member_id'] || $eventObj->getManageAllStatus()) {
 		// Event Creator
 		$dispEventOptions .= "
 			<b>&middot;</b> <a href='".$MAIN_ROOT."members/events/manage.php?eID=".$row['event_id']."&pID=EditInfo'>Edit Event Information</a><br>

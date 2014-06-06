@@ -925,6 +925,26 @@ class Member extends Basic {
 	}
 	
 	
+	public function delete() {
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			$info = $this->arrObjInfo;
+			
+			$returnVal = parent::delete();
+			if($returnVal) {
+				if($info['profilepic'] != "") {
+					unlink(BASE_DIRECTORY.$info['profilepic']);	
+				}
+				
+				if($info['avatar'] != "") {
+					unlink(BASE_DIRECTORY.$info['avatar']);	
+				}
+			}
+			
+		}
+		return $returnVal;
+	}
+	
 }
 
 

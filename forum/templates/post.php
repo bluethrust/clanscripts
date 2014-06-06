@@ -117,7 +117,7 @@
 				<div class='dottedLine tinyFont'>Posted".$dispPostedOn." ".getPreciseTime($postInfo['dateposted'])."</div><br>
 				
 			
-				".nl2br($dispForumPostText).$dispLastEdit."
+				".$dispForumPostText.$dispLastEdit."
 				
 			
 			</div>

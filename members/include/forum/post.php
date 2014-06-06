@@ -149,7 +149,9 @@ else {
 		"type" => "text",
 		"sortorder" => 1,
 		"attributes" => array("class" => "formInput textBox"),
-		"display_name" => "Topic"			
+		"display_name" => "Topic",
+		"db_name" => "title",
+		"validate" => array("NOT_BLANK")
 	);
 	
 	$postActionWord = "topic";
@@ -214,7 +216,8 @@ $arrComponents = array(
 		"display_name" => "Message",
 		"attributes" => array("id" => "richTextarea", "style" => "width: 90%", "rows" => "10"),
 		"value" => $dispQuote,
-		"db_name" => "message"
+		"db_name" => "message",
+		"validate" => array("NOT_BLANK")
 	)
 		
 );
@@ -278,8 +281,9 @@ $setupFormArgs = array(
 		"saveObject" => $boardObj->objPost,
 		"saveMessage" => "Successfully posted new ".$postActionWord."!",
 		"saveType" => "add",
-		"saveLink" => $MAIN_ROOT."forum/viewtopic.php?tID=".$topicInfo['forumtopic_id'],
-		"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID."&bID=".$_GET['bID'].$addToForm, "method" => "post")
+		"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID."&bID=".$_GET['bID'].$addToForm, "method" => "post", "enctype" => "multipart/form-data"),
+		"afterSave" => array("saveAdditionalPostData"),
+		"saveAdditional" => array("member_id" => $memberInfo['member_id'], "dateposted" => time())
 );
 
 
@@ -329,5 +333,81 @@ echo "
 		});
 	</script>
 ";
+
+
+function saveAdditionalPostData() {
+	global $formObj, $blnPostReply, $boardObj, $mysqli, $topicInfo;
+	
+	if(!$blnPostReply) {
+		// New Topic
+		$postInfo = $boardObj->objPost->get_info();
+		$arrColumns = array("forumboard_id", "forumpost_id", "lastpost_id");
+		$arrValues = array($_GET['bID'], $postInfo['forumpost_id'], $postInfo['forumpost_id']);
+		$boardObj->objTopic->addNew($arrColumns, $arrValues);
+		
+		$boardObj->objPost->update(array("forumtopic_id"), array($boardObj->objTopic->get_info("forumtopic_id")));		
+	}
+	else {
+		$boardObj->objPost->update(array("forumtopic_id"), array($topicInfo['forumtopic_id']));
+		$newReplies = $topicInfo['replies']+1;
+		$boardObj->objTopic->update(array("replies", "lastpost_id"), array($newReplies, $boardObj->objPost->get_info("forumpost_id")));
+		
+	}
+	
+	
+	$formObj->saveLink = $boardObj->objPost->getLink();
+	
+	$arrDownloadID = checkForAttachments();
+	if(is_array($arrDownloadID)) {
+		$forumAttachmentObj = new Basic($mysqli, "forum_attachments", "forumattachment_id");
+		foreach($arrDownloadID as $downloadID) {
+			$forumAttachmentObj->addNew(array("download_id", "forumpost_id"), array($downloadID, $boardObj->objPost->get_info("forumpost_id")));
+		}	
+		
+	}
+	
+	
+}
+
+function checkForAttachments() {
+	global $formObj, $mysqli, $blnCheckForumAttachments, $prevFolder;
+	
+	$returnVal = false;
+	if($blnCheckForumAttachments) {
+		$attachmentObj = new Download($mysqli);
+		$downloadCatObj = new DownloadCategory($mysqli);
+		$downloadCatObj->selectBySpecialKey("forumattachments");
+		$forumAttachmentCatID = $downloadCatObj->get_info("downloadcategory_id");
+		
+
+		$arrDownloadID = array();
+		$arrDLColumns = array("downloadcategory_id", "member_id", "dateuploaded", "filename", "mimetype", "filesize", "splitfile1", "splitfile2");
+		for($i=1;$i<=$_POST['numofattachments'];$i++) {
+			
+			$tempPostName = "forumattachment_".$i;
+			if($_FILES[$tempPostName]['name'] != "" && $attachmentObj->uploadFile($_FILES[$tempPostName], $prevFolder."downloads/files/forumattachment/", $forumAttachmentCatID)) {
+
+				$splitFiles = $attachmentObj->getSplitNames();
+				$fileSize = $attachmentObj->getFileSize();
+				$mimeType = $attachmentObj->getMIMEType();
+				
+				$arrDLValues = array($forumAttachmentCatID, $memberInfo['member_id'], time(), $_FILES[$tempPostName]['name'], $mimeType, $fileSize, "downloads/files/forumattachment/".$splitFiles[0], "downloads/files/forumattachment/".$splitFiles[1]);
+				
+				if($attachmentObj->addNew($arrDLColumns, $arrDLValues)) {
+					$arrDownloadID[] = $attachmentObj->get_info("download_id");
+				}	
+			}
+			elseif($_FILES[$tempPostName]['name'] != "") {
+				$countErrors++;
+				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to upload attachment #".$i.": ".$_FILES[$tempPostName]['name'].".<br>";
+			}	
+			
+		}
+		$returnVal = $arrDownloadID;
+
+	}
+
+	return $returnVal;
+}
 
 ?>

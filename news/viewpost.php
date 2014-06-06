@@ -87,64 +87,9 @@ $breadcrumbObj->addCrumb("News", $MAIN_ROOT."news");
 $breadcrumbObj->addCrumb($newsInfo['postsubject']);
 include($prevFolder."include/breadcrumb.php");
 
-$member->select($newsInfo['member_id']);
-$posterInfo = $member->get_info_filtered();
-
-if($posterInfo['avatar'] == "") {
-	$posterInfo['avatar'] = $MAIN_ROOT."themes/".$THEME."/images/defaultavatar.png";
-}
-else {
-	$posterInfo['avatar'] = $MAIN_ROOT.$posterInfo['avatar'];	
-}
-
-if($row['newstype'] == 1) {
-	$dispNewsType = " - <span class='publicNewsColor' style='font-style: italic'>public</span>";
-}
-elseif($row['newstype'] == 2) {
-	$dispNewsType = " - <span class='privateNewsColor' style='font-style: italic'>private</span>";
-}
-elseif($row['newstype'] == 3) {
-	$dispNewsType = "";
-}
-
-
-$checkHTMLConsoleObj = new ConsoleOption($mysqli);
-$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
-$checkHTMLConsoleObj->select($htmlNewsCID);
-
-
-if($member->select($newsInfo['lasteditmember_id'])) {
-	$checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj);
-	$dispLastEditTime = getPreciseTime($newsInfo['lasteditdate']);
-	$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";
-}
-
-
-$member->select($newsInfo['member_id']);
-
-if(!isset($checkHTMLAccess)) { $checkHTMLAccess = $member->hasAccess($checkHTMLConsoleObj); }
-
-$dispNews = ($checkHTMLAccess) ? parseBBCode($newsObj->get_info("newspost")) : nl2br(parseBBCode($newsInfo['newspost']));
+$newsObj->show();
 
 echo "
-
-	<div class='newsDiv'>
-		
-		<div class='postInfo'>
-			<div style='float: left'><img src='".$posterInfo['avatar']."' class='avatarImg'></div>
-			<div style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($newsInfo['dateposted']).$dispNewsType."<br>
-			<span class='subjectText'>".$newsInfo['postsubject']."</span></div>
-			<div style='clear: both'></div>
-		</div>
-		<br>
-		<div class='dottedLine' style='margin-top: 5px'></div>
-		<div class='postMessage'>
-			".$dispNews."
-		</div>
-		<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
-		<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
-	</div>
-
 	<div style='padding-left: 15px'>
 	";
 

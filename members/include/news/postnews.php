@@ -25,202 +25,74 @@ else {
 
 
 $cID = $_GET['cID'];
-
-$dispError = "";
-$countErrors = 0;
+$newsObj = new News($mysqli);
 
 
-$checkHTMLConsoleObj = new ConsoleOption($mysqli);
-$htmlNewsCID = $checkHTMLConsoleObj->findConsoleIDByName("HTML in News Posts");
-$checkHTMLConsoleObj->select($htmlNewsCID);
-$blnAllowHTML = $member->hasAccess($checkHTMLConsoleObj);
-
-if($_POST['submit']) {
-	
-	if($blnAllowHTML) {
-		$_POST['message'] = str_replace("<?", "", $_POST['message']);
-		$_POST['message'] = str_replace("?>", "", $_POST['message']);
-		$_POST['message'] = str_replace("<script", "", $_POST['message']);
-		$_POST['message'] = str_replace("</script>", "", $_POST['message']);
-	}
-	
-	// Check News Type
-	//	1 - Public
-	// 	2 - Private
-	
-	if($_POST['newstype'] != 1 && $_POST['newstype'] != 2) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid news type.<br>";
-	}
-	
-	
-	// Check Subject
-	
-	if(trim($_POST['subject']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You must enter a news subject.<br>";
-	}
-	
-	// Check Message
-	
-	if(trim($_POST['message']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not make a blank news post.<br>";
-	}
-	
-	// Check HP Pin
-	if($_POST['hpsticky'] != 1) {
-		$_POST['hpsticky'] = 0;	
-	}
-	
-	if($countErrors == 0) {
-		$time = time();
-		$arrColumns = array("member_id", "newstype", "dateposted", "postsubject", "newspost", "hpsticky");
-		$arrValues = array($memberInfo['member_id'], $_POST['newstype'], $time, $_POST['subject'], $_POST['message'], $_POST['hpsticky']);
-	
-		$newsPost = new Basic($mysqli, "news", "news_id");
-		if($newsPost->addNew($arrColumns, $arrValues)) {
-	
-			echo "
-			<div style='display: none' id='successBox'>
-			<p align='center'>
-			Successfully Posted News!
-			</p>
-			</div>
-	
-			<script type='text/javascript'>
-			popupDialog('Post News', '".$MAIN_ROOT."members', 'successBox');
-			</script>
-	
-			";
-	
-		}
-		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to database! Please contact the website administrator.<br>";
-		}
-	
-	
-	}
-	
-	if($countErrors > 0) {
-		$_POST = filterArray($_POST);
-		$_POST['submit'] = false;
-	}
-	
-	
-	
-}
+$newsTextbox = $member->hasAccess($newsObj->getHTMLNewsConsole()) ? "richtextbox" : "textarea";
 
 
-if(!$_POST['submit']) {
-	
-	echo "
-	<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-		<div class='formDiv'>
-		";
-	
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to post news because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-			Use the form below to post news.<br><br>
-				
-				<table class='formTable'>
-					<tr>
-						<td class='formLabel'>News Type:</td>
-						<td class='main'><select name='newstype' class='textBox' id='newsType' onchange='updateTypeDesc()'><option value='1'>Public</option><option value='2'>Private</option></select><span class='tinyFont' style='padding-left: 10px' id='typeDesc'></span></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Pin to Homepage: <a href='javascript:void(0)' onmouseover=\"showToolTip('Pinning a news post to the homepage will show the post under the Announcments section, instead of the Latest News section.')\" onmouseout='hideToolTip()'>(?)</a></td>
-						<td class='main'><input type='checkbox' name='hpsticky' value='1'></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Subject:</td>
-						<td class='main'><input type='text' name='subject' value='".$_POST['subject']."' class='textBox' style='width: 250px'></td>
-					</tr>
-					<tr>
-						<td class='formLabel' valign='top'>Message:</td>
-						<td class='main'>
-							<textarea id='tinymceTextArea' style='width: 80%' rows='15' class='textBox' name='message'>".$_POST['message']."</textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class='main' align='center' colspan='2'><br><br>
-							<input type='submit' name='submit' value='Post News' class='submitButton' style='width: 125px'>
-						</td>
-					</tr>
-				</table>
-				
-			</div>
-		</form>
-		
+$i = 1;
+$arrComponents = array(
+	"newstype" => array(
+		"type" => "select",
+		"display_name" => "News Type",
+		"options" => array(1 => "Public", 2 => "Private"),
+		"validate" => array("RESTRICT_TO_OPTIONS"),
+		"sortorder" => $i++,
+		"db_name" => "newstype",
+		"attributes" => array("class" => "textBox formInput", "id" => "newsType", "onchange" => "updateTypeDesc()"),
+		"html" => "<div class='tinyFont formInput' id='typeDesc' style='vertical-align: bottom; padding-left: 10px; padding-bottom: 5px'></div>"
+	),
+	"pintohp" => array(
+		"type" => "checkbox",
+		"display_name" => "Pin to Homepage",
+		"tooltip" => "Pinning a news post to the homepage will show the post under the Announcements section, instead of the Latest News section.",
+		"db_name" => "hpsticky",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "formInput"),
+		"value" => 1
+	),
+	"subject" => array(
+		"type" => "text",
+		"display_name" => "Subject",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "textBox formInput", "style" => "width: 35%"),
+		"db_name" => "postsubject"
+	),
+	"newspost" => array(
+		"type" => $newsTextbox,
+		"display_name" => "Message",
+		"sortorder" => $i++,
+		"db_name" => "newspost",
+		"attributes" => array("class" => "textBox formInput", "id" => "newsPost", "style" => "width: 100%", "rows" => 18),
+		"validate" => array("NOT_BLANK", "formFilterNewsPost")
+	),
+	"submit" => array(
+		"type" => "submit",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"value" => "Post News"
+	)
+
+);
+
+
+
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"description" => "Use the form below to post news.",
+	"saveObject" => $newsObj,
+	"saveMessage" => "Successfully Posted News!",
+	"saveType" => "add",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"saveAdditional" => array("dateposted" => time(), "member_id" => $memberInfo['member_id'])
+);
+
+
+echo "		
 		<script type='text/javascript'>
-		
-			";
-		
-		if($blnAllowHTML) {
-	
-			echo "
-			
-				$('document').ready(function() {
-					$('#tinymceTextArea').tinymce({
-				
-						script_url: '".$MAIN_ROOT."js/tiny_mce/tiny_mce.js',
-						theme: 'advanced',
-						plugins: 'autolink,emotions',
-						theme_advanced_buttons1: 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,link,unlink,image,emotions,|,quotebbcode,codebbcode,',
-						theme_advanced_buttons2: 'forecolorpicker,fontselect,fontsizeselect',
-						theme_advanced_resizing: true,
-						content_css: '".$MAIN_ROOT."themes/".$THEME."/btcs4.css',
-						theme_advanced_statusbar_location: 'none',
-						style_formats: [
-							{title: 'Quote', inline : 'div', classes: 'forumQuote'}
-						
-						],
-						setup: function(ed) {
-							ed.addButton('quotebbcode', {
-								
-								title: 'Insert Quote',
-								image: '".$MAIN_ROOT."js/tiny_mce/quote.png',
-								onclick: function() {
-									ed.focus();
-									innerText = ed.selection.getContent();
-									
-									ed.selection.setContent('[quote]'+innerText+'[/quote]');
-								}
-							});
-							
-							ed.addButton('codebbcode', {
-								
-								title: 'Insert Code',
-								image: '".$MAIN_ROOT."js/tiny_mce/code.png',
-								onclick: function() {
-									ed.focus();
-									innerText = ed.selection.getContent();
-									
-									ed.selection.setContent('[code]'+innerText+'[/code]');
-								}
-							
-							});
-						}
-					});
-					
-				});
-			
-			";
-			
-		}
-		
-		echo "
-		
+
 			function updateTypeDesc() {
 				$(document).ready(function() {
 					$('#typeDesc').hide();
@@ -237,9 +109,17 @@ if(!$_POST['submit']) {
 			
 			updateTypeDesc();
 		</script>
-	
-	
-	
+		
 	";
+
+
+function formFilterNewsPost() {
+	global $member, $newsObj;
+	
+	if($member->hasAccess($newsObj->getHTMLNewsConsole())) {
+		
+	}
 	
 }
+	
+?>

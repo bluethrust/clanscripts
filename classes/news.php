@@ -22,7 +22,8 @@ class News extends Basic {
 	protected $strCommentTableName;
 	protected $strCommentTableKey;
 	public $objComment;
-	
+	private $consoleObj;
+	private $blnViewPrivateNews;
 	
 	public function __construct($sqlConnection, $newsTableName="news", $newsTableKey="news_id", $commentTableName="comments", $commentTableKey="comment_id") {
 		
@@ -34,9 +35,14 @@ class News extends Basic {
 		$this->strCommentTableKey = $commentTableKey;
 		
 		$this->objComment = new Basic($sqlConnection, $commentTableName, $this->strCommentTableKey);
-
+		
+		$this->consoleObj = new ConsoleOption($sqlConnection);
+		
+		$htmlInNewsCID = $this->consoleObj->findConsoleIDByName("HTML in News Posts");
+		$this->consoleObj->select($htmlInNewsCID);
+		
+		$this->determinePrivateNewsStatus();
 	}
-	
 	
 	
 	
@@ -117,9 +123,163 @@ class News extends Basic {
 		
 		
 		return $returnVal;
-		
+	
+	}
+	
+	
+	public function show() {
+		global $hooksObj;
+		if($this->intTableKeyValue != "") {
+			$member = new Member($this->MySQL);
+			$postInfo = $this->arrObjInfo;
+			
+			$checkHTMLAccess = "";
+			if($member->select($postInfo['lasteditmember_id'])) {
+				$checkHTMLAccess = $member->hasAccess($this->consoleObj);
+				$dispLastEditTime = getPreciseTime($postInfo['lasteditdate']);
+				$dispLastEdit = "<span style='font-style: italic'>last edited by ".$member->getMemberLink()." - ".$dispLastEditTime."</span>";		
+			}
+			
+			$dispNewsType = "";
+			if($postInfo['newstype'] == 1) {
+				$dispNewsType = " - <span class='publicNewsColor' style='font-style: italic'>public</span>";
+			}
+			elseif($postInfo['newstype'] == 2) {
+				$dispNewsType = " - <span class='privateNewsColor' style='font-style: italic'>private</span>";
+			}
+			
+			
+			$member->select($postInfo['member_id']);
+			
+			$checkHTMLAccess = ($checkHTMLAccess == "") ? $member->hasAccess($this->consoleObj) : $checkHTMLAccess;
+			$dispNews = $checkHTMLAccess ? parseBBCode($postInfo['newspost']) : nl2br(parseBBCode(filterText($postInfo['newspost'])));
+			
+			$GLOBALS['news_post']['id'] = $this->intTableKeyValue;
+			$GLOBALS['news_post']['post'] = "
+	
+				<div class='newsDiv' id='newsDiv_".$postInfo['news_id']."'>
+					
+					<div class='postInfo'>
+						<div id='newsPostAvatar' style='float: left'>".$member->getAvatar()."</div>
+						<div id='newsPostInfo' style='float: left; margin-left: 15px'>posted by ".$member->getMemberLink()." - ".getPreciseTime($postInfo['dateposted']).$dispNewsType."<br>
+						<span class='subjectText'>".filterText($postInfo['postsubject'])."</span></div>
+						<div style='clear: both'></div>
+					</div>
+					<br>
+					<div class='dottedLine' style='margin-top: 5px'></div>
+					<div class='postMessage'>
+						".$dispNews."
+					</div>
+					<div class='dottedLine' style='margin-top: 5px; margin-bottom: 5px'></div>
+					<div class='main' style='margin-top: 0px; margin-bottom: 10px; padding-left: 5px'>".$dispLastEdit."</div>
+					<p style='padding: 0px; margin: 0px' align='right'><b><a href='".MAIN_ROOT."news/viewpost.php?nID=".$postInfo['news_id']."#comments'>Comments (".$this->countComments().")</a></b></p>
+				</div>
+	
+			";
+			
+			$hooksObj->run("newspost_show");
+			echo $GLOBALS['news_post']['post'];
+			
+			unset($GLOBALS['news_POST']);
+			
+		}
 		
 	}
 	
+	
+	public function calcPages($postType="") {
+		global $websiteInfo;
+		
+		if($postType != "") {
+			$newsPostSQL = "newstype = '".$postType."'";	
+		}
+		else {
+			$showPrivateSQL = $this->blnViewPrivateNews ? " OR newstype = '2'" : "";
+			$newsPostSQL = "newstype = '1'".$showPrivateSQL;
+		}
+		
+		
+		$result = $this->MySQL->query("SELECT * FROM ".$this->strTableName." WHERE ".$newsPostSQL." ORDER BY dateposted DESC");
+		$totalPosts = $result->num_rows;
+		
+		$websiteInfo['news_postsperpage'] = ($websiteInfo['news_postsperpage'] <= 0) ? 1 : $websiteInfo['news_postsperpage'];
+		
+		$totalPages = ceil($totalPosts/$websiteInfo['news_postsperpage']);
+		
+		return $totalPages;
+		
+	}
+	
+	
+	public function displayPageSelector($postType="", $pageURL="") {
+		
+		if(!isset($_GET['page'])) { $_GET['page'] = 1; }
+		$totalPages = $this->calcPages($postType);
+		if($_GET['page'] <= $totalPages) {
+
+			$nextPage = $_GET['page']+1;
+			$prevPage = $_GET['page']-1;
+			
+			$dispLink = ($pageURL == "") ? MAIN_ROOT."news/?page=" : $pageURL;
+			
+			$dispPrevPage = ($prevPage > 0) ? "<a href='".$dispLink.$prevPage."'>NEWER ENTRIES</a>" : "";	
+			$dispNextPage = ($nextPage <= $totalPages) ? "<a href='".$dispLink.$nextPage."'>OLDER ENTRIES</a>" : "";
+			
+			$pageSpacer = ($dispPrevPage != "" && $dispNextPage != "") ? "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" : "";
+			
+			echo "
+				<p align='center' class='largeFont'>
+					<b>".$dispPrevPage.$pageSpacer.$dispNextPage."</b>
+				</p>
+			";
+		}	
+		
+	}
+	
+	public function getPosts($postType="") {
+		global $websiteInfo;
+		
+		$totalPages = $this->calcPages($postType);
+		
+		if($postType != "") {
+			$newsPostSQL = "newstype = '".$postType."'";	
+		}
+		else {
+			$showPrivateSQL = $this->blnViewPrivateNews ? " OR newstype = '2'" : "";
+			$newsPostSQL = "newstype = '1'".$showPrivateSQL;
+		}
+		
+		
+		if(!isset($_GET['page']) || $_GET['page'] > $totalPages) {
+			$sqlLimit = " LIMIT 0, ".$websiteInfo['news_postsperpage'];
+			$_GET['page'] = 1;
+		}
+		else {
+			$sqlLimit = " LIMIT ".($_GET['page']-1)*$websiteInfo['news_postsperpage'].", ".$websiteInfo['news_postsperpage'];	
+		}
+		
+
+		$result = $this->MySQL->query("SELECT news_id FROM ".$this->strTableName." WHERE ".$newsPostSQL." ORDER BY dateposted DESC ".$sqlLimit);
+		
+		$returnArr = $result->fetch_all(MYSQLI_ASSOC);
+
+		return $returnArr;
+		
+	}
+	
+	private function determinePrivateNewsStatus() {
+		$member = new Member($this->MySQL);
+		$member->select($_SESSION['btUsername']);
+		$consoleObj = new ConsoleOption($this->MySQL);
+		
+		$privateNewsCID = $consoleObj->findConsoleIDByName("View Private News");
+		$consoleObj->select($privateNewsCID);
+		
+		$this->blnViewPrivateNews = ($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj));
+	}
+	
+	public function getHTMLNewsConsole() {
+		return $this->consoleObj;	
+	}
 	
 }

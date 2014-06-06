@@ -39,21 +39,24 @@
 				$arrCheckIP = explode(".", $ip);
 				
 				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."ipban WHERE ipaddress LIKE '%*%' AND (exptime > '".time()."' OR exptime = '0')");
-				while($row = $result->fetch_assoc()) {
 				
-					$arrBannedIP = explode(".", $row['ipaddress']);
-					$checkIP = 0;
-					foreach($arrBannedIP as $key=>$ipPart) {
-						if($arrCheckIP[$key] == $ipPart || $ipPart == "*") {
-							$checkIP++;
+				if($result !== false) {
+					while($row = $result->fetch_assoc()) {
+					
+						$arrBannedIP = explode(".", $row['ipaddress']);
+						$checkIP = 0;
+						foreach($arrBannedIP as $key=>$ipPart) {
+							if($arrCheckIP[$key] == $ipPart || $ipPart == "*") {
+								$checkIP++;
+							}
 						}
+						
+						
+						if($checkIP == count($arrBannedIP)) {
+							$returnVal = true;	
+						}
+						
 					}
-					
-					
-					if($checkIP == count($arrBannedIP)) {
-						$returnVal = true;	
-					}
-					
 				}
 				
 				$this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."ipban WHERE exptime != '0' AND exptime < '".time()."'");

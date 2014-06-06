@@ -22,6 +22,7 @@ class Squad extends Basic {
 	public $objSquadRank;
 	public $arrSquadMemberInfo;
 	public $arrSquadPrivileges;
+	protected $blnManageAllSquads;
 	
 	
 	
@@ -34,9 +35,27 @@ class Squad extends Basic {
 		$this->objSquadRank = new BasicSort($sqlConnection, "squadranks", "squadrank_id", "squad_id");
 		$this->arrSquadPrivileges = array("postnews", "managenews", "postshoutbox", "manageshoutbox", "addrank", "manageranks", "setrank", "editprofile", "sendinvites", "acceptapps", "removemember");
 		
+		$this->checkManageAllSquads();
 		
 	}
 	
+	
+	public function checkManageAllSquads() {
+		
+		$this->blnManageAllSquads = false;
+		if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
+			$member = new Member($this->MySQL);
+			$consoleObj = new ConsoleOption($this->MySQL);
+			
+			$manageAllSquadsCID = $consoleObj->findConsoleIDByName("Manage All Squads");
+			if($member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {
+				$consoleObj->select($manageAllSquadsCID);
+				$this->blnManageAllSquads = $member->hasAccess($consoleObj);
+			}
+		}
+		
+		return $this->blnManageAllSquads;
+	}
 	
 	public function countMembers() {
 		
@@ -275,8 +294,14 @@ class Squad extends Basic {
 	public function memberHasAccess($memberID, $privName) {
 		
 		$returnVal = false;
-		$intSquadMemberID = $this->getSquadMemberID($memberID);
-		if($intSquadMemberID !== false && in_array($privName, $this->arrSquadPrivileges)) {
+		$intSquadMemberID = $this->getSquadMemberID($memberID);		
+		
+		if($this->blnManageAllSquads) {
+			
+			$returnVal = true;
+			
+		}
+		elseif($intSquadMemberID !== false && in_array($privName, $this->arrSquadPrivileges)) {
 			
 			$this->objSquadMember->select($intSquadMemberID);
 			$squadMemberRankID = $this->objSquadMember->get_info("squadrank_id");
@@ -301,6 +326,8 @@ class Squad extends Basic {
 		
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
+			$info = $this->arrObjInfo;
+			
 			$this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."squads_members WHERE squad_id = '".$this->intTableKeyValue."'");
 			$this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."squadnews WHERE squad_id = '".$this->intTableKeyValue."'");
 			$this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."squadranks WHERE squad_id = '".$this->intTableKeyValue."'");
@@ -310,6 +337,10 @@ class Squad extends Basic {
 			
 			if(!$this->MySQL->error) {
 				$returnVal = true;
+				if($info['logourl'] != "" && file_exisits(BASE_DIRECTORY.$info['logourl'])) {
+					unlink(BASE_DIRECTORY.$info['logourl']);
+				}
+				
 			}
 			else {
 				$this->MySQL->displayError("basic.php");
@@ -319,6 +350,10 @@ class Squad extends Basic {
 		}
 		
 		return $returnVal;
+	}
+	
+	public function getManageAllStatus() {
+		return $this->blnManageAllSquads;
 	}
 	
 }

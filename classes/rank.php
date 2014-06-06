@@ -134,7 +134,7 @@ class Rank extends BasicOrder {
 	 */
 	
 	public function delete() {
-		global $prevFolder;
+
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
 			
@@ -142,7 +142,7 @@ class Rank extends BasicOrder {
 			$imageURL = $this->getLocalImageURL();
 			if($imageURL !== false) {
 				
-				unlink($prevFolder.$imageURL);
+				unlink(BASE_DIRECTORY.$imageURL);
 				
 			}
 			
@@ -151,7 +151,7 @@ class Rank extends BasicOrder {
 			$this->resortOrder();
 			
 			if(!$this->MySQL->error) {
-				$returnVal = true;
+				$returnVal = true;				
 			}
 			else {
 				$this->MySQL->displayError("basic.php");

@@ -227,7 +227,7 @@ if(!$_POST['submit']) {
 		$dispInvitedOnlySelected = " selected";	
 	}
 	
-	$timezoneoptions = "<option value=''>[Use Default']</option>";
+	$timezoneoptions = "<option value=''>[Use Default]</option>";
 	foreach($arrTimezones as $timeZone) {
 		
 		$tz = new DateTimeZone($timeZone);

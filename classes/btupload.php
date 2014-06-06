@@ -134,7 +134,6 @@ class BTUpload {
 		
 		$blnUploadFile = false;
 
-		
 		if(!is_dir($this->strNewFileLoc)) {
 			mkdir($this->strNewFileLoc);	
 		}
@@ -155,7 +154,8 @@ class BTUpload {
 				$createFile = file_put_contents($this->strNewFileLoc.$this->strUploadedFileName, $uploadContents);
 				
 				if($createFile !== false) {
-					$blnUploadFile = true;	
+					$blnUploadFile = true;
+					
 				}
 				
 			}

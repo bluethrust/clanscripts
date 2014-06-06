@@ -42,7 +42,7 @@ class Download extends Basic {
 		
 	}
 	
-	function uploadFile($uploadfile, $fileloc, $downloadCatID, $outsidelink=false) {
+	function uploadFile($uploadfile="", $fileloc="", $downloadCatID="", $outsidelink=false) {
 		
 		$returnVal = false;
 		if($this->setCategory($downloadCatID)) {
@@ -50,14 +50,18 @@ class Download extends Basic {
 		
 			$allowableExt = $this->objDownloadCategory->getExtensions();
 			
-			$this->objUpload = new BTUpload($uploadfile, "", $fileloc, $allowableExt, 4, $outsidelink);
-		
+			if($uploadfile != "") {
+				$this->objUpload = new BTUpload($uploadfile, "", $fileloc, $allowableExt, 4, $outsidelink);
+			}
+			
 			if($this->objUpload->uploadFile() && $this->splitFile()) {
 				
 				$returnVal = true;
 				
 			}
-			
+			else {
+				echo "NO UPLOAD";	
+			}
 		}
 		
 		return $returnVal;
@@ -67,7 +71,7 @@ class Download extends Basic {
 	
 	function splitFile()
 	{
-	
+
 		$returnVal = false;
 		$countErrors = 0;
 		$fullFileName = $this->objUpload->getFileLoc().$this->objUpload->getUploadedFileName();
@@ -135,6 +139,25 @@ class Download extends Basic {
 		return $this->intFileSize;
 	}
 	
+	public function setUploadObj($uploadObj) {
+		$this->objUpload = $uploadObj;	
+	}
+	
+	
+	public function delete() {
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			$info = $this->arrObjInfo;
+			$returnVal = parent::delete();
+		
+			unlink(BASE_DIRECTORY.$info['splitfile1']);
+			unlink(BASE_DIRECTORY.$info['splitfile2']);
+			
+		}
+		
+		return $returnVal;
+	}
     
 }
 ?>

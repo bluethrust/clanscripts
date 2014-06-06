@@ -158,7 +158,7 @@ class Game extends Rank {
 		$returnVal = false;
 		if($this->intTableKeyValue != "") {
 			$countErrors = 0;
-			
+			$info = $this->arrObjInfo;
 			// Delete Game			
 			
 			$result = $this->MySQL->query("DELETE FROM ".$this->strTableName." WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."'");
@@ -195,6 +195,9 @@ class Game extends Rank {
 			
 			if($countErrors == 0) {
 				$returnVal = true;
+				
+				unlink(BASE_DIRECTORY.$info['imageurl']);
+				
 			}
 
 	

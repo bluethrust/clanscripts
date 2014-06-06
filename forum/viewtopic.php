@@ -284,11 +284,18 @@ echo "
 </div>
 ";
 
+$countManagablePosts = 0;
 define("SHOW_FORUMPOST", true);
 $result = $mysqli->query("SELECT forumpost_id FROM ".$dbprefix."forum_post WHERE forumtopic_id = '".$topicInfo['forumtopic_id']."' ORDER BY dateposted LIMIT ".$intOffset.", ".$NUM_PER_PAGE);
 while($row = $result->fetch_assoc()) {
 	$boardObj->objPost->select($row['forumpost_id']);
 	$boardObj->objPost->blnManageable = $blnManagePosts;
+	
+	if($boardObj->objPost->get_info("member_id") == $memberInfo['member_id'] || $blnManagePosts) {
+		$countManagablePosts++;
+		$boardObj->objPost->blnManageable = true;
+	}
+	
 	$boardObj->objPost->show();
 }
 

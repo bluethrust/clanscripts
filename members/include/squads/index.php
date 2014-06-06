@@ -31,6 +31,15 @@ $squadObj = new Squad($mysqli);
 $counter = 0;
 $dispSquadNames = "";
 $arrSquads = $member->getSquadList();
+
+if($squadObj->getManageAllStatus()) {
+	$arrSquads = array();
+	$result = $mysqli->query("SELECT squad_id FROM ".$dbprefix."squads ORDER BY name");
+	while($row = $result->fetch_assoc()) {
+		$arrSquads[] = $row['squad_id'];
+	}
+}
+
 $clickCounter = 0;
 if(count($arrSquads) > 0) {
 
@@ -39,10 +48,10 @@ if(count($arrSquads) > 0) {
 		if($squadObj->select($squadID)) {
 			$intSquadMemberID = $squadObj->getSquadMemberID($memberInfo['member_id']);
 			
-			if($squadObj->objSquadMember->select($intSquadMemberID)) {
+			if($squadObj->objSquadMember->select($intSquadMemberID) || $squadObj->getManageAllStatus()) {
 				$squadMemberInfo = $squadObj->objSquadMember->get_info_filtered();
 				
-				if($squadObj->objSquadRank->select($squadMemberInfo['squadrank_id'])) {
+				if($squadObj->objSquadRank->select($squadMemberInfo['squadrank_id']) || $squadObj->getManageAllStatus()) {
 				
 					$squadRankInfo = $squadObj->objSquadRank->get_info_filtered();
 					
@@ -74,7 +83,7 @@ if(count($arrSquads) > 0) {
 					$arrSquadOptionsDispName = array("Post News", "Manage News", "Manage Shoutbox Posts", "Add Rank", "Manage Ranks", "Set Member Rank", "Edit Squad Profile", "Send Squad Invite", "View Applications", "Remove Member");
 					foreach($arrSquadOptions as $key=>$squadOption) {
 					
-						if($squadRankInfo[$squadOption] == 1) {
+						if($squadRankInfo[$squadOption] == 1 || $squadObj->getManageAllStatus()) {
 							
 							$dispSquadOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/squads/managesquad.php?sID=".$squadInfo['squad_id']."&pID=".$arrSquadOptionsPageID[$key]."'>".$arrSquadOptionsDispName[$key]."</a><br>";
 							
@@ -84,7 +93,7 @@ if(count($arrSquads) > 0) {
 					
 					$dispSquadOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."squads/profile.php?sID=".$squadInfo['squad_id']."'>View Squad Profile</a><br>";
 					
-					if($squadInfo['member_id'] == $memberInfo['member_id']) {
+					if($squadInfo['member_id'] == $memberInfo['member_id'] || $squadObj->getManageAllStatus()) {
 						$dispSquadOptions .= "<b>&middot;</b> <a href='".$MAIN_ROOT."members/squads/managesquad.php?sID=".$squadInfo['squad_id']."&pID=CloseSquad'>Close Squad</a><br>";
 					}
 					else {

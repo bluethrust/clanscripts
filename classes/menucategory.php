@@ -48,5 +48,17 @@ class MenuCategory extends BasicSort {
 		return $returnArr;
 	}
 	
+	public function delete() {
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			$info = $this->arrObjInfo;
+			$returnVal = parent::delete();
+			if($info['headertype'] == "image" && $info['headercode'] != "") {
+				unlink(BASE_DIRECTORY.$info['headercode']);	
+			}
+		}
+
+		return $returnVal;
+	}
 	
 }
