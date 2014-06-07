@@ -75,7 +75,7 @@
 			$this->saveAdditional = $args['saveAdditional'];
 			$this->embedJS = $args['embedJS'];
 			$this->attachmentForm = false;
-			
+
 			if(isset($args['wrapper'])) {
 				$this->wrapper = $args['wrapper'];	
 			}
@@ -87,6 +87,11 @@
 			if(isset($args['mysql'])) {
 				$this->attachmentObj = new Download($args['mysql']);
 				$this->attachmentForm = true;	
+			}
+			
+			
+			if($args['prefill']) {
+				$this->prefillDBValues();				
 			}
 			
 		}
@@ -177,7 +182,10 @@
 								if($optionValue == $componentInfo['value']) {
 									$dispSelected = " checked";
 								}
-								$displayForm .= "<input name='".$componentName."' type='".$componentInfo['type']."' value='".$optionValue."' ".$dispAttributes." ".$dispSelected."> <label class='formLabel formInput'>".$displayValue."</label><br>";
+								
+								$dispLabel = ($displayValue != "") ? "<label class='formLabel formInput'>".$displayValue."</label><br>" : "";
+								
+								$displayForm .= "<input name='".$componentName."' type='".$componentInfo['type']."' value='".$optionValue."' ".$dispAttributes." ".$dispSelected."> ".$dispLabel;
 							}
 						}
 						else {
@@ -274,6 +282,12 @@
 						break;
 					case "custom":
 						break;
+					case "colorpick":
+						
+						$afterJS .= $this->colorpickerJS($componentInfo['attributes']['id'], $componentInfo['allowHTML']);
+						$displayForm .= "<input type='text' name='".$componentName."' value='".$componentInfo['value']."' ".$dispAttributes.">";
+						
+						break;
 					default:
 						$displayForm .= "<input type='".$componentInfo['type']."' name='".$componentName."' value='".$componentInfo['value']."' ".$dispAttributes.">";					
 				}
@@ -334,6 +348,20 @@
 				if(!in_array($componentInfo['type'], $filterTypes)) {
 					$this->components[$componentName]['value'] = $_POST[$componentName];
 				}		
+			}
+			
+		}
+		
+		public function prefillDBValues() {
+
+			if($this->saveType == "update") {
+				$info = $this->objSave->get_info_filtered();
+				foreach($this->components as $key => $value) {
+					if($this->components[$key]['db_name'] != "") {
+						$this->components[$key]['value'] = $info[$this->components[$key]['db_name']];
+					}
+				}
+				
 			}
 			
 		}
@@ -832,6 +860,16 @@
 					defaultDate: '".$componentOptions['defaultDate']."',
 					altField: '#".$componentOptions['altField']."',
 					altFormat: '@'
+				});
+			";
+			
+			return $returnVal;
+		}
+		
+		private function colorpickerJS($componentID) {
+			$returnVal = "
+				$('#".$componentID."').miniColors({
+					change: function(hex, rgb) { }
 				});
 			";
 			

@@ -933,11 +933,11 @@ class Member extends Basic {
 			$returnVal = parent::delete();
 			if($returnVal) {
 				if($info['profilepic'] != "") {
-					unlink(BASE_DIRECTORY.$info['profilepic']);	
+					deleteFile(BASE_DIRECTORY.$info['profilepic']);	
 				}
 				
 				if($info['avatar'] != "") {
-					unlink(BASE_DIRECTORY.$info['avatar']);	
+					deleteFile(BASE_DIRECTORY.$info['avatar']);	
 				}
 			}
 			

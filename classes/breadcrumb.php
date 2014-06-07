@@ -52,6 +52,15 @@
 			return array_pop($this->arrBreadcrumb);
 		}
 		
+		function updateBreadcrumb() {
+			echo "
+				<script type='text/javascript'>
+					$('#breadCrumbTitle').html(\"".addslashes($this->getTitle())."\");
+					$('#breadCrumb').html(\"".addslashes($this->getBreadcrumb())."\");
+				</script>
+			";
+		}
+		
 	}
 	
 ?>

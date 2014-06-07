@@ -26,166 +26,89 @@ else {
 
 
 $cID = $_GET['cID'];
+$i=1;
+$arrComponents = array(
+	"newsticker" => array(
+		"type" => "textbox",
+		"value" => $websiteInfo['newsticker'],
+		"attributes" => array("class" => "formInput textBox", "style" => "width: 35%"),
+		"sortorder" => $i++,
+		"display_name" => "News Ticker",
+		"tooltip" => "Leave blank to turn off this feature."
+	),
+	"displaysettings" => array(
+		"type" => "section",
+		"options" => array("section_title" => "Display Settings"),
+		"sortorder" => $i++		
+	),
+	"color" => array(
+		"type" => "colorpick",
+		"value" => $websiteInfo['newstickercolor'],
+		"sortorder" => $i++,
+		"display_name" => "Color",
+		"attributes" => array("class" => "formInput textBox", "id" => "ntColor")
+	),
+	"fontsize" => array(
+		"type" => "select",
+		"display_name" => "Font Size",
+		"attributes" => array("class" => "formInput textBox"),
+		"sortorder" => $i++,
+		"options" => array(
+						"" => "Default",
+						10 => "10px",
+						12 => "12px",
+						14 => "14px",
+						16 => "16px",
+						18 => "18px",
+						20 => "20px",
+						22 => "22px",
+						24 => "24px"),
+		"value" => $websiteInfo['newstickersize'],
+		"validate" => array("RESTRICT_TO_OPTIONS")
+	),
+	"boldtext" => array(
+		"type" => "checkbox",
+		"display_name" => "Bold Text",
+		"options" => array(1 => ""),
+		"attributes" => array("class" => "formInput textBox"),
+		"sortorder" => $i++,
+		"value" => $websiteInfo['newstickerbold'],
+		"validate" => array("POSITIVE_NUMBER")
+	),
+	"italictext" => array(
+		"type" => "checkbox",
+		"display_name" => "Italic Text",
+		"options" => array(1 => ""),
+		"attributes" => array("class" => "formInput textBox"),
+		"sortorder" => $i++,
+		"value" => $websiteInfo['newstickeritalic'],
+		"validate" => array("POSITIVE_NUMBER")
+	),
+	"submit" => array(
+		"value" => "Save",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"type" => "submit"		
+	)
+);
 
-$dispError = "";
-$countErrors = 0;
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"description" => "Use the form below to set what displays in the news ticker on the home page.",
+	"saveMessage" => "Successfully saved news ticker!",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"afterSave" => array("saveNewsTicker")
+);
 
 
-
-if($_POST['submit']) {
-	
-	$setBoldText = 0;
-	$setItalicText = 0;
-	
-	if($_POST['boldtext'] == 1) {
-		$setBoldText = 1;
-	}
-	
-	if($_POST['italictext'] == 1) {
-		$setItalicText = 1;	
-	}
+function saveNewsTicker() {
+	global $webInfoObj;
 	
 	$arrColumns = array("newsticker", "newstickercolor", "newstickersize", "newstickerbold", "newstickeritalic");
-	$arrValues = array($_POST['newsticker'], $_POST['newstickercolor'], $_POST['fontsize'], $setBoldText, $setItalicText);
+	$arrValues = array($_POST['newsticker'], $_POST['color'], $_POST['fontsize'], $_POST['boldtext'], $_POST['italictext']);
 	
-	if($webInfoObj->multiUpdate($arrColumns, $arrValues)) {
-	
-		echo "
-		<div style='display: none' id='successBox'>
-			<p align='center'>
-				Successfully Updated News Ticker!
-			</p>
-		</div>
-		
-		<script type='text/javascript'>
-			popupDialog('Modify News Ticker', '".$MAIN_ROOT."members/index.php?select=".$consoleInfo['consolecategory_id']."', 'successBox');
-		</script>
-		
-		";
-		
-		
-		
-	}
-	else {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to database! Please contact the website administrator.<br>";
-	}
-
-	
-	if($countErrors > 0) {
-		
-		$_POST = filterArray($_POST);
-		$websiteInfo['newsticker'] = $_POST['newsticker'];
-		$websiteInfo['newstickercolor'] = $_POST['newstickercolor'];
-		$_POST['submit'] = false;
-
-	}
-
+	$webInfoObj->multiUpdate($arrColumns, $arrValues);
 }
-
-
-if(!$_POST['submit']) {
-	
-	if($websiteInfo['newstickerbold'] == 1) {
-		$checkBold = " checked";	
-	}
-	
-	if($websiteInfo['newstickeritalic'] == 1) {
-		$checkItalic = " checked";	
-	}
-	
-	
-	echo "
-	
-		<form action='".$MAIN_ROOT."members/console.php?cID=".$cID."' method='post'>
-			<div class='formDiv'>
-			";
-	
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to save news ticker because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	
-	
-	echo "
-				Use the form below to set what displays in the news ticker on the home page.
-				<table class='formTable'>
-					<tr>
-						<td class='formLabel'>News Ticker: <a href='javascript:void(0)' onmouseover=\"showToolTip('Leave blank to turn off this feature.')\" onmouseout='hideToolTip()'>(?)</a></td>
-						<td class='main'><input type='text' class='textBox' value='".$websiteInfo['newsticker']."' style='width: 250px' name='newsticker'></td>
-					</tr>
-					<tr>
-						<td class='main' colspan='2'><br>
-							<b>Display Settings:</b>
-							<div class='dottedLine' style='margin-top: 3px; margin-bottom: 5px; width: 90%'></div>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Color:</td>
-						<td class='main'><input type='text' class='textBox' value='".$websiteInfo['newstickercolor']."' style='width: 100px' name='newstickercolor' id='newsTickerColor'></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Font Size:</td>
-						<td class='main'>
-							<select name='fontsize' class='textBox' id='ntFontSize'>
-								<option value=''>Default</option>
-								<option value='10'>10px</option>
-								<option value='12'>12px</option>
-								<option value='14'>14px</option>
-								<option value='16'>16px</option>
-								<option value='18'>18px</option>
-								<option value='20'>20px</option>
-								<option value='22'>22px</option>
-								<option value='24'>24px</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Bold Text:</td>
-						<td class='main'><input type='checkbox' name='boldtext' value='1'".$checkBold."></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Italic Text:</td>
-						<td class='main'><input type='checkbox' name='italictext' value='1'".$checkItalic."></td>
-					</tr>
-					<tr>
-						<td class='main' colspan='2' align='center'><br>
-						
-							<input type='submit' name='submit' value='Save' class='submitButton'>
-						
-						</td>
-					</tr>
-				
-				</table>
-			
-			</div>
-		</form>
-		
-		
-		<script type='text/javascript'>
-		
-		
-			$(document).ready(function() {
-				$('#newsTickerColor').miniColors({
-					change: function(hex, rgb) { }
-				});
-				
-				
-				$('#ntFontSize').val('".$websiteInfo['newstickersize']."');
-				
-			});
-		
-		</script>
-	";
-	
-	
-}
-
 
 ?>

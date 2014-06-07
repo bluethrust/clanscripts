@@ -151,8 +151,8 @@ class Download extends Basic {
 			$info = $this->arrObjInfo;
 			$returnVal = parent::delete();
 		
-			unlink(BASE_DIRECTORY.$info['splitfile1']);
-			unlink(BASE_DIRECTORY.$info['splitfile2']);
+			deleteFile(BASE_DIRECTORY.$info['splitfile1']);
+			deleteFile(BASE_DIRECTORY.$info['splitfile2']);
 			
 		}
 		

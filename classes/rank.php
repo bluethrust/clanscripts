@@ -142,7 +142,7 @@ class Rank extends BasicOrder {
 			$imageURL = $this->getLocalImageURL();
 			if($imageURL !== false) {
 				
-				unlink(BASE_DIRECTORY.$imageURL);
+				deleteFile(BASE_DIRECTORY.$imageURL);
 				
 			}
 			

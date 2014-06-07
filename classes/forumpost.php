@@ -153,6 +153,22 @@ class ForumPost extends Basic {
 	}
 	
 	
+	public function delete() {
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			$returnVal = parent::delete();
+			$downloadObj = new Download($this->MySQL);
+			$arrAttachments = $this->getPostAttachements();
+			
+			foreach($arrAttachments as $attachment) {
+				$downloadObj->select($attachment);
+				$downloadObj->delete();	
+			}
+			
+		}
+	}
+	
+	
 }
 
 

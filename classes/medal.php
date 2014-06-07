@@ -80,7 +80,7 @@ class Medal extends Rank {
 			
 			if($countErrors == 0) {
 				$returnVal = true;
-				unlink(BASE_DIRECTORY.$info['imageurl']);
+				deleteFile(BASE_DIRECTORY.$info['imageurl']);
 			}
 			
 	

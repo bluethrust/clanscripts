@@ -338,7 +338,7 @@ class Squad extends Basic {
 			if(!$this->MySQL->error) {
 				$returnVal = true;
 				if($info['logourl'] != "" && file_exisits(BASE_DIRECTORY.$info['logourl'])) {
-					unlink(BASE_DIRECTORY.$info['logourl']);
+					deleteFile(BASE_DIRECTORY.$info['logourl']);
 				}
 				
 			}

@@ -171,6 +171,16 @@ function __autoload($class_name) {
 }
 
 
+function deleteFile($filename) {
+	$returnVal = false;
+	if(file_exisits($filename)) {
+		$returnVal = unlink($filename);	
+	}
+	
+	return $returnVal;
+}
+
+
 //======================== START OF FUNCTION ==========================//
 // FUNCTION: bbcode_to_html                                            //
 //=====================================================================//

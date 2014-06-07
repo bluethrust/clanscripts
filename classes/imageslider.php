@@ -271,7 +271,7 @@ class ImageSlider extends BasicOrder {
 			$info = $this->arrObjInfo;
 			$returnVal = parent::delete();
 			
-			unlink(BASE_DIRECTORY.$info['imageurl']);
+			deleteFile(BASE_DIRECTORY.$info['imageurl']);
 		}
 		
 	}

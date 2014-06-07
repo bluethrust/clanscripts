@@ -70,7 +70,7 @@ class MenuItem extends BasicSort {
 				case "image":
 					$this->objImage->select($this->arrObjInfo['itemtype_id']);
 					$info = $this->objImage->get_info();
-					unlink(BASE_DIRECTORY.$info['imageurl']);
+					deleteFile(BASE_DIRECTORY.$info['imageurl']);
 					$this->objImage->delete();
 					break;
 				case "shoutbox":

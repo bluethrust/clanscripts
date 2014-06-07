@@ -14,14 +14,6 @@ else {
 	$dispHTTP = "https://";
 }
 
-// Check CSRF Attack
-
-/*
-if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST['csrfKey'] != $_SESSION['csrfKey']) {
-	//echo "Hacks?";
-	//exit();
-}
-*/
 
 if((!isset($_COOKIE['btUsername']) || !isset($_COOKIE['btPassword'])) && isset($_SESSION['btRememberMe']) && $_SESSION['btRememberMe'] == 1 && isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 	$cookieExpTime = time()+((60*60*24)*3);

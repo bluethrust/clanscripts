@@ -54,7 +54,7 @@ class MenuCategory extends BasicSort {
 			$info = $this->arrObjInfo;
 			$returnVal = parent::delete();
 			if($info['headertype'] == "image" && $info['headercode'] != "") {
-				unlink(BASE_DIRECTORY.$info['headercode']);	
+				deleteFile(BASE_DIRECTORY.$info['headercode']);	
 			}
 		}
 
