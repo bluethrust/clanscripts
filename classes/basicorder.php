@@ -18,6 +18,7 @@ class BasicOrder extends Basic {
 
 	protected $strAssociateTableName; // See the getAssociateIDs function for an explaination of "Associates"
 	protected $strAssociateKeyName;
+
 	
 	public function __construct($sqlConnection, $tableName, $tableKey) {
 		$this->MySQL = $sqlConnection;
@@ -434,7 +435,7 @@ class BasicOrder extends Basic {
 		}
 		
 		return $returnVal;
-	}
+	}	
 	
 
 }

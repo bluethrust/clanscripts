@@ -31,21 +31,6 @@ if(!$customPageObj->select($_GET['pID'])) {
 
 $customPageInfo = $customPageObj->get_info();
 
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
-
-
 // Start Page
 $PAGE_NAME = $customPageInfo['pagename']." - ";
 include($prevFolder."themes/".$THEME."/_header.php");

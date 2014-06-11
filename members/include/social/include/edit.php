@@ -25,31 +25,32 @@ else {
 	}
 }
 
+
 $consoleCatID = $consoleObj->get_info("consolecategory_id");
-$imageSliderInfo = $imageSliderObj->get_info_filtered();
+$socialInfo = $socialObj->get_info_filtered();
 
 $breadcrumbObj->popCrumb();
 $breadcrumbObj->addCrumb($consoleObj->get_info_filtered("pagetitle"), $MAIN_ROOT."members/console.php?cID=".$cID);
-$breadcrumbObj->addCrumb(parseBBCode($imageSliderInfo['name']));
+$breadcrumbObj->addCrumb($socialInfo['name']);
 
 $breadcrumbObj->updateBreadcrumb();
 
-define("HPIMAGE_FORM", true);
-include(BASE_DIRECTORY."members/include/news/hpimage_form.php");
+define("SOCIALMEDIA_FORM", true);
+include(BASE_DIRECTORY."members/include/social/socialmedia_form.php");
 
-$imageOrder = $imageSliderObj->findBeforeAfter();
+$socialOrder = $socialObj->findBeforeAfter();
 
-$imageSliderObj->select($imageSliderInfo['imageslider_id']);
-$arrComponents['displayorder']['before_after_value'] = $imageOrder[0];
-$arrComponents['displayorder']['after_selected'] = $imageOrder[1];
+$socialObj->select($socialInfo['social_id']);
+$arrComponents['displayorder']['before_after_value'] = $socialOrder[0];
+$arrComponents['displayorder']['after_selected'] = $socialOrder[1];
 $arrComponents['submit']['value'] = "Save";
-
 
 
 $setupFormArgs['components'] = $arrComponents;
 $setupFormArgs['saveType'] = "update";
 $setupFormArgs['prefill'] = true;
-$setupFormArgs['attributes']['action'] .= "&imgID=".$imageSliderInfo['imageslider_id']."&action=edit";
-$setupFormArgs['saveMessage'] = "Successfully saved home page image!";
+$setupFormArgs['attributes']['action'] .= "&sID=".$socialInfo['social_id']."&action=edit";
+$setupFormArgs['saveMessage'] = "Successfully saved social media icon!";
+
 
 ?>

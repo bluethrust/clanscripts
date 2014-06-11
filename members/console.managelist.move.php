@@ -12,31 +12,34 @@
  *
  */
 
-include_once("../../../../_setup.php");
+include_once("../_setup.php");
 
 $member = new Member($mysqli);
 $member->select($_SESSION['btUsername']);
 
-$medalObj = new Medal($mysqli);
 $consoleObj = new ConsoleOption($mysqli);
+$consoleObj->select($_GET['cID']);
+$consoleInfo = $consoleObj->get_info_filtered();
 
-$cID = $consoleObj->findConsoleIDByName("Manage Medals");
-$consoleObj->select($cID);
-$_GET['cID'] = $cID;
+$_SERVER['PHP_SELF'] = "console.php";
+$_GET['action'] = "move";
+require(BASE_DIRECTORY."members/include/".$consoleInfo['filename']);
+if(!isset($objManageList)) {
+	exit();	
+}
 
 if($member->authorizeLogin($_SESSION['btPassword'])) {
 
-
 	$memberInfo = $member->get_info_filtered();
 
-	if($member->hasAccess($consoleObj) && $medalObj->select($_POST['itemID'])) {
+	if($member->hasAccess($consoleObj) && $objManageList->select($_POST['itemID'])) {
 		
 		define("LOGGED_IN", true);
 		
-		$medalObj->move($_POST['moveDir']);
+		$objManageList->move($_POST['moveDir']);
 		
-		include("main.php");
-		include("../../../console.managelist.list.php");
+		require($objManageList->strMainListLink);
+		require("console.managelist.list.php");
 		
 	}
 	

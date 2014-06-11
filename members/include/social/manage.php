@@ -22,16 +22,24 @@ else {
 	if(!$member->hasAccess($consoleObj)) {
 		exit();
 	}
+	
 }
 
 $cID = $_GET['cID'];
 
-$medalObj = new Medal($mysqli);
-$objManageList = new btOrderManageList($medalObj);
-$objManageList->strMainListLink = BASE_DIRECTORY."members/include/admin/medals/main.php";
+$socialObj = new Social($mysqli);
+$objManageList = new btOrderManageList($socialObj);
+$objManageList->strMainListLink = BASE_DIRECTORY."members/include/social/include/main.php";
 
-if($_GET['mID'] != "" && $medalObj->select($_GET['mID']) && $_GET['action'] == "edit") {
-	include("medals/edit.php");
+if($_GET['sID'] != "" && $socialObj->select($_GET['sID']) && $_GET['action'] == "edit") {
+	include("include/edit.php");
+}
+elseif($_GET['action'] == "delete" && $socialObj->select($_POST['itemID'])) {
+	$socialInfo = $socialObj->get_info_filtered();
+	$objManageList->strDeleteName = $socialInfo['name'];
+	$objManageList->strDeletePostVarID = "sID";
+	
+	
 }
 elseif($_GET['action'] != "move") {	
 	include($objManageList->strMainListLink);

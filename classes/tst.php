@@ -1,9 +1,11 @@
 <?php
-include_once("btupload.php");
+ini_set("display_errors", 1);
+ini_set("error_reporting", E_ALL);
+include_once("classes/btupload.php");
 
 if($_POST['submit']) {
 
-	$btUploadObj = new BTUpload($_FILES['uploadfile'], "", "../", array(".jpg", ".png", ".bmp", ".gif"));
+	$btUploadObj = new BTUpload($_FILES['uploadfile'], "", "", array(".jpg", ".png", ".bmp", ".gif"));
 	
 	if($btUploadObj->uploadFile()) {
 		echo "File Uploaded!";	
@@ -28,11 +30,11 @@ echo "
 		<input type='submit' name='submit' value='Upload'>
 	
 	</form>
-
+	<br><br>
 ";
 
 
-
+phpinfo();
 
 
 ?>

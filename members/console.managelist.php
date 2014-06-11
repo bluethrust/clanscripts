@@ -65,8 +65,8 @@
 				
 					$('#".$setupManageListArgs['loading_spiral']."').show();
 					$('#".$setupManageListArgs['list_div_name']."').fadeOut(250);
-					
-					$.post('".$setupManageListArgs['move_link']."', { itemID: item_id, moveDir: move_dir }, function(data) {
+					//".$setupManageListArgs['move_link']."
+					$.post('".$MAIN_ROOT."members/console.managelist.move.php?cID=".filterText($_GET['cID'])."', { itemID: item_id, moveDir: move_dir }, function(data) {
 					
 						$('#".$setupManageListArgs['loading_spiral']."').hide();
 						$('#".$setupManageListArgs['list_div_name']."').html(data).fadeIn(250);

@@ -20,6 +20,9 @@
 		
 		
 		public $pluginPage;
+		protected $configInfo;
+		protected $configInfoIDs;
+		protected $objPluginConfig;
 		
 		public function __construct($sqlConnection) {
 			$this->MySQL = $sqlConnection;
@@ -29,8 +32,19 @@
 
 			$this->pluginPage = new BasicSort($sqlConnection, "plugin_pages", "pluginpage_id", "plugin_id");
 			
-			
+			$this->objPluginConfig = new Basic($sqlConnection, "plugin_config", "pluginconfig_id");
 		}
+		
+		public function select($intIDNum, $numericIDOnly = true) {
+			
+			$returnVal = parent::select($intIDNum, $numericIDOnly);
+			if($returnVal) {
+				$this->populateConfig();	
+			}
+			
+			return $returnVal;
+		}
+		
 		
 		public function selectByName($pluginName) {
 			$returnVal = false;
@@ -40,12 +54,13 @@
 				$result = $this->MySQL->query("SELECT plugin_id FROM ".$this->strTableName." WHERE name = '".$filterPluginName."'");
 				if($result->num_rows == 1) {
 					$row = $result->fetch_assoc();
-					$returnVal = $this->select($row['plugin_id']);	
+					$returnVal = $this->select($row['plugin_id']);
 				}
 			}
 			
 			return $returnVal;
 		}
+				
 		
 		public function getPlugins($return = "") {
 			
@@ -103,6 +118,78 @@
 			return $arrReturn;
 			
 		}
+		
+		
+		protected function populateConfig() {
+			
+			$this->configInfo = array();
+			if($this->intTableKeyValue != "") {
+				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."plugin_config WHERE plugin_id = '".$this->intTableKeyValue."'");
+				while($row = $result->fetch_assoc()) {
+					
+					$this->configInfo[$row['name']] = $row['value'];
+					$this->configInfoIDs[$row['name']] = $row['pluginconfig_id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		
+		public function addConfigValue($name, $value) {
+
+			if($this->intTableKeyValue != "" && !isset($this->configValue[$name])) {
+				$this->objPluginConfig->addNew(array("plugin_id", "name", "value"), array($this->intTableKeyValue, $name, $value));
+			}
+			else {
+				$this->updateConfigValue($name, $value);
+			}
+			
+		}
+		
+		
+		public function updateConfigValue($name, $value) {
+			
+			$returnVal = false;
+			if($this->intTableKeyValue != "" && $this->objPluginConfig->select($this->configInfoIDs[$name])) {
+				
+				$returnVal = $this->objPluginConfig->update(array("value"), array($value));
+				
+			}
+			
+			return $returnVal;
+		}
+		
+		public function deleteConfigValue($name) {
+
+			if($this->intTableKeyValue != "" && $this->objPluginConfig->select($this->configInfoIDs[$name])) {
+				
+				$this->objPluginConfig->delete();	
+				
+			}
+			
+		}
+		
+		
+		public function getConfigInfo($returnSingleValue="") {
+			
+			$returnVal = "";
+			if($this->intTableKeyValue != "") {
+				
+				if($returnSingleValue != "") {
+					$returnVal = $this->configInfo[$returnSingleValue];	
+				}
+				else {
+					$returnVal = $this->configInfo;	
+				}
+				
+			}
+			
+			return $returnVal;
+			
+		}
+		
 		
 		public function delete() {
 			$returnVal = false;

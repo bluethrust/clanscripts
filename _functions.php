@@ -173,7 +173,7 @@ function __autoload($class_name) {
 
 function deleteFile($filename) {
 	$returnVal = false;
-	if(file_exisits($filename)) {
+	if(file_exists($filename)) {
 		$returnVal = unlink($filename);	
 	}
 	

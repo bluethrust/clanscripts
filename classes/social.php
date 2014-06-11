@@ -49,6 +49,19 @@
 			return $returnVal;
 		}
 		
+		public function delete() {
+			$returnVal = false;
+			if($this->intTableKeyValue != "") {
+				$info = $this->arrObjInfo;
+				if(parent::delete()) {
+					deleteFile(BASE_DIRECTORY.$info['icon']);
+					$returnVal = true;
+				}
+				
+			}
+			
+			return $returnVal;
+		}
 	}
 	
 ?>

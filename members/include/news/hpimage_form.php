@@ -2,7 +2,7 @@
 
 	if(!defined("HPIMAGE_FORM")) { exit(); }
 	
-	
+	$imageOrderObj = new ImageSlider($mysqli);
 	$imageOptions = array();
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."imageslider ORDER BY ordernum DESC");
 	while($row = $result->fetch_assoc()) {
@@ -42,7 +42,7 @@
 			"attributes" => array("class" => "textBox"),
 			"display_name" => "Display Order",
 			"options" => $imageOptions,
-			"validate" => array(array("name" => "VALIDATE_ORDER", "orderObject" => $imageSliderObj)),
+			"validate" => array(array("name" => "VALIDATE_ORDER", "orderObject" => $imageOrderObj)),
 			"db_name" => "ordernum"
 		),
 		"displaystyle" => array(
@@ -84,13 +84,13 @@
 			"type" => "text",
 			"sortorder" => $i++,
 			"display_name" => "Title",
-			"attributes" => array("class" => "textBox formInput", "id" => "imageTitle", "style" => "width: 30%"),		
+			"attributes" => array("class" => "textBox formInput bigTextBox", "id" => "imageTitle"),		
 			"db_name" => "messagetitle"
 		),
 		"messagetext" => array(
 			"type" => "textarea",
 			"sortorder" => $i++,
-			"attributes" => array("class" => "textBox formInput", "style" => "width: 30%", "rows" => 4, "id" => "imageMessage"),
+			"attributes" => array("class" => "textBox formInput bigTextBox", "rows" => 4, "id" => "imageMessage"),
 			"db_name" => "message",
 			"display_name" => "Message"		
 			
@@ -99,7 +99,7 @@
 			"type" => "text",
 			"sortorder" => $i++,
 			"display_name" => "Link",
-			"attributes" => array("class" => "textBox formInput", "id" => "linkURL", "style" => "width: 30%"),
+			"attributes" => array("class" => "textBox formInput bigTextBox", "id" => "linkURL"),
 			"db_name" => "link"
 		),
 		"linktarget" => array(

@@ -27,7 +27,7 @@ class Medal extends Rank {
 		$this->strAssociateKeyName = "member_id";
 		
 		$this->objFrozenMedal = new Basic($sqlConnection, "freezemedals_members", "freezemedal_id");
-		
+
 	}
 
 	

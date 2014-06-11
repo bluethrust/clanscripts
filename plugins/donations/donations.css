@@ -1,0 +1,19 @@
+.donationsLeft {
+	float: left;
+	width: 60%;
+	min-height: 400px;
+}
+
+.donationsRight {
+	float: right;
+	width: 35%;
+	min-height: 400px;
+}
+
+.bigTextBox {
+	width: 45% !important;	
+}
+
+.smallTextBox {
+	width: 10% !important;	
+}

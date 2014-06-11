@@ -316,6 +316,8 @@ include($prevFolder."include/breadcrumb.php");
 			
 			$arrPlugins = $pluginObj->getPluginPage("profile");
 			
+			$hooksObj->run("profile_sections");
+			
 			$x = 0;
 			
 			foreach($arrSections as $section) {

@@ -41,7 +41,7 @@ if(!isset($_SESSION['csrfKey'])) {
 }
 
 include($prevFolder."_config.php");
-define("BASE_DIRECTORY", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT);
+define("BASE_DIRECTORY", str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT));
 define("MAIN_ROOT", $MAIN_ROOT);
 define("THEME", $THEME);
 

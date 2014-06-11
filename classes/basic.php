@@ -399,6 +399,10 @@ class Basic {
 		$this->strTableKey = $tableKey;
 	}
 	
+	public function get_tableKey() {
+		return $this->strTableKey;	
+	}
+	
 	public function set_tablePrefix($tablePrefix) {
 		$this->strTablePrefix = $tablePrefix;
 	}
@@ -411,6 +415,9 @@ class Basic {
 		return $this->intTableKeyValue;
 	}
 	
+	public function get_MySQL() {
+		return $this->MySQL;	
+	}
 	
 	public function updateTableTime() {
 		
