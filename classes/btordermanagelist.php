@@ -17,6 +17,8 @@
 		public $strDeletePostVarID;
 		public $strDeleteName;
 		public $strListDiv = "manageListDiv";
+		public $orderBy = "ordernum DESC";
+		
 		
 		public function __construct($obj) {
 
@@ -48,7 +50,7 @@
 		public function getListArray() {
 		
 			$arrItems = array();
-			$arrInfo = $this->objManage->get_entries(array(), "ordernum DESC");
+			$arrInfo = $this->objManage->get_entries(array(), $this->orderBy);
 			$x = 0;
 			foreach($arrInfo as $info) {
 						

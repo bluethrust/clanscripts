@@ -23,6 +23,7 @@
 		public $wrapper = array("<div class='formDiv'>", "</div>");
 		public $errors = array();
 		public $saveMessage;
+		public $saveMessageTitle;
 		public $afterSave;
 		public $saveLink;
 		public $prefillValues = true;
@@ -119,6 +120,7 @@
 				
 				$dispAttributes = $this->convertAttributes($componentInfo['attributes']);
 				
+				$displayForm .= $componentInfo['before_html'];
 				
 				// Output Component Name
 				if($componentInfo['display_name'] != "") {
@@ -717,6 +719,40 @@
 			}
 			
 			return $returnVal;
+		}
+		
+		
+		public function showSuccessDialog() {
+			
+			$popupLink = ($this->saveLink == "") ? MAIN_ROOT."members" : $this->saveLink;
+			
+			$dispDialogTitle = ($this->saveMessageTitle == "") ? "Confirmation" : $this->saveMessageTitle;
+			
+			if($this->saveMessage != "") {
+				echo "
+				
+					<div style='display: none' id='successBox'>
+						<p align='center'>
+							".$this->saveMessage."
+						</p>
+					</div>
+					
+					<script type='text/javascript'>
+						popupDialog('".$dispDialogTitle."', '".$popupLink."', 'successBox');
+					</script>
+				
+				";
+			}
+			else {
+
+				echo "
+					<script type='text/javascript'>
+						window.location = '".$popupLink."'
+					</script>
+				";
+				
+			}
+			
 		}
 		
 		

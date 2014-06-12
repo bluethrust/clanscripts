@@ -57,8 +57,8 @@
 		$jsonCustomVars = json_encode($customVars);
 		$link .= "&custom=".$jsonCustomVars;
 		
-		echo $link;
-		//header("Location: ".$link);
+		//echo $link;
+		header("Location: ".$link);
 	}
 	else {
 

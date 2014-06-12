@@ -71,10 +71,18 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 		$arrInstalledPlugins[] = $row['filepath'];
 		
 		$dispPluginName = filterText($row['name']);
+		
+		if(file_exists(BASE_DIRECTORY."plugins/".$row['filepath']."/settings.php")) {
+			$settingsLink = $MAIN_ROOT."plugins/".$row['filepath']."/settings.php";
+		}
+		else {
+			$settingsLink = $MAIN_ROOT."plugins/settings.php?plugin=".$row['filepath'];
+		}
+		
 		echo "
 			<tr>
 				<td class='dottedLine main manageList".$addCSS."'>".$dispPluginName."</td>
-				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a href='".$MAIN_ROOT."plugins/".$row['filepath']."/settings.php'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></a></td>
+				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a href='".$settingsLink."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></a></td>
 				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0' data-pluginname='".$dispPluginName."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
 			</tr>		
 		";

@@ -12,33 +12,10 @@
 		
 		if($formObj->save()) {
 			
-			$popupLink = ($formObj->saveLink == "") ? $MAIN_ROOT."members" : $formObj->saveLink;
+			$formObj->saveMessageTitle = $consoleInfo['pagetitle'];
 			
-			if($formObj->saveMessage != "") {
-				echo "
-				
-					<div style='display: none' id='successBox'>
-						<p align='center'>
-							".$formObj->saveMessage."
-						</p>
-					</div>
-					
-					<script type='text/javascript'>
-						popupDialog('".$consoleInfo['pagetitle']."', '".$popupLink."', 'successBox');
-					</script>
-				
-				";
-			}
-			else {
-
-				echo "
-					<script type='text/javascript'>
-						window.location = '".$popupLink."'
-					</script>
-				";
-				
-			}
-				
+			$formObj->showSuccessDialog();
+			
 		}
 		
 

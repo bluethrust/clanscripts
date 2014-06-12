@@ -23,7 +23,7 @@ if((!isset($_COOKIE['btUsername']) || !isset($_COOKIE['btPassword'])) && isset($
 
 
 //$menuXML = new SimpleXMLElement($dispHTTP.$siteDomain.$MAIN_ROOT."themes/".$THEME."/themeinfo.xml", NULL, true);
-$menuXML = new SimpleXMLElement($prevFolder."themes/".$THEME."/themeinfo.xml", NULL, true);
+$menuXML = new SimpleXMLElement(BASE_DIRECTORY."themes/".$THEME."/themeinfo.xml", NULL, true);
 if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 
 	$memberObj = new Member($mysqli);
