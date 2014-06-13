@@ -1,10 +1,13 @@
 <?php 
 	
-	if(!defined("DONATIONPAGE")) { exit(); } 
-
+	if(!defined("MAIN_ROOT")) { exit(); } 
+	global $donationPlugin, $campaignInfo;
+	
+	
+	$member = new Member($mysqli);
 	$donationForm = new Form();
 	
-	$usernameMessage = "Not Logged In! - <a href='".$MAIN_ROOT."login.php'>Log In</a> to have your account connected to this donation!";
+	$usernameMessage = "Not Logged In! - <a href='".MAIN_ROOT."login.php'>Log In</a> to have your account connected to this donation!";
 	$extraNameTooltip = "If left blank, the donation will be from Anonymous.";
 	if(LOGGED_IN) {
 		$member->select($_SESSION['btUsername']);
@@ -89,7 +92,7 @@
 		"name" => "donate_form-".$_GET['campaign_id'],
 		"components" => $arrComponents,
 		"description" => "Use the form below to make a donation!",
-		"attributes" => array("action" => $MAIN_ROOT."plugins/donations/paypal-redirect.php?campaign_id=".$_GET['campaign_id'], "method" => "post")
+		"attributes" => array("action" => MAIN_ROOT."plugins/donations/paypal-redirect.php?campaign_id=".$_GET['campaign_id'], "method" => "post")
 	);
 
 	$hooksObj->run("donate_form-".$_GET['campaign_id']);

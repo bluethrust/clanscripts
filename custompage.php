@@ -13,23 +13,25 @@
  */
 
 
-// Config File
-$prevFolder = "";
-
-include_once($prevFolder."_setup.php");
-
-
-// Classes needed for index.php
-
-
-$customPageObj = new Basic($mysqli, "custompages", "custompage_id");
-
-if(!$customPageObj->select($_GET['pID'])) {
-	die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>");
+if(!defined("CUSTOM_PAGE")) {
+	// Config File
+	$prevFolder = "";
+	
+	include_once($prevFolder."_setup.php");
+	
+	
+	// Classes needed for index.php
+	
+	
+	$customPageObj = new Basic($mysqli, "custompages", "custompage_id");
+	
+	if(!$customPageObj->select($_GET['pID'])) {
+		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>");
+	}
+	
+	
+	$customPageInfo = $customPageObj->get_info();
 }
-
-
-$customPageInfo = $customPageObj->get_info();
 
 // Start Page
 $PAGE_NAME = $customPageInfo['pagename']." - ";

@@ -18,12 +18,32 @@ $prevFolder = "../../";
 
 include_once($prevFolder."_setup.php");
 include_once("classes/campaign.php");
+include("breadcrumb_functions.php");
+
+switch($_GET['p']) {
+	case "history":
+
+		break;
+	case "thankyou":
+		$webInfoObj->setPage("plugins/donations/include/thankyou.php");
+		$hooksObj->addHook("breadcrumb", "setThankYouPageBreadcrumb");
+		break;
+	default:
+		if(isset($_GET['custom']) && isset($_GET['payment_status'])) {
+			$customVars = json_decode($_GET['custom'], true);
+			header("Location: ".FULL_SITE_URL."plugins/donations/?campaign_id=".$customVars['campaign_id']."&p=thankyou");	
+		} 
+		else {
+			$webInfoObj->setPage("plugins/donations/include/main.php");
+		}
+}
+
 
 $campaignObj = new DonationCampaign($mysqli);
 $donationPlugin = new btPlugin($mysqli);
 
 if(!$donationPlugin->selectByName("Donations") || !$campaignObj->select($_GET['campaign_id'])) {
-	echo "<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>";
+	//echo "<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>";
 	exit();
 }
 elseif($donationPlugin->selectByName("Donations") && $donationPlugin->getConfigInfo("email") == "") {
@@ -50,16 +70,7 @@ $breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
 $breadcrumbObj->addCrumb("Donation Campaign: ".$campaignInfo['title']);
 include($prevFolder."include/breadcrumb.php");
 
-define("DONATIONPAGE", true);
-
-switch($_GET['p']) {
-	case "history":
-
-		break;
-	default:
-		include("include/main.php");
-}
-
+$webInfoObj->displayPage();
 
 include($prevFolder."themes/".$THEME."/_footer.php"); 
 

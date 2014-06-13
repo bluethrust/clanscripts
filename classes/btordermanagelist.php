@@ -18,6 +18,7 @@
 		public $strDeleteName;
 		public $strListDiv = "manageListDiv";
 		public $orderBy = "ordernum DESC";
+		public $strNameTableColumn = "name";
 		
 		
 		public function __construct($obj) {
@@ -47,10 +48,10 @@
 		}
 		
 		
-		public function getListArray() {
+		public function getListArray($customInfo="") {
 		
 			$arrItems = array();
-			$arrInfo = $this->objManage->get_entries(array(), $this->orderBy);
+			$arrInfo = ($customInfo == "") ? $this->objManage->get_entries(array(), $this->orderBy) : $customInfo;
 			$x = 0;
 			foreach($arrInfo as $info) {
 						
@@ -70,7 +71,7 @@
 				
 				
 				$arrItems[] = array(
-					"display_name" => $info['name'],
+					"display_name" => $info[$this->strNameTableColumn],
 					"item_id" => $info[$this->objManage->get_tableKey()],
 					"type" => "listitem",
 					"edit_link" => $this->strEditItemLink.$info[$this->objManage->get_tableKey()]."&action=edit",

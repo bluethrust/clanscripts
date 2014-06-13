@@ -10,16 +10,8 @@
 	
 	if($donationPlugin->selectByName("Donations") && $donationPlugin->getConfigInfo("email") != "" && $campaignObj->select($_GET['campaign_id'])) {
 		
-		$siteDomain = $_SERVER['SERVER_NAME'];
-
-		if(trim($_SERVER['HTTPS']) == "" || $_SERVER['HTTPS'] == "off") {
-			$dispHTTP = "http://";
-		}
-		else {
-			$dispHTTP = "https://";
-		}
 		
-		$notifyURL = $dispHTTP.$siteDomain.$MAIN_ROOT."plugins/donations/paypal-ipn.php";
+		$notifyURL = FULL_SITE_URL."plugins/donations/paypal-ipn.php";
 		
 		$p = new paypal_class();
 		$member = new Member($mysqli);
@@ -31,6 +23,8 @@
 		$_POST['business'] = $donationPlugin->getConfigInfo("email");
 		$_POST['item_name'] = "Donation for ".$campaignInfo['title'];
 		$_POST['notify_url'] = $notifyURL;
+		$_POST['rm'] = 1;
+		$_POST['return'] = FULL_SITE_URL."plugins/donations/?campaign_id=".$_GET['campaign_id']."&p=thankyou";
 		
 		// Check For Custom Variables
 		if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword']) && $member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {
@@ -40,22 +34,22 @@
 		}
 		
 		$customVars['campaign_id'] = $_GET['campaign_id'];
-		
+		$addToLink = "";
 		$customVals = array("name", "message", "hideamount");
 		$filterFormInputs = array("submit", "checkCSRF");
 		foreach($_POST as $key => $value) {
 
 			
 			if(in_array($key, $customVals)) {
-				$customVars[$key] = $value;
+				$customVars[$key] = urlencode($value);
 			}
 			elseif(!in_array($key, $filterFormInputs)) {
-				$link .= "&".$key."=".$value;
+				$addToLink .= "&".$key."=".urlencode($value);
 			}
 		}
 		
 		$jsonCustomVars = json_encode($customVars);
-		$link .= "&custom=".$jsonCustomVars;
+		$link .= "&custom=".$jsonCustomVars.$addToLink;
 		
 		//echo $link;
 		header("Location: ".$link);
@@ -65,7 +59,7 @@
 		echo "
 		
 			<script type='text/javascript'>
-				window.location = '".$MAIN_ROOT."';
+				window.location = '".MAIN_ROOT."';
 			</script>
 		
 		";

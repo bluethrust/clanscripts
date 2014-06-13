@@ -33,13 +33,16 @@ $campaignObj = new DonationCampaign($mysqli);
 $objManageList = new btOrderManageList($campaignObj);
 $objManageList->strMainListLink = BASE_DIRECTORY."plugins/donations/console/managecampaign_main.php";
 
-if($_GET['campaignID'] != "" && $campaignObj->$campaignObj($_GET['campaignID']) && $_GET['action'] == "edit") {
+if($_GET['campaignID'] != "" && $campaignObj->select($_GET['campaignID']) && $_GET['action'] == "edit") {
 	include("managecampaign_edit.php");
 }
 elseif($_GET['action'] == "delete" && $campaignObj->select($_POST['itemID'])) {
 	$info = $campaignObj->get_info_filtered();
 	$objManageList->strDeleteName = $info['name'];
 	$objManageList->strDeletePostVarID = "campaignID";	
+}
+else {
+	include($objManageList->strMainListLink);	
 }
 
 

@@ -19,6 +19,8 @@
 	$objManageList->strDeleteLink = MAIN_ROOT."members/console.managelist.delete.php?cID=".$_GET['cID'];
 	$objManageList->arrActionList = array("edit", "delete");
 	$objManageList->strItemTitle = "Campaign:";
+	$objManageList->orderBy = "title";
+	$objManageList->strNameTableColumn = "title";
 	
 	$setupManageListArgs = $objManageList->getListArray();
 	

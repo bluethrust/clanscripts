@@ -71,7 +71,7 @@
 			"display_name" => "Run Until",
 			"options" => array("forever" => "Forever", "choose" => "Choose Date"),
 			"attributes" => array("class" => "textBox formInput", "id" => "runUntil"),
-			"sortorder" => $i++				
+			"sortorder" => $i++	
 		),
 		"enddate" => array(
 			"type" => "datepicker",
@@ -197,7 +197,7 @@
 			"display_name" => "Repeat Every",
 			"sortorder" => $i++,
 			"html" => "<input type='text' id='repeatPeriodAmount' class='textBox smallTextBox formInput' name='recurringamount' value='1'".$disabledRecurring."> <select name='recurringunit' class='textBox formInput' id='repeatPeriodUnit'".$disabledRecurring.">".$recurOptions."</select>",
-			"validate" => array("checkDonationRepeat")
+			"validate" => array("validateCreateCampaignForm")
 		)
 	);
 	
@@ -224,7 +224,7 @@
 	);
 
 	
-	function checkDonationRepeat() {
+	function validateCreateCampaignForm() {
 		global $hasAwardMedalAccess, $formObj, $arrRecurUnits;
 		
 		if(!$hasAwardMedalAccess) {
@@ -258,6 +258,11 @@
 					break;
 			}
 			
+		}
+		
+		
+		if($_POST['rununtil'] == "forever") {
+			$_POST['enddate'] = 0;
 		}
 		
 	}

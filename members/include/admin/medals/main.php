@@ -19,7 +19,7 @@
 	$objManageList->strDeleteLink = MAIN_ROOT."members/include/admin/medals/delete.php";
 	$objManageList->arrActionList = array("moveup", "movedown", "edit", "delete");
 	$objManageList->strItemTitle = "Medal Name:";
-	
+
 	$setupManageListArgs = $objManageList->getListArray();
 	
 ?>

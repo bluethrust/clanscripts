@@ -34,6 +34,10 @@
 		public $attachmentForm;
 		public $attachmentObj;
 		private $arrDeleteFiles = array();
+		public $arrSkipPrefill = array();
+		
+		
+		private $richtextboxJSLoc;
 		
 		/*
 		 * Components Array Example
@@ -59,6 +63,7 @@
 		public function __construct($args=array()) {
 			
 			$this->buildForm($args);
+			$this->richtextboxJSLoc = "<script type='text/javascript' src='".MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>";
 			
 		}
 		
@@ -111,6 +116,8 @@
 			
 			uasort($this->components, array("Form", "sortForm"));
 			
+			$countRichTextbox = 0;
+			
 			$blnFileUploadForm = false;
 			
 			$displayForm = "";
@@ -147,6 +154,7 @@
 								<textarea name='".$componentName."' ".$dispAttributes.">".$componentInfo['value']."</textarea>
 							</div>
 						";
+						$countRichTextbox++;
 						unset($GLOBALS['richtextEditor']);
 						break;
 					case "codeeditor":
@@ -335,6 +343,11 @@
 							".$afterJS."
 						</script>";
 				}
+				echo "hi";
+				if($countRichTextbox > 0) {
+					echo "hi";
+					$js .= $this->richtextboxJSLoc;	
+				}
 				
 				return $displayForm.$js;	
 			}
@@ -359,7 +372,7 @@
 			if($this->saveType == "update") {
 				$info = $this->objSave->get_info_filtered();
 				foreach($this->components as $key => $value) {
-					if($this->components[$key]['db_name'] != "") {
+					if($this->components[$key]['db_name'] != "" && !in_array($this->components[$key]['db_name'], $this->arrSkipPrefill)) {
 						$this->components[$key]['value'] = $info[$this->components[$key]['db_name']];
 					}
 				}

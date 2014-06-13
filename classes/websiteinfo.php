@@ -6,6 +6,7 @@ class WebsiteInfo extends Basic {
 	
 	protected $arrKeys;
 	protected $blnRefreshInfo;
+	protected $strPagePath;
 	
 	public function __construct($sqlConnection) {
 		
@@ -75,6 +76,16 @@ class WebsiteInfo extends Basic {
 	
 	public function get_key($settingName) {
 		return $this->arrKeys[$settingName];	
+	}
+	
+	
+	public function setPage($pagePath) {
+		$this->strPagePath = $pagePath;
+	}
+	
+	public function displayPage() {
+		global $mysqli, $hooksObj;
+		include(BASE_DIRECTORY.$this->strPagePath);	
 	}
 	
 }

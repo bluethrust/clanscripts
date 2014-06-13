@@ -181,6 +181,17 @@ function deleteFile($filename) {
 }
 
 
+function getHTTP() {
+	if(trim($_SERVER['HTTPS']) == "" || $_SERVER['HTTPS'] == "off") {
+		$dispHTTP = "http://";
+	}
+	else {
+		$dispHTTP = "https://";
+	}
+	
+	return $dispHTTP;
+}
+
 //======================== START OF FUNCTION ==========================//
 // FUNCTION: bbcode_to_html                                            //
 //=====================================================================//

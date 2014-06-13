@@ -48,6 +48,9 @@ define("THEME", $THEME);
 $PAGE_NAME = "";
 include_once($prevFolder."_functions.php");
 
+define("FULL_SITE_URL", getHTTP().$_SERVER['SERVER_NAME'].MAIN_ROOT);
+
+
 $mysqli = new btmysql($dbhost, $dbuser, $dbpass, $dbname);
 
 
