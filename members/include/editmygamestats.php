@@ -96,7 +96,7 @@ foreach($arrGames as $gameID) {
 			if($gameStatsInfo['stattype'] == "input") {
 				$textBoxWidth = array("style" => "width: 5%");
 				$blnText = false;
-				if($gameStatInfo['textinput'] == 1) {
+				if($gameStatsInfo['textinput'] == 1) {
 					$textBoxWidth = array();	
 					$blnText = true;
 				}

@@ -56,6 +56,9 @@ elseif($donationPlugin->selectByName("Donations") && $donationPlugin->getConfigI
 	exit();
 }
 
+$campaignObj->updateCurrentPeriod();
+
+
 $campaignInfo = $campaignObj->get_info_filtered();
 
 // Start Page

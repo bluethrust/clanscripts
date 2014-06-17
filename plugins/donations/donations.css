@@ -17,3 +17,44 @@
 .smallTextBox {
 	width: 10% !important;	
 }
+
+
+.donationsRight p {
+	padding: 0px;
+	margin: 0px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.donationsRight .numberCounts {
+	font-size: 48px;	
+}
+
+
+.donationProgressContainer {
+	width: 98%;
+	border: solid rgba(0,0,0, .15) 1px;
+	position: relative;
+	height: 10px;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.donationProgressContainer div {
+	height: 10px;
+	border-radius: 5px;
+}
+
+.donationGoalText {
+	position: relative;
+	padding-left: 5px;
+	font-size: 14px;
+	font-weight: bold;
+	overflow: auto;
+}
+
+.donationsDaysLeft {
+	float: right;
+	padding-right: 5px;
+}

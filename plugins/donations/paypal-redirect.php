@@ -25,6 +25,9 @@
 		$_POST['notify_url'] = $notifyURL;
 		$_POST['rm'] = 1;
 		$_POST['return'] = FULL_SITE_URL."plugins/donations/?campaign_id=".$_GET['campaign_id']."&p=thankyou";
+		if($campaignInfo['currency'] != "") {
+			$_POST['currency_code'] = $campaignInfo['currency'];	
+		}
 		
 		// Check For Custom Variables
 		if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword']) && $member->select($_SESSION['btUsername']) && $member->authorizeLogin($_SESSION['btPassword'])) {

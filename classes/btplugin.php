@@ -139,7 +139,7 @@
 		
 		public function addConfigValue($name, $value) {
 
-			if($this->intTableKeyValue != "" && !isset($this->configValue[$name])) {
+			if($this->intTableKeyValue != "" && !isset($this->configInfo[$name])) {
 				$this->objPluginConfig->addNew(array("plugin_id", "name", "value"), array($this->intTableKeyValue, $name, $value));
 			}
 			else {

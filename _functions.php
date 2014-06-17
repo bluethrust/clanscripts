@@ -192,6 +192,45 @@ function getHTTP() {
 	return $dispHTTP;
 }
 
+
+function addArraySpace($arr, $space, $atSpot) {
+
+	$newArr = array();
+	$i=0;
+	foreach($arr as $key => $value) {
+		
+		if($atSpot == $key) {
+
+			for($x=0; $x<$space; $x++) {
+				$newArr[$i] = "";
+				$i++;
+			}
+			
+			$newArr[$i] = $value;
+		}
+		else {
+			$newArr[$i] = $value;	
+		}
+	
+		$i++;	
+	}
+	
+	return $newArr;
+}
+
+
+function pluralize($word, $num) {
+
+	if($num == 1) {
+		$returnVal = $word;
+	}
+	else {
+		$returnVal = $word."s";
+	}
+	
+	return $returnVal;
+}
+
 //======================== START OF FUNCTION ==========================//
 // FUNCTION: bbcode_to_html                                            //
 //=====================================================================//

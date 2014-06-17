@@ -37,7 +37,8 @@
 		public $arrSkipPrefill = array();
 		
 		
-		private $richtextboxJSLoc;
+		private $richtextboxJSFile;
+		private $colorpickerJSFile;
 		
 		/*
 		 * Components Array Example
@@ -63,8 +64,8 @@
 		public function __construct($args=array()) {
 			
 			$this->buildForm($args);
-			$this->richtextboxJSLoc = "<script type='text/javascript' src='".MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>";
-			
+			$this->richtextboxJSFile = "<script type='text/javascript' src='".MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>";
+			$this->colorpickerJSFile = "<script type='text/javascript' src='".MAIN_ROOT."js/colorpicker/jquery.miniColors.js'></script><link rel='stylesheet' media='screen' type='text/css' href='".MAIN_ROOT."js/colorpicker/jquery.miniColors.css'>";
 		}
 		
 		public function buildForm($args) {
@@ -343,11 +344,6 @@
 							".$afterJS."
 						</script>";
 				}
-				echo "hi";
-				if($countRichTextbox > 0) {
-					echo "hi";
-					$js .= $this->richtextboxJSLoc;	
-				}
 				
 				return $displayForm.$js;	
 			}
@@ -481,6 +477,16 @@
 						case "NOT_EQUALS_VALUE":
 							if($arrValidate['value'] == $_POST[$componentName]) {
 								$this->errors[] = "You entered an incorrect value for ".$componentInfo['display_name'].".";
+							}
+							break;
+						case "GREATER_THAN":
+							if($arrValidate['value'] > $_POST[$componentName]) {
+								$this->errors[] = $componentInfo['display_name']." must be a value greater than ".$arrValidate['value'].".";
+							}
+							break;
+						case "LESS_THAN":
+							if($arrValidate['value'] < $_POST[$componentName]) {
+								$this->errors[] = $componentInfo['display_name']." must be a value less than ".$arrValidate['value'].".";
 							}
 							break;
 						case "VALIDATE_ORDER":
@@ -923,6 +929,14 @@
 			";
 			
 			return $returnVal;
+		}
+		
+		public function getRichtextboxJSFile() {
+			return $this->richtextboxJSFile;	
+		}
+		
+		public function getColorpickerJSFile() {
+			return $this->colorpickerJSFile;			
 		}
 	}
 	

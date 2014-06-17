@@ -48,12 +48,20 @@ $arrComponents = array(
 		"validate" => array("RESTRICT_TO_OPTIONS"),
 		"value" => $configInfo['currency']
 	),
+	"goalprogresscolor" => array(
+		"type" => "colorpick",
+		"value" => $configInfo['goalprogresscolor'],
+		"sortorder" => $i++,
+		"attributes" => array("class" => "formInput textBox", "id" => "goalColor"),
+		"display_name" => "Progressbar Color"
+	),
 	"thankyou" => array(
 		"type" => "richtextbox",
-		"attributes" => array("class" => "textBox formInput", "id" => "thankYouMessage", "style" => "width: 100%", "rows" => 10),
+		"attributes" => array("class" => "textBox formInput", "id" => "thankYouMessage", "style" => "width: 100%", "rows" => 15),
 		"display_name" => "Thank You Page Message",
 		"sortorder" => $i++,
-		"value" => $configInfo['thankyou']
+		"value" => $configInfo['thankyou'],
+		"allowHTML" => true
 	),
 	"submit" => array(
 		"type" => "submit",
@@ -87,7 +95,11 @@ function saveDonationSettings() {
 	$pluginObj->addConfigValue("mode", $_POST['mode']);
 	$pluginObj->addConfigValue("currency", $_POST['defaultcurrency']);
 	$pluginObj->addConfigValue("thankyou", $_POST['thankyou']);
+	$pluginObj->addConfigValue("goalprogresscolor", $_POST['goalprogresscolor']);
 	
 }
+
+$EXTERNAL_JAVASCRIPT .= $formObj->getRichtextboxJSFile();
+$EXTERNAL_JAVASCRIPT .= $formObj->getColorpickerJSFile();
 
 ?>

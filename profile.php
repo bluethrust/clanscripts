@@ -122,37 +122,6 @@ foreach($memberSocialInfo as $socialID => $socialInfo) {
 	
 }
 
-/*
-if($memberInfo['facebook'] != "") {
-	
-	$dispSocialMedia .= "<a href='".$memberInfo['facebook']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/facebook.png' width='24' height='24' style='margin-right: 5px'></a>";
-	
-}
-
-if($memberInfo['twitter'] != "") {
-
-	$dispSocialMedia .= "<a href='http://www.twitter.com/".$memberInfo['twitter']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/twitter.png' width='24' height='24' style='margin-right: 5px'></a>";
-
-}
-
-if($memberInfo['youtube'] != "") {
-
-	$dispSocialMedia .= "<a href='http://www.youtube.com/user/".$memberInfo['youtube']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/youtube.png' width='24' height='24' style='margin-right: 5px'></a>";
-
-}
-
-if($memberInfo['googleplus'] != "") {
-
-	$dispSocialMedia .= "<a href='".$memberInfo['googleplus']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/googleplus.png' width='24' height='24' style='margin-right: 5px'></a>";
-
-}
-
-if($memberInfo['twitch'] != "") {
-	
-	$dispSocialMedia .= "<a href='http://www.twitch.tv/".$memberInfo['twitch']."' target='_blank'><img src='".$MAIN_ROOT."themes/".$THEME."/images/socialmedia/twitch.png' width='24' height='24' style='margin-right: 5px'></a>";
-	
-}
-*/
 
 
 if($dispSocialMedia != "") {
@@ -310,13 +279,15 @@ include($prevFolder."include/breadcrumb.php");
 			$arrSections[] = "include/profile/_gamesplayed.php";
 			$arrSections[] = "include/profile/_squads.php";
 			$arrSections[] = "include/profile/_medals.php";
-			$arrSections[] = "";
 			
 			$pluginObj = new btPlugin($mysqli);
 			
 			$arrPlugins = $pluginObj->getPluginPage("profile");
 			
 			$hooksObj->run("profile_sections");
+			
+			
+			$arrSections[] = "";
 			
 			$x = 0;
 			

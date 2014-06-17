@@ -2,6 +2,9 @@
 
 	if(!defined("CAMPAIGN_FORM")) { exit(); }
 	
+	include_once(BASE_DIRECTORY."plugins/donations/include/currency_codes.php");
+	$donationPlugin = new btPlugin($mysqli);
+	$donationPlugin->selectByName("Donations");
 	$checkRecurringBox = ($setRecurringBox == 1) ? 1 : 0;
 	
 	$campaignJS = "
@@ -134,6 +137,15 @@
 			"display_name" => "Minimum Donation",
 			"value" => "1.00",
 			"db_name" => "minimumamount"
+		),
+		"currency" => array(
+			"type" => "select",
+			"attributes" => array("class" => "formInput textBox"),
+			"sortorder" => $i++,
+			"display_name" => "Currency",
+			"db_name" => "currency",
+			"options" => $arrPaypalCurrencyCodes,
+			"value" => $donationPlugin->getConfigInfo("currency")
 		)
 			
 	);
@@ -237,24 +249,29 @@
 			$formObj->errors[] = "You selected an invalid recurring unit.";	
 		}
 		
+		if($_POST['recurringamount'] <= 0) {
+			$formObj->errors[] = "The recurring amount must be greater than zero.";	
+		}
+		
 		if($_POST['recurring'] != 1) {
 			$_POST['recurringunit'] = "";
 			$_POST['recurringamount'] = 0;
+			$_POST['recurring'] = 0;
 		}
 		else {
 			
 			switch($_POST['recurringunit']) {
 				case "days":
-					$_POST['recurring'] = date("j");
+					$_POST['recurring'] = date($formObj->objSave->DAY);
 					break;
 				case "weeks":
-					$_POST['recurring'] = date("W");
+					$_POST['recurring'] = date($formObj->objSave->WEEK);
 					break;
 				case "months":
-					$_POST['recurring'] = date("n");
+					$_POST['recurring'] = date($formObj->objSave->MONTH);
 					break;
 				case "years":
-					$_POST['recurring'] = date("Y");
+					$_POST['recurring'] = date($formObj->objSave->YEAR);
 					break;
 			}
 			
@@ -263,6 +280,15 @@
 		
 		if($_POST['rununtil'] == "forever") {
 			$_POST['enddate'] = 0;
+		}
+		
+		if($formObj->saveType == "update") {
+			global $campaignInfo;
+		
+			if($campaignInfo['recurringunit'] == $_POST['recurringunit'] && $campaignInfo['recurringamount'] == $_POST['recurringamount']) {
+				$_POST['recurring'] = $campaignInfo['currentperiod'];
+			}
+			
 		}
 		
 	}

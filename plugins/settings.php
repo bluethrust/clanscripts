@@ -40,6 +40,9 @@ $EXTERNAL_JAVASCRIPT .= "
 <script type='text/javascript' src='".$MAIN_ROOT."members/js/main.js'></script>
 ";
 
+$formObj = new Form();
+require(BASE_DIRECTORY."plugins/".$pluginInfo['filepath']."/settings_form.php");	
+$hooksObj->run("pluginsettings-".$pluginInfo['filepath']);	
 
 
 include(BASE_DIRECTORY."themes/".$THEME."/_header.php");
@@ -56,13 +59,7 @@ include(BASE_DIRECTORY."include/breadcrumb.php");
 $LOGIN_FAIL = true;
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj)) {
 
-	$formObj = new Form();
-	require(BASE_DIRECTORY."plugins/".$pluginInfo['filepath']."/settings_form.php");
-	
-	$hooksObj->run("pluginsettings-".$pluginInfo['filepath']);	
-	
-	$formObj->buildForm($setupFormArgs);
-	
+	$formObj->buildForm($setupFormArgs);	
 	
 	if($_POST['submit'] && $formObj->save()) {
 		$formObj->saveMessageTitle = $pluginInfo['name']." Plugin Settings";
