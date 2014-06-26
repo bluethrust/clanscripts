@@ -6,8 +6,7 @@
 	
 	$member = new Member($mysqli);
 	$donationForm = new Form();
-	
-	include("include/currency_codes.php");
+
 	include("include/donate_form.php");
 
 	if($donationPlugin->getConfigInfo("mode") != "live") {
@@ -22,17 +21,11 @@
 	$donationsInfo = $campaignObj->getDonationInfo();
 	$totalDonations = count($donationsInfo);
 
-
-	$blnSymbolLeft = $arrPaypalCurrencyInfo[$campaignInfo['currency']]['position'] == "left";
-	$blnSymbolRight = $arrPaypalCurrencyInfo[$campaignInfo['currency']]['position'] == "right";
-	$symbolLeft = ($blnSymbolLeft) ? $arrPaypalCurrencyInfo[$campaignInfo['currency']]['symbol'] : "";
-	$symbolRight = ($blnSymbolRight) ? $arrPaypalCurrencyInfo[$campaignInfo['currency']]['symbol'] : "";
-	
-	$donationsFormatted = $symbolLeft.number_format($campaignObj->getTotalDonationAmount(), 2).$symbolRight;
+	$donationsFormatted = $campaignObj->formatAmount($campaignObj->getTotalDonationAmount());
 	
 	$dispGoal = "";
 	if($campaignInfo['goalamount'] > 0) {
-		$dispGoal = " of ".$symbolLeft.number_format($campaignInfo['goalamount'], 2).$symbolRight." goal";
+		$dispGoal = " of ".$campaignObj->formatAmount(number_format($campaignInfo['goalamount'], 2))." goal";
 	
 		// Graph
 		$goalCompletePercent = round(($campaignObj->getTotalDonationAmount()/$campaignInfo['goalamount'])*100);
@@ -41,21 +34,14 @@
 	}
 	
 	$daysLeft = "";
-	if($campaignInfo['dateend'] != 0) {
+	$dispEndDate = "";
+	if(($campaignInfo['dateend'] != 0) || ($campaignInfo['dateend'] == 0 && $campaignInfo['currentperiod'] != 0)) {
 
-		$periodRange = $campaignObj->getCurrentPeriodRange(true);
-		$currentEndDate = ($periodRange['next'] > $campaignInfo['dateend']) ? $campaignInfo['dateend'] : $periodRange['next'];
-		
-		$secondsLeft = $currentEndDate-time();
-		$daysLeft = ($secondsLeft > 0) ? round($secondsLeft/(60*60*24)) : 0;
+		$currentEndDate = $campaignObj->getCurrentEndDate();
+		$daysLeft = $campaignObj->getDaysLeft();
+		$dispEndDate = "<div class='main' style='text-align: center'><br>This campaign will end on ".date("F j, Y", $currentEndDate)."</div>";
 		
 	}
-	elseif($campaignInfo['dateend'] == 0 && $campaignInfo['currentperiod'] != 0) {
-		$periodRange = $campaignObj->getCurrentPeriodRange(true);
-		$secondsLeft = $periodRange['next']-time();
-		$daysLeft = ($secondsLeft > 0) ? round($secondsLeft/(60*60*24)) : 0;
-	}
-	
 	
 	
 ?>
@@ -63,12 +49,22 @@
 <div class='donationsLeft'>
 
 	<?php $donationForm->show(); ?>
+	
+	<br>
+	
+	<div class='dottedLine donationMessagesSectionTitle'>Donation Messages:</div>
+	<div class='donationMessagesDiv'>
+	
+		<?php $campaignObj->showMessagesList(); ?>
+	
+	</div>
+	
 
 </div>
 
 <div class='donationsRight'>
 
-	<div class='dottedLine' class='main' style='margin-top: 15px'><b>Donation Statistics:</b></div>
+	<div class='dottedLine largeFont' style='margin-top: 15px'><b>Donation Statistics:</b></div>
 	<p class='numberCounts'><?php echo $totalDonations; ?></p>
 	<p class='main'>donations</p>
 	<br>
@@ -77,13 +73,17 @@
 	<?php 
 		if($dispGoal != "") {
 			
-			$dispDaysLeft = ($daysLeft != "") ? "<div class='donationsDaysLeft'>".$daysLeft." ".pluralize("day", $daysLeft)." left</div>" : "";
+			$dispDaysLeft = ($daysLeft != "") ? "<div class='donationsDaysLeft'>".$campaignObj->getFormattedEndDate()." left</div>" : "";
+			
+			$progressBarColor = $donationPlugin->getConfigInfo("goalprogresscolor") == "" ? "black" : $donationPlugin->getConfigInfo("goalprogresscolor");
+			$progressBarBackColor = $donationPlugin->getConfigInfo("goalprogressbackcolor") == "" ? "gray" : $donationPlugin->getConfigInfo("goalprogressbackcolor");
 			
 			
 			echo "
 				<br>
-				<div class='donationProgressContainer'><div style='background-color: ".$donationPlugin->getConfigInfo("goalprogresscolor")."; width: ".$goalCompletePercent."'></div></div>
+				<div class='donationProgressContainer' style='background-color: ".$progressBarBackColor."'><div style='background-color: ".$progressBarColor."; width: ".$goalCompletePercent."'></div></div>
 				<div class='main donationGoalText'>".$goalCompletePercent.$dispDaysLeft."</div>
+				".$dispEndDate."
 			";
 			
 		}
@@ -99,7 +99,7 @@
 		if($campaignInfo['description'] != "") {
 			echo "
 				<br>
-				<div class='dottedLine' class='main' style='margin-top: 15px'><b>Campaign Description:</b></div>
+				<div class='dottedLine largeFont' style='margin-top: 15px'><b>Campaign Description:</b></div>
 				<div class='main' style='padding-top: 3px'>".$campaignInfo['description']."</div>
 			";
 		}
@@ -116,7 +116,7 @@
 			
 			echo "
 				<br>
-				<div class='dottedLine' class='main' style='margin-top: 15px'><b>Member Reward:</b></div>
+				<div class='dottedLine largeFont' style='margin-top: 15px'><b>Member Reward:</b></div>
 				<div class='main' style='padding-top: 3px'>Members who donate to this campaign will receive:</div>
 				<br>
 				<p class='main' align='center'><img src='".$medalInfo['imageurl']."'".$dispStyle."><br>".$medalInfo['name']."</p>
@@ -125,7 +125,12 @@
 		
 	?>
 	<br>
-	<div class='dottedLine' class='main' style='margin-top: 15px'><b>Donators:</b></div>
+	<div class='dottedLine largeFont' style='margin-top: 15px'><b>Donators:</b></div>
+	<?php 
+	
+		$campaignObj->showDonatorList();
+		
+	?>
 </div>
 
 <div style='clear: both'></div>

@@ -43,6 +43,7 @@ $socialOrder = $socialObj->findBeforeAfter();
 $socialObj->select($socialInfo['social_id']);
 $arrComponents['displayorder']['before_after_value'] = $socialOrder[0];
 $arrComponents['displayorder']['after_selected'] = $socialOrder[1];
+$arrComponents['displayorder']['value'] = $socialInfo['social_id'];
 $arrComponents['submit']['value'] = "Save";
 
 
@@ -51,6 +52,7 @@ $setupFormArgs['saveType'] = "update";
 $setupFormArgs['prefill'] = true;
 $setupFormArgs['attributes']['action'] .= "&sID=".$socialInfo['social_id']."&action=edit";
 $setupFormArgs['saveMessage'] = "Successfully saved social media icon!";
+$setupFormArgs['skipPrefill'] = array("ordernum");
 
 
 ?>

@@ -31,7 +31,7 @@
 			}
 		}
 		
-		function run($hookName, $globals=array()) {
+		function run($hookName) {
 			
 			foreach($this->data[$hookName] as $hookInfo) {
 

@@ -17,11 +17,18 @@
 	$objManageList->intAddCID = $consoleObj->findConsoleIDByName("Create a Donation Campaign");
 	$objManageList->strEditItemLink = MAIN_ROOT."members/console.php?cID=".$_GET['cID']."&campaignID=";
 	$objManageList->strDeleteLink = MAIN_ROOT."members/console.managelist.delete.php?cID=".$_GET['cID'];
-	$objManageList->arrActionList = array("edit", "delete");
+	$objManageList->arrActionList = array("edit", "delete", "dispDonationLogIcon");
 	$objManageList->strItemTitle = "Campaign:";
 	$objManageList->orderBy = "title";
 	$objManageList->strNameTableColumn = "title";
 	
 	$setupManageListArgs = $objManageList->getListArray();
+	
+	
+	function dispDonationLogIcon($campaignID) {
+		
+		return "<a href='".MAIN_ROOT."members/console.php?cID=".$_GET['cID']."&campaignID=".$campaignID."&p=log' title='View Donation Log'><img src='".MAIN_ROOT."plugins/donations/money.png' class='manageListActionButton'></a>";
+		
+	}
 	
 ?>

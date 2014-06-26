@@ -27,10 +27,8 @@ else {
 
 $cID = $_GET['cID'];
 
-include_once($prevFolder."classes/btupload.php");
-include_once($prevFolder."classes/customform.php");
-include_once($prevFolder."classes/downloadcategory.php");
-
+define("MANAGEMENU_FUNCTIONS", true);
+include(BASE_DIRECTORY."members/include/admin/managemenu/_functions.php");
 
 $menuCatObj = new MenuCategory($mysqli);
 $menuItemObj = new MenuItem($mysqli);
@@ -334,86 +332,74 @@ $arrComponents = array(
 );
 
 
+
+$arrAfterJS = array();
+$arrAfterJS['menuCats'] = "
+
+	$('#menuCats').change(function() {
+		$('#displayOrder').html(\"<option value''>Loading...</option>\");
+		$.post('".$MAIN_ROOT."members/include/admin/managemenu/include/menuitemlist.php', { menuCatID: $('#menuCats').val() }, function(data) {
+			$('select[name=displayorder]').html(data);
+		});
+	});
+			
+	$('#menuCats').change();
+
+";
+
+$arrItemTypeChangesJS = array(
+	"linkOptions" => "link",
+	"imageOptions" => "image",
+	"shoutBoxOptions" => "shoutbox",
+	"customPageOptions" => "custompage",
+	"customFormOptions" => "customform",
+	"customCodeOptions" => "customcode",
+	"customFormatOptions" => "customformat",
+	"downloadLinkOptions" => "downloads",
+	"pollOptions" => "poll"
+);
+
+$arrAfterJS['itemType'] = prepareItemTypeChangeJS($arrItemTypeChangesJS);
+
+$arrAfterJS['shoutbox'] = "
+
+$('#shoutBoxWidthPercent').change(function() {
+					
+	if($(this).val() == '0') {
+		$('#shoutBoxTextBoxWidth').html('pixels');
+	}
+	else {
+		$('#shoutBoxTextBoxWidth').html('percent');
+	}
+
+});
+
+";
+
+
+$arrAfterJS['submit'] = "
+
+$('#btnFakeSubmit').click(function() {
+	$('#menuCodeEditor_code').val(menuCodeEditor.getValue());
+	$('#btnSubmit').click();
+
+});
+
+";
+
 $afterJS = "
 
-	$(document).ready(function() {		
+	$(document).ready(function() {
+	";	
 		
-		$('#menuCats').change(function() {
-			$('#displayOrder').html(\"<option value''>Loading...</option>\");
-			$.post('".$MAIN_ROOT."members/include/admin/managemenu/include/menuitemlist.php', { menuCatID: $('#menuCats').val() }, function(data) {
-				$('select[name=displayorder]').html(data);
-			});
-		});
-				
-		$('#menuCats').change();
-
-
-		$('#itemType').change(function() {
-					
-			$('#linkOptions').hide();
-			$('#imageOptions').hide();
-			$('#shoutBoxOptions').hide();
-			$('#customPageOptions').hide();
-			$('#customFormOptions').hide();
-			$('#customCodeOptions').hide();
-			$('#customFormatOptions').hide();
-			$('#downloadLinkOptions').hide();
-			$('#pollOptions').hide();
-			
-			switch($(this).val()) {
-				case 'link':
-					$('#linkOptions').show();
-					break;
-				case 'image':
-					$('#imageOptions').show();
-					break;
-				case 'customcode':
-					$('#customCodeOptions').show();
-					break;
-				case 'shoutbox':
-					$('#shoutBoxOptions').show();
-					break;
-				case 'customform':
-					$('#customFormOptions').show();
-					break;
-				case 'custompage':
-					$('#customPageOptions').show();
-					break;
-				case 'customformat':
-					$('#customFormatOptions').show();
-					break;
-				case 'downloads':
-					$('#downloadLinkOptions').show();
-					break;
-				case 'poll':
-					$('#pollOptions').show();
-					break;					
-			}
-			
-			
-		});
+	foreach($arrAfterJS as $value) {
 		
-		$('#itemType').change();
+		$afterJS .= $value."\n";	
 		
-		$('#shoutBoxWidthPercent').change(function() {
-					
-			if($(this).val() == '0') {
-				$('#shoutBoxTextBoxWidth').html('pixels');
-			}
-			else {
-				$('#shoutBoxTextBoxWidth').html('percent');
-			}
+	}
 		
-		});
-		
-		$('#btnFakeSubmit').click(function() {
-			$('#menuCodeEditor_code').val(menuCodeEditor.getValue());
-			$('#btnSubmit').click();
-		
-		});
-		
+$afterJS .= "		
 	});
-		
 	
 ";
 
@@ -537,8 +523,5 @@ $setupFormArgs = array(
 		"savePoll"
 	)
 );
-
-define("MANAGEMENU_FUNCTIONS", true);
-include("managemenu/_functions.php");
 
 ?>

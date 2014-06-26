@@ -438,6 +438,15 @@ foreach(array(10,25,50,100) as $value) {
 
 		});
 
+
+		$('#noChangeMenus').click(function() {
+
+			saveSettings();
+			$('#themeChanged').dialog('close');
+			
+		});
+
+		
 		$('#btnSaveSettings').click(function() {
 
 			var currentTheme = '<?php echo $websiteInfo['theme']; ?>';

@@ -32,20 +32,6 @@ if(!$consoleObj->select($_GET['cID'])) {
 }
 $cID = $_GET['cID'];
 
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
-
 
 // Load any plugins
 $consolePluginObj = new btPlugin($mysqli);

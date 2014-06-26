@@ -12,7 +12,7 @@
 
 var intShowToolTip = 0;
 
-/*
+
 function displayClock(intOffset, intHours, intMinutes, strDivID) {
 
 	var dateObj = new Date();
@@ -39,7 +39,7 @@ function displayClock(intOffset, intHours, intMinutes, strDivID) {
       
 	var strFullTime = intHours+":"+dispMinutes+" "+strAMPM;
 
-	if(!isNaN(intOffset)) {
+	if(!isNaN(intOffset) && intOffset != "") {
         currentTimestamp = dateObj.getTime()+(dateObj.getTimezoneOffset()*60*1000);
 
 	    dateObj.setTime(currentTimestamp+(intOffset*1000));
@@ -67,7 +67,7 @@ function displayClock(intOffset, intHours, intMinutes, strDivID) {
 	setTimeout(function(){ displayClock(intOffset,intSaveHours,intMinutes,strDivID) }, 1000);
 }
 
-*/
+/*
 function displayClock(intHours, intMinutes, strDivID) {
 
 	var dateObj = new Date();
@@ -108,7 +108,7 @@ function displayClock(intHours, intMinutes, strDivID) {
 	
 	setTimeout(function(){ displayClock(intSaveHours,intMinutes,strDivID) }, 1000);
 }
-
+*/
 
 function displayDate(intOffset, strDivID) {
 	

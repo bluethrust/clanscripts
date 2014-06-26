@@ -718,6 +718,29 @@ class Member extends Basic {
 	}
 	
 	
+	public function awardMedal($medalID, $reason="") {
+		$returnVal = false;
+		if($this->intTableKeyValue != "") {
+			$medal = new Medal($this->MySQL);
+			$medalList = $this->getMedalList();
+			if($medal->select($medalID) && !in_array($medalID, $medalList)) {
+				$medalMemberObj = new Basic($this->MySQL, "medals_members", "medalmember_id");
+				$arrColumns = array("member_id", "medal_id", "dateawarded", "reason");
+				$arrValues = array($this->intTableKeyValue, $medalID, time(), $reason);
+				if($medalMemberObj->addNew($arrColumns, $arrValues)) {	
+					
+					$this->postNotification("You were awarded the medal: <b>".$medal->get_info_filtered("name")."</b>");
+					
+				}
+			
+			}
+			
+		}
+		
+		return $returnVal;
+	}
+	
+	
 	/*
 	 * - Log Action Method -
 	 * 

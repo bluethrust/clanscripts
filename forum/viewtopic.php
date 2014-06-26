@@ -158,45 +158,6 @@ if($_GET['pID'] > $NUM_OF_PAGES) {
 
 }
 
-// Check for Next button
-$dispNextPage = "";
-if($_GET['pID'] < $NUM_OF_PAGES) {
-	$dispNextPage = "<b><a href='viewtopic.php?tID=".$_GET['tID']."&pID=".($_GET['pID']+1)."'>Next</a> &raquo;</b>";
-	$blnPageSelect = true;
-}
-
-// Check for Previous button
-$dispPreviousPage = "";
-if(($_GET['pID']-1) > 0) {
-	$dispPreviousPage = "<span style='padding-right: 10px'><b>&laquo; <a href='viewtopic.php?tID=".$_GET['tID']."&pID=".($_GET['pID']-1)."'>Previous</a></b></span>";
-	$blnPageSelect = true;
-}
-
-
-for($i=1; $i<=$NUM_OF_PAGES; $i++) {
-	$selectPage = "";
-	if($i == $_GET['pID']) {
-		$selectPage = " selected";
-	}
-	$pageoptions .= "<option value='".$i."'".$selectPage.">".$i."</option>";
-}
-
-$dispPageSelectTop = "";
-$dispPageSelectBottom = "";
-if($blnPageSelect) {
-	$dispPageSelectTop = "
-	<p style='margin: 0px'><b>Page:</b> <select id='pageSelectTop' class='textBox'>".$pageoptions."</select> <input type='button' id='btnPageSelectTop' class='submitButton' value='GO' style='width: 40px'></p>
-	<p style='margin: 0px; margin-top: 3px'>".$dispPreviousPage.$dispNextPage."</p>
-
-	";
-
-	$dispPageSelectBottom = "<div style='float: left'>
-	<p style='margin: 0px'><b>Page:</b> <select id='pageSelectBottom' class='textBox'>".$pageoptions."</select> <input type='button' id='btnPageSelectBottom' class='submitButton' value='GO' style='width: 40px'></p>
-	<p style='margin: 0px; margin-top: 3px; text-align: left'>".$dispPreviousPage.$dispNextPage."</p>
-	</div>
-	";
-}
-
 $breadcrumbObj->setTitle($postInfo['title']);
 $breadcrumbObj->addCrumb("Home", $MAIN_ROOT);
 $breadcrumbObj->addCrumb("Forum", $MAIN_ROOT."forum");
@@ -261,28 +222,18 @@ if($LOGGED_IN) {
 
 
 
-/*
-echo "
-<table class='forumTable' style='margin-top: 25px'>
-	<tr>
-		<td class='main' valign='bottom'>
-			".$dispPageSelectTop."
-		</td>
-		<td class='main' align='right' valign='bottom'>
-			".$dispManagePosts.$dispPostReply."
-		</td>
-	</tr>
-</table>
-";
-*/
-
 $boardObj->showSearchForm();
 echo "
 <div class='formDiv' style='background: none; border: 0px; overflow: auto'>
-	<div style='float: left'>".$dispPageSelectTop."</div>
 	<div style='float: right'>".$dispManagePosts.$dispPostReply."</div>
 </div>
 ";
+
+$pageSelector = new PageSelector();
+$pageSelector->setPages($NUM_OF_PAGES);
+$pageSelector->setCurrentPage($_GET['pID']);
+$pageSelector->setLink(MAIN_ROOT."forum/viewtopic.php?tID=".$_GET['tID']."&pID=");
+$pageSelector->show();
 
 $countManagablePosts = 0;
 define("SHOW_FORUMPOST", true);
@@ -299,9 +250,10 @@ while($row = $result->fetch_assoc()) {
 	$boardObj->objPost->show();
 }
 
+$pageSelector->show();
+
 echo "
 <div class='formDiv' style='background: none; border: 0px; overflow: auto'>
-	<div style='float: left'>".$dispPageSelectBottom."</div>
 	<div style='float: right'>".$dispManagePosts.$dispPostReply."</div>
 </div>
 ";

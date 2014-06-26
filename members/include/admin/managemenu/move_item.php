@@ -42,6 +42,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		$menuItemObj->move($_POST['iDir']);
 		
 		include("include/menuitemlist.php");
+		/*
 		$menuItemObj->select($_POST['itemID']);
 		$menuCatObj->select($menuItemObj->get_info("menucategory_id"));
 		
@@ -60,7 +61,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			</script>
 		
 		";
-		
+		*/
 		
 	}
 	

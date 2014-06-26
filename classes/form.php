@@ -82,7 +82,7 @@
 			$this->saveAdditional = $args['saveAdditional'];
 			$this->embedJS = $args['embedJS'];
 			$this->attachmentForm = false;
-
+			
 			if(isset($args['wrapper'])) {
 				$this->wrapper = $args['wrapper'];	
 			}
@@ -98,6 +98,7 @@
 			
 			
 			if($args['prefill']) {
+				$this->arrSkipPrefill = $args['skipPrefill'];
 				$this->prefillDBValues();				
 			}
 			

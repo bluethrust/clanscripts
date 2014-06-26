@@ -49,12 +49,8 @@
 			$memberInfo = $this->memberObj->get_info();
 			
 			$result = $this->MySQL->query("SELECT forumpost_id FROM ".$this->MySQL->get_tablePrefix()."forum_post ORDER BY dateposted DESC");
-			$arrResults = $result->fetch_all(MYSQLI_ASSOC);
-			
-			$i = 0;
-			$counter = 0;
-			while(count($arrReturn) < $amountToShow && $i < count($arrResults)) {
-				$forumPostID = $arrResults[$i]['forumpost_id'];
+			while(count($arrReturn) < $amountToShow && $row = $result->fetch_assoc()) {
+				$forumPostID = $row['forumpost_id'];
 				$forumObj->objPost->select($forumPostID);
 				
 				$topicID = $forumObj->objPost->get_info("forumtopic_id");
@@ -71,7 +67,6 @@
 					$arrReturn[] = $forumPostID;
 				}
 				
-				$i++;
 			}
 			
 			
@@ -296,7 +291,7 @@
 			$customPageObj->select($menuCustomPageInfo['custompage_id']);
 			echo "
 				<div class='menuLinks' style='text-align: ".$menuCustomPageInfo['textalign']."'>
-					".$menuCustomPageInfo['prefix']."<a href='".$MAIN_ROOT."custompage.php?pID=".$menuCustomPageInfo['custompage_id']."' target='".$menuCustomPageInfo['linktarget']."'>".$customPageObj->get_info_filtered("pagename")."</a>
+					".$menuCustomPageInfo['prefix']."<a href='".MAIN_ROOT."custompage.php?pID=".$menuCustomPageInfo['custompage_id']."' target='".$menuCustomPageInfo['linktarget']."'>".$customPageObj->get_info_filtered("pagename")."</a>
 				</div>
 			";
 				
@@ -310,7 +305,7 @@
 			$downloadCatObj->select($menuDownloadLinkInfo['custompage_id']);
 			echo "
 				<div class='menuLinks' style='text-align: ".$menuDownloadLinkInfo['textalign']."'>
-					".$menuDownloadLinkInfo['prefix']."<a href='".$MAIN_ROOT."downloads/index.php?catID=".$menuDownloadLinkInfo['custompage_id']."' target='".$menuDownloadLinkInfo['linktarget']."'>".$downloadCatObj->get_info_filtered("name")."</a>
+					".$menuDownloadLinkInfo['prefix']."<a href='".MAIN_ROOT."downloads/index.php?catID=".$menuDownloadLinkInfo['custompage_id']."' target='".$menuDownloadLinkInfo['linktarget']."'>".$downloadCatObj->get_info_filtered("name")."</a>
 				</div>
 			";
 			
@@ -321,12 +316,9 @@
 			
 			$menuCustomBlockInfo = $this->menuItemObj->objCustomBlock->get_info();
 			
-			$menuCustomBlockInfo['code'] = str_replace("[MAIN_ROOT]", MAIN_ROOT, $menuCustomBlockInfo['code']);
-			$menuCustomBlockInfo['code'] = str_replace("[MEMBER_ID]", $this->memberObj->get_info("member_id"), $menuCustomBlockInfo['code']);
-			$menuCustomBlockInfo['code'] = str_replace("[MEMBERUSERNAME]", $this->memberObj->get_info_filtered("username"), $menuCustomBlockInfo['code']);
-			$menuCustomBlockInfo['code'] = str_replace("[MEMBERRANK]", $this->data['memberRank'], $menuCustomBlockInfo['code']);
-			$menuCustomBlockInfo['code'] = str_replace("[PMLINK]", $this->getPMInboxLink(), $menuCustomBlockInfo['code']);
 			
+			$menuCustomBlockInfo['code'] = $this->replaceKeywords($menuCustomBlockInfo['code']);
+
 			echo $menuCustomBlockInfo['code'];
 			
 		}
@@ -376,7 +368,7 @@
 		
 		
 		public function displayMenuItem() {
-
+			global $hooksObj;
 			$this->menuItemInfo['itemtype'] = ($this->menuItemInfo['itemtype'] == "customcode" || $this->menuItemInfo['itemtype'] == "customformat") ? "customblock" : $this->menuItemInfo['itemtype'];
 		
 			
@@ -432,6 +424,11 @@
 					$pollObj->select($this->menuItemInfo['itemtype_id']);
 					$pollObj->dispPollMenu($this->memberObj);
 					break;
+				default:
+					$GLOBALS['menu_item_info'] = $this->menuItemInfo;
+					$hooksObj->run("menu_item");
+					unset($GLOBALS['menu_item_info']);
+					break;
 			}
 			
 		}
@@ -473,6 +470,9 @@
 		
 		public function displayMenuCategory($loc="top") {
 			// Placeholder function
+			
+			// top = top portion of menu
+			// bottom = bottom portion of menu
 			
 		}
 		
@@ -542,6 +542,26 @@
 				
 			}
 			
+		}
+		
+		
+		public function replaceKeywords($value) {
+			
+			$arrFilter = array(
+			
+				"[MAIN_ROOT]" => MAIN_ROOT,
+				"[MEMBER_ID]" => $this->memberObj->get_info("member_id"),
+				"[MEMBERUSERNAME]" => $this->memberObj->get_info_filtered("username"),
+				"[MEMBERRANK]" => $this->data['memberRank'],
+				"[PMLINK]" => $this->data['pmLink']
+			
+			);
+			
+			foreach($arrFilter as $find => $replace) {
+				$value = str_replace($find, $replace, $value);
+			}
+			
+			return $value;
 		}
 		
 		

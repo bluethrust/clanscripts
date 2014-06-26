@@ -22,7 +22,6 @@ if((!isset($_COOKIE['btUsername']) || !isset($_COOKIE['btPassword'])) && isset($
 }
 
 
-//$menuXML = new SimpleXMLElement($dispHTTP.$siteDomain.$MAIN_ROOT."themes/".$THEME."/themeinfo.xml", NULL, true);
 $menuXML = new SimpleXMLElement(BASE_DIRECTORY."themes/".$THEME."/themeinfo.xml", NULL, true);
 if(isset($_SESSION['btUsername']) && isset($_SESSION['btPassword'])) {
 
@@ -196,8 +195,6 @@ else {
 
 
 $blnDisplayNewsTicker = false;
-
-define("LOGIN_BOX", $dispLoginBox);
 
 $breadcrumbObj = new BreadCrumb();
 

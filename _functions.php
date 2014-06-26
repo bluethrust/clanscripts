@@ -166,8 +166,7 @@ function autoLinkImage($strText) {
 
 
 function __autoload($class_name) {
-	global $prevFolder;
-	include_once($prevFolder."classes/".strtolower($class_name).".php");
+	include_once(BASE_DIRECTORY."classes/".strtolower($class_name).".php");
 }
 
 

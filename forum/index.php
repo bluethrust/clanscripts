@@ -162,10 +162,10 @@ while($row = $result->fetch_assoc()) {
 				</td>
 			</tr>
 			<tr>
-				<td class='boardTitles-Name'>Forum:</td>
-				<td class='boardTitles-LastPost' style='border-left: 0px'>Last Post:</td>
-				<td class='boardTitles-TopicCount' style='border-left: 0px'>Topics:</td>
-				<td class='boardTitles-TopicCount' style='border-left: 0px'>Posts:</td>
+				<td class='boardTitles'>Forum:</td>
+				<td class='boardTitles forumLastPost'>Last Post:</td>
+				<td class='boardTitles forumTopicCount'>Topics:</td>
+				<td class='boardTitles forumTopicCount'>Posts:</td>
 			</tr>
 		";
 		echo $dispBoards;

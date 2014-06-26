@@ -68,17 +68,19 @@
 					$dispAction = "";
 					switch($actionTypes) {
 						case "moveup":
-							$dispAction = !in_array("moveup", $itemInfo['actions']) ? "" : "<a href='javascript:void(0)' onclick=\"moveItem('up', '".$itemInfo['item_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' class='manageListActionButton'></a>";
+							$dispAction = !in_array("moveup", $itemInfo['actions']) ? "" : "<a href='javascript:void(0)' onclick=\"moveItem('up', '".$itemInfo['item_id']."')\" title='Move Up'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/uparrow.png' class='manageListActionButton'></a>";
 							break;
 						case "movedown":
-							$dispAction = !in_array("movedown", $itemInfo['actions']) ? "" : "<a href='javascript:void(0)' onclick=\"moveItem('down', '".$itemInfo['item_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' class='manageListActionButton'></a>";
+							$dispAction = !in_array("movedown", $itemInfo['actions']) ? "" : "<a href='javascript:void(0)' onclick=\"moveItem('down', '".$itemInfo['item_id']."')\" title='Move Down'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/downarrow.png' class='manageListActionButton'></a>";
 							break;
 						case "edit":
-							$dispAction = "<a href='".$itemInfo['edit_link']."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton'></a>";
+							$dispAction = "<a href='".$itemInfo['edit_link']."' title='Edit'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton'></a>";
 							break;
 						case "delete":
-							$dispAction = "<a href='javascript:void(0)' onclick=\"deleteItem('".$itemInfo['item_id']."')\"><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton'></a>";
+							$dispAction = "<a href='javascript:void(0)' onclick=\"deleteItem('".$itemInfo['item_id']."')\" title='Delete'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton'></a>";
 							break;
+						default:
+							$dispAction = call_user_func_array($actionTypes, array($itemInfo['item_id']));	
 					}
 					
 					echo "

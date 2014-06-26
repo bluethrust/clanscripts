@@ -13,10 +13,9 @@
  */
 
 if(!isset($menuXML)) {
-	include_once("../../../../../_setup.php");
-	include_once("../../../../../classes/member.php");
-	include_once("../../../../../classes/menucategory.php");
-	
+	$prevFolder = "../../../../../";
+	include_once($prevFolder."_setup.php");
+
 	$member = new Member($mysqli);
 	$member->select($_SESSION['btUsername']);
 	
@@ -35,10 +34,10 @@ if(!isset($menuXML)) {
 	$siteDomain = $_SERVER['SERVER_NAME'];
 
 	try {
-		$menuXML = new SimpleXMLElement("../../../../../themes/".$THEME."/themeinfo.xml", NULL, true);
+		$menuXML = new SimpleXMLElement(BASE_DIRECTORY."themes/".$THEME."/themeinfo.xml", NULL, true);
 	}
 	catch(Exception $e) {
-		$menuXML = new SimpleXMLElement("../../../../themes/".$THEME."/themeinfo.xml", NULL, true);
+		$menuXML = new SimpleXMLElement(BASE_DIRECTORY."themes/".$THEME."/themeinfo.xml", NULL, true);
 	}
 }
 

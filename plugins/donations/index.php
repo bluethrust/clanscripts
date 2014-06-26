@@ -62,7 +62,6 @@ $campaignObj->updateCurrentPeriod();
 $campaignInfo = $campaignObj->get_info_filtered();
 
 // Start Page
-$EXTERNAL_JAVASCRIPT .= "<link rel='stylesheet' type='text/css' href='".$MAIN_ROOT."plugins/donations/donations.css'>";
 $PAGE_NAME = $campaignInfo['title']." - ";
 include($prevFolder."themes/".$THEME."/_header.php");
 

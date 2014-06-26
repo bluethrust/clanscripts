@@ -121,7 +121,7 @@
 				
 			
 			</div>
-			<div class='forumPostNewSection' style='display: none'></div>
+			<div class='forumPostNewSection'></div>
 			<div class='forumPostPosterInfo'></div>
 			<div class='forumPostMessageExtras'>
 				";

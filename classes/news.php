@@ -215,6 +215,19 @@ class News extends Basic {
 		
 		if(!isset($_GET['page'])) { $_GET['page'] = 1; }
 		$totalPages = $this->calcPages($postType);
+		
+		$dispLink = ($pageURL == "") ? MAIN_ROOT."news/?page=" : $pageURL;
+		
+		$pageSelector = new PageSelector();
+		
+		$pageSelector->setPages($totalPages);
+		$pageSelector->setLink($dispLink);
+		
+		$pageSelector->setCurrentPage($_GET['page']);
+		
+		$pageSelector->show();
+		
+		/*
 		if($_GET['page'] <= $totalPages) {
 
 			$nextPage = $_GET['page']+1;
@@ -232,7 +245,7 @@ class News extends Basic {
 					<b>".$dispPrevPage.$pageSpacer.$dispNextPage."</b>
 				</p>
 			";
-		}	
+		}*/
 		
 	}
 	
@@ -258,10 +271,11 @@ class News extends Basic {
 			$sqlLimit = " LIMIT ".($_GET['page']-1)*$websiteInfo['news_postsperpage'].", ".$websiteInfo['news_postsperpage'];	
 		}
 		
-
+		$returnArr = array();
 		$result = $this->MySQL->query("SELECT news_id FROM ".$this->strTableName." WHERE ".$newsPostSQL." ORDER BY dateposted DESC ".$sqlLimit);
-		
-		$returnArr = $result->fetch_all(MYSQLI_ASSOC);
+		while($row = $result->fetch_assoc()) {
+			$returnArr[] = $row;
+		}
 
 		return $returnArr;
 		

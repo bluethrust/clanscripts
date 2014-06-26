@@ -27,7 +27,7 @@ else {
 
 $cID = $_GET['cID'];
 
-include(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
+include_once(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
 
 $campaignObj = new DonationCampaign($mysqli);
 $objManageList = new btOrderManageList($campaignObj);
@@ -40,6 +40,12 @@ elseif($_GET['action'] == "delete" && $campaignObj->select($_POST['itemID'])) {
 	$info = $campaignObj->get_info_filtered();
 	$objManageList->strDeleteName = $info['name'];
 	$objManageList->strDeletePostVarID = "campaignID";	
+}
+elseif($_GET['p'] == "log" && $campaignObj->select($_GET['campaignID'])) {
+	include(BASE_DIRECTORY."plugins/donations/console/donationlog.php");	
+}
+elseif(isset($_GET['donationID']) && $campaignObj->donationObj->select($_GET['donationID'])) {
+	include(BASE_DIRECTORY."plugins/donations/console/donationdetails.php");	
 }
 else {
 	include($objManageList->strMainListLink);	

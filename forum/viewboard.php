@@ -266,16 +266,22 @@ if($dispSubForums != "") {
 			<td colspan='4' class='boardCategory'>Sub-Forums</td>
 		</tr>
 		<tr>
-			<td class='boardTitles-Name'>Forum:</td>
-			<td class='boardTitles-LastPost' style='border-left: 0px'>Last Post:</td>
-			<td class='boardTitles-TopicCount' style='border-left: 0px'>Topics:</td>
-			<td class='boardTitles-TopicCount' style='border-left: 0px'>Posts:</td>
+			<td class='boardTitles'>Forum:</td>
+			<td class='boardTitles forumLastPost'>Last Post:</td>
+			<td class='boardTitles forumTopicCount'>Topics:</td>
+			<td class='boardTitles forumTopicCount'>Posts:</td>
 		</tr>
 	";
 	
 	echo $dispSubForums;
 	echo "<tr><td colspan='4'><br><br></td></tr>";
 }
+
+$pageSelector = new PageSelector();
+$pageSelector->setPages($NUM_OF_PAGES);
+$pageSelector->setCurrentPage($_GET['pID']);
+$pageSelector->setLink(MAIN_ROOT."forum/viewboard.php?bID=".$_GET['bID']."&pID=");
+
 
 echo "
 	<tr>
@@ -287,14 +293,18 @@ echo "
 		echo "
 		</td>
 		<td colspan='2' align='right' class='main'>
-			".$dispPageSelectTop."
+			";
+		
+		$pageSelector->show();
+		
+echo "
 		</td>
 	</tr>
 	<tr>
-		<td class='boardTitles-Name'>Topic:</td>
-		<td class='boardTitles-TopicCount' style='border-left: 0px'>Replies:</td>
-		<td class='boardTitles-TopicCount' style='border-left: 0px'>Views:</td>
-		<td class='boardTitles-LastPost' style='border-left: 0px'>Last Post:</td>
+		<td class='boardTitles'>Topic:</td>
+		<td class='boardTitles forumTopicCount'>Replies:</td>
+		<td class='boardTitles forumTopicCount'>Views:</td>
+		<td class='boardTitles forumLastPost'>Last Post:</td>
 	</tr>
 	<tr>
 		<td class='dottedLine' style='padding-top: 5px' colspan='4'></td>
@@ -363,7 +373,9 @@ echo "
 		
 		</td>
 		<td colspan='2' style='padding-top: 15px' align='right' class='main'>
-			".$dispPageSelectBottom."
+			";
+	$pageSelector->show();
+	echo "
 		</td>
 	</tr>
 </table>

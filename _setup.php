@@ -19,7 +19,7 @@ ini_set('display_errors', 0);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.gc_maxlifetime', 60*60*24*3);
 
-date_default_timezone_set("UTC");
+
 
 if(get_magic_quotes_gpc() == 1) {
 	foreach($_GET as $key=>$value) { $_GET[$key] = stripslashes($value); }
@@ -43,7 +43,7 @@ if(!isset($_SESSION['csrfKey'])) {
 include($prevFolder."_config.php");
 define("BASE_DIRECTORY", str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'].$MAIN_ROOT));
 define("MAIN_ROOT", $MAIN_ROOT);
-define("THEME", $THEME);
+
 
 $PAGE_NAME = "";
 include_once($prevFolder."_functions.php");
@@ -67,7 +67,7 @@ $webInfoObj->select(1);
 $websiteInfo = $webInfoObj->get_info_filtered();
 $CLAN_NAME = $websiteInfo['clanname'];
 $THEME = $websiteInfo['theme'];
-
+define("THEME", $THEME);
 
 $arrWebsiteLogoURL = parse_url($websiteInfo['logourl']);
 
@@ -99,5 +99,16 @@ if($ipbanObj->isBanned($IP_ADDRESS)) {
 	die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
 }
 
+
+$websiteInfo['default_timezone'] = (!isset($websiteInfo['default_timezone']) || $websiteInfo['default_timezone'] == "") ? "UTC" : $websiteInfo['default_timezone'];
+
+date_default_timezone_set($websiteInfo['default_timezone']);
+
+
 $hooksObj = new btHooks();
+$btThemeObj = new btTheme();
+$clockObj = new Clock($mysqli);
+$btThemeObj->setThemeDir($THEME);
+$btThemeObj->setClanName($CLAN_NAME);
+$btThemeObj->initHead();
 ?>

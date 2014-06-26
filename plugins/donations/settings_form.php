@@ -53,7 +53,14 @@ $arrComponents = array(
 		"value" => $configInfo['goalprogresscolor'],
 		"sortorder" => $i++,
 		"attributes" => array("class" => "formInput textBox", "id" => "goalColor"),
-		"display_name" => "Progressbar Color"
+		"display_name" => "Progressbar Front Color"
+	),
+	"goalprogressbackcolor" => array(
+		"type" => "colorpick",
+		"value" => $configInfo['goalprogressbackcolor'],
+		"sortorder" => $i++,
+		"attributes" => array("class" => "formInput textBox", "id" => "goalBackColor"),
+		"display_name" => "Progressbar Back Color"
 	),
 	"thankyou" => array(
 		"type" => "richtextbox",
@@ -96,6 +103,7 @@ function saveDonationSettings() {
 	$pluginObj->addConfigValue("currency", $_POST['defaultcurrency']);
 	$pluginObj->addConfigValue("thankyou", $_POST['thankyou']);
 	$pluginObj->addConfigValue("goalprogresscolor", $_POST['goalprogresscolor']);
+	$pluginObj->addConfigValue("goalprogressbackcolor", $_POST['goalprogressbackcolor']);
 	
 }
 

@@ -161,4 +161,52 @@ function savePoll() {
 	
 }
 
+
+// Preparation Functions
+
+function prepareItemTypeChangeJS($arr) {
+
+	$innerJS = "";
+	foreach($arr as $ID => $value) {
+		
+		$innerJS .= "\$('#".$ID."').hide();\n";
+		
+	}
+	
+	$innerJS .= "
+	switch(\$(this).val()) {
+		";
+	
+	foreach($arr as $ID => $value) {
+	
+		$innerJS .= "
+		case '".$value."':
+			\$('#".$ID."').show();
+			break;
+		";
+		
+	}
+	
+	$innerJS .= "
+	}
+	";
+	
+	
+	$returnVal = "
+	
+		$('#itemType').change(function() {
+			
+		".$innerJS."
+		
+		});
+	
+		$('#itemType').change();
+
+	";
+	
+	
+	
+	return $returnVal;
+}
+
 ?>

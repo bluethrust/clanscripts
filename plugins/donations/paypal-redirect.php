@@ -44,10 +44,10 @@
 
 			
 			if(in_array($key, $customVals)) {
-				$customVars[$key] = urlencode($value);
+				$customVars[$key] = $value;
 			}
 			elseif(!in_array($key, $filterFormInputs)) {
-				$addToLink .= "&".$key."=".urlencode($value);
+				$addToLink .= "&".$key."=".$value;
 			}
 		}
 		
