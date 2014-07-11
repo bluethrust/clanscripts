@@ -73,7 +73,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			$menuCatObj->delete();
 			$menuCatObj->resortOrder();
 			include("include/menucategorylist.php");
-			
+			/*
 			echo "
 			
 				<script type='text/javascript'>
@@ -90,7 +90,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			
 			
 			";
-			
+			*/
 		}
 		else {
 			echo "<div id='confirmDelete'><p align='center'>Are you sure you want to delete the menu category <b>".$menuCatInfo['name']."</b>?</p></div>";

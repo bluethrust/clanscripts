@@ -16,6 +16,9 @@
 		protected $intMenuSection;
 		protected $arrMenuItems;
 		protected $intAccessType;
+		public $defaultShoutboxWidth = 140;
+		public $defaultShoutboxHeight = 400;
+		public $arrShoutBoxIDs = array();
 		
 		public function __construct($dir, $sqlConnection) {
 			
@@ -123,11 +126,11 @@
 							</div>
 							<div class='menusForumActivityTextWrapper'>
 								<div class='menusForumActivityPostTitle'>
-									<a href='".$forumObj->objPost->getLink()."'>".$topicPostInfo['title']."</a>
+									<a href='".$forumObj->objPost->getLink()."' title='".$topicPostInfo['title']."'>".$topicPostInfo['title']."</a>
 								</div>
 								<div class='menusForumActivityPoster'>
 									by ".$member->getMemberLink()."
-								</div>".getPreciseTime($postInfo['dateposted'])."
+								</div><span class='menusForumActivityDate'>".getPreciseTime($postInfo['dateposted'])."</span>
 							</div>
 							<div style='clear: both'></div>
 						</div>
@@ -254,10 +257,10 @@
 
 			$shoutboxInfo = $this->menuItemObj->objShoutbox->get_info();
 			
-			$shoutboxInfo['width'] = ($shoutboxInfo['width'] <= 0) ? 140 : $shoutboxInfo['width'];
+			$shoutboxInfo['width'] = ($shoutboxInfo['width'] <= 0) ? $this->defaultShoutboxWidth : $shoutboxInfo['width'];
 			$blnShoutboxWidthPercent = ($shoutboxInfo['percentwidth']) ? true : false;
 
-			$shoutboxInfo['height'] = ($shoutboxInfo['height'] <= 0) ? 400 : $shoutboxInfo['height'];
+			$shoutboxInfo['height'] = ($shoutboxInfo['height'] <= 0) ? $this->defaultShoutboxHeight : $shoutboxInfo['height'];
 			$blnShoutboxHeightPercent = ($shoutboxInfo['percentheight']) ? true : false;
 			
 			$shoutboxObj = new Shoutbox($this->MySQL, "news", "news_id");
@@ -265,6 +268,8 @@
 			$this->data['shoutboxIDs'][] = $newShoutboxID;
 			
 			$shoutboxObj->strDivID = $newShoutboxID;
+			
+			$this->arrShoutBoxIDs[] = $newShoutboxID;
 			
 			$shoutboxObj->prepareLinks($this->memberObj);
 			echo $shoutboxObj->dispShoutbox($shoutboxInfo['width'], $shoutboxInfo['height'], $blnShoutboxWidthPercent, $shoutboxInfo['textboxwidth'], $blnShoutboxHeightPercent);
@@ -337,7 +342,7 @@
 			$dispSetHeight = ($menuImageInfo['height'] != 0) ? "height: ".$menuImageInfo['height']."px; " : "";
 			
 			echo "
-				<div style='text-align: ".$menuImageInfo['imagealign']."; margin-top: 15px; margin-bottom: 15px'>
+				<div style='text-align: ".$menuImageInfo['imagealign'].";' class='menusImageItemWrapper'>
 			";
 			
 			
@@ -469,10 +474,19 @@
 		
 		
 		public function displayMenuCategory($loc="top") {
-			// Placeholder function
+			// Placeholder function - This likely needs to be overwritten
 			
 			// top = top portion of menu
 			// bottom = bottom portion of menu
+			
+			$menuCatInfo = $this->menuCatObj->get_info();
+			if($loc == "top") {
+				echo $this->getHeaderCode($menuCatInfo);				
+			}
+			else {
+				echo "<br>";
+			}
+			
 			
 		}
 		
@@ -487,6 +501,18 @@
 			
 		}
 		
+		public function getHeaderCode($info) {
+			
+			if($info['headertype'] == "image") {
+				$returnVal = "<img src='".MAIN_ROOT.$info['headercode']."' class='menuHeaderImg'>";
+			}
+			else {
+				$info['headercode'] = $this->replaceKeywords($info['headercode']);
+				$returnVal = $info['headercode'];
+			}
+			
+			return $returnVal;
+		}
 		
 		
 		public function displayLogin() {

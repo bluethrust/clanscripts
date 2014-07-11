@@ -111,4 +111,23 @@
 	
 	";
 	
+	if(count($setupManageListArgs['items']) == 0) {
+
+		if(substr($setupManageListArgs['item_title'],-1) == ":") {
+			$noItemName = substr($setupManageListArgs['item_title'], 0, strlen($setupManageListArgs['item_title'])-1);
+		}
+		elseif($setupManageListArgs['item_title'] == "") {
+			$noItemName = "item";	
+		}
+		
+		echo "
+			<div class='shadedBox' style='margin-left: auto; margin-right: auto; width: 45%; margin-top: 20px'>
+				<p class='main' align='center'>
+					<i>No ".strtolower($noItemName)."s added yet!</i>
+				</p>
+			</div>
+		";
+		
+	}
+	
 ?>

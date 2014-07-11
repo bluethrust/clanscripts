@@ -38,7 +38,7 @@ if($_GET['campaignID'] != "" && $campaignObj->select($_GET['campaignID']) && $_G
 }
 elseif($_GET['action'] == "delete" && $campaignObj->select($_POST['itemID'])) {
 	$info = $campaignObj->get_info_filtered();
-	$objManageList->strDeleteName = $info['name'];
+	$objManageList->strDeleteName = $info['title'];
 	$objManageList->strDeletePostVarID = "campaignID";	
 }
 elseif($_GET['p'] == "log" && $campaignObj->select($_GET['campaignID'])) {

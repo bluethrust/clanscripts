@@ -315,6 +315,18 @@ echo "
 				";
 			}
 			
+			if($tournamentObj->memberCanJoin($memberInfo['member_id'])) {
+				
+				$tConsoleObj = new ConsoleOption($mysqli);
+				$joinTournamentLink = $tConsoleObj->getConsoleLinkByName("Join a Tournament", false);
+				
+				echo "
+					<p class='tournamentProfileTitle' align='center'>
+						<a href='".$joinTournamentLink."&tID=".$tID."'>Join Tournament</a>
+					</p>
+				";
+			}
+			
 		}
 		
 		echo "	

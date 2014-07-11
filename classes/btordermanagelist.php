@@ -81,10 +81,14 @@
 				
 			}
 			
-			$this->objConsole->select($this->intAddCID);
+			$arrAddNewLink = array();
+			if($this->objConsole->select($this->intAddCID)) {
+				$arrAddNewLink = array("url" => MAIN_ROOT."members/console.php?cID=".$this->intAddCID, "name" => $this->objConsole->get_info_filtered("pagetitle"));	
+			}
+			
 			$setupManageListArgs = array(
 				"item_title" => $this->strItemTitle,
-				"add_new_link" => array("url" => MAIN_ROOT."members/console.php?cID=".$this->intAddCID, "name" => $this->objConsole->get_info_filtered("pagetitle")),
+				"add_new_link" => $arrAddNewLink,
 				"actions" => $this->arrActionList,
 				"delete_link" => $this->strDeleteLink,
 				"items" => $arrItems,

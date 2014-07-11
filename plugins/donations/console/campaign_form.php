@@ -2,11 +2,12 @@
 
 	if(!defined("CAMPAIGN_FORM")) { exit(); }
 	
-	include_once(BASE_DIRECTORY."plugins/donations/include/currency_codes.php");
+	$arrPaypalCurrencyCodes = $campaignObj->getCurrencyCodes();
+	$arrPaypalCurrencyInfo = $campaignObj->getCurrencyCodeInfo();
+
 	$donationPlugin = new btPlugin($mysqli);
 	$donationPlugin->selectByName("Donations");
 	$checkRecurringBox = ($setRecurringBox == 1) ? 1 : 0;
-	
 	$campaignJS = "
 	
 		$(document).ready(function() {
@@ -222,7 +223,6 @@
 	);
 	
 	$arrComponents = array_merge($arrComponents, $arrRecurringComponents);
-	
 	$setupFormArgs = array(
 		"name" => "console-".$cID,
 		"components" => $arrComponents,
@@ -239,17 +239,18 @@
 	function validateCreateCampaignForm() {
 		global $hasAwardMedalAccess, $formObj, $arrRecurUnits;
 		
+
 		if(!$hasAwardMedalAccess) {
 			$formObj->errors[] = "You don't have access to the award medal privilege.";
 		}
 		
 		
 		$validRecurringUnits = array_keys($arrRecurUnits);
-		if(!in_array($_POST['recurringunit'], $validRecurringUnits)) {
+		if(!in_array($_POST['recurringunit'], $validRecurringUnits) && $_POST['recurring'] == 1) {
 			$formObj->errors[] = "You selected an invalid recurring unit.";	
 		}
 		
-		if($_POST['recurringamount'] <= 0) {
+		if($_POST['recurringamount'] <= 0 && $_POST['recurring'] == 1) {
 			$formObj->errors[] = "The recurring amount must be greater than zero.";	
 		}
 		
@@ -259,7 +260,7 @@
 			$_POST['recurring'] = 0;
 		}
 		else {
-			
+		
 			switch($_POST['recurringunit']) {
 				case "days":
 					$_POST['recurring'] = date($formObj->objSave->DAY);
@@ -274,6 +275,8 @@
 					$_POST['recurring'] = date($formObj->objSave->YEAR);
 					break;
 			}
+			
+			
 			
 		}
 		
@@ -290,7 +293,9 @@
 			}
 			
 		}
-		
+
 	}
+	
+	
 	
 ?>

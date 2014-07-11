@@ -59,7 +59,7 @@
 		"sortorder" => $i++,
 		"attributes" => array("class" => "formInput textBox smallTextBox"),
 		"display_name" => "Donation Amount",
-		"value" => "10.00",
+		"value" => $campaignInfo['minimumamount'],
 		"html" => "<div class='formInput formInputSideText'>".$campaignInfo['currency']."</div>"
 	);
 
@@ -83,7 +83,20 @@
 		"attributes" => array("class" => "submitButton formSubmitButton"),
 		"sortorder" => $i++	
 	);
+	
+	
+	if(isset($_GET['fail']) && $_GET['fail'] == "amount") {
+
+		$arrComponents['show_fail'] = array(
 		
+			"type" => "custom",
+			"sortorder" => $i++,
+			"html" => "<p align='center' class='main failedFont'><b>The minimum donation amount is ".$campaignObj->formatAmount($campaignInfo['minimumamount'])."</b></p>"		
+		);
+		
+	}
+	
+	
 	$setupFormArgs = array(
 		"name" => "donate_form-".$_GET['campaign_id'],
 		"components" => $arrComponents,

@@ -28,12 +28,12 @@
 	
 	
 	$objManageList = new btOrderManageList($clockObj);
-	$objManageList->strMainListLink = BASE_DIRECTORY."members/include/admin/manageclocks/main.php";
+	$objManageList->strMainListLink = BASE_DIRECTORY."members/include/worldclocks/main.php";
 
 	
 	if($_GET['clockID'] != "" && $clockObj->select($_GET['clockID']) && $_GET['action'] == "edit") {
 		$clockInfo = $clockObj->get_info_filtered();
-		include(BASE_DIRECTORY."members/include/admin/manageclocks/edit.php");
+		include(BASE_DIRECTORY."members/include/worldclocks/edit.php");
 	}
 	elseif($_GET['action'] == "delete" && $clockObj->select($_POST['itemID'])) {
 		$info = $clockObj->get_info_filtered();

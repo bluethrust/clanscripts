@@ -52,28 +52,6 @@ $prevFolder = "";
 
 include("_setup.php");
 
-// Classes needed for index.php
-
-include_once("classes/news.php");
-include_once("classes/member.php");
-include_once("classes/rank.php");
-include_once("classes/rankcategory.php");
-include_once("classes/imageslider.php");
-
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
-
 // Start Page
 $dispBreadCrumb = "";
 

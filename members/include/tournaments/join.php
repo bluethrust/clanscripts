@@ -128,7 +128,12 @@ if(!$_POST['submit']) {
 	
 	$result = $mysqli->query("SELECT * FROM ".$dbprefix."tournaments WHERE tournament_id NOT IN ".$tournamentSQL." ORDER BY name");
 	while($row = $result->fetch_assoc()) {
-		$tournamentOptions .= "<option value='".$row['tournament_id']."'>".filterText($row['name'])."</option>";
+		$dispSelected = "";
+		if(isset($_GET['tID']) && $row['tournament_id'] == $_GET['tID']) {
+			$dispSelected = " selected";
+		}
+		
+		$tournamentOptions .= "<option value='".$row['tournament_id']."'".$dispSelected.">".filterText($row['name'])."</option>";
 	}
 	
 	

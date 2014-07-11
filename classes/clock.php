@@ -50,7 +50,7 @@
 			return $returnVal;
 		}
 		
-		public function displayClocks() {
+		public function displayClocks($return=false) {
 			
 			$clockArray = array();
 			$clockJS = "";
@@ -67,16 +67,45 @@
 				
 			}
 			
-			echo implode(" ".$this->clockSeparator." ", $clockArray)."
-			
-				<script type='text/javascript'>
-			
-					".$clocksJS."
+			if(!$return) {
+				echo implode(" ".$this->clockSeparator." ", $clockArray)."
 				
-				</script>
-			";
+					<script type='text/javascript'>
+				
+						".$clocksJS."
+					
+					</script>
+				";
+			}
+			else {
+				
+				return implode(" ".$this->clockSeparator." ", $clockArray)."
+				
+					<script type='text/javascript'>
+				
+						".$clocksJS."
+					
+					</script>
+				";
+				
+			}
 			
+		}
+		
+		public function getTimezones() {
 			
+			$arrTimezoneOptions = array();
+			$arrTimezones = DateTimeZone::listIdentifiers();
+			foreach($arrTimezones as $timeZone) {
+				
+				$tz = new DateTimeZone($timeZone);
+				$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
+				$dispSign = ($dispOffset < 0) ? "" : "+";
+				
+				$arrTimezoneOptions[$timeZone] = str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")";
+			}	
+
+			return $arrTimezoneOptions;
 		}
 		
 		

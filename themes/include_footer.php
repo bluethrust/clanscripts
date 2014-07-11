@@ -71,9 +71,9 @@
 			function reloadShoutbox() {
 				$(document).ready(function() {
 
-					$.post('<?php echo $MAIN_ROOT; ?>members/include/news/include/reloadshoutbox.php', { divID: "<?php echo $arrShoutBoxIDs[0]; ?>" }, function(data) {
+					$.post('<?php echo $MAIN_ROOT; ?>members/include/news/include/reloadshoutbox.php', { divID: "<?php echo $themeMenusObj->arrShoutBoxIDs[0]; ?>" }, function(data) {
 
-						$('#<?php echo $arrShoutBoxIDs[0]; ?>').html(data);
+						$('#<?php echo $themeMenusObj->arrShoutBoxIDs[0]; ?>').html(data);
 	
 					});
 						

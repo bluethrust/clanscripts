@@ -196,11 +196,24 @@
 			if($this->intTableKeyValue != "") {
 				$blnDeletePlugin = parent::delete();
 				
-				if($this->MySQL->query("DELETE FROM ".$this->MySQL->get_tablePrefix()."plugin_pages WHERE plugin_id = '".$this->intTableKeyValue."'") && $blnDeletePlugin) {
+				$queries = array();
+				$queries['plugin_pages'] = "DELETE FROM ".$this->MySQL->get_tablePrefix()."plugin_pages WHERE plugin_id = '".$this->intTableKeyValue."'";
+				$queries['plugin_config'] = "DELETE FROM ".$this->MySQL->get_tablePrefix()."plugin_config WHERE plugin_id = '".$this->intTableKeyValue."'";
+				
+				$deleteCount = 0;
+				foreach($queries as $tableName => $query) {
+					if($this->MySQL->query($query)) {
+						$deleteCount++;
+						$this->MySQL->query("OPTIMIZE TABLE `".$this->MySQL->get_tablePrefix().$tableName."`");
+					}
+				}
+				
+				
+				if(count($queries) == $deleteCount && $blnDeletePlugin) {
 					$returnVal = true;
 				}
 				
-				$this->MySQL->query("OPTIMIZE TABLE `".$this->MySQL->get_tablePrefix()."plugin_pages`");
+				
 			
 			}
 			

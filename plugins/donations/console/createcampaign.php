@@ -23,7 +23,7 @@ else {
 	}
 }
 
-include(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
+include_once(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
 
 $cID = $_GET['cID'];
 $campaignObj = new DonationCampaign($mysqli);

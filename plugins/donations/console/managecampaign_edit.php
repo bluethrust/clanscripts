@@ -51,13 +51,15 @@ $arrComponents['viewpage'] = array(
 
 
 $setupFormArgs['saveType'] = "update";
-$setupFormArgs['prefill'] = true;
 $setupFormArgs['components'] = $arrComponents;
 $setupFormArgs['attributes']['action'] .= "&campaignID=".$_GET['campaignID']."&action=edit";
 $setupFormArgs['saveMessage'] = "Successfully saved donation campaign!";
 $setupFormArgs['saveLink'] = $MAIN_ROOT."members/console.php?cID=".$_GET['cID'];
 
-$formObj->arrSkipPrefill = array("dateend", "currentperiod");
+if(!$_POST['submit']) {
+	$setupFormArgs['prefill'] = true;
+	$setupFormArgs['skipPrefill'] = array("dateend", "currentperiod");
+}
 
 unset($setupFormArgs['saveAdditional']['datestarted']);
 

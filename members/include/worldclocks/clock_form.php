@@ -14,16 +14,7 @@
 
 	if(!defined("MAIN_ROOT")) { exit(); }
 
-	$arrTimezones = DateTimeZone::listIdentifiers();
-	foreach($arrTimezones as $timeZone) {
-		
-		$tz = new DateTimeZone($timeZone);
-		$dispOffset = ((($tz->getOffset(new DateTime("now", $tz)))/60)/60);
-		$dispSign = ($dispOffset < 0) ? "" : "+";
-		
-		$arrTimezoneOptions[$timeZone] = str_replace("_", " ", $timeZone)." (UTC".$dispSign.$dispOffset.")";
-	}
-	
+	$arrTimezoneOptions = $clockObj->getTimezones();	
 
 	$clockOrderObj = new Clock($mysqli);
 	$arrClocks = array();

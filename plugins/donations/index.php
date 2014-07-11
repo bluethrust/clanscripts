@@ -43,7 +43,7 @@ $campaignObj = new DonationCampaign($mysqli);
 $donationPlugin = new btPlugin($mysqli);
 
 if(!$donationPlugin->selectByName("Donations") || !$campaignObj->select($_GET['campaign_id'])) {
-	//echo "<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>";
+	echo "<script type='text/javascript'>window.location = '".$MAIN_ROOT."';</script>";
 	exit();
 }
 elseif($donationPlugin->selectByName("Donations") && $donationPlugin->getConfigInfo("email") == "") {

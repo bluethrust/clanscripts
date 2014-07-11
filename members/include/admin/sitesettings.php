@@ -158,10 +158,11 @@ foreach(array(10,25,50,100) as $value) {
 			<td class='formLabel'>Logo URL: <a href='javascript:void(0)' onmouseover="showToolTip('Depending on the theme you are using, you may have to edit the actual theme files to change the logo.')" onmouseout='hideToolTip()'>(?)</a></td>
 			<td class='main'><input type='text' id='logourl' value='<?php echo $websiteInfo['logourl']; ?>' class='textBox' style='width: 250px'></td>
 		</tr>
+		<!-- 
 		<tr>
 			<td class='formLabel'>Forum URL: <a href='javascript:void(0)' onmouseover="showToolTip('Depending on the theme you are using, you may have to edit the actual theme files to change the forum url.')" onmouseout='hideToolTip()'>(?)</a></td>
 			<td class='main'><input type='text' id='forumurl' value='<?php echo $websiteInfo['forumurl']; ?>' class='textBox' style='width: 250px'></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td class='formLabel'>Theme:</td>
 			<td class='main'><select id='theme' class='textBox'><?php echo $themeOptions; ?></select></td>

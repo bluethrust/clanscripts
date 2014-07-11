@@ -14,8 +14,12 @@
 
 
 if(!isset($pluginObj)) { exit(); }
+include_once(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
 
-include(BASE_DIRECTORY."plugins/donations/include/currency_codes.php");
+
+$arrPaypalCurrencyCodes = DonationCampaign::getCurrencyCodes();
+$arrPaypalCurrencyInfo =  DonationCampaign::getCurrencyCodeInfo();
+
 $configInfo = $pluginObj->getConfigInfo();
 
 

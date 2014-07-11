@@ -1,7 +1,7 @@
 <?php
 
 	if(!defined("MAIN_ROOT")) { exit(); }
-	
+	include_once(BASE_DIRECTORY."plugins/donations/classes/campaign.php");
 
 	$campaignInfo = $campaignObj->get_info_filtered();
 	
@@ -92,10 +92,28 @@
 		$counter++;
 		$i++;	
 	}
+
+	echo "</table>";
+	
+	if($totalDonations == 0) {
+		
+		echo "
+		
+			<div class='shadedBox' style='margin-left: auto; margin-right: auto; width: 45%; margin-top: 20px'>
+			
+				<p class='main' align='center'>
+					<i>No donations for the specified period!</i>
+				</p>
+			
+			</div>
+		
+		";
+		
+	}
+	
 	
 ?>
 
-</table>
 
 <script type='text/javascript'>
 	$(document).ready(function() {

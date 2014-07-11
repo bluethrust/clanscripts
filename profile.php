@@ -17,29 +17,6 @@
 $prevFolder = "";
 
 include($prevFolder."_setup.php");
-include($prevFolder."classes/member.php");
-include_once($prevFolder."classes/rank.php");
-include_once($prevFolder."classes/profilecategory.php");
-include_once($prevFolder."classes/profileoption.php");
-include_once($prevFolder."classes/game.php");
-include_once($prevFolder."classes/btplugin.php");
-
-// Classes needed for index.php
-
-
-$ipbanObj = new Basic($mysqli, "ipban", "ipaddress");
-
-if($ipbanObj->select($IP_ADDRESS, false)) {
-	$ipbanInfo = $ipbanObj->get_info();
-
-	if(time() < $ipbanInfo['exptime'] OR $ipbanInfo['exptime'] == 0) {
-		die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."banned.php';</script>");
-	}
-	else {
-		$ipbanObj->delete();
-	}
-
-}
 
 $member = new Member($mysqli);
 

@@ -25,7 +25,7 @@
 		function removeHook($hookName, $function) {
 			foreach($this->data[$hookName] as $key => $hookInfo) {
 				
-				if($hookInfo['function'] == "function") {
+				if($hookInfo['function'] == $function) {
 					unset($this->data[$hookName][$key]);
 				}
 			}

@@ -71,6 +71,40 @@ class ConsoleOption extends BasicSort {
 		return $returnVal;
 	}
 
+	function getConsoleLinkByName($strConsolePageTitle, $htmlLink=true) {
+		
+		$temp = 0;
+		if($this->intTableKeyValue != "") {
+			$temp = $this->intTableKeyValue;	
+		}
+		
+		$cID = $this->findConsoleIDByName($strConsolePageTitle);
+		$returnVal = MAIN_ROOT."members/console.php?cID=".$cID;
+		if($htmlLink) {
+			
+			$this->select($cID);	
+			$pageTitle = $this->get_info_filtered("pagetitle");
+			
+			
+			$returnVal = "<a href='".$returnVal."'>".$pageTitle."</a>";
+			
+			
+			if($temp != 0) {
+				$this->select($temp);	
+			}
+			
+		}
+		
+		
+		
+		return $returnVal;
+	}
+	
+	function getLink() {
+		
+		return MAIN_ROOT."members/console.php?cID=".$this->intTableKeyValue;	
+		
+	}
 	
 	/*
 	 * - countMembers -

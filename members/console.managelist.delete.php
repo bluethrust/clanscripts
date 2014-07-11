@@ -24,7 +24,15 @@ $consoleObj->select($cID);
 $consoleInfo = $consoleObj->get_info_filtered();
 $_SERVER['PHP_SELF'] = "console.php";
 $_GET['action'] = "delete";
-require(BASE_DIRECTORY."members/include/".$consoleInfo['filename']);
+
+if(substr($consoleInfo['filename'], 0, strlen("../")) != "../") {
+	$requireFile = BASE_DIRECTORY."members/include/".$consoleInfo['filename'];
+}
+else {
+	$requireFile = $consoleInfo['filename'];	
+}
+
+require($requireFile);
 if(!isset($objManageList)) {
 	exit();	
 }

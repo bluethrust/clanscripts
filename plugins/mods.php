@@ -16,6 +16,15 @@
 	
 	
 	
-	include(BASE_DIRECTORY."plugins/donations/include/menu_module.php");
+	// Include installed plugin functions
+	
+	$modPluginsObj = new btPlugin($mysqli);
+	$arrPlugins = $modPluginsObj->getPluginPage("mods");
+	
+	foreach($arrPlugins as $pluginInfo) {
+		include_once(BASE_DIRECTORY.$pluginInfo['pagepath']);
+	}
+	
+	
 	
 ?>

@@ -98,6 +98,21 @@ class btMySQL extends MySQLi {
 		return $returnVal;
 		
 	}
+	
+	public function optimizeTables() {
+		$tables = array();
+		$result = $this->query("SHOW TABLE STATUS WHERE Data_free > 0");
+		while($row = $result->fetch_assoc()) {
+			$tables[] = "`".$row['Name']."`";
+		}
+		
+		$optimizeTables = implode(", ", $tables);
+		
+		if(count($tables) > 0) {
+			$this->query("OPTIMIZE TABLE ".$optimizeTables);
+		}
+		
+	}
 
 }
 

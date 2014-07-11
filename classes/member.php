@@ -392,7 +392,7 @@ class Member extends Basic {
 	}
 	
 	
-	function getMemberLink() {
+	function getMemberLink($args=array("color" => true)) {
 		global $MAIN_ROOT;
 		$returnVal = "";
 		if($this->intTableKeyValue != "" && is_numeric($this->intTableKeyValue)) {
@@ -408,8 +408,17 @@ class Member extends Basic {
 			$memberRankCat->select($rankInfo['rankcategory_id']);
 			$memberColor = $memberRankCat->get_info_filtered("color");
 			
+			if($args['color']) {
+				$returnVal = "<span style='color: ".$rankInfo['color']."'><a href='".$MAIN_ROOT."profile.php?mID=".$memberInfo['member_id']."' style='color: ".$memberColor."' title='".$memberInfo['username']."'>".$memberInfo['username']."</a></span>";
+			}
+			else {
+				$returnVal = "<a href='".MAIN_ROOT."profile.php?mID=".$this->intTableKeyValue."'>".$memberInfo['username']."</a>";
+			}
 			
-			$returnVal = "<span style='color: ".$rankInfo['color']."'><a href='".$MAIN_ROOT."profile.php?mID=".$memberInfo['member_id']."' style='color: ".$memberColor."' title='".$memberInfo['username']."'>".$memberInfo['username']."</a></span>";
+			
+			if($args['wrapper'] === false) {
+				$returnVal = MAIN_ROOT."profile.php?mID=".$this->intTableKeyValue;
+			}
 			
 		}
 		
@@ -939,7 +948,7 @@ class Member extends Basic {
 	}
 	
 	public function getAvatar($setWidth="", $setHeight="") {
-		return $this->getMemberPicture($setWidth, $setHeight, "avatar", "defaultavatar.png");
+		return $this->getMemberPicture($setWidth, $setHeight, "avatar", "defaultavatar.png", array("avatarImg"));
 	}
 	
 	

@@ -151,9 +151,9 @@
 				$sqlCurrentPeriod = ($currentPeriod == 0) ? $arrPeriod['current'] : $currentPeriod;
 				$sqlNextPeriod = ($nextPeriod == 0) ? $arrPeriod['next'] : $nextPeriod;
 				
-				$addSQL = (count($arrPeriod) == 0 || $total) ? "" : " WHERE datesent >= '".$sqlCurrentPeriod."' AND datesent < '".$sqlNextPeriod."'";
+				$addSQL = (count($arrPeriod) == 0 || $total) ? "" : " AND datesent >= '".$sqlCurrentPeriod."' AND datesent < '".$sqlNextPeriod."'";
 				
-				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."donations ".$addSQL."ORDER BY datesent DESC");
+				$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."donations WHERE donationcampaign_id = '".$this->intTableKeyValue."' ".$addSQL."ORDER BY datesent DESC");
 				while($row = $result->fetch_assoc()) {
 					$donationInfo[] = filterArray($row);
 					$totalDonationAmount += $row['amount'];	
@@ -296,19 +296,34 @@
 			if($this->intTableKeyValue != "") {
 				$i = 0;
 				$arrDonators = $this->getDonators($allTime);
+				$count = 0;
 				foreach($arrDonators as $donationInfo) {
-					
-					if($i == 0) {
-						$addCSS = "";
-						$i = 1;
+					if($donationInfo['message'] != "") {
+						if($i == 0) {
+							$addCSS = "";
+							$i = 1;
+						}
+						else {
+							$addCSS = " alternateBGColor";
+							$i = 0;
+						}
+	
+						$this->displayMessage($donationInfo['donation_id'], $addCSS);
+						$count++;
 					}
-					else {
-						$addCSS = " alternateBGColor";
-						$i = 0;
-					}
-
-					$this->displayMessage($donationInfo['donation_id'], $addCSS);
 				}
+			
+			
+				if($count == 0) {
+					
+					echo "	
+						<p align='center' class='main'>
+							<i>No Messages!</i>
+						</p>
+					";
+					
+				}
+			
 			}
 			
 		}
@@ -328,7 +343,7 @@
 				}				
 				
 				include(BASE_DIRECTORY."plugins/donations/include/messages_template.php");
-			
+				
 			}
 		}
 		
@@ -412,6 +427,26 @@
 			}
 			
 			return $returnVal;
+		}
+		
+		public function __get($name) {
+			
+			$arrConstants = array("DAY", "WEEK", "MONTH", "YEAR");	
+			if(in_array($name, $arrConstants)) {
+				return constant("self::$name");	
+			}
+			
+		}
+		
+		public function getCurrencyCodes() {
+
+			include(BASE_DIRECTORY."plugins/donations/include/currency_codes.php");
+			return $arrPaypalCurrencyCodes;
+		}
+		
+		public function getCurrencyCodeInfo() {
+			include(BASE_DIRECTORY."plugins/donations/include/currency_codes.php");
+			return $arrPaypalCurrencyInfo;
 		}
 		
 	}

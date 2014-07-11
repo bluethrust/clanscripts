@@ -31,7 +31,9 @@
 		
 		
 		public function displayHead() {
-			global $hooksObj, $EXTERNAL_JAVASCRIPT;
+			global $hooksObj, $EXTERNAL_JAVASCRIPT, $PAGE_NAME;
+			
+			$this->setTitle($PAGE_NAME.$this->clanName);			
 			
 			$hooksObj->run("head");
 			
@@ -61,6 +63,16 @@
 			$this->arrHeadOrder[] = $itemName;
 			
 		}
+
+		public function updateHeadItem($itemName, $itemValue) {
+
+			if(isset($this->arrHead[$itemName])) {
+				
+				$this->arrHead[$itemName] = $itemValue;
+				
+			}
+			
+		}
 		
 		public function removeHeadItem($itemName) {
 			unset($this->arrHead[$itemName]);
@@ -82,7 +94,7 @@
 							$newOrderArray[] = $itemName;
 							$newOrderArray[] = $value;
 						}
-						else {
+						elseif($value != $itemName) {
 							$newOrderArray[] = $value;
 						}
 					}
@@ -92,7 +104,7 @@
 				else {
 					$this->arrHeadOrder[$newPosition] = $itemName;	
 				}
-				
+
 			}
 			
 		}

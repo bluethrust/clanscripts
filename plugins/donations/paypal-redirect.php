@@ -40,22 +40,28 @@
 		$addToLink = "";
 		$customVals = array("name", "message", "hideamount");
 		$filterFormInputs = array("submit", "checkCSRF");
-		foreach($_POST as $key => $value) {
-
+		if(($campaignInfo['minimumamount'] > 0 && $_POST['amount'] >= $campaignInfo['minimumamount']) || $campaignInfo['minimumamount'] <= 0) {
+			foreach($_POST as $key => $value) {
+	
+				
+				if(in_array($key, $customVals)) {
+					$customVars[$key] = $value;
+				}
+				elseif(!in_array($key, $filterFormInputs)) {
+					$addToLink .= "&".$key."=".$value;
+				}
+			}
 			
-			if(in_array($key, $customVals)) {
-				$customVars[$key] = $value;
-			}
-			elseif(!in_array($key, $filterFormInputs)) {
-				$addToLink .= "&".$key."=".$value;
-			}
+			$jsonCustomVars = json_encode($customVars);
+			$link .= "&custom=".$jsonCustomVars.$addToLink;
+			
+			//echo $link;
+			header("Location: ".$link);
+		}
+		else {
+			header("Location: ".$MAIN_ROOT."plugins/donations/?campaign_id=".$campaignInfo['donationcampaign_id']."&fail=amount");	
 		}
 		
-		$jsonCustomVars = json_encode($customVars);
-		$link .= "&custom=".$jsonCustomVars.$addToLink;
-		
-		//echo $link;
-		header("Location: ".$link);
 	}
 	else {
 

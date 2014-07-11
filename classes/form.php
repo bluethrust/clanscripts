@@ -191,6 +191,7 @@
 						if(is_array($componentInfo['options'])) {
 							foreach($componentInfo['options'] as $optionValue => $displayValue) {
 								$dispSelected = "";
+
 								if($optionValue == $componentInfo['value']) {
 									$dispSelected = " checked";
 								}

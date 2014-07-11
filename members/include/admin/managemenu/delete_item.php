@@ -49,7 +49,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			$menuItemObj->delete();
 			$menuItemObj->resortOrder();
 			include("include/menuitemlist.php");
-			
+			/*
 			echo "
 			
 				<script type='text/javascript'>
@@ -66,7 +66,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 			
 			
 			";
-			
+			*/
 		}
 		else {
 			echo "<div id='confirmDelete'><p align='center'>Are you sure you want to delete the menu item <b>".$menuItemInfo['name']."</b>?</p></div>";

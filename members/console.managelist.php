@@ -23,7 +23,7 @@
 	$actionsTitleName = ($setupManageListArgs['action_title'] == "") ? "Actions:" : $setupManageListArgs['action_title'];
 	$itemTitleName = ($setupManageListArgs['item_title'] == "") ? "Item:" : $setupManageListArgs['item_title'];
 	
-	$dispAddNewLink = ($setupManageListArgs['add_new_link'] == "") ? "" : "&raquo; <a href='".$setupManageListArgs['add_new_link']['url']."'>".$setupManageListArgs['add_new_link']['name']."</a> &laquo;";
+	$dispAddNewLink = (!isset($setupManageListArgs['add_new_link']['url']) || $setupManageListArgs['add_new_link']['url'] == "") ? "" : "&raquo; <a href='".$setupManageListArgs['add_new_link']['url']."'>".$setupManageListArgs['add_new_link']['name']."</a> &laquo;";
 	
 	$setupManageListArgs['list_div_name'] = ($setupManageListArgs['list_div_name'] == "") ? "manageListDiv" : $setupManageListArgs['list_div_name'];
 	

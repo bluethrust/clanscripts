@@ -55,7 +55,7 @@ class WebsiteInfo extends Basic {
 			}
 			else {
 				
-				if(!$this->addNew(array($settingName), array($arrValues[$key]))) {
+				if(!$this->addNew(array("name", "value"), array($settingName, $arrValues[$key]))) {
 					$countErrors++;	
 				}
 				

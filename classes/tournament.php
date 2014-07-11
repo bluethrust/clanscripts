@@ -878,6 +878,45 @@ class Tournament extends Basic {
 		
 		return $returnVal;
 	}
+	
+	public function memberCanJoin($memberID) {
+		
+		$member = new Member($this->MySQL);
+		$consoleObj = new ConsoleOption($this->MySQL);
+		
+		$joinCID = $consoleObj->findConsoleIDByName("Join a Tournament");
+		$consoleObj->select($joinCID);
+		
+		
+		$returnVal = false;
+		if($this->intTableKeyValue != "" && $member->select($memberID) && $member->hasAccess($consoleObj)) {
+			
+			$arrTournaments = $member->getTournamentList();
+			
+			$checkCount = 0;
+			
+			// Check Spots left
+			
+			$arrPlayers = $this->getPlayers();
+			$maxPlayers = $this->arrObjInfo['playersperteam']*$this->arrObjInfo['maxteams'];
+			if($maxPlayers == count($arrPlayers)) {
+				$checkCount++;
+			}
+			
+			// Check if already in tournament
+			
+			if(in_array($memberID, $arrTournaments)) {
+				$checkCount++;
+			}
+			
+			$returnVal = $checkCount == 0;
+			
+		}
+		
+		return $returnVal;
+		
+	}
+	
 }
 
 
