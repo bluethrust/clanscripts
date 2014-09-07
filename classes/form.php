@@ -77,6 +77,7 @@
 			$this->saveType = $args['saveType'];
 			$this->description = $args['description'];
 			$this->saveMessage = $args['saveMessage'];
+			$this->saveMessageTitle = $args['saveMessageTitle'];
 			$this->afterSave = $args['afterSave'];
 			$this->saveLink = $args['saveLink'];
 			$this->saveAdditional = $args['saveAdditional'];
@@ -188,17 +189,30 @@
 						break;
 					case "checkbox": // Checkbox and radio are basically same thing, so checkbox falls through to radio section
 					case "radio":
-						if(is_array($componentInfo['options'])) {
+						if(is_array($componentInfo['options'])) {	
+							$componentCounter = 1;					
 							foreach($componentInfo['options'] as $optionValue => $displayValue) {
 								$dispSelected = "";
-
+								
+								$newComponentName = $componentName;
+								if(count($componentInfo['options']) > 1) {
+									$newComponentName .= "_".$componentCounter;
+									
+									if($componentCounter > 1) {
+										$displayForm .= "<label class='formLabel' style='display: inline-block'></label> ";	
+									}
+									
+									$componentCounter++;
+								}
+								
+								
 								if($optionValue == $componentInfo['value']) {
 									$dispSelected = " checked";
 								}
 								
 								$dispLabel = ($displayValue != "") ? "<label class='formLabel formInput'>".$displayValue."</label><br>" : "";
 								
-								$displayForm .= "<input name='".$componentName."' type='".$componentInfo['type']."' value='".$optionValue."' ".$dispAttributes." ".$dispSelected."> ".$dispLabel;
+								$displayForm .= "<input name='".$newComponentName."' type='".$componentInfo['type']."' value='".$optionValue."' ".$dispAttributes." ".$dispSelected."> ".$dispLabel;
 							}
 						}
 						else {
@@ -409,29 +423,67 @@
 					
 					switch($validateMethod) {
 						case "NOT_BLANK":
-							if($componentInfo['type'] != "file" && trim($_POST[$componentName]) == "") {
-								$this->errors[] = $componentInfo['display_name']." may not be blank.";
+							if(($componentInfo['type'] == "checkbox" || $componentInfo['type'] == "radio") && count($componentInfo['options']) > 1) {
+								$componentCounter = 1;
+								$countBlanks = 0;
+								foreach($componentInfo['options'] as $optionName => $optionValue) {
+									
+									$fullComponentName = $componentName."_".$componentCounter;
+									if(trim($_POST[$fullComponentName]) == "") {
+										$countBlanks++;							
+									}
+																		
+									$componentCounter++;
+								}
+
+								if($countBlanks == count($componentInfo['options'])) {
+									$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You must select at least one value for ".$componentInfo['display_name'].".";
+								}
+								
+							}
+							elseif($componentInfo['type'] != "file" && trim($_POST[$componentName]) == "") {
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." may not be blank.";
 							}
 							break;
 						case "NUMBER_ONLY":
 							if(!is_numeric($_POST[$componentName])) {
-								$this->errors[] = $componentInfo['display_name']." may only be a numeric value.";	
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." may only be a numeric value.";	
 							}
 							break;
 						case "POSITIVE_NUMBER":
 							if($_POST[$componentName] < 0) {
-								$this->errors[] = $componentInfo['display_name']." must be a positive number.";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." must be a positive number.";
 							}
 							break;
 						case "RESTRICT_TO_OPTIONS":
 							
 							if(is_array($componentInfo['options'])) {
+								$arrPostNames = array();
+								$arrPossibleValues = array();
+								$postCounter = 1;
 								foreach($componentInfo['options'] as $optionValue => $displayValue) {	
 									$arrPossibleValues[] = $optionValue;
+									$arrPostNames[] = $componentName."_".$postCounter;
+									$postCounter++;
 								}
 								
-								if(!in_array($_POST[$componentName], $arrPossibleValues)) {
-									$this->errors[] = "You selected an invalid value for ".$componentInfo['display_name'].".";									
+								if(($componentInfo['type'] == "checkbox" || $componentInfo['type'] == "radio") && count($componentInfo['options']) > 1) {
+									$countErrors = 0;
+									foreach($arrPostNames as $postName) {
+
+										if(isset($_POST[$postName]) && !in_array($_POST[$postName], $arrPossibleValues)) {
+											$countErrors++;
+										}
+										
+									}
+									
+									if($countErrors > 0) {
+										$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You selected an invalid value for ".$componentInfo['display_name'].".";										
+									}
+									
+								}
+								elseif(!in_array($_POST[$componentName], $arrPossibleValues)) {
+									$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You selected an invalid value for ".$componentInfo['display_name'].".";									
 								}
 								
 							}
@@ -442,7 +494,7 @@
 							$selectBackID = isset($arrValidate['select_back']) ? $arrValidate['selectObj']->get_info($arrValidate['select_back']) : "";
 							
 							if(!$arrValidate['selectObj']->select($_POST[$componentName])) {
-								$this->errors[] = "You selected an invalid value for ".$componentInfo['display_name'].".";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You selected an invalid value for ".$componentInfo['display_name'].".";
 							}
 							
 							$arrValidate['selectObj']->select($selectBackID);
@@ -452,7 +504,7 @@
 							$selectBackID = isset($arrValidate['select_back']) ? $arrValidate['selectObj']->get_info($arrValidate['select_back']) : "";
 							
 							if($arrValidate['selectObj']->select($_POST[$componentName])) {
-								$this->errors[] = "The value selected for ".$componentInfo['display_name']." is already in use.";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "The value selected for ".$componentInfo['display_name']." is already in use.";
 							}
 							
 							$arrValidate['selectObj']->select($selectBackID);
@@ -461,34 +513,34 @@
 						case "CHECK_LENGTH":
 							
 							if($arrValidate['min_length'] != "" && strlen(trim($_POST[$componentName])) < $arrValidate['min_length']) {
-								$this->errors[] = "The value for ".$componentInfo['display_name']." must be at least ".$arrValidate['min_length']." characters long.";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "The value for ".$componentInfo['display_name']." must be at least ".$arrValidate['min_length']." characters long.";
 							}
 							
 							if($arrValidate['max_length'] != "" && strlen(trim($_POST[$componentName])) > $arrValidate['max_length']) {
-								$this->errors[] = "The value for ".$componentInfo['display_name']." can be a max of ".$arrValidate['min_length']." characters long.";							
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] :  "The value for ".$componentInfo['display_name']." can be a max of ".$arrValidate['min_length']." characters long.";							
 							}
 														
 							break;
 						case "EQUALS_VALUE":
 							
 							if($arrValidate['value'] != $_POST[$componentName]) {
-								$this->errors[] = "You entered an incorrect value for ".$componentInfo['display_name'].".";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You entered an incorrect value for ".$componentInfo['display_name'].".";
 							}
 							
 							break;
 						case "NOT_EQUALS_VALUE":
 							if($arrValidate['value'] == $_POST[$componentName]) {
-								$this->errors[] = "You entered an incorrect value for ".$componentInfo['display_name'].".";
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You entered an incorrect value for ".$componentInfo['display_name'].".";
 							}
 							break;
 						case "GREATER_THAN":
-							if($arrValidate['value'] > $_POST[$componentName]) {
-								$this->errors[] = $componentInfo['display_name']." must be a value greater than ".$arrValidate['value'].".";
+							if($arrValidate['value'] > strlen(trim($_POST[$componentName]))) {
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." must be a value greater than ".$arrValidate['value'].".";
 							}
 							break;
 						case "LESS_THAN":
-							if($arrValidate['value'] < $_POST[$componentName]) {
-								$this->errors[] = $componentInfo['display_name']." must be a value less than ".$arrValidate['value'].".";
+							if($arrValidate['value'] < strlen(trim($_POST[$componentName]))) {
+								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." must be a value less than ".$arrValidate['value'].".";
 							}
 							break;
 						case "VALIDATE_ORDER":
@@ -501,7 +553,7 @@
 								
 								$checkOrder = $arrValidate['orderObject']->validateOrder($_POST[$componentName], $_POST[$componentName."_beforeafter"], $arrValidate['edit'], $arrValidate['edit_ordernum']);	
 								if($checkOrder === false) {
-									$this->errors[] = "You selected an invalid ".$componentInfo['display_name'].".";							
+									$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : "You selected an invalid ".$componentInfo['display_name'].".";							
 								}
 								else {
 									$_POST[$componentName] = $checkOrder;
@@ -524,6 +576,7 @@
 								call_user_func_array($validateMethod['function'], $validateMethod['args']);	
 							}
 					}
+					
 				}
 				
 				

@@ -191,6 +191,35 @@
 		}
 		
 		
+		public function verifyPlugin($pluginName, $arrRequiredConfig=array()) {
+			
+			if(!$this->selectByName($pluginName)) {
+				echo "<script type='text/javascript'>window.location = '".MAIN_ROOT."';</script>";
+				exit();
+			}
+			elseif($this->selectByName($pluginName)) {
+				$countErrors = 0;
+				foreach($arrRequiredConfig as $configName) {
+					if($this->getConfigInfo($configName) == "") {
+						$countErrors++;
+					}
+				}
+				
+				
+				if($countErrors > 0) {
+					echo "
+						<script type='text/javascript'>
+							alert('Please complete the plugin configuration before continuing!');
+							window.location = '".MAIN_ROOT."';
+						</script>
+					";
+					exit();
+				}
+				
+			}
+		}
+		
+		
 		public function delete() {
 			$returnVal = false;
 			if($this->intTableKeyValue != "") {

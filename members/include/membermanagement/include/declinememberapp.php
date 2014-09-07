@@ -14,8 +14,6 @@
 
 
 include_once("../../../../_setup.php");
-include_once("../../../../classes/member.php");
-include_once("../../../../classes/basicorder.php");
 
 
 $consoleObj = new ConsoleOption($mysqli);
@@ -27,9 +25,7 @@ $newMemberObj = new Member($mysqli);
 $cID = $consoleObj->findConsoleIDByName("View Member Applications");
 $consoleObj->select($cID);
 
-$memberAppObj = new BasicOrder($mysqli, "memberapps", "memberapp_id");
-$memberAppObj->set_assocTableKey("appvalue_id");
-$memberAppObj->set_assocTableName("app_values");
+$memberAppObj = new MemberApp($mysqli);
 
 
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj) && $memberAppObj->select($_POST['mAppID'])) {
@@ -40,21 +36,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		
 		if($memberAppObj->delete()) {
 			
-			$siteDomain = $_SERVER['SERVER_NAME'];
-			
-			$toEmail = $arrMemAppInfo['email'];
-			$subjectEmail = $websiteInfo['clanname'].": Member Application Denied";
-			
-			$messageEmail = "Your application to become a full member of ".$websiteInfo['clanname']." has been declined.  You may try signing up again by going to <a href='http://".$siteDomain.$MAIN_ROOT."'>http://".$siteDomain.$MAIN_ROOT."</a>.";
-			
-			$fromEmail = "admin@".$siteDomain;
-			$headersEmail = "MIME-Version: 1.0\r\n";
-			$headersEmail .= "Content-type: text/html; charset=iso-8859-1\r\n";
-			$headersEmail .= "To: ".$arrMemAppInfo['username']." <".$arrMemAppInfo['email'].">\r\n";
-			$headersEmail .= "From: ".$websiteInfo['clanname']." <".$fromEmail.">\r\n";
-			
-			mail($toEmail, $subjectEmail, $messageEmail, $headersEmail);
-			
+			$memberAppObj->notifyNewMember(false);			
 			
 			$member->logAction("Declined ".$arrMemAppInfo['username']."'s member application.");
 			

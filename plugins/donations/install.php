@@ -62,7 +62,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 	while($row = $result->fetch_array()) {
 		if(in_array($row[0], $arrPluginTables)) {
 			$countErrors++;
-			$dispError[] = "There is database table that conflicts with this plugin.";	
+			$dispError[] = "There is database table that conflicts with this plugin. - ".$row[0];	
 		}
 	}
 	

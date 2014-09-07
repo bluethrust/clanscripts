@@ -139,7 +139,6 @@ if($blnShowPage) {
 	
 	
 	$squadInfo = $squadObj->get_info_filtered();
-	
 	switch($pID) {
 		case "postnews":
 			include("postnews.php");

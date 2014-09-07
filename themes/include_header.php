@@ -1,7 +1,5 @@
 <?php
 
-include_once($prevFolder."plugins/mods.php");
-
 $arrLoginInfo = array();
 
 $taggerObj = new Basic($mysqli, "membersonlypage", "pageurl");

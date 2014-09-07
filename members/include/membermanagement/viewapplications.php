@@ -39,7 +39,7 @@ echo "
 	<div class='formDiv'>
 		Below is a listing of all member applications.<br><br>".$regMessage."
 		
-		<div id='loadingSpiral' style='display: none'>
+		<div class='loadingSpiral' id='loadingSpiral' style='display: none'>
 			<p align='center' class='main'>
 				<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral2.gif'><br>Loading
 			</p>

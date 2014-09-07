@@ -13,7 +13,7 @@
  */
 
 if(!isset($member) || !isset($squadObj) || substr($_SERVER['PHP_SELF'], -strlen("managesquad.php")) != "managesquad.php") {
-
+	
 	exit();
 }
 else {
@@ -24,8 +24,11 @@ else {
 
 	$squadObj->select($sID);
 
-
-	if(!$member->hasAccess($consoleObj) || $squadInfo['member_id'] != $memberInfo['member_id']) {
+	$manageAllSquadsCID = $consoleObj->findConsoleIDByName("Manage All Squads");
+	$consoleAllSquads = new ConsoleOption($mysqli);
+	$consoleAllSquads->select($manageAllSquadsCID);
+	
+	if(!$member->hasAccess($consoleObj) || ($squadInfo['member_id'] != $memberInfo['member_id'] && !$member->hasAccess($consoleAllSquads))) {
 
 		exit();
 	}

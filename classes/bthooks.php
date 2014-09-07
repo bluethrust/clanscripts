@@ -33,10 +33,9 @@
 		
 		function run($hookName) {
 			
-			foreach($this->data[$hookName] as $hookInfo) {
-
+			foreach($this->data[$hookName] as $hookInfo) {				
 				if(function_exists($hookInfo['function'])) {
-					if($hooksInfo['args'] == "") {
+					if($hookInfo['args'] == "") {
 						call_user_func($hookInfo['function']);			
 					}
 					else {

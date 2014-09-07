@@ -84,8 +84,9 @@ if($_POST['submit']) {
 		$startHour = $_POST['starthour'];
 	}
 	
-	$setStartTime = mktime($startHour, $_POST['startminute'], 0, $startMonth, $startDay, $startYear);
 	date_default_timezone_set($tempTimezone);
+	$setStartTime = mktime($startHour, $_POST['startminute'], 0, $startMonth, $startDay, $startYear);
+	
 	if($setStartTime < time()) {
 		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid start date.<br>";
 		$countErrors++;

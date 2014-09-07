@@ -28,7 +28,7 @@ else {
 $headerCode = file_get_contents("../themes/".$THEME."/_header.php");
 $footerCode = file_get_contents("../themes/".$THEME."/_footer.php");
 $themeCSSCode = htmlspecialchars(file_get_contents("../themes/".$THEME."/style.css"));
-$globalCSSCode = htmlspecialchars(file_get_contents("../themes/".$THEME."/btcs4.css"));
+//$globalCSSCode = htmlspecialchars(file_get_contents("../themes/".$THEME."/btcs4.css"));
 
 
 $headerCode = str_replace("&", "&#38;", $headerCode);
@@ -105,6 +105,9 @@ $websiteSettingsCID = $consoleObj->findConsoleIDByName("Website Settings");
 				<?php //<textarea cols='68' rows='12' id='themecsscode'><?php echo $themeCSSCode; </textarea><br><br> ?>
 			</td>
 		</tr>
+		
+		<?php 
+		/*
 		<tr>
 			<td id='globalcss' class='formLabel' colspan='2'>
 				Global CSS:
@@ -119,6 +122,8 @@ $websiteSettingsCID = $consoleObj->findConsoleIDByName("Website Settings");
 				<?php //<textarea cols='68' rows='12' id='globalcsscode'><?php echo $globalCSSCode; </textarea><br><br> ?>
 			</td>
 		</tr>
+		*/
+		?>
 		<tr>
 			<td colspan='2' class='main'><br>
 				<b>Security</b>
@@ -155,28 +160,28 @@ $websiteSettingsCID = $consoleObj->findConsoleIDByName("Website Settings");
 	var headerEditor = ace.edit("headerEditor");
 	var footerEditor = ace.edit("footerEditor");
 	var themeCSSEditor = ace.edit("themeCSSEditor");
-	var globalCSSEditor = ace.edit("globalCSSEditor");
+	//var globalCSSEditor = ace.edit("globalCSSEditor");
 
 	
 	headerEditor.getSession().setMode("ace/mode/php");
 	footerEditor.getSession().setMode("ace/mode/php");
 	themeCSSEditor.getSession().setMode("ace/mode/css");
-	globalCSSEditor.getSession().setMode("ace/mode/css");
+	//globalCSSEditor.getSession().setMode("ace/mode/css");
 
 	headerEditor.setTheme("ace/theme/eclipse");
 	footerEditor.setTheme("ace/theme/eclipse");
 	themeCSSEditor.setTheme("ace/theme/dreamweaver");
-	globalCSSEditor.setTheme("ace/theme/dreamweaver");
+	//globalCSSEditor.setTheme("ace/theme/dreamweaver");
 	
 	headerEditor.setHighlightActiveLine(false);
 	footerEditor.setHighlightActiveLine(false);
 	themeCSSEditor.setHighlightActiveLine(false);
-	globalCSSEditor.setHighlightActiveLine(false);
+	//globalCSSEditor.setHighlightActiveLine(false);
 
 	headerEditor.setShowPrintMargin(false);
 	footerEditor.setShowPrintMargin(false);
 	themeCSSEditor.setShowPrintMargin(false);
-	globalCSSEditor.setShowPrintMargin(false);
+	//globalCSSEditor.setShowPrintMargin(false);
 
 	
 	function editTheme() {
@@ -185,7 +190,7 @@ $websiteSettingsCID = $consoleObj->findConsoleIDByName("Website Settings");
 			
 			$('#loadingspiral').show();
 
-			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/edittheme_submit.php", { checkadmin: $('#checkadmin').val(), headerCode: headerEditor.getValue(), footerCode: footerEditor.getValue(), themeCSSCode: themeCSSEditor.getValue(), globalCSSCode: globalCSSEditor.getValue() }, function(data) {
+			$.post("<?php echo $MAIN_ROOT; ?>members/include/admin/edittheme_submit.php", { checkadmin: $('#checkadmin').val(), headerCode: headerEditor.getValue(), footerCode: footerEditor.getValue(), themeCSSCode: themeCSSEditor.getValue() }, function(data) {
 				
 				$('#postResponse').html(data);
 				$('#loadingspiral').hide();

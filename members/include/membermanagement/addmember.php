@@ -50,219 +50,143 @@ while($row = $result->fetch_assoc()) {
 	$arrRanks[] = $row['rank_id'];
 }
 
+$setRankCID = $consoleObj->findConsoleIDByName("Set Member's Rank");
+$consoleObj->select($setRankCID);
+$dispSetRank = false;
+if($member->hasAccess($consoleObj)) {
+	
+	// Get Ranks
+	$sqlRanks = "('".implode("','", $arrRanks)."')";
+	
+	
+	$result = $mysqli->query("SELECT * FROM ".$dbprefix."ranks WHERE rank_id IN ".$sqlRanks." AND rank_id != '1' ORDER BY ordernum");
+	while($row = $result->fetch_assoc()) {
+		$rankOptions[$row['rank_id']] = filterText($row['name']);
+	}
+	
+	$dispSetRank = true;
+	
+}
+$consoleObj->select($cID);
 
-$countErrors = 0;
-$dispError = "";
-if($_POST['submit']) {
-	
-	$newMemberObj = new Member($mysqli);
-	$newMemberRankObj = new Rank($mysqli);
-	
-	$countErrors = 0;
-	
-	
-	// Check username
-	if(trim($_POST['newmember']) == "") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not enter a blank username.<br>";	
-	}
-	
-	// Check password
-	
-	if(strlen($_POST['newpassword']) < 4) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Your password must be 4 or more characters long.<br>";
-	}
-	
-	if($_POST['newpassword'] != $_POST['newpassword1']) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Your passwords did not match.<br>";
-	}
-	
-	
-	$setRankCID = $consoleObj->findConsoleIDByName("Set Member's Rank");
-	$consoleObj->select($setRankCID);
-	
-	if(!isset($_POST['newmemberrank'])) {
-		$newMemberRankObj->selectByOrder(2);
-		$_POST['newmemberrank'] = $newMemberRankObj->get_info("rank_id");	
-	}
-	elseif(isset($_POST['newmemberrank']) && (!in_array($_POST['newmemberrank'], $arrRanks) || !$member->hasAccess($consoleObj))) {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You may not set a member's starting rank.<br>";
-	}
-	
-	if(!$newMemberRankObj->select($_POST['newmemberrank']) || $_POST['newmemberrank'] == "1") {
-		$countErrors++;
-		$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid starting rank.<br>";
-	}
-	
-	
-	if($countErrors == 0) {
-		
-		
-		
-		$arrColumns = array("username", "rank_id", "datejoined", "recruiter", "lastlogin", "postsperpage", "topicsperpage");
-		$arrValues = array($_POST['newmember'], $_POST['newmemberrank'], time(), $memberInfo['member_id'], time(), $websiteInfo['forum_postsperpage'], $websiteInfo['forum_topicsperpage']);
-		
-		if($newMemberObj->addNew($arrColumns, $arrValues)) {
-			$newMemberObj->set_password($_POST['newpassword']);
+$i=0;
+$arrComponents = array(
+
+	"newmember" => array(
+		"type" => "text",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "textBox formInput"),
+		"display_name" => "New Member",
+		"value" => $websiteInfo['clantag'],
+		"validate" => array("NOT_BLANK"),
+		"db_name" => "username"
+	),
+	"password" => array(
+		"type" => "password",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "textBox formInput", "id" => "newpassword"),
+		"display_name" => "Password",
+		"html" => "<br><label class='formLabel' style='display: inline-block'></label><div class='formInput tinyFont' style='margin-top: 0px; padding-left: 5px'>(Minimum 4 characters)</div>",
+		"validate" => array(
+			array("name" => "CHECK_LENGTH", "min_length" => 4)
+		)
+	),
+	"password2" => array(
+		"type" => "password",
+		"sortorder" => $i++,
+		"attributes" => array("class" => "textBox formInput", "id" => "newpassword2"),
+		"display_name" => "Re-type Password",
+		"html" => "<div class='formInputSideText successFont formInput' id='checkPassword'></div>"
+	),
+	"submit" => array(
+		"type" => "submit",
+		"sortorder" => 999999,
+		"attributes" => array("class" => "submitButton formSubmitButton"),
+		"value" => "Add New Member"
+	)
+
+);
+
+
+if($dispSetRank) {
+	$arrComponents['set_rank'] = array(
+		"type" => "select",
+		"display_name" => "Starting Rank",
+		"options" => $rankOptions,
+		"attributes" => array("class" => "textBox formInput"),
+		"sortorder" => $i++,
+		"validate" => array("RESTRICT_TO_OPTIONS"),
+		"db_name" => "rank_id"
+	);
+}
+
+
+$checkPasswordJS = "
+$(document).ready(function() {
 			
-			$newMemberInfo = $newMemberObj->get_info_filtered();
-			
-			echo "
-				<div style='display: none' id='successBox'>
-					<p align='center'>
-						Successfully Added New Member: <b>".$newMemberInfo['username']."</b>!
-					</p>
-				</div>
-				
-				<script type='text/javascript'>
-					popupDialog('Add New Member', '".$MAIN_ROOT."members/console.php?cID=".$cID."', 'successBox');
-				</script>
-			
-			";
-			
+	$('#newpassword2').keyup(function() {
+		
+		if($('#newpassword').val() != \"\") {
+		
+			if($('#newpassword2').val() == $('#newpassword').val()) {
+				$('#checkPassword').toggleClass('successFont', true);
+				$('#checkPassword').toggleClass('failedFont', false);
+				$('#checkPassword').html('ok!');
+			}
+			else {
+				$('#checkPassword').toggleClass('successFont', false);
+				$('#checkPassword').toggleClass('failedFont', true);
+				$('#checkPassword').html('error!');
+			}
+		
 		}
 		else {
-			$countErrors++;
-			$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
+			$('#checkPassword').html('');
 		}
-		
-		
-	}
 	
-	
-	if($countErrors > 0) {
+	});
 
-		$_POST['submit'] = false;	
-		
-	}
+});
+";
+
+$newMemberObj = new Member($mysqli);
+$setupFormArgs = array(
+	"name" => "console-".$cID,
+	"components" => $arrComponents,
+	"saveMessage" => "Successfully added new member: <b>".filterText($_POST['newmember'])."</b>!",
+	"attributes" => array("action" => $MAIN_ROOT."members/console.php?cID=".$cID, "method" => "post"),
+	"description" => "Fill out the form below to add a new member.",
+	"embedJS" => $checkPasswordJS,
+	"saveType" => "add",
+	"saveObject" => $newMemberObj,
+	"saveAdditional" => array(
+		"datejoined" => time(),
+		"recruiter" => $memberInfo['member_id'],
+		"lastlogin" => time(),
+		"postsperpage" => $websiteInfo['forum_postsperpage'],
+		"topicsperpage" => $websiteInfo['forum_topicsperpage']
+	),
+	"afterSave" => array("addMemberSavePassword")
+);
+
+
+$result = $mysqli->query("SELECT * FROM ".$dbprefix."members ORDER BY datejoined DESC LIMIT 1");
+$row = $result->fetch_assoc();
+
+$member->select($row['member_id']);
+$dispLastMember = $member->getMemberLink();
+
+$dispLastMemberTime = getPreciseTime($row['datejoined']);
+
+$member->select($memberInfo['member_id']);
+
+function addMemberSavePassword() {
+	global $formObj;
 	
+	$formObj->objSave->set_password($_POST['password']);
 }
-
-
-if(!$_POST['submit']) {
-	
-	
-	$setRankCID = $consoleObj->findConsoleIDByName("Set Member's Rank");
-	
-	$consoleObj->select($setRankCID);
-	$dispSetRank = false;
-	if($member->hasAccess($consoleObj)) {
-		
-		// Get Ranks
-		$sqlRanks = "('".implode("','", $arrRanks)."')";
-		
-		
-		$result = $mysqli->query("SELECT * FROM ".$dbprefix."ranks WHERE rank_id IN ".$sqlRanks." AND rank_id != '1' ORDER BY ordernum");
-		while($row = $result->fetch_assoc()) {
-			$rankoptions .= "<option value='".$row['rank_id']."'>".filterText($row['name'])."</option>";
-		}
-		
-		$dispSetRank = true;
-	}
-	
-	$result = $mysqli->query("SELECT * FROM ".$dbprefix."members ORDER BY datejoined DESC LIMIT 1");
-	$row = $result->fetch_assoc();
-	
-	$member->select($row['member_id']);
-	$dispLastMember = $member->getMemberLink();
-	
-	$dispLastMemberTime = getPreciseTime($row['datejoined']);
-	
-	echo "	
-	
-	<div class='main' style='padding-left: 15px; padding-bottom: 0px; margin-bottom: 0px'><b>Last Member Added:</b> ".$dispLastMember." - ".$dispLastMemberTime."</div>
-	
-		<div class='formDiv'>
-		
-		";
-	
-	if($dispError != "") {
-		echo "
-		<div class='errorDiv'>
-		<strong>Unable to add new member because the following errors occurred:</strong><br><br>
-		$dispError
-		</div>
-		";
-	}
-	
-	echo "
-		
-			<form action='console.php?cID=".$cID."' method='post'>
-			Fill out the form below to add a new member.<br><br>
-			
-			
-				<table class='formTable'>
-					<tr>
-						<td class='formLabel'>New Member:</td>
-						<td class='main'><input type='text' name='newmember' value='".$websiteInfo['clantag']."' class='textBox' style='width: 125px'></td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Password:</td>
-						<td class='tinyFont'><input type='password' id='newpassword' name='newpassword' class='textBox' style='width: 125px'><br>(Minimum 4 characters)</td>
-					</tr>
-					<tr>
-						<td class='formLabel'>Re-type Password:</td>
-						<td class='main'><input type='password' id='newpassword1' name='newpassword1' class='textBox' style='width: 125px'><span id='checkPassword' style='padding-left: 5px'></span></td>
-					</tr>
-					";
-				if($dispSetRank) {
-					echo "
-					<tr>
-						<td class='formLabel'>Starting Rank:</td>
-						<td class='main'><select name='newmemberrank' class='textBox'>".$rankoptions."</select></td>
-					</tr>
-					";
-				}
-					echo "
-					<tr>
-						<td class='main' align='center' colspan='2'><br><br>
-							<input type='submit' name='submit' value='Add New Member' class='submitButton'>
-						</td>
-					</tr>
-				</table>
-				
-				
-			</form>
-		</div>
-		
-		
-		
-		<script type='text/javascript'>
-			
-			$(document).ready(function() {
-			
-				$('#newpassword1').keyup(function() {
-					
-					if($('#newpassword').val() != \"\") {
-					
-						if($('#newpassword1').val() == $('#newpassword').val()) {
-							$('#checkPassword').toggleClass('successFont', true);
-							$('#checkPassword').toggleClass('failedFont', false);
-							$('#checkPassword').html('ok!');
-						}
-						else {
-							$('#checkPassword').toggleClass('successFont', false);
-							$('#checkPassword').toggleClass('failedFont', true);
-							$('#checkPassword').html('error!');
-						}
-					
-					}
-					else {
-						$('#checkPassword').html('');
-					}
-				
-				});
-			
-			});
-		
-		</script>
-		
-	";
-	
-}
-
 
 ?>
+
+<div class='main' style='padding-left: 15px; padding-bottom: 0px; margin-bottom: 0px'><b>Last Member Added:</b> <?php echo $dispLastMember; ?> - <?php echo $dispLastMemberTime; ?></div>
+	

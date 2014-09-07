@@ -23,10 +23,6 @@ else {
 	}
 }
 
-include_once("../classes/profilecategory.php");
-include_once("../classes/profileoption.php");
-include_once("../classes/btupload.php");
-include_once("../classes/game.php");
 
 $cID = $_GET['cID'];
 

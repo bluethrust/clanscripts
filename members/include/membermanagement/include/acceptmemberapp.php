@@ -23,29 +23,28 @@ $consoleObj = new ConsoleOption($mysqli);
 $member = new Member($mysqli);
 $member->select($_SESSION['btUsername']);
 $memberInfo = $member->get_info_filtered();
-$newMemberObj = new Member($mysqli);
+
 
 $cID = $consoleObj->findConsoleIDByName("View Member Applications");
 $consoleObj->select($cID);
 
-$memberAppObj = new Basic($mysqli, "memberapps", "memberapp_id");
+$memberAppObj = new MemberApp($mysqli);
 
 
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj) && $memberAppObj->select($_POST['mAppID'])) {
 	
 	$arrMemAppInfo = $memberAppObj->get_info_filtered();
-	$rankObj = new Rank($mysqli);
-	$rankObj->selectByOrder(2);
-	$newMemRank = $rankObj->get_info("rank_id");
 	
-	$arrColumns = array("username", "rank_id", "password", "password2", "email", "datejoined", "lastseen", "lastlogin", "recruiter");
-	$arrValues = array($arrMemAppInfo['username'], $newMemRank, $arrMemAppInfo['password'], $arrMemAppInfo['password2'], $arrMemAppInfo['email'], time(), time(), time(), $memberInfo['member_id']);
-			
-	if($newMemberObj->addNew($arrColumns, $arrValues) && $memberAppObj->update(array("memberadded"), array(1))) {
+	if($memberAppObj->addMember()) {
 		
-		$dispNewMember = $newMemberObj->getMemberLink();
+		$newMemberInfo = $memberAppObj->getNewMemberInfo();
+		$dispNewMember = $newMemberInfo['username'];
 		
 		$member->logAction("Accepted ".$dispNewMember."'s member application.");
+		
+		if($newMemberInfo['recruiter'] == 0) {
+			$memberAppObj->setRecruiter($memberInfo['member_id']);			
+		}
 		
 		
 		echo "
@@ -55,22 +54,6 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				</p>
 			</div>
 		";
-		
-		
-		$siteDomain = $_SERVER['SERVER_NAME'];
-		
-		$toEmail = $arrMemAppInfo['email'];
-		$subjectEmail = $websiteInfo['clanname'].": Member Application Accepted";
-		
-		$messageEmail = "You have been accepted to become a full member of ".$websiteInfo['clanname']."!  Go to <a href='http://".$siteDomain.$MAIN_ROOT."'>http://".$siteDomain.$MAIN_ROOT."</a> to log in to your account.";
-		
-		$fromEmail = "admin@".$siteDomain;
-		$headersEmail = "MIME-Version: 1.0\r\n";
-		$headersEmail .= "Content-type: text/html; charset=iso-8859-1\r\n";
-		$headersEmail .= "To: ".$arrMemAppInfo['username']." <".$arrMemAppInfo['email'].">\r\n";
-		$headersEmail .= "From: ".$websiteInfo['clanname']." <".$fromEmail.">\r\n";
-		
-		mail($toEmail, $subjectEmail, $messageEmail, $headersEmail);
 		
 	}
 	else {

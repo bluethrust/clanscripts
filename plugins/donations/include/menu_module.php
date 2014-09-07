@@ -177,7 +177,7 @@
 				// Graph
 				$goalCompletePercent = round(($campaignObj->getTotalDonationAmount()/$campaignInfo['goalamount'])*100);
 				$goalCompletePercent = ($goalCompletePercent > 100) ? "100%" : $goalCompletePercent."%";
-				$dispGoal = " of ".$campaignObj->formatAmount(number_format($campaignInfo['goalamount'], 2))." goal";
+				$dispGoal = " of ".$campaignObj->formatAmount($campaignInfo['goalamount'], 2)." goal";
 				
 				$dispProgressBar = "
 					<div class='donationProgressContainer' style='background-color: ".$progressBarBackColor."'>

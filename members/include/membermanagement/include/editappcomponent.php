@@ -12,12 +12,8 @@
  *
  */
 
-
-include_once("../../../../_setup.php");
-include_once("../../../../classes/member.php");
-include_once("../../../../classes/basicorder.php");
-
-
+$prevFolder = "../../../../";
+include_once($prevFolder."_setup.php");
 
 $consoleObj = new ConsoleOption($mysqli);
 $member = new Member($mysqli);
@@ -32,34 +28,30 @@ $appComponentObj = new BasicOrder($mysqli, "app_components", "appcomponent_id");
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj)) {
 	
 	
+	
 	if($appComponentObj->select($_POST['appCompID'])) {
 		
 		$appCompInfo = $appComponentObj->get_info_filtered();
 		$appComponentObj->set_assocTableName("app_selectvalues");
 		$appComponentObj->set_assocTableKey("appselectvalue_id");
-		
-		$countErrors = 0;
-		$dispError = "";
-		
+
+		include(BASE_DIRECTORY."members/include/membermanagement/include/appcomponent_form.php");
 		if($_POST['saveComponent']) {
 			
 			
 			// Check Component Name
 			
 			if(trim($_POST['saveComponentName']) == "") {
-				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You can't have a blank component name.<br>";
-				$countErrors++;
+				$addAppForm->errors[] = "You can't have a blank component name.<br>";
 			}
 			
-			$arrOptionTypes = array("input", "largeinput", "select", "multiselect", "captcha", "captchaextra");
-			if(!in_array($_POST['saveComponentType'], $arrOptionTypes)) {
-				$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> You selected an invalid component type.<br>";
-				$countErrors++;
+			if(!in_array($_POST['saveComponentType'], array_keys($typeOptions))) {
+				$addAppForm->errors[] .= "You selected an invalid component type.<br>";
 			}
 			
 			
 			
-			if($countErrors == 0) {
+			if(count($addAppForm->errors) == 0) {
 				
 				if($_POST['saveComponentRequired'] != 0) {
 					$_POST['saveComponentRequired'] = 1;
@@ -70,7 +62,7 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 				
 
 				if($appComponentObj->update($arrColumns, $arrValues)) {
-					if($appCompInfo['componenttype'] == "select" || $appCompInfo['componenttype'] == "multiselect") {
+					if($appCompInfo['componenttype'] == "select" || $appCompInfo['componenttype'] == "multiselect" || $appCompInfo['componenttype'] == "profile") {
 						$mysqli->query("DELETE FROM ".$dbprefix."app_selectvalues WHERE appcomponent_id = '".$appCompInfo['appcomponent_id']."'");
 					}
 					
@@ -80,6 +72,10 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 						foreach($_SESSION['btAppComponent']['cOptions'] as $optionValue) {
 							$appComponentSelectOptionObj->addNew(array("appcomponent_id", "componentvalue"), array($appCompInfo['appcomponent_id'], $optionValue));
 						}
+					}
+					elseif($_POST['saveComponentType'] == "profile") {
+						$appComponentSelectOptionObj = new Basic($mysqli, "app_selectvalues", "appselectvalue_id");
+						$appComponentSelectOptionObj->addNew(array("appcomponent_id", "componentvalue"), array($appCompInfo['appcomponent_id'], $_POST['profileOptionID']));		
 					}
 					
 					
@@ -134,15 +130,14 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 					
 				}
 				else {
-					$dispError .= "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.<br>";
-					$countErrors++;
+					$addAppForm->errors[] = "&nbsp;&nbsp;&nbsp;<b>&middot;</b> Unable to save information to the database.  Please contact the website administrator.";
 				}
 				
 				
 			}
 			
 			
-			if($countErrors > 0) {
+			if(count($addAppForm->errors) > 0) {
 				$_POST['saveComponent'] = false;
 			}
 			
@@ -178,170 +173,10 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 			}
 			
 			
-			$selectedLargeInput = "";
-			$selectedSelect = "";
-			$selectedMultiSelect = "";
-			
-			$selectedTypeOptions = array();
-			$selectedTypeOptions[$appCompInfo['componenttype']] = " selected";
-			
-			
-			if($dispError != "") {
-				echo "
-				<div class='errorDiv' style='width: 90%'>
-				<strong>Unable to edit application component because the following errors occurred:</strong><br><br>
-				$dispError
-				</div>
-				";
-			}
-			
-			$checkRequired = "";
-			if($appCompInfo['required'] == 1) {
-				$checkRequired = " checked";
-			}
-			
-			
-			echo "
-			
-				<table class='formTable' style='width: 90%'>
-					<tr>
-						<td class='main' style='width: 25%'><b>Name:</b></td>
-						<td class='main' style='width: 75%'><input type='text' class='textBox' value='".$appCompInfo['name']."' id='componentName'></td>
-					</tr>
-					<tr>
-						<td class='main' style='width: 25%'><b>Type:</b></td>
-						<td class='main' style='width: 75%'>
-							<select id='componentType' class='textBox'>
-								<option value='input'>Input</option>
-								<option value='largeinput'".$selectedTypeOptions['largeinput'].">Large-Input</option>
-								<option value='select'".$selectedTypeOptions['select'].">Select</option>
-								<option value='multiselect'".$selectedTypeOptions['multiselect'].">Multi-Select</option>
-								<option value='captcha'".$selectedTypeOptions['captcha'].">Captcha</option>
-								<option value='captchaextra'".$selectedTypeOptions['captchaextra'].">Captcha - Extra Distortion</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class='main' style='width: 25%'><b>Required:</b></td>
-						<td class='main' style='width: 75%'><input type='checkbox' id='componentRequiredCB'".$checkRequired."><input type='hidden' id='componentRequired' value='".$appCompInfo['required']."'><span id='captchaMessage' class='tinyFont' style='display: none'><i>Captcha's are automatically required.</i></span></td>
-					</tr>
-					<tr>
-						<td class='main' style='width: 25%' valign='top'><b>Tooltip:</b></td>
-						<td class='main' style='width: 75%'>
-							<textarea style='width: 200px; height: 40px' id='componentTooltip' class='textBox'>".$appCompInfo['tooltip']."</textarea>
-						</td>
-					</tr>
-				</table>
-				
-				<div id='moreComponentOptions' style='display: none'>
-				
-					<table class='formTable' style='width: 90%'>
-						<tr>
-							<td class='main dottedLine' colspan='2'>
-								<b>Selectable Options</b>
-							</td>
-						</tr>
-						<tr>
-							<td class='main' style='width: 25%'><b>Option Value:</b></td>
-							<td class='main' style='width: 75%'><input type='text' id='optionValue' class='textBox'> <input type='button' id='addOptionValueBtn' class='submitButton' value='Add'></td>
-						</tr>
-						<tr>
-							<td class='main' style='width: 25%' valign='top'><b>Option List:</td></td>
-							<td class='main' style='width: 75%' valign='top'>
-								<div id='optionValueList' style='height: 75px; overflow: auto'></div>
-							</td>
-						</tr>		
-					</table>
-				
-				</div>
-			
-				
-				
-				
-				<script type='text/javascript'>
-				
-				$(document).ready(function() {
-					
-				
-					$('#componentRequiredCB').click(function() {
-					
-						if($(this).is(':checked')) {
-							$('#componentRequired').val('1');
-						}
-						else {
-							$('#componentRequired').val('0');
-						}
-					
-				
-					});
-				
-					$('#componentType').change(function() {
-					
-						if($('#componentType').val() == 'select' || $('#componentType').val() == 'multiselect') {
-							$('#moreComponentOptions').show();					
-						}
-						else {
-							$('#moreComponentOptions').hide();
-						}
-					
-						if($('#componentType').val() == 'captcha' || $('#componentType').val() == 'captchaextra') {
-							$('#componentRequiredCB').attr('disabled', 'disabled');
-							$('#captchaMessage').show();
-						}
-						else {
-							$('#componentRequiredCB').attr('disabled', false);
-							$('#captchaMessage').hide();
-						}
-						
-						
-					});
-					
-					$('#addOptionValueBtn').click(function() {
-					
-						$('#optionValueList').fadeOut(250);
-						$.post('".$MAIN_ROOT."members/include/membermanagement/include/appcomponentcache.php', { action: 'add', newOptionValue: $('#optionValue').val() }, function(data) {
-							$('#optionValueList').html(data);
-							$('#optionValue').val('');
-							$('#optionValueList').fadeIn(250);
-						});
-					
-					});
-					
-					
-					
-					$.post('".$MAIN_ROOT."members/include/membermanagement/include/appcomponentcache.php', { }, function(data) {
-						$('#optionValueList').html(data);				
-					});
-				
-					$('#componentType').change();
-					
-				});
-			
-				function deleteOptionValue(intValueKey) {
-				
-					$(document).ready(function() {
-						$('#optionValueList').fadeOut(250);
-						$.post('".$MAIN_ROOT."members/include/membermanagement/include/appcomponentcache.php', { action: 'delete', deleteOptionKey: intValueKey }, function(data) {
-							$('#optionValueList').html(data);
-							$('#optionValue').val('');
-							$('#optionValueList').fadeIn(250);
-						});
-					});
-				
-				}
-				
-				
-			</script>
-			
-			
-			";
-		
 		
 		
 		}
-		
-		
-		
+				
 		
 	}
 	else {
@@ -354,6 +189,26 @@ if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($conso
 		";
 	}
 	
+	
+	$addAppForm->components['name']['value'] = $appCompInfo['name'];
+	$addAppForm->components['type']['value'] = $appCompInfo['componenttype'];
+	$addAppForm->components['required']['value'] = $appCompInfo['required'];
+	$addAppForm->components['tooltip']['value'] = $appCompInfo['tooltip'];
+	
+	if($appCompInfo['componenttype'] == "profile") {
+		
+		$appSelectValueID = $appComponentObj->getAssociateIDs();
+		$appSelectValueObj = new Basic($mysqli, "app_selectvalues", "appselectvalue_id");
+		$appSelectValueObj->select($appSelectValueID[0]);
+		
+		$addAppForm->components['profilecomponents']['components']['profileoption']['value'] = $appSelectValueObj->get_info("componentvalue");
+	}
+	
+	echo "<div id='addAppComponentFormDialog'>";
+	
+	$addAppForm->show();
+	
+	echo "</div>";
 }
 
 

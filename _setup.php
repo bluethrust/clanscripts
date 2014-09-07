@@ -47,7 +47,7 @@ define("MAIN_ROOT", $MAIN_ROOT);
 
 
 $PAGE_NAME = "";
-include_once($prevFolder."_functions.php");
+include_once(BASE_DIRECTORY."_functions.php");
 
 define("FULL_SITE_URL", getHTTP().$_SERVER['SERVER_NAME'].MAIN_ROOT);
 
@@ -84,11 +84,12 @@ $IP_ADDRESS = $_SERVER['REMOTE_ADDR'];
 
 if($websiteInfo['debugmode'] == 1) {
 	ini_set('display_errors', 1);
-	ini_set('error_reporting', E_ALL);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 }
 else {
-	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 	ini_set('display_errors', 1);
+	ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+	//ini_set('error_reporting', E_ALL);
 }
 
 
@@ -111,4 +112,6 @@ $clockObj = new Clock($mysqli);
 $btThemeObj->setThemeDir($THEME);
 $btThemeObj->setClanName($CLAN_NAME);
 $btThemeObj->initHead();
+
+include_once(BASE_DIRECTORY."plugins/mods.php");
 ?>

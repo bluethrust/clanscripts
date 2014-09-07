@@ -79,11 +79,16 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 			$settingsLink = $MAIN_ROOT."plugins/settings.php?plugin=".$row['filepath'];
 		}
 		
+		$installJSData = "";
+		if(file_exists(BASE_DIRECTORY."plugins/".$row['filepath']."/install_setup.php")) {
+			$installJSData = " data-install='1'";
+		}
+		
 		echo "
 			<tr>
 				<td class='dottedLine main manageList".$addCSS."'>".$dispPluginName."</td>
 				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a href='".$settingsLink."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/edit.png' class='manageListActionButton' title='Settings'></a></td>
-				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0' data-pluginname='".$dispPluginName."'><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
+				<td align='center' class='dottedLine main manageList".$addCSS."' style='width: 12%'><a id='uninstallPlugin' style='cursor: pointer' data-plugin='".$row['filepath']."' data-clicked='0' data-pluginname='".$dispPluginName."'".$installJSData."><img src='".$MAIN_ROOT."themes/".$THEME."/images/buttons/delete.png' class='manageListActionButton' title='Uninstall'></a></td>
 			</tr>		
 		";
 		
@@ -97,6 +102,11 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 		$(document).ready(function() {
 		
 			$(\"a[id='uninstallPlugin']\").click(function() {
+				
+				var uninstallLink = '".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/uninstall.php';
+				if($(this).attr('data-install') == \"1\") {
+					uninstallLink = '".$MAIN_ROOT."plugins/uninstall.php?plugin='+$(this).attr('data-plugin');
+				}
 				
 				if($(this).attr('data-clicked') == 0) {
 					$(this).attr('data-clicked', 1);
@@ -130,7 +140,9 @@ echo "<table class='formTable' style='margin-top: 0px; border-spacing: 0px'>";
 					$(this).attr('data-clicked', 1);
 					$(this).css('cursor', 'default');
 					
-					$.post('".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/uninstall.php', { pluginDir: $(this).attr('data-plugin') }, function(data) {
+					
+					
+					$.post(uninstallLink, { pluginDir: $(this).attr('data-plugin') }, function(data) {
 					
 						postResult = JSON.parse(data);
 						

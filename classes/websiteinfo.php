@@ -7,6 +7,7 @@ class WebsiteInfo extends Basic {
 	protected $arrKeys;
 	protected $blnRefreshInfo;
 	protected $strPagePath;
+	public $objBTMail;
 	
 	public function __construct($sqlConnection) {
 		
@@ -16,6 +17,7 @@ class WebsiteInfo extends Basic {
 		
 		$this->arrKeys = array();
 		$this->blnRefreshInfo = true;
+		$this->objBTMail = new btMail();
 	}
 	
 	
@@ -84,8 +86,9 @@ class WebsiteInfo extends Basic {
 	}
 	
 	public function displayPage() {
-		global $mysqli, $hooksObj;
+		global $mysqli, $dbprefix, $hooksObj;
 		include(BASE_DIRECTORY.$this->strPagePath);	
 	}
+	
 	
 }

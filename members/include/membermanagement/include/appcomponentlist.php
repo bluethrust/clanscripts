@@ -89,6 +89,9 @@ echo "
 			case "captchaextra":
 				$appComponentInfo['componenttype'] = "Captcha - Extra Distortion";	
 				break;
+			case "profile":
+				$appComponentInfo['componenttype'] = "Profile Option";
+				break;
 		}
 		
 		

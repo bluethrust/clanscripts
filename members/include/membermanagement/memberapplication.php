@@ -114,10 +114,10 @@ echo "
 								var strComponentType = $('#componentType').val();
 								var strComponentTooltip = $('#componentTooltip').val();
 								var intComponentRequired = $('#componentRequired').val();
-
+								var intProfileOptionID = $('#profileOptionID').val();
 								
 								$('#appComponentForm').fadeOut(250);
-								$.post('".$MAIN_ROOT."members/include/membermanagement/include/addappcomponent.php', { saveComponent: 1, newComponentName: strComponentName, newComponentType: strComponentType, newComponentRequired: intComponentRequired, newComponentTooltip: strComponentTooltip }, function(data1) {
+								$.post('".$MAIN_ROOT."members/include/membermanagement/include/addappcomponent.php', { saveComponent: 1, newComponentName: strComponentName, newComponentType: strComponentType, newComponentRequired: intComponentRequired, newComponentTooltip: strComponentTooltip, profileOptionID: intProfileOptionID }, function(data1) {
 									$('#appComponentForm').html(data1);
 									$('#appComponentForm').fadeIn(250);						
 								});
@@ -163,9 +163,10 @@ echo "
 								var strComponentType = $('#componentType').val();
 								var strComponentTooltip = $('#componentTooltip').val();
 								var intComponentRequired = $('#componentRequired').val();
+								var intProfileOptionID = $('#profileOptionID').val();
 								
 								$('#appComponentForm').fadeOut(250);
-								$.post('".$MAIN_ROOT."members/include/membermanagement/include/editappcomponent.php', { appCompID:  intAppCompID, saveComponent: 1, saveComponentName: strComponentName, saveComponentType: strComponentType, saveComponentRequired: intComponentRequired, saveComponentTooltip: strComponentTooltip }, function(data1) {
+								$.post('".$MAIN_ROOT."members/include/membermanagement/include/editappcomponent.php', { appCompID:  intAppCompID, saveComponent: 1, saveComponentName: strComponentName, saveComponentType: strComponentType, saveComponentRequired: intComponentRequired, saveComponentTooltip: strComponentTooltip, profileOptionID: intProfileOptionID }, function(data1) {
 									$('#appComponentForm').html(data1);
 									$('#appComponentForm').fadeIn(250);						
 								});

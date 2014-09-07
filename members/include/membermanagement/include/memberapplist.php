@@ -37,10 +37,15 @@ if(!isset($member) || substr($_SERVER['PHP_SELF'], -11) != "console.php") {
 
 }
 
-$memberAppObj = new Basic($mysqli, "memberapps", "memberapp_id");
-$appComponentObj = new BasicOrder($mysqli, "app_components", "appcomponent_id");
-$appComponentObj->set_assocTableName("app_selectvalues");
-$appComponentObj->set_assocTableKey("appselectvalue_id");
+$memberAppObj = new MemberApp($mysqli);
+$appComponentObj = $memberAppObj->objAppComponent;
+
+$memberAppForm = $memberAppObj->objSignUpForm;
+
+$setupMemberAppForm = array(
+	"name" => "display-member-app",
+	"wrapper" => array("<div class='dottedBox' style='margin-top: 20px; width: 90%; margin-left: auto; margin-right: auto;'>", "</div>")
+);
 
 $result = $mysqli->query("SELECT memberapp_id FROM ".$dbprefix."memberapps ORDER BY applydate DESC");
 while($row = $result->fetch_assoc()) {
@@ -50,96 +55,96 @@ while($row = $result->fetch_assoc()) {
 	
 	$dispApplyDate = getPreciseTime($memberAppInfo['applydate']);
 	
-	echo "
-		<div class='dottedBox' style='margin-top: 20px; width: 90%; margin-left: auto; margin-right: auto;'>
-			<table class='formTable' style='width: 95%'>
-				<tr>
-					<td class='formLabel'>Date Applied:</td>
-					<td class='main'>".$dispApplyDate."</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>Username:</td>
-					<td class='main'>".$memberAppInfo['username']."</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>IP Address:</td>
-					<td class='main'>".$memberAppInfo['ipaddress']."</td>
-				</tr>
-				<tr>
-					<td class='formLabel'>E-mail:</td>
-					<td class='main'><a href='mailto:".$memberAppInfo['email']."'>".$memberAppInfo['email']."</a></td>
-				</tr>
-				
-			";
+	// Default Info
+	$i = 0;
+	$arrDefaultInfo = array(
+		"dateapplied" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => "Date Applied",
+			"html" => "<div class='main formInput'>".$dispApplyDate."</div>"
+		),
+		"username" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => "Username",
+			"html" => "<div class='main formInput'>".$memberAppInfo['username']."</div>"
+		),
+		"ipaddress" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => "IP Address",
+			"html" => "<div class='main formInput'>".$memberAppInfo['ipaddress']."</div>"
+		),
+		"email" => array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => "E-mail",
+			"html" => "<div class='main formInput'><a href='mailto:".$memberAppInfo['email']."'>".$memberAppInfo['email']."</a></div>"
+		)
+	);
 	
-	
-	$memAppCompQuery = $mysqli->query("SELECT appcomponent_id FROM ".$dbprefix."app_components WHERE componenttype != 'captcha' AND componenttype != 'captchaextra' ORDER BY ordernum DESC");
-	while($row2 = $memAppCompQuery->fetch_assoc()) {
+	// Custom Info
+
+	$customAppInfo = $memberAppObj->getAppValues();
+
+	$arrCompInfo = array();
+	foreach($customAppInfo as $componentID => $customInfo) {
+		$appComponentObj->select($componentID);
+		$appCompName = $appComponentObj->get_info_filtered("name");
+		$compName = "appcomponent_".$componentID;
 		
-		$appComponentObj->select($row2['appcomponent_id']);
-		$appCompInfo = $appComponentObj->get_info_filtered();
-		
-		if($appCompInfo['componenttype'] == "multiselect") {
-			$counter = 1;	
+		$dispCompValue = "";
+		if(count($customInfo['display_values']) > 1) {
+			$displayValueCounter = 1;
+			foreach($customInfo['display_values'] as $value) {
+				$dispCompValue .= $displayValueCounter.". ".$value."<br>";				
+				$displayValueCounter++;
+			}
+		}
+		elseif(isset($customInfo['display_values'][0]) && $customInfo['display_values'][0] != "") {
+			$dispCompValue = $customInfo['display_values'][0];
+		}
+		else {
+			$dispCompValue = "Not Set";	
 		}
 		
-		$appResponseValue = "";
-		$memAppRespQuery = $mysqli->query("SELECT appvalue FROM ".$dbprefix."app_values WHERE appcomponent_id = '".$appCompInfo['appcomponent_id']."' AND memberapp_id = '".$memberAppInfo['memberapp_id']."'");
-		while($row3 = $memAppRespQuery->fetch_assoc()) {
-			
-			$filterAppValue = filterText($row3['appvalue']);
-			
-			if($appCompInfo['componenttype'] == "multiselect") {
-				$filterAppValue = $counter.". ".$filterAppValue."<br>";
-				$counter++;
-				
-				$appResponseValue .= $filterAppValue;
-			}
-			else {
-				$appResponseValue = $filterAppValue;	
-			}
+		$arrCompInfo[$compName] = array(
+			"type" => "custom",
+			"sortorder" => $i++,
+			"display_name" => $appCompName,
+			"html" => "<div class='main formInput'>".$dispCompValue."</div>"
 		
-		}
-		
-		
-		
-		echo "
-			<tr>
-				<td class='formLabel' valign='top'>".$appCompInfo['name'].":</td>
-				<td class='main'>".nl2br($appResponseValue)."</td>
-			</tr>
-		";
+		);
 		
 	}
 	
-	
-	
-	echo "
-				<tr>
-					<td colspan='2' align='center' class='main'>
-						<br><br>
-						
-						";
-						
 	if($memberAppInfo['memberadded'] == 0) {
-		echo "
-			<a href='javascript:void(0)' onclick=\"acceptApp('".$memberAppInfo['memberapp_id']."')\"><b>Accept</b></a> - <a href='javascript:void(0)' onclick=\"declineApp('".$memberAppInfo['memberapp_id']."')\"><b>Decline</b></a>
-		";
+		$memberAppOptions = "<a href='javascript:void(0)' onclick=\"acceptApp('".$memberAppInfo['memberapp_id']."')\"><b>Accept</b></a> - <a href='javascript:void(0)' onclick=\"declineApp('".$memberAppInfo['memberapp_id']."')\"><b>Decline</b></a>";
 	}
 	else {
-		echo "
-			<span class='successFont' style='font-weight: bold'>Member Added!</span> - <a href='javascript:void(0)' onclick=\"removeApp('".$memberAppInfo['memberapp_id']."')\"><b>Remove</b></a>
-		";
+		$memberAppOptions = "<span class='successFont' style='font-weight: bold'>Member Added!</span> - <a href='javascript:void(0)' onclick=\"removeApp('".$memberAppInfo['memberapp_id']."')\"><b>Remove</b></a>";
 	}
-					echo "
-						
-					</td>
-				</tr>
-			</table>
-		</div>
-	";
 	
+	
+	$arrCompInfo['app_options'] = array(
+		"type" => "custom",
+		"sortorder" => $i++,
+		"html" => "<br><p align='center'>".$memberAppOptions."</p>"
+	
+	);
+	
+	$arrComponents = array_merge($arrDefaultInfo, $arrCompInfo);
+	
+	$setupMemberAppForm['components'] = $arrComponents;
+	
+	
+	$memberAppForm->buildForm($setupMemberAppForm);
+	
+	$memberAppForm->show();
 }
+
+
 
 if($result->num_rows == 0) {
 

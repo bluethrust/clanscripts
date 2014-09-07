@@ -12,10 +12,11 @@
  *
  */
 
-include_once("../../../_setup.php");
-include_once("../../../classes/member.php");
-include_once("../../../classes/rank.php");
-include_once("../../../classes/squad.php");
+if(!isset($prevFolder)) {
+	$prevFolder = "../../../";	
+}
+
+include_once($prevFolder."_setup.php");
 
 
 // Start Page

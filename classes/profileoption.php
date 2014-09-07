@@ -53,6 +53,7 @@ class ProfileOption extends BasicSort {
 		return $returnVal;
 	}
 	
+	
 	function addNewSelectValue($strValue, $intSortNum) {
 		
 		$returnVal = false;
@@ -122,6 +123,8 @@ class ProfileOption extends BasicSort {
 		
 		
 	}
+	
+
 
 }
 

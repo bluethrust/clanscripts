@@ -14,10 +14,6 @@
 
 
 include_once("../../../../_setup.php");
-include_once("../../../../classes/member.php");
-include_once("../../../../classes/basicorder.php");
-include_once("../../../../classes/rank.php");
-
 
 $consoleObj = new ConsoleOption($mysqli);
 $member = new Member($mysqli);
@@ -28,10 +24,7 @@ $newMemberObj = new Member($mysqli);
 $cID = $consoleObj->findConsoleIDByName("View Member Applications");
 $consoleObj->select($cID);
 
-$memberAppObj = new BasicOrder($mysqli, "memberapps", "memberapp_id");
-$memberAppObj->set_assocTableKey("appvalue_id");
-$memberAppObj->set_assocTableName("app_values");
-
+$memberAppObj = new MemberApp($mysqli);
 
 
 if($member->authorizeLogin($_SESSION['btPassword']) && $member->hasAccess($consoleObj) && $memberAppObj->select($_POST['mAppID']) && $memberAppObj->get_info("memberadded") == 1) {

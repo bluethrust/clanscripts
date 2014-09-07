@@ -84,7 +84,7 @@
 			<tr>
 				<td class='main manageList".$addCSS."'>".$dispDate."</td>
 				<td class='main manageList".$addCSS."'>".$dispFrom."</td>
-				<td class='main manageList".$addCSS."' align='center'><a href='".MAIN_ROOT."members/console.php?cID=206&donationID=".$info['donation_id']."'>Details</a></td>
+				<td class='main manageList".$addCSS."' align='center'><a href='".MAIN_ROOT."members/console.php?cID=".$_GET['cID']."&donationID=".$info['donation_id']."'>Details</a></td>
 				<td class='main manageList".$addCSS."' align='center'>".$campaignObj->formatAmount($info['amount'])."</td>
 			</tr>		
 		";

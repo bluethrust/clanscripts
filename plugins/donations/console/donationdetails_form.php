@@ -3,7 +3,7 @@
 	if(!defined("MAIN_ROOT")) { exit(); }
 
 	$donationMember = new Member($mysqli);
-	$dispMemberName = $donationMember->select($donationInfo['member_id']) ? $member->getMemberLink() : "";
+	$dispMemberName = $donationMember->select($donationInfo['member_id']) ? $donationMember->getMemberLink() : "";
 
 	$dispName = $donationInfo['name'];
 	if($donationInfo['name'] == "" && $dispMemberName == "") {
@@ -22,7 +22,7 @@
 			"type" => "custom",
 			"html" => "<div class='formInput main'><a href='".$campaignObj->getLink()."'>".$campaignInfo['title']."</a></div>",
 			"sortorder" => $i++,
-			"display_name" => "Date Sent"
+			"display_name" => "Campaign"
 		),
 		"datesent" => array(
 			"type" => "custom",

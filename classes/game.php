@@ -44,7 +44,10 @@ class Game extends Rank {
 		
 		$returnArr = array();
 		if(isset($this->intTableKeyValue)) {
-			$result = $this->MySQL->query("SELECT * FROM ".$this->MySQL->get_tablePrefix()."gamesplayed_members WHERE ".$this->strTableKey." = '".$this->intTableKeyValue."'");
+			$membersGamesTable = $this->MySQL->get_tablePrefix()."gamesplayed_members";
+			$membersTable = $this->MySQL->get_tablePrefix()."members";
+			$query = "SELECT ".$membersGamesTable.".member_id FROM ".$membersGamesTable.", ".$membersTable." WHERE ".$membersGamesTable.".member_id = ".$membersTable.".member_id AND ".$membersGamesTable.".".$this->strTableKey." = '".$this->intTableKeyValue."' AND ".$membersTable.".disabled = '0'";
+			$result = $this->MySQL->query($query);
 			while($row = $result->fetch_assoc()) {
 				
 				$returnArr[] = $row['member_id'];

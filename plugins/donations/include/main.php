@@ -25,7 +25,7 @@
 	
 	$dispGoal = "";
 	if($campaignInfo['goalamount'] > 0) {
-		$dispGoal = " of ".$campaignObj->formatAmount(number_format($campaignInfo['goalamount'], 2))." goal";
+		$dispGoal = " of ".$campaignObj->formatAmount($campaignInfo['goalamount'], 2)." goal";
 	
 		// Graph
 		$goalCompletePercent = round(($campaignObj->getTotalDonationAmount()/$campaignInfo['goalamount'])*100);

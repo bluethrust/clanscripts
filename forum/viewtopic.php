@@ -80,6 +80,12 @@ include("forum_image_resize.php");
 // Start Page
 $PAGE_NAME = $postInfo['title']." - ".$boardInfo['name']." - ";
 
+
+// Quick Reply
+
+$quickReplyForm = new Form();
+$btThemeObj->addHeadItem("richtext-js", $quickReplyForm->getRichtextboxJSFile());
+
 include($prevFolder."themes/".$THEME."/_header.php");
 
 // Check Private Forum
@@ -256,7 +262,55 @@ echo "
 <div class='formDiv' style='background: none; border: 0px; overflow: auto'>
 	<div style='float: right'>".$dispManagePosts.$dispPostReply."</div>
 </div>
+
 ";
+
+if(LOGGED_IN && $topicInfo['lockstatus'] == 0) {
+	
+	$forumConsoleObj = new ConsoleOption($mysqli);
+	$postCID = $forumConsoleObj->findConsoleIDByName("Post Topic");
+	$forumConsoleObj->select($postCID);
+	$postReplyLink = $forumConsoleObj->getLink();
+	
+	$i = 1;
+	$arrComponents = array(
+		"message" => array(
+			"type" => "richtextbox",
+			"sortorder" => $i++,
+			"display_name" => "Message",
+			"attributes" => array("id" => "richTextarea", "style" => "width: 90%", "rows" => "10"),
+			"validate" => array("NOT_BLANK")
+		),
+		"submit" => array(
+			"type" => "submit",
+			"sortorder" => $i++,
+			"attributes" => array("class" => "submitButton formSubmitButton"),
+			"value" => "Post"
+		)
+	);
+	
+	$arrSetupReplyForm = array(
+		"name" => "forum-quick-reply",
+		"components" => $arrComponents,
+		"wrapper" => array(),
+		"attributes" => array("method" => "post", "action" => $postReplyLink."&bID=".$boardInfo['forumboard_id']."&tID=".$topicInfo['forumtopic_id'])
+	);
+	
+	$quickReplyForm->buildForm($arrSetupReplyForm);
+	echo "
+
+		<div class='formDiv'>
+			<b>Quick Reply:</b>
+
+			";
+		
+		$quickReplyForm->show();
+	
+	echo "
+		</div>
+	
+	";
+}
 
 
 if($blnPageSelect) {

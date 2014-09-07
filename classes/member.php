@@ -99,18 +99,9 @@ class Member extends Basic {
 		$returnVal = false;
 		if($this->intTableKeyValue != "" ) {
 			
-			// Generate New Salt
-			$randomString = substr(md5(uniqid("", true)),0,22);
-			$randomNum = rand(4,10);
-			if($randomNum < 10) {
-				$randomNum = "0".$randomNum;	
-			}
+			$passwordInfo = encryptPassword($new_password);
 			
-			$strSalt = "$2a$".$randomNum."$".$randomString;
-			
-			
-			$encryptPassword = crypt($new_password, $strSalt);
-			if($this->update(array("password", "password2"), array($encryptPassword, $strSalt))) {
+			if($this->update(array("password", "password2"), array($passwordInfo['password'], $passwordInfo['salt']))) {
 				$returnVal = true;	
 			}
 			

@@ -17,10 +17,6 @@
 $prevFolder = "";
 
 include($prevFolder."_setup.php");
-include($prevFolder."classes/member.php");
-include_once($prevFolder."classes/rank.php");
-include_once($prevFolder."classes/rankcategory.php");
-include_once($prevFolder."classes/game.php");
 
 // Classes needed for index.php
 

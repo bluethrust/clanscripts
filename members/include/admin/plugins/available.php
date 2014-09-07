@@ -44,7 +44,7 @@ echo "
 	$x = 0;
 	foreach($pluginsDir as $dir) {
 	
-		if(is_dir($prevFolder."plugins/".$dir) && $dir != "." && $dir != ".." && !in_array($dir, $pluginObj->getPlugins("filepath")) && file_exists($prevFolder."plugins/".$dir."/install.php")) {
+		if(is_dir($prevFolder."plugins/".$dir) && $dir != "." && $dir != ".." && !in_array($dir, $pluginObj->getPlugins("filepath")) && (file_exists($prevFolder."plugins/".$dir."/install.php") || file_exists($prevFolder."plugins/".$dir."/install_setup.php"))) {
 			
 			if($x == 0) {
 				$x = 1;
@@ -60,10 +60,15 @@ echo "
 				$pluginName = ucfirst($dir);
 			}
 			
+			$installJSData = "";
+			if(file_exists(BASE_DIRECTORY."plugins/".$dir."/install_setup.php")) {
+				$installJSData = " data-install='1'";
+			}
+			
 			$dispPlugins .= "
 				<tr>
 					<td class='dottedLine main manageList".$addCSS."' style='padding-left: 10px'>".$pluginName."</td>
-					<td class='dottedLine main manageList".$addCSS."' style='width: 24%' align='center'><a style='cursor: pointer' id='installPlugin' data-plugin='".$dir."' data-clicked='0'>Install</a></td>
+					<td class='dottedLine main manageList".$addCSS."' style='width: 24%' align='center'><a style='cursor: pointer' id='installPlugin' data-plugin='".$dir."' data-clicked='0'".$installJSData.">Install</a></td>
 				</tr>			
 			";
 		}
@@ -96,13 +101,19 @@ echo "
 		$(document).ready(function() {
 			$(\"a[id='installPlugin']\").click(function() {
 				
+				var installLink = '".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/install.php';
+				if($(this).attr('data-install') == \"1\") {
+					installLink = '".$MAIN_ROOT."plugins/install.php?plugin='+$(this).attr('data-plugin');
+				}
+				
+			
 				if($(this).attr('data-clicked') == 0) {
 					$(this).html(\"<img src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif' class='manageListActionButton'>\");
 					$(this).attr('data-clicked', 1);
 					$(this).css('cursor', 'default');
 					
 					
-					$.post('".$MAIN_ROOT."plugins/'+$(this).attr('data-plugin')+'/install.php', { pluginDir: $(this).attr('data-plugin') }, function(data) {
+					$.post(installLink, { pluginDir: $(this).attr('data-plugin') }, function(data) {
 					
 						postResult = JSON.parse(data);
 						

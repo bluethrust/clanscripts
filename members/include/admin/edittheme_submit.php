@@ -157,6 +157,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		
 	}
 	
+	/*
 	// Update Global CSS
 	
 	if(!is_writable("../../../themes/".$THEME."/btcs4.css")) {
@@ -171,7 +172,7 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		}
 		
 	}
-	
+	*/
 	
 	
 	if($countErrors == 0) {

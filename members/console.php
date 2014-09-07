@@ -60,22 +60,14 @@ $arrAceEditorPages = array("Modify Current Theme", "Add Menu Category", "Add Men
 
 
 if(in_array($consoleInfo['pagetitle'], $arrTinyMCEPages)) {
-	$EXTERNAL_JAVASCRIPT .= "
-	
-	<script type='text/javascript' src='".$MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>
-	
-	";	
+	$btThemeObj->addHeadItem("richtexteditor", "<script type='text/javascript' src='".$MAIN_ROOT."js/tiny_mce/jquery.tinymce.js'></script>");
 }
-
 
 if(in_array($consoleInfo['pagetitle'], $arrAceEditorPages)) {
-	$EXTERNAL_JAVASCRIPT .= "<script type='text/javascript' src='".$MAIN_ROOT."js/ace/src-min-noconflict/ace.js' charset='utf-8'></script>";	
+	$btThemeObj->addHeadItem("codeedtior", "<script type='text/javascript' src='".$MAIN_ROOT."js/ace/src-min-noconflict/ace.js' charset='utf-8'></script>");	
 }
 
-if($consoleInfo['pagetitle'] == "Home Page Images") {
-	$EXTERNAL_JAVASCRIPT .= "<script type='text/javascript' src='".$MAIN_ROOT."js/jquery.form.min.js' charset='utf-8'></script>";
-}
-
+$hooksObj->run("init_console");
 
 include("../themes/".$THEME."/_header.php");
 
