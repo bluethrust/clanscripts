@@ -1,0 +1,566 @@
+html {
+	height: 100%;
+	margin: 0px;
+}
+
+body {
+	height: 100%;
+	background-image: url('images/layout/bg2.png');
+	padding: 0px;
+	margin: 0px;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	
+}
+
+a {
+	color: #e2a3ff;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #f0cfff;
+	text-decoration: underline;
+}
+
+.bottom-right-character {
+	width: 571px;
+	height: 439px;
+	position: fixed;
+	_position: absolute;
+	right: 0px;
+	bottom: 0px;
+	background-image: url('images/layout/bottom-right-character.png');
+}
+
+
+.bottom-left-character {
+	width: 360px;
+	height: 593px;
+	position: fixed;
+	_position: absolute;
+	left: 0px;
+	bottom: 0px;
+	background-image: url('images/layout/bottom-left-character.png');
+}
+
+
+.background-gradient {
+	width: 100%;
+	height: 597px;
+	position: fixed;
+	_position: absolute;
+	left: 0px;
+	bottom: 0px;
+	background-image: url('images/layout/gradient-bg.png');
+}
+
+.logoBar {
+	width: 100%;
+	height: 46px;
+	background-image: url('images/layout/logobar.png');
+	position: absolute;
+	top: 60px;
+	min-width: 1162px;
+}
+
+
+.wrapper {
+	min-width: 1162px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -60px;
+}
+
+.push {
+	height: 60px;
+	position: relative;
+
+}
+
+.footerDiv {
+	height: 40px;
+	padding-top: 20px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+}
+
+.headerDiv {
+	position: relative;
+	height: 175px;
+	width: 85%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.logoDiv {
+	position: absolute;
+	width: 305px;
+	height: 82px;
+	top: 30px;
+	left: 10px;
+}
+
+
+.loginDiv {
+	position: absolute;
+	top: 5px;
+	right: 20px;
+	width: 336px;
+	height: 149px;
+	background-image: url('images/layout/memberlogin-bg.png');
+}
+
+
+.loginUsernameText {
+	position: absolute;
+	top: 50px;
+	left: 32px;
+	background: url('images/layout/memberlogin-text.png') 0px 0px;
+	width: 62px;
+	height: 13px;
+}
+
+
+.loginPasswordText {
+	position: absolute;
+	top: 76px;
+	left: 32px;
+	background: url('images/layout/memberlogin-text.png') -62px 0px;
+	width: 60px;
+	height: 13px;
+}
+
+
+.loginRememberMeText {
+	position: absolute;
+	top: 100px;
+	left: 32px;
+	background: url('images/layout/memberlogin-text.png') -122px 0px;
+	width: 82px;
+	height: 13px;
+}
+
+.loginUsernameTextBoxDiv {
+	position: absolute;
+	top: 45px;
+	left: 104px;
+}
+
+
+.loginPasswordTextBoxDiv {
+	position: absolute;
+	top: 72px;
+	left: 104px;
+}
+
+.loginTextbox {
+	width: 146px;
+	height: 16px;
+	font-family: verdana, sans-serif;
+	font-size: 12px;
+	border: 0px;
+	padding: 2px;
+}
+
+.loggedInProfilePic {
+	width: 35px;
+	height: 47px;
+	border: solid black 1px;
+	position: absolute;
+	top: 43px;
+	left: 32px;
+}
+
+.loggedInMemberOptions {
+	position: absolute;
+	top: 43px;
+	left: 72px;
+	color: white;
+	font-size: 10px;
+	width: 235px;
+}
+
+
+.loginSectionTitle {
+	position: relative;
+	top: 25px;
+	width: 296px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+input[type=checkbox] {
+	cursor: pointer;
+}
+
+.rememberMeCheckbox {
+	position: absolute;
+	top: 98px;
+	left: 117px;
+}
+
+.loginButton {
+	background: url('images/layout/loginbutton.png') 0px 0px;
+	width: 48px;
+	height: 55px;
+	position: absolute;
+	top: 40px;
+	left: 259px;
+}
+
+.loginButton:hover {
+	background: url('images/layout/loginbutton.png') 0px -55px;
+	width: 48px;
+	height: 55px;
+	position: absolute;
+	top: 40px;
+	left: 259px;
+	cursor: pointer;
+}
+
+
+
+.menuBarContainer {
+	height: 85px;
+	width: 85%;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 1162px;
+}
+
+
+.menuBarLeft {
+	width: 206px;
+	height: 65px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/menubar-left.png');
+}
+
+.menuBarBG {
+	width: 90%;
+	height: 65px;
+	position: absolute;
+	top: 0px;
+	right: 65px;
+	background-image: url('images/layout/menubar-bg.png');
+	
+}
+
+.menuBarGrunge {
+	width: 926px;
+	height: 65px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background-image: url('images/layout/menubar-grunge.png');
+	background-repeat: no-repeat;
+}
+
+.menuBarShadow {
+	width: 885px;
+	height: 65px;
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/menubar-shadow.png');
+	background-repeat: no-repeat;
+	position: absolute;
+}
+
+.menuBarShadowBG {
+	width: 90%;
+	height: 65px;
+	top: 0px;
+	right: 60px;
+	background-image: url('images/layout/menubar-shadow-bg.png');
+	position: absolute;
+	
+}
+
+.menuBarTape {
+	width: 83px;
+	height: 65px;
+	right: 0px;
+	top: 0px;
+	background-image: url('images/layout/menubar-tape.png');
+	position: absolute;
+}
+
+.menuBarLinksContainer {
+	position: relative;
+	height: 31px;
+	margin-left: 40px;
+	top: 17px;
+
+}
+
+.menuBarLinkSep {
+	height: 31px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 24px;
+	margin-right: 25px;
+	background-image: url('images/layout/menu-separator.png');
+	width: 2px;
+}
+
+
+.menuBarLinkHome {
+	background: url('images/layout/menutext_sprite.png') 0px 0px;
+	height: 31px;
+	width: 36px;
+}
+
+
+.menuBarLinkHome:hover {
+	background: url('images/layout/menutext_sprite.png') 0px -31px;
+	height: 31px;
+	width: 36px;
+}
+
+
+.menuBarLinkMembers {
+	background: url('images/layout/menutext_sprite.png') -36px 0px;
+	height: 31px;
+	width: 61px;
+}
+
+.menuBarLinkMembers:hover {
+	background: url('images/layout/menutext_sprite.png') -36px -31px;
+	height: 31px;
+	width: 61px;
+}
+
+
+.menuBarLinkEvents {
+	background: url('images/layout/menutext_sprite.png') -97px 0px;
+	height: 31px;
+	width: 48px;
+}
+
+.menuBarLinkEvents:hover {
+	background: url('images/layout/menutext_sprite.png') -97px -31px;
+	height: 31px;
+	width: 48px;
+}
+
+
+.menuBarLinkNews {
+	background: url('images/layout/menutext_sprite.png') -145px 0px;
+	height: 31px;
+	width: 38px;
+}
+
+.menuBarLinkNews:hover {
+	background: url('images/layout/menutext_sprite.png') -145px -31px;
+	height: 31px;
+	width: 38px;
+}
+
+
+.menuBarLinkRules {
+	background: url('images/layout/menutext_sprite.png') -183px 0px;
+	height: 31px;
+	width: 40px;
+}
+
+.menuBarLinkRules:hover {
+	background: url('images/layout/menutext_sprite.png') -183px -31px;
+	height: 31px;
+	width: 40px;
+}
+
+.menuBarLinkDiplomacy {
+	background: url('images/layout/menutext_sprite.png') -223px 0px;
+	height: 31px;
+	width: 71px;
+}
+
+.menuBarLinkDiplomacy:hover {
+	background: url('images/layout/menutext_sprite.png') -223px -31px;
+	height: 31px;
+	width: 71px;
+}
+
+
+.menuBarLinkSquads {
+	background: url('images/layout/menutext_sprite.png') -294px 0px;
+	height: 31px;
+	width: 47px;
+}
+
+.menuBarLinkSquads:hover {
+	background: url('images/layout/menutext_sprite.png') -294px -31px;
+	height: 31px;
+	width: 47px;
+}
+
+
+.menuBarLinkForum {
+	background: url('images/layout/menutext_sprite.png') -341px 0px;
+	height: 31px;
+	width: 42px;
+}
+
+.menuBarLinkForum:hover {
+	background: url('images/layout/menutext_sprite.png') -341px -31px;
+	height: 31px;
+	width: 42px;
+}
+
+.menuBarLinkDiv {
+	display: inline-block;
+	height: 31px;
+	width: 75px;
+}
+
+
+.mainSiteContainer {
+	background-image: url('images/layout/contentbg.png');
+	width: 85%;
+	min-height: 300px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	border: solid #420060 1px;
+	box-shadow: 0px 0px 7px 3px #250036;
+	padding: 5px;
+	overflow: auto;
+}
+
+
+.leftMenuDiv {
+	float: left;
+	width: 145px;
+}
+
+.rightMenuDiv {
+	float: right;
+	width: 145px;
+}
+
+.centerContentDiv {
+	margin-left: 150px;
+	margin-right: 150px;
+}
+
+
+.navMenuMain {
+	background: url('images/layout/navtitles.png') 0px 0px;
+	width: 145px;
+	height: 19px;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+
+.navMenuTopPlayers {
+	background: url('images/layout/navtitles.png') -145px 0px;
+	width: 145px;
+	height: 19px;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.navMenuForumActivity {
+	background: url('images/layout/navtitles.png') -290px 0px;
+	width: 145px;
+	height: 19px;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.navMenuChatBoard {
+	background: url('images/layout/navtitles.png') -435px 0px;
+	width: 145px;
+	height: 19px;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.navMenuNewMembers {
+	background: url('images/layout/navtitles.png') -580px 0px;
+	width: 145px;
+	height: 19px;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.navMenuTwitter {
+	background: url('images/layout/socialmedia/twitter.png') 0px 0px;
+	width: 75px;
+	height: 43px;
+}
+
+.navMenuTwitter:hover {
+	background: url('images/layout/socialmedia/twitter.png') 0px -43px;
+	width: 75px;
+	height: 43px;
+}
+
+
+.navMenuFacebook {
+	background: url('images/layout/socialmedia/facebook.png') 0px 0px;
+	width: 75px;
+	height: 43px;
+}
+
+.navMenuFacebook:hover {
+	background: url('images/layout/socialmedia/facebook.png') 0px -43px;
+	width: 75px;
+	height: 43px;
+}
+
+
+.navMenuYoutube {
+	background: url('images/layout/socialmedia/youtube.png') 0px 0px;
+	width: 75px;
+	height: 43px;
+}
+
+.navMenuYoutube:hover {
+	background: url('images/layout/socialmedia/youtube.png') 0px -43px;
+	width: 75px;
+	height: 43px;
+}
+
+.menuLinks {
+	padding-left: 3px;
+}
+
+
+.gradientBox {
+	background-image: url('images/gradient.png');
+	height: 14px;
+	border: solid #3b0055 1px;
+	padding: 3px;
+}
+
+/* Custom BTCS4.css */
+
+.dashedLine, .dottedLine, .solidLine {
+	border-color: white;
+}
+
+.shoutBox {
+	padding: 3px;
+}
+
+.clocksDiv {
+	width: 98%;
+}

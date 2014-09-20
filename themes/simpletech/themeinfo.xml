@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<theme>
+		<info name="Simple Tech">
+			<section>Left Menu (Left)</section>
+			<section>Left Menu (Right)</section>
+			<section>Top Menu (Main)</section>
+			<section>Top Menu (Left)</section>
+		</info>
+	</theme>

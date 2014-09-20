@@ -1,0 +1,550 @@
+html {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+
+body {
+	
+	margin: 0px;
+	padding: 0px;
+	background-color: #b4b4b4;
+	font-family: verdana, sans-serif;
+	color: white;
+	font-size: 11px;
+	height: 100%;
+	
+}
+
+a {
+	color: #ff7e00;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #ffa651;
+}
+
+.wrapper {
+	width: 100%;
+	min-width: 990px;
+	margin: 0px;
+	padding: 0px;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -60px;
+	position: relative;
+	
+}
+
+.push {
+	height: 60px;
+	position: relative;
+
+}
+
+.footerDiv {
+	height: 40px;
+	padding-top: 20px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	color: white;
+	font-family: 'PT Mono', verdana, sans-serif;
+	font-size: 11px;
+}
+
+.right-building-bg {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	background-image: url('images/layout/right-building-bg.png');
+	width: 729px;
+	height: 675px;
+	z-index: -1;
+}
+
+
+.gradientBall {
+	width: 359px;
+	height: 359px;
+	position: fixed;
+	bottom: -180px;
+	left: 50%;
+	margin-left: -179px;
+	background-image: url('images/layout/gradient-ball.png');
+}
+
+
+.left-building-bg {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	background-image: url('images/layout/left-building-bg.png');
+	width: 748px;
+	height: 647px;
+	z-index: -1;
+}
+
+.top-left-bg2 {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/top-left-bg3.png');
+	width: 367px;
+	height: 460px;
+	z-index: -1;
+}
+
+.top-left-bg {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/top-left-bg.png');
+	width: 615px;
+	height: 271px;
+	z-index: -1;
+}
+
+.top-right-bg {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	background-image: url('images/layout/top-right-bg.png');
+	width: 594px;
+	height: 393px;
+	z-index: -1;
+}
+
+.bottom-center-bg {
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	margin-left: -351px;
+	width: 702px;
+	height: 376px;
+	background-image: url('images/layout/bottom-center-bg.png');
+	z-index: -1;
+	
+}
+
+.pattern-bg {
+	background-image: url('images/layout/patternbg.png');
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: -1;	
+}
+
+.top-gradient-bg {
+	background-image: url('images/layout/top-gradient-bg.png');
+	min-width: 100%;
+	height: 250px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+}
+
+
+.bottom-gradient-bg {
+	background-image: url('images/layout/bottom-gradient-bg.png');
+	min-width: 100%;
+	height: 250px;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	z-index: -1;
+}
+
+
+
+.headerDiv {
+	position: relative;
+	width: 85%;
+	min-width: 990px;
+	height: 270px;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+.dogTagsDiv {
+
+	background-image: url('images/layout/dogtags.png');
+	width: 357px;
+	height: 238px;
+	position: absolute;
+	top: 0px;
+	left: 0px;	
+	
+}
+
+
+.loggedinTitle {
+	position: absolute;
+	top: 45px;
+	left: 135px;
+	background-image: url('images/layout/loggedin-title.png');
+	width: 90px;
+	height: 23px;
+	transform:rotate(14deg);
+}
+
+.loggedinUserInfo {
+	position: absolute;
+	top: 82px;
+	left: 110px;
+	width: 215px;
+	height: 77px;
+	text-align: center;
+	font-family: 'PT Mono', verdana, sans-serif;
+	font-size: 14px;
+	color: #1e1e1e;
+	transform:rotate(14deg);
+}
+
+.loggedinUserLinks {
+	transform:rotate(14deg);
+	position: absolute;
+	top: 125px;
+	left: 110px;
+	width: 215px;
+	text-align: center;
+	font-family: 'PT Mono', verdana, sans-serif;
+	font-size: 10px;
+	
+}
+
+.loggedinUserInfo a, .loggedinUserLinks a {
+	color: #9a9a9a;	
+}
+
+.loggedinUserInfo a:hover, .loggedinUserLinks a:hover {
+	color: #8b8b8b;	
+}
+
+.loginTitle {
+	position: absolute;
+	top: 48px;
+	left: 135px;
+	background-image: url('images/layout/login-title.png');
+	width: 56px;
+	height: 23px;
+}
+
+.loginTextbox {
+	width: 118px;
+	height: 18px;
+	background-image: url('images/layout/login-form-bg.png');
+	background-color: rgba(0,0,0,0); 
+	font-family: 'PT Mono', verdana, sans-serif;
+	border: 0px;
+	font-size: 11px;
+	padding: 1px;
+	text-align: right;
+	color: #1e1e1e;
+}
+
+.loginUsernameIMG {
+	position: absolute;
+	left: 226px;
+	top: 65px;
+	background: url('images/layout/login-text.png') 0px 0px;
+	width: 47px;
+	height: 11px;
+}
+
+.loginUsernameTextboxDiv {
+	position: absolute;
+	top: 80px;
+	left: 154px;
+	width: 120px;
+	height: 20px;
+}
+
+.loginPasswordIMG {
+	position: absolute;
+	left: 280px;
+	top: 97px;
+	background: url('images/layout/login-text.png') -47px 0px;
+	width: 47px;
+	height: 11px;
+}
+
+.loginPasswordTextboxDiv {
+	position: absolute;
+	top: 112px;
+	left: 207px;
+	width: 120px;
+	height: 20px;
+}
+
+.rememberMeIMG {
+	position: absolute;
+	left: 120px;
+	top: 125px;
+	background: url('images/layout/login-text.png') 0px -11px;
+	width: 48px;
+	height: 22px;
+}
+
+.rememberMeCheckbox {
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	top: 135px;
+	left: 169px;
+	background: url('images/layout/rememberme.png') 0px 0px;
+	cursor: pointer;	
+}
+
+.rememberMeCheckbox_Checked {
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	top: 135px;
+	left: 169px;
+	background: url('images/layout/rememberme.png') 0px -18px;
+	cursor: pointer;	
+}
+
+.loginButton {
+	position: absolute;
+	left: 255px;
+	top: 137px;
+	width: 58px;
+	height: 33px;
+	background: url('images/layout/login-button.png') 0px 0px;
+	cursor: pointer;
+}
+
+.loginButton:hover {
+	background: url('images/layout/login-button.png') 0px -33px;
+}
+
+.logoDiv {
+	width: 437px;
+	height: 116px;
+	position: absolute;
+	top: 30px;
+	right: 0px;
+}
+
+
+.bodyDiv {
+	width: 85%;
+	min-width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+.leftMenuDiv {
+	float: left;
+	width: 165px;
+	min-height: 500px;	
+}
+
+.leftMenuTitleBG {
+	position: relative;
+	width: 140px;
+	height: 29px;
+	background: url('images/layout/menu-title-bg.png') 0px 0px;
+	background-repeat: no-repeat;
+	box-shadow: 0px 0px 2px 0px #ff7e00;
+	padding-left: 25px;
+	padding-top: 6px;
+	margin-bottom: 10px;
+}
+
+.rightMenuDiv {
+	float: right;
+	width: 165px;
+	min-height: 500px;
+}
+
+.rightMenuTitleBG {
+	position: relative;
+	width: 140px;
+	height: 29px;
+	background: url('images/layout/menu-title-bg.png') 0px -35px;
+	background-repeat: no-repeat;
+	box-shadow: 0px 0px 2px 0px #ff7e00;
+	padding-top: 6px;
+	text-align: right;
+	padding-right: 25px;
+	margin-bottom: 10px;
+}
+
+
+.mainMenuIMG {
+	width: 69px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') 0px 0px;
+}
+
+.downloadsMenuIMG {
+	width: 75px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') -69px 0px;
+}
+
+.topPlayersMenuIMG {
+	width: 79px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') -144px 0px;
+}
+
+.forumActivityMenuIMG {
+	width: 97px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') -223px 0px;
+}
+
+.shoutboxMenuIMG {
+	width: 65px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') -320px 0px;
+}
+
+.newMembersMenuIMG {
+	width: 109px;
+	height: 22px;
+	background: url('images/layout/menu-titles.png') -385px 0px;
+}
+
+.menuContentDiv {
+	width: 155px;
+	min-height: 50px;
+	margin-bottom: 15px;
+	padding: 10px 5px;
+	background-color: rgba(17,20,30,.65);
+	box-shadow: 0px 0px 2px 0px #ff7e00;
+}
+
+
+.topMenuDiv {
+	position: absolute;
+	bottom: 30px;
+	right: 0px;
+	width: 990px;
+	height: 20px;
+	text-align: right;
+
+}
+
+
+
+.topMenuDiv img.topMenu_SignUp:hover, img.topMenu_MyAccount:hover, img.topMenu_News:hover,img.topMenu_Members:hover,img.topMenu_Squads:hover,img.topMenu_Events:hover,img.topMenu_Tournaments:hover,img.topMenu_Forum:hover {
+	border-bottom: solid #ff7e00 2px;	
+}
+
+
+.topMenuDiv img.topMenu_Arrow {
+	border: 0px;
+	margin-left: 15px
+}
+
+.topMenuDiv img.topMenu_Arrow:hover {
+	border: 0px;
+}
+
+.topMenu_News {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') 0px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_Members {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -96px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+
+.topMenu_Squads {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -192px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_Tournaments {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -288px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_Events {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -384px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_Forum {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -480px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_SignUp {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -576px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.topMenu_MyAccount {
+	width: 96px;
+	height: 20px;
+	background: url('images/layout/top-menu-titles.png') -672px 0px;
+	border: solid rgba(0,0,0,0) 2px;
+	background-repeat: no-repeat;
+}
+
+.centerContentWrapper {
+	margin-left: 175px;
+	margin-right: 175px;
+	padding-top: 2px;
+}
+
+.centerContentBGDiv {
+	width: 100%;
+	padding: 0px;
+	background-color: rgba(17,20,30,.5);
+	box-shadow: 0px 0px 2px 1px black;
+}
+
+.centerContentMainDiv {
+	padding: 10px;
+	color: white;	
+}
+
+.gradientBox {
+	height: 20px;
+	background-image: url("images/gradient.png");
+	border: solid #11141e 1px;
+}
+
+/* Custom BTCS4.css */
+
+.menusForumActivityWrapper, .menusNewestMembersWrapper {
+	margin-left: 0px;
+	margin-right: 0px; 
+}

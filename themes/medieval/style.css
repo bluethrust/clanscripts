@@ -1,0 +1,474 @@
+html {
+	width: 100%;
+	min-height: 100%;
+	padding: 0px;
+	margin: 0px;
+	min-width: 990px;
+}
+body {
+	
+	width: 100%;
+	min-width: 990px;
+	min-height: 100%;
+	background-image: url('images/bg-image.png');
+	margin: 0px;
+	padding: 0px;
+	font-family: verdana;
+	font-size: 11px;
+	color: white;	
+}
+
+.mainSiteContainer {
+	margin: 0px;
+	padding: 0px;
+	border: solid red 0px;
+	min-width: 990px;
+	margin-bottom: -54px;
+}
+
+
+.mainSiteTable {
+	margin-top: 225px;
+	border-spacing: 0px;
+	width: 100%;
+	padding: 0px;
+	min-width: 990px;
+}
+
+.mainSiteTable .mainSiteLeft {
+	padding: 0px;
+}
+
+.mainSiteTable .mainSiteRight {
+	width: 238px;
+	padding: 0px;
+}
+
+.push {
+	height: 54px;
+}
+
+.footerDiv {
+	height: 40px;
+	margin: 0px;
+	color: white;
+	text-align: center;
+	font-size: 11px;
+	background-image: url('images/layout/footer-bg.png');
+	padding-top: 14px;
+	font-family: 'Overlock SC', verdana;
+	
+}
+
+a {
+	color: silver;
+	text-decoration: none;
+}
+
+a:hover {
+	color: white;
+	text-decoration: underline;
+}
+
+#centerKnightBG {
+	position: fixed;
+	_position: absolute;
+	z-index: -1;
+	top: 50px;
+	right: 0px;
+	width: 911px;
+	height: 307px;
+	background-image: url('images/layout/center-knight-bg.png');
+}
+
+#leftKnightBG {
+	position: fixed;
+	_position: absolute;
+	z-index: -1;
+	top: 50px;
+	left: 0px;
+	width: 247px;
+	height: 171px;
+	background-image: url('images/layout/left-knight-bg.png');
+}
+
+#acBG {
+	position: fixed;
+	_position: absolute;
+	z-index: -1;
+	top: 50px;
+	left: 160px;
+	width: 420px;
+	height: 337px;
+	background-image: url('images/layout/ac-bg.png');
+}
+
+
+.bloodLeftBG {
+	position: absolute;
+	top: 75px;
+	left: 95px;
+	width: 125px;
+	height: 129px;
+	background-image: url('images/layout/blood-left-bg.png');
+}
+
+.shieldBG {
+	position: absolute;
+	z-index: 5;
+	top: 50px;
+	right: 90px;
+	width: 232px;
+	height: 243px;
+	padding: 0px;
+	margin: 0px;
+	background-image: url('images/layout/shield.png');
+}
+
+.rightBarBG {
+	position: absolute;
+	z-index: -3;
+	height: 200px;
+	right: 105px;
+	width: 99px;
+	top: 50px;
+	background-image: url('images/layout/right-bar.png');
+}
+
+
+.contentContainer {
+	right: 285px; 
+	position: absolute; 
+	width: 70%; 
+	min-width: 640px; 
+	top: 225px; 
+	min-height: 75%;
+}
+
+.layoutContentTable {
+	width: 90%;
+	border-spacing: 0px;
+	padding: 0px;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 0px;
+	margin-bottom: 20px;
+}
+
+.layoutContentTable .top-left-table {
+	background-image: url('images/layout/content/topleft.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .top-table {
+	background-image: url('images/layout/content/top.png');
+	height: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .top-right-table {
+	background-image: url('images/layout/content/topright.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .left-table {
+	background-image: url('images/layout/content/left.png');
+	width: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .center-table {
+	background-image: url('images/layout/content/bg.png');
+	padding: 0px;
+	font-size: 11px;
+}
+
+.layoutContentTable .right-table {
+	background-image: url('images/layout/content/right.png');
+	width: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .bottom-left-table {
+	background-image: url('images/layout/content/bottomleft.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .bottom-right-table {
+	background-image: url('images/layout/content/bottomright.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+}
+
+.layoutContentTable .bottom-table {
+	background-image: url('images/layout/content/bottom.png');
+	height: 25px;
+	padding: 0px;
+}
+
+.navMenuContainer {
+	position: relative;
+	z-index: 4;
+	width: 171px;
+	padding: 0px;
+	
+}
+
+.navMenuTop {
+	width: 171px;
+	height: 20px;
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	background-image: url('images/layout/menu/box-top.png');
+}
+
+.navMenuCenter {
+	position: relative;
+	width: 153px;
+	padding: 0px;
+	padding-left: 18px;
+	padding-top: 50px;
+	margin: 0px;
+	position: relative;
+	background-image: url('images/layout/menu/box-center.png');
+	font-family: 'Overlock SC', verdana;
+	font-size: 12px;
+}
+
+.navMenuTitle {
+	margin-left: -18px;
+	text-align: center;
+	margin-bottom: 5px;
+	position: relative;
+}
+
+.navMenuBottom {
+	width: 171px;
+	height: 20px;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 20px;
+	position: relative;
+	background-image: url('images/layout/menu/box-bottom.png');
+}
+
+.layoutLine {
+	position: absolute;
+	top: 150px;
+	width: 100%;
+	left: 0px;
+	height: 21px;
+	background-image: url('images/layout/line.png');
+}
+
+.loginBar {
+	z-index: 5000;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	left: 0px;
+	height: 60px;
+	background-image: url('images/layout/login/login-bar.png');
+	min-width: 990px;
+}
+
+.logoDiv {
+	position: absolute;
+	top: 103px;
+	left: 100px;
+	height: 104px;
+	width: 402px;
+	padding: 0px;
+	border: 0px;
+	z-index: 3000;
+}
+
+.loggedInSection {
+	position: relative;
+	margin-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+	min-width: 990px;
+	height: 40px;
+	
+}
+
+.loggedInImg {
+	width: 106px;
+	height: 25px;
+	position: absolute;
+	top: 10px;
+	margin-left: -53px;
+	left: 50%;
+	background-image: url('images/layout/login/loggedin.png');
+	background-repeat: no-repeat;
+	
+}
+
+.loggedInInfo {
+	position: relative;
+	top: 0px;
+	margin-left: 120px;
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Overlock SC', verdana;
+	font-size: 14px;
+	width: 100%;
+}
+
+
+.loginSection {
+	position: absolute;
+	top: 5px;
+	right: 50px;
+	height: 40px;
+	width: 700px;
+}
+
+.loginUsernameImg {
+	width: 85px;
+	height: 23px;
+	float: left;
+	margin-right: 8px;
+	margin-top: 10px;
+	border: 0px;
+	padding: 0px;
+	background-image: url('images/layout/login/username.png');
+	background-repeat: no-repeat;
+}
+
+.loginPasswordImg {
+	width: 87px;
+	height: 23px;
+	float: left;
+	margin-right: 8px;
+	margin-top: 10px;
+	border: 0px;
+	padding: 0px;
+	background-image: url('images/layout/login/password.png');
+	background-repeat: no-repeat;
+}
+
+.loginTextBox {
+	float: left;
+	margin-top: 9px;
+	margin-right: 8px;
+	border: 0px;
+	padding: 0px;
+}
+
+
+.loginButtonSection {
+	position: absolute;
+	top: 0px;
+	left: 525px;
+	width: 100px;
+	height: 40px;
+	border: 0px;
+	padding: 0px;
+}
+
+.loginRememberMeImg {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 75px;
+	height: 12px;
+	border: 0px;
+	padding: 0px;
+	background-image: url('images/layout/login/rememberme.png');
+	background-repeat: no-repeat;
+}
+
+.loginRememberMeBoxContainer {
+	position: absolute;
+	top: 0px;
+	left: 78px;
+	height: 10px;
+	width: 10px;
+	border: 0px;
+	padding: 0px;
+}
+
+.loginRememberBoxImg {
+	background: url('images/layout/login/rememberme-checkbox.png') 0px -10px;
+	width: 10px;
+	height: 10px;
+	border: 0px;
+	cursor: pointer;
+}
+
+.loginRememberBoxImg_checked {
+	background: url('images/layout/login/rememberme-checkbox.png') 0px 0px;
+	width: 10px;
+	height: 10px;
+	border: 0px;
+	cursor: pointer;
+}
+
+.loginButtonContainer {
+	position: absolute;
+	top: 17px;
+	left: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+.loginButtonImg {
+	background: url('images/layout/login/loginbutton.png') 0px 0px;
+	width: 100px;
+	height: 25px;
+	border: 0px;
+}
+
+.loginButtonImg:hover {
+	background: url('images/layout/login/loginbutton.png') 0px -25px;
+	width: 100px;
+	height: 25px;
+	border: 0px;
+	cursor: pointer;
+}
+
+
+/* Custom BTCS4.css */
+
+.formDiv {
+	border-color: #191a1a;
+}
+
+.breadCrumbTitle {
+	font-family: 'Overlock SC', verdana;
+}
+
+.shoutBox {
+	margin: 0px;
+	margin-left: -3px;
+	padding: 3px;	
+}
+
+.shoutBoxPost {
+	position: relative;
+	margin: 0px auto;
+	margin-left: -12px;
+	height: 100px;
+	margin-top: 10px;
+}
+
+.menusForumActivityWrapper, .menusNewestMembersWrapper {
+	margin-left: 1px;
+	margin-right: 18px;
+}
+
+.menusNewestMembersItemWrapper, .menusForumActivityItemWrapper {
+	padding: 5px 2px;
+}

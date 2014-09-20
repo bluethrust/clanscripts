@@ -8,7 +8,12 @@
 			</div>
 		";
 	}
+
 ?>
+
+<div id='newThemeNeeded' class='errorDiv' style='display: none'>
+	<b>NOTE:</b> A major update to themes has been made in R15.  Please download a new copy of the theme you were using here: <a href='http://bluethrust.com/themes' target='_blank'>http://bluethrust.com/themes</a>.  
+</div>
 
 <form action='index.php?step=2' method='post'>
 	<table class='mainTable'>			
@@ -33,7 +38,7 @@
 		</tr>
 		<tr>
 			<td class='tdLabel'>Install Type:</td>
-			<td><select name='installType' class='textBox'><option value='1'>Fresh Install</option><option value='2'>Update</option></select></td>
+			<td><select name='installType' id='installType' class='textBox'><option value='1'>Fresh Install</option><option value='2'>Update</option></select></td>
 		</tr>
 		<tr>
 			<td colspan='2' align='center'><br><br>
@@ -42,3 +47,18 @@
 		</tr>
 	</table>
 </form>
+
+<script type='text/javascript'>
+	$(document).ready(function() {
+		$('#installType').change(function() {
+		
+			if($(this).val() == "2") {
+				$('#newThemeNeeded').show();
+			}
+			else {
+				$('#newThemeNeeded').hide();
+			}
+	
+		});
+	});
+</script>

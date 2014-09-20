@@ -1,0 +1,499 @@
+body {
+
+	background-image: url('images/layout/rock-bg.png');
+	background-repeat: repeat-y;
+	background-position: center	top;
+	background-color: black;
+	margin: 0px;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+}
+
+a {
+	color: #008ae4;
+	text-decoration: none;	
+}
+
+a:hover {
+	color: #5cbfff;	
+}
+
+.highlightBG {
+	background-image: url('images/layout/bg-highlight.png');
+	position: fixed;
+	left: 50%;
+	margin-left: -291px;
+	top: 50%;
+	margin-top: -291px;
+	width: 581px;
+	height: 581px;
+}
+
+.topIceBG {
+	background-image: url('images/layout/top-ice.png');
+	min-width: 100%;
+	height: 196px;
+	background-position: center top;
+	position: fixed;
+}
+
+.topBar {
+	min-width: 100%;
+	position: fixed;	
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/topbar.png');
+	height: 57px;
+	z-index: 988888;
+}
+
+.headerDiv {	
+	width: 88%;
+	min-width: 990px;
+	height: 120px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 75px;
+	text-align: center;
+}
+
+.bodyDiv {
+	width: 88%;
+	min-width: 990px;
+	min-height: 500px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #0b0b0b;
+	border: solid #171717 1px;
+	box-shadow: 0px 0px 5px 3px black;
+	padding-top: 52px;
+	padding-bottom: 20px;
+	border-radius: 2px;
+}
+
+
+.footerDiv {
+	position: relative;
+	height: 60px;
+	text-align: center;
+	padding-top: 20px;
+	font-size: 10px;
+}
+
+.leftStripe {
+	width: 190px;
+	min-height: 100%;
+	max-height: 856px;
+	position: fixed;
+	background-image: url('images/layout/left-stripe.png');
+	top: -40px;
+	background-repeat: no-repeat;
+	left: 2%;
+}
+
+.rightStripe {
+	width: 190px;
+	min-height: 100%;
+	max-height: 856px;
+	position: fixed;
+	background-image: url('images/layout/right-stripe.png');
+	top: 0px;
+	background-repeat: no-repeat;
+	right: 2%;
+}
+
+.topLeftImg {
+	background-image: url('images/layout/top-left-img.png');
+	width: 216px;
+	height: 230px;
+	position: fixed;
+	top: 20px;
+	left: 6%;		
+}
+
+.blueCircleImg {
+	width: 645px;
+	height: 544px;
+	position: fixed;
+	top: 0px;
+	left: 50%;
+	margin-left: -323px;
+	background-image: url('images/layout/blue-circle.png');
+}
+
+.bottomBlueImg {
+	width: 986px;
+	height: 493px;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	margin-left: -493px;
+	background-image: url('images/layout/bottom-blue.png');
+}
+
+
+.topMenuDiv {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 100%;
+	height: 42px;
+	background-image: url('images/layout/topmenu/bg.png');
+	border: solid #2c2c2c 1px;
+	border-bottom: 0px;
+	border-radius: 2px;
+}
+
+.topMenuHorizontalLine {
+	position: absolute;
+	padding-right: 2px;
+	bottom: -14px;
+	left: -1px;
+	width: 100%;
+	background-image: url('images/layout/topmenu/horizontal-line.png');
+	height: 23px;
+}
+
+.horizontalLineShadeLeft {
+	height: 8px;
+	width: 5px;
+	position: absolute;
+	background: url('images/layout/topmenu/horizontal-line-shade.png') 0px 0px;
+	left: 0px;
+	top: 8px;
+}
+
+.horizontalLineShadeRight {
+	height: 8px;
+	width: 5px;
+	position: absolute;
+	background: url('images/layout/topmenu/horizontal-line-shade.png') 0px -8px;
+	right: 0px;
+	top: 8px;
+}
+
+.topMenuItemDiv {
+	position: relative;
+	width: 100%;
+	text-align: center;	
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 3px;
+}
+
+.topMenuItemSep {
+	width: 9px;
+	height: 34px;
+	background-image: url('images/layout/topmenu/separator.png');
+	padding: 0px 34px;
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+.topMenu_News {
+	width: 65px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') 0px 0px;
+}
+
+.topMenu_Members {
+	width: 102px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') -65px 0px;
+}
+
+.topMenu_Squads {
+	width: 87px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') -167px 0px;
+}
+
+.topMenu_Events {
+	width: 85px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') -254px 0px;
+}
+
+.topMenu_Tournaments {
+	width: 147px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') -339px 0px;
+}
+
+.topMenu_Forum {
+	width: 77px;
+	height: 38px;
+	background: url('images/layout/topmenu/menutitles.png') -486px 0px;
+}
+
+
+
+.topMenu_News:hover {
+	background: url('images/layout/topmenu/menutitles.png') 0px -38px;
+	cursor: pointer;
+}
+
+.topMenu_Members:hover {
+	background: url('images/layout/topmenu/menutitles.png') -65px -38px;
+	cursor: pointer;
+}
+
+.topMenu_Squads:hover {
+	background: url('images/layout/topmenu/menutitles.png') -167px -38px;
+	cursor: pointer;
+}
+
+.topMenu_Events:hover {
+	background: url('images/layout/topmenu/menutitles.png') -254px -38px;
+	cursor: pointer;
+}
+
+.topMenu_Tournaments:hover {
+	background: url('images/layout/topmenu/menutitles.png') -339px -38px;
+	cursor: pointer;
+}
+
+.topMenu_Forum:hover {
+	background: url('images/layout/topmenu/menutitles.png') -486px -38px;
+	cursor: pointer;
+}
+
+#topMenuHighlight {
+	width: 68px;
+	height: 49px;
+	position: absolute;
+	top: 8px;
+	left: 0px;
+	background-image: url('images/layout/topmenu/highlight.png');
+	background-repeat: no-repeat;
+	display: none;
+}
+
+.loginSectionDiv {
+	width: 88%;
+	min-width: 990px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	height: 48px;
+	overflow: auto;
+}
+
+.loginSectionLeft {
+	float: left;
+	padding-left: 50px;	
+}
+
+.loginSectionRight {
+	float: right;
+	padding-right: 50px;
+}
+
+.loginInnerDiv {
+	float: left;
+}
+
+
+.loginSectionRight input {
+	width: 150px;
+	border: solid rgba(255,255,255,.15) 1px;
+	background-color: rgba(255,255,255, .05);
+	height: 25px;
+	padding: 0px 5px;
+	color: rgba(255,255,255, .45);
+	font-family: verdana;
+	font-size: 14px;
+	margin-right: 15px;
+	border-radius: 2px;
+	margin-top: 13px;
+}
+
+.rememberMeImg {
+	width: 87px;
+	height: 18px;
+	background: url('images/layout/login/rememberme.png') 0px 0px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+.rememberMeImg_Checked {
+	width: 87px;
+	height: 18px;
+	background: url('images/layout/login/rememberme.png') 0px -18px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+.loginButton {
+	margin-top: 5px;
+	width: 37px;
+	height: 13px;
+	background: url('images/layout/login/loginbutton.png') 0px 0px;
+	cursor: pointer;	
+}
+
+.loginButton:hover {
+	background: url('images/layout/login/loginbutton.png') 0px -13px;
+}
+
+.signUpButton {
+	margin-top: 15px;
+	width: 61px;
+	height: 21px;
+	background: url('images/layout/login/signup.png') 0px 0px;
+	cursor: pointer;
+}
+
+.signUpButton:hover {
+	background: url('images/layout/login/signup.png') 0px -21px;
+}
+
+
+.loginSectionAvatar {
+	width: 35px;
+	height: 35px;
+	margin-top: 5px;
+	float: left;
+	border: solid rgba(0,59,98, .5) 1px;
+}
+
+.loginSectionAvatar img {
+	width: 35px;
+	height: 35px;
+}
+
+.loginSectionLoggedInUser {
+	font-size: 14px; 
+	font-family: 'Noto Sans', verdana, sans-serif; 
+	padding-left: 10px; 
+	padding-top: 15px;
+}
+
+.loginSectionLoggedInOptions {
+	font-size: 14px; 
+	font-family: 'Noto Sans', verdana, sans-serif;
+	padding-top: 5px;
+}
+
+.loginSectionLoggedInOptions p {
+	margin: 0px;
+	padding: 0px;
+}
+
+.loginSectionLoggedInIMG {
+	position: absolute;
+	top: 7px;
+	left: 50%;
+	margin-left: -19px;
+	width: 38px;
+	height: 38px;
+	background-image: url('images/layout/login/loggedin.png');
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.leftMenuDiv {
+	float: left;
+	width: 181px;
+	min-height: 500px;
+}
+
+.rightMenuDiv {
+	float: right;
+	width: 181px;
+	min-height: 500px;
+	padding-right: 4px;
+}
+
+.centerContentWrapper {
+	margin-left: 191px;
+	margin-right: 191px;
+	min-height: 500px;
+	padding-top: 18px;
+	
+}
+
+.menuTitleWrapper {
+	position: relative;
+	width: 181px;
+	height: 53px;
+}
+
+.menuTitleDiv {
+	background-image: url('images/layout/menubg.png');
+	width: 181px;
+	height: 31px;
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	z-index: 2;
+	text-align: center;
+	padding-top: 22px;
+	padding-left: 1px;
+	background-repeat: no-repeat;
+}
+
+.menuContent {
+	width: 155px;
+	margin-left: 9px;
+	min-height: 25px;
+	border: solid #1d1d1d 1px;
+	border-radius: 2px;
+	position: relative;
+	background-color: #090909;
+	background-image: url('images/layout/menucontentbg.png');
+	background-repeat: repeat-x;
+	padding: 5px;
+	
+}
+
+.menuTitles_MainMenu {
+	width: 72px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') 0px 0px;
+}
+
+
+.menuTitles_NewestMembers {
+	width: 122px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -72px 0px;
+}
+
+.menuTitles_ForumActivity {
+	width: 108px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -194px 0px;
+}
+
+.menuTitles_Shoutbox {
+	width: 71px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -302px 0px;
+}
+
+.menuTitles_TopPlayers {
+	width: 91px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -373px 0px;
+}
+
+.menuTitles_Downloads {
+	width: 80px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -464px 0px;
+}
+
+.menuTitles_Poll {
+	width: 34px;
+	height: 13px;
+	background: url('images/layout/menutitles.png') -544px 0px;
+}
+
+
+.breadCrumbTitle {
+	font-family: 'Noto Sans', verdana, sans-serif;	
+}

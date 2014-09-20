@@ -1,0 +1,372 @@
+html {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	background-color: black;
+	font-family: verdana, sans-serif;
+	color: white;
+	margin: 0px;
+	padding: 0px;
+	font-size: 11px;
+}
+
+img {
+	border: 0px;
+}
+
+a {
+	color: silver;
+	text-decoration: none;
+}
+
+a:hover {
+	color: white;
+	text-decoration: underline;
+}
+
+.background-texture {
+	background-image: url('images/layout/background-texture.png');
+	background-repeat: repeat-y;
+	height: 100%;
+	min-height: 780px;
+	width: 692px;
+	_position: absolute;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+}
+
+.topBar {
+	background-image: url('images/layout/topbar.png');
+	height: 34px;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	_position: absolute;
+	position: fixed;
+	z-index: 777;
+}
+
+
+.wrapper {
+	width: 95%;
+	min-width: 1103px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -60px;
+}
+
+
+.push {
+	height: 60px;
+	position: relative;
+	z-index: -999;
+
+}
+
+.footerDiv {
+	height: 40px;
+	padding-top: 20px;
+	position: relative;
+	min-width: 670px;
+	margin-left: 400px;
+	text-align: center;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 10px;
+}
+
+.headerDiv {
+	height: 50px;
+	position: relative;
+	width: 100%;
+	min-width: 1090px;
+	z-index: 888;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.topMenuContainer {
+	width: 749px;
+	height: 25px;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	_position: absolute;
+	position: fixed;
+	z-index: 777;
+}
+
+.topMenuLeft {
+	_position: absolute;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 777;
+	width: 120px;
+}
+
+.topMenuSection {
+	width: 120px;
+	display: inline-block;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.topMenuLinksDiv {
+	position: absolute;
+	width: 120px;
+	padding: 0px;
+	background-color: #5c5c5c;
+	top: 25px;
+	font-size: 11px;
+	display: none;
+	box-shadow: 2px 3px 3px 0px black;
+}
+
+.menuLink {
+	position: relative;
+	padding: 5px 3px;
+}
+
+.menuLink:hover {
+	background-color: #3d3d3d;
+}
+
+.topMenuLinksDiv a {
+	color: white;
+	text-decoration: none;
+}
+
+.mainMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') 0px 0px;
+}
+
+.mainMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') 0px -25px;
+	cursor: pointer;
+}
+
+.topPlayersIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -120px 0px;
+}
+
+.topPlayersIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -120px -25px;
+	cursor: pointer;
+}
+
+.newsMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -240px 0px;
+}
+
+.newsMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -240px -25px;
+	cursor: pointer;
+}
+
+.membersMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -360px 0px;
+}
+
+.membersMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -360px -25px;
+	cursor: pointer;
+}
+
+.forumMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -480px 0px;
+}
+
+.forumMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -480px -25px;
+	cursor: pointer;
+}
+
+.logInMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -600px 0px;
+}
+
+.logInMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -600px -25px;
+	cursor: pointer;
+}
+
+
+.myAccountMenuIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -720px 0px;
+}
+
+.myAccountMenuIMG_hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -720px -25px;
+	cursor: pointer;
+}
+
+.signUpIMG {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -840px 0px;
+}
+
+.signUpIMG:hover {
+	width: 120px;
+	height: 25px;
+	background: url('images/layout/topmenu.png') -840px -25px;
+	cursor: pointer;
+}
+
+
+.leftSiteContainer {
+	float: left;
+	width: 350px;
+	padding: 0px;
+}
+
+.leftLeftContainer {
+	float: left;
+	width: 170px;
+	min-height: 485px;
+	overflow: auto;
+	padding-top: 15px;
+}
+
+.leftRightContainer {
+	float: right;
+	width: 170px;
+	min-height: 485px;
+	overflow: auto;
+	padding-top: 15px;
+}
+
+
+.sideMenuInnerDiv {
+	width: 165px;
+	position: relative;
+	margin: 0px auto 25px auto;
+	background-image: url('images/layout/sidemenubg.png');
+	background-position: center top;
+	min-height: 141px;
+	background-repeat: no-repeat;
+}
+
+.menuShoutboxIMG {
+	width: 56px;
+	height: 18px;
+	background: url('images/layout/sidemenu.png') 0px 0px;
+}
+
+.menuForumActivityIMG {
+	width: 83px;
+	height: 18px;
+	background: url('images/layout/sidemenu.png') -56px 0px;
+}
+
+.menuNewMembersIMG {
+	width: 103px;
+	height: 18px;
+	background: url('images/layout/sidemenu.png') -139px 0px;
+}
+
+.mainSiteContentDiv {
+	min-width: 670px;
+	margin-left: 400px;
+	padding: 5px 15px;
+	background: rgba(0,0,0,.5);
+	border: solid #000211 1px;
+	min-height: 500px;
+	overflow: auto;
+}
+
+.loggedInAlert {
+	width: 19px;
+	height: 19px;
+	position: absolute;
+	bottom: -10px;
+	right: 8px;
+	background-image: url('images/layout/alert.png');
+	background-repeat: no-repeat;
+	z-index: 777;
+	display: none;
+}
+
+.loggedInDiv {
+	position: relative;
+	color: white;
+	font-size: 11px;
+	padding: 3px;
+}
+
+.loginTextbox {
+	width: 200px;
+	padding: 3px;
+	font-size: 11px;
+	font-family: verdana, sans-serif;
+}
+
+
+.gradientBox {
+	height: 15px;
+	background-image: url("gradient.png");
+	border: solid #000211 1px;
+}
+
+/* Custom BTCS4.css */
+
+.dottedLine, .dashedLine, .solidLine {
+	border-color: white;	
+}
+
+.menusNewestMembersTextWrapper {
+	padding-left: 8px;	
+}
+
+.menusForumActivityWrapper, .menusNewestMembersWrapper {
+	margin-top: 0px;
+	margin-bottom: 0px;	
+}
+
+.menusImageItemWrapper {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	display: inline-block;	
+}
+
+.shoutBox {
+	border: solid #000211 1px;	
+}

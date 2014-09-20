@@ -19,7 +19,7 @@ $configInfo = $pluginObj->getConfigInfo();
 
 
 $selectedSocialID = "";
-$addTwitchInfo = "<div class='formInput formInputSideText'><img id='addTwitchLoading' src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif' style='width: 18px; height: 18px; margin: 0px 5px; display: none'> <a id='addTwitch' href='javascript:void(0)'>Haven't add Twitch yet? Click Here!</a></div>";
+$addTwitchInfo = "<div class='formInput formInputSideText'><img id='addTwitchLoading' src='".$MAIN_ROOT."themes/".$THEME."/images/loading-spiral.gif' style='width: 18px; height: 18px; margin: 0px 5px; display: none'> <a id='addTwitch' href='javascript:void(0)'>Haven't added Twitch yet? Click Here!</a></div>";
 $socialObj = new Social($mysqli);
 $result = $mysqli->query("SELECT * FROM ".$dbprefix."social WHERE name LIKE '%Twitch%'");
 if($result->num_rows > 0) {
@@ -47,6 +47,13 @@ $configInfo['streamchat_height'] = ($configInfo['streamchat_height'] == "") ? 30
 $i=0;
 
 $arrComponents = array(
+	"pagelink" => array(
+		"type" => "custom",
+		"sortorder" => $i++,
+		"display_name" => "Twitch Page Link",
+		"html" => "<div class='formInput main'><a href='".$MAIN_ROOT."plugins/twitch' target='_blank'>".FULL_SITE_URL."plugins/twitch</a></div>",
+		"tooltip" => "Add this link as a menu item if you would like to show who streams in your clan."
+	),
 	"twitchsocial_id" => array(
 		"type" => "select",
 		"sortorder" => $i++,
@@ -145,7 +152,7 @@ if($addTwitchInfo != "") {
 $setupFormArgs = array(
 	"name" => "pluginsettings-".$_GET['plugin'],
 	"components" => $arrComponents,
-	"description" => "Fill out the form below to configure the Twitch plugin.  This plugin uses the Twitch username entered on user's profiles.".$additionalTwitchInfo,
+	"description" => "Fill out the form below to configure the Twitch plugin.  This plugin uses the Twitch username entered on user's profiles.  Any member who enters their Twitch name in their profile will appear on the <a href='".$MAIN_ROOT."plugins/twitch' target='_blank'>Twitch Page</a>.".$additionalTwitchInfo,
 	"attributes" => array("action" => $MAIN_ROOT."plugins/settings.php?plugin=".$_GET['plugin'], "method" => "post"),
 	"afterSave" => array("saveTwitchSettings"),
 	"saveMessage" => "Twitch Settings Saved!",

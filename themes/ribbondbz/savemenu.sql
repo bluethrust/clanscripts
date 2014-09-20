@@ -1,0 +1,76 @@
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('3', '0', 'Main Menu', '1', 'customcode', 'MAIN MENU', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('28', '0', 'Recruitment', '2', 'customcode', 'RECRUITMENT', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('20', '0', 'Poll', '3', 'customcode', 'POLL', '0', '1');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('2', '0', 'Top Players', '4', 'customcode', 'TOP PLAYERS', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('27', '0', 'Twitter Feed', '5', 'customcode', 'TWITTER FEED', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('14', '0', 'Forum Activity', '6', 'customcode', 'FORUM ACTIVITY', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('16', '1', 'Login', '1', 'customcode', 'LOG IN', '2', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('12', '1', 'Logged In', '2', 'customcode', 'LOGGED IN', '1', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('9', '1', 'Shoutbox', '3', 'customcode', 'SHOUTBOX', '1', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('15', '1', 'New Members', '4', 'customcode', 'NEW MEMBERS', '0', '0');
+INSERT INTO `menu_category` (`menucategory_id`, `section`, `name`, `sortnum`, `headertype`, `headercode`, `accesstype`, `hide`) VALUES ('17', '2', 'Quick Links', '1', 'customcode', '', '0', '0');
+
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('3', '2', 'Top Players Links', 'top-players', '0', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('1', '3', 'Home', 'link', '1', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('8', '3', 'News', 'link', '3', '0', '0', '2');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('9', '3', 'Members', 'link', '4', '0', '0', '3');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('10', '3', 'Ranks', 'link', '5', '0', '0', '4');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('11', '3', 'Squads', 'link', '6', '0', '0', '5');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('12', '3', 'Tournaments', 'link', '7', '0', '0', '6');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('13', '3', 'Events', 'link', '8', '0', '0', '7');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('14', '3', 'Medals', 'link', '9', '0', '0', '8');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('15', '3', 'Diplomacy', 'link', '10', '0', '0', '9');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('16', '3', 'Diplomacy Request', 'link', '11', '0', '0', '10');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('19', '3', 'Rules', 'custompage', '3', '0', '0', '11');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('67', '3', 'Admins', 'custompage', '4', '0', '0', '12');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('18', '3', 'History', 'custompage', '2', '0', '0', '13');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('20', '3', 'Forum', 'link', '12', '0', '0', '14');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('66', '3', 'Inactive Members', 'link', '30', '0', '0', '15');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('21', '3', 'Sign Up', 'link', '13', '2', '0', '16');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('45', '3', 'Forgot Password', 'link', '29', '2', '0', '17');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('74', '3', 'Lunaghost', 'customformat', '7', '0', '0', '18');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('47', '9', 'Shoutbox', 'shoutbox', '2', '1', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('46', '12', 'Login', 'login', '0', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('56', '14', 'Forum Activity', 'forumactivity', '0', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('57', '15', 'Newest Members', 'newestmembers', '0', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('59', '16', 'Log In', 'login', '0', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('68', '17', 'NEWS', 'link', '31', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('69', '17', 'MEMBERS', 'link', '32', '0', '0', '2');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('70', '17', 'TOURNAMENTS', 'link', '33', '0', '0', '3');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('71', '17', 'SQUADS', 'link', '34', '0', '0', '4');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('72', '17', 'EVENTS', 'link', '35', '0', '0', '5');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('73', '17', 'FORUM', 'link', '36', '0', '0', '6');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('76', '27', 'Twitter Feed', 'customcode', '9', '0', '0', '1');
+INSERT INTO `menu_item` (`menuitem_id`, `menucategory_id`, `name`, `itemtype`, `itemtype_id`, `accesstype`, `hide`, `sortnum`) VALUES ('75', '28', 'Recruitment Information', 'customformat', '8', '0', '0', '1');
+
+INSERT INTO `menuitem_customblock` (`menucustomblock_id`, `menuitem_id`, `blocktype`, `code`) VALUES ('7', '74', 'format', '<p><strong><a title=\"Lunaghost stat tracking site\" href=\"http://RRA.lunaghost.com\" target=\"_blank\"><span style=\"font-size: large;\">Lunaghost Stat Tracking Site</span></a></strong></p>\r\n<p><a href=\"https://www.facebook.com/pages/Clan-RRA/649933331716282?fref=ts\" target=\"_blank\"><span style=\"font-size: large; text-decoration: underline;\"><img src=\"http://i40.tinypic.com/2i22646.jpg\" alt=\"\" /></span>&nbsp;Clan RRA FB Page</a><br /><br /><a href=\"https://twitter.com/clanrra\" target=\"_blank\"><img src=\"http://i61.tinypic.com/21mb76t.png\" alt=\"\" />&nbsp;Clan RRA Twitter</a></p>');
+INSERT INTO `menuitem_customblock` (`menucustomblock_id`, `menuitem_id`, `blocktype`, `code`) VALUES ('8', '75', 'format', '<p>Clan RRA @ USWest<br />Garena: ClanRRA</p>');
+INSERT INTO `menuitem_customblock` (`menucustomblock_id`, `menuitem_id`, `blocktype`, `code`) VALUES ('9', '76', 'code', '<iframe src=\'/twitterfeed.html\' style=\'border: 0px; width: 180px; height: 610px\' allowTransparency=\'true\'></iframe>');
+
+INSERT INTO `menuitem_custompage` (`menucustompage_id`, `menuitem_id`, `custompage_id`, `prefix`, `linktarget`, `textalign`) VALUES ('3', '19', '12', '<b>&middot;</b> ', '', 'left');
+INSERT INTO `menuitem_custompage` (`menucustompage_id`, `menuitem_id`, `custompage_id`, `prefix`, `linktarget`, `textalign`) VALUES ('2', '18', '11', '<b>&middot;</b> ', '', 'left');
+INSERT INTO `menuitem_custompage` (`menucustompage_id`, `menuitem_id`, `custompage_id`, `prefix`, `linktarget`, `textalign`) VALUES ('4', '67', '16', '<b>&middot;</b> ', '', 'left');
+
+
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('1', '1', 'index.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('3', '8', 'news', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('4', '9', 'members.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('5', '10', 'ranks.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('6', '11', 'squads', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('7', '12', 'tournaments', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('8', '13', 'events', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('9', '14', 'medals.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('10', '15', 'diplomacy', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('11', '16', 'diplomacy/request.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('12', '20', 'forum', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('13', '21', 'signup.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('29', '45', 'forgotpassword.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('30', '66', 'inactive-members.php', '', '<b>&middot;</b> ', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('31', '68', 'news', '', '', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('32', '69', 'members.php', '', '', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('33', '70', 'tournaments', '', '', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('34', '71', 'squads', '', '', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('35', '72', 'events', '', '', 'left');
+INSERT INTO `menuitem_link` (`menulink_id`, `menuitem_id`, `link`, `linktarget`, `prefix`, `textalign`) VALUES ('36', '73', 'forum', '', '', 'left');
+
+INSERT INTO `menuitem_shoutbox` (`menushoutbox_id`, `menuitem_id`, `width`, `height`, `percentwidth`, `percentheight`, `textboxwidth`) VALUES ('2', '47', '0', '0', '0', '0', '0');

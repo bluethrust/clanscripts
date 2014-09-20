@@ -174,18 +174,23 @@
 			
 			$arrBCC = array();
 			
-			$result = $this->MySQL->query("SELECT member_id FROM ".$this->MySQL->get_tablePrefix()."members WHERE disabled = '0' AND email != ''");
+			$result = $this->MySQL->query("SELECT member_id FROM ".$this->MySQL->get_tablePrefix()."members WHERE disabled = '0'");
 			while($row = $result->fetch_assoc()) {
 				$memberObj->select($row['member_id']);
 				if($memberObj->hasAccess($consoleObj)) {
 					
-					$arrBCC[] = array(
-						"email" => $memberObj->get_info("email"),
-						"name" => $memberObj->get_info("username")
-					);
+					if($memberObj->get_info("email") != "") {
+						$arrBCC[] = array(
+							"email" => $memberObj->get_info("email"),
+							"name" => $memberObj->get_info("username")
+						);
+					}
 					
 					$memberObj->postNotification("A new member has signed up!  Go to the <a href='".MAIN_ROOT."members/console.php?cID=".$viewMemberAppCID."'>View Member Applications</a> page to review the application.");
+			
 				}
+
+			
 			}
 			
 			$subject = $webInfo['clanname'].": New Member Application";
