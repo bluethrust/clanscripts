@@ -947,26 +947,6 @@ class Member extends Basic {
 		return $this->getMemberPicture($setWidth, $setHeight, "profilepic", "defaultprofile.png");
 	}
 	
-	public function getEmailNotificationSetting($notificationName, $selectBy = "name") {
-
-		$returnVal = true;
-		$emailNotification = new EmailNotification($this->MySQL);
-		if($this->arrObjInfo['email'] != "" && $emailNotification->selectByMulti(array($selectBy => $notificationName))) {
-			$result = $this->MySQL->query("SELECT status FROM ".$this->MySQL->get_tablePrefix()."emailnotifications_members WHERE member_id = '".$this->intTableKeyValue."' AND emailnotification_id = '".$emailNotification->get_info("emailnotification_id")."'");
-			if($result->num_rows > 0) {
-				$row = $result->fetch_assoc();
-				$returnVal = ($row['status'] == 0) ? false : true;
-				
-			}
-			
-		}
-		elseif($this->arrObjInfo['email'] == "") {
-			$returnVal = false;
-		}
-	
-		return $returnVal;	
-		
-	}
 	
 	public function delete() {
 		$returnVal = false;
