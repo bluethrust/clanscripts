@@ -176,7 +176,7 @@ function deleteFile($filename) {
 
 
 function getHTTP() {
-	if(trim($_SERVER['HTTPS']) == "" || $_SERVER['HTTPS'] == "off") {
+	if(isset($_SERVER['HTTPS']) && (trim($_SERVER['HTTPS']) == "" || $_SERVER['HTTPS'] == "off")) {
 		$dispHTTP = "http://";
 	}
 	else {
