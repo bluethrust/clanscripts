@@ -16,7 +16,7 @@
 			$this->strTableKey = "appcomponent_id";
 			
 			$this->strAssociateKeyName = "appselectvalue_id";
-			$this->strAssociateTableName = "app_selectvalues";
+			$this->strAssociateTableName = $this->MySQL->get_tablePrefix()."app_selectvalues";
 			
 			$this->appSelectValueObj = new Basic($sqlConnection, "app_selectvalues", "appselectvalue_id");
 		

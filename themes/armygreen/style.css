@@ -1,0 +1,447 @@
+html {
+	width: 100%;
+	min-height: 100%;
+	padding: 0px;
+	margin: 0px;
+	min-width: 990px;
+}
+
+body {
+	
+	background-image: url('images/layout/bg.png');
+	color: white;
+	font-family: 'Exo', verdana, sans-serif;
+	font-size: 12px;
+	padding: 0px;
+	margin: 0px;
+	
+}
+
+
+a {
+	color: silver;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #b7ffa9;
+	text-decoration: underline;
+}
+
+
+
+
+.layout-top-gradientbg {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -20;
+	background-image: url('images/layout/topgradient.png');
+	height: 106px;
+	width: 100%;
+	background-repeat: repeat-x;
+}
+
+.layout-lensflare {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: -19;
+	background-image: url('images/layout/lensflare.png');
+	background-repeat: no-repeat;
+	width: 990px;
+	height: 600px;
+}
+
+.layout-checkerbg {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	min-width: 990px;
+	z-index: -18;
+	background-image: url('images/layout/checkerbg.png');
+}
+
+.layout-topleft-characters {
+	position: fixed;
+	_position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: -17;
+	width: 803px;
+	height: 505px;
+	background-image: url('images/layout/topleft-characters.png');
+	background-repeat: no-repeat;
+}
+
+.layout-right-characterbg {
+	position: absolute;
+	right: 0px;
+	top: 150px;
+	z-index: -17;
+	width: 210px;
+	height: 349px;
+	background-image: url('images/layout/right-characterbg.png');
+	background-repeat: no-repeat;
+}
+
+.layout-topbar {
+	position: absolute;
+	left: 0px;
+	top: 70px;
+	z-index: -16;
+	width: 100%;
+	height: 32px;
+	background-image: url('images/layout/topbar.png');
+	background-repeat: repeat-x;
+}
+
+
+
+
+
+.logoDiv {
+	position: absolute;
+	right: 80px;
+	top: 40px;
+	width: 514px;
+	height: 76px;
+}
+
+.logoDiv img {
+	border: 0px;
+}
+
+.mainSiteContainer {
+	position: relative;
+	width: 100%;
+	top: 125px;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 990px;
+	margin-bottom: -60px;
+	overflow: hidden;
+	padding: 0px;
+}
+
+.mainSiteInnerContainer {
+	position: relative;
+	width: 95%;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 990px;
+}
+
+.push {
+	height: 60px;
+
+}
+
+.footerDiv {
+	position: relative;
+	bottom: 0px;
+	height: 46px;
+	margin: 0px;
+	color: white;
+	text-align: center;
+	font-size: 11px;
+	background-image: url('images/layout/footerbg.png');
+	padding-top: 14px;
+}
+
+.contentContainer {
+	float: left;
+	width: 78%;
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+
+.menuContainer {
+	float: right;
+	width: 20%;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+.mainMenuIMG {
+	background: url('images/layout/menusprite.png') 0px 0px;
+	width: 102px;
+	height: 19px;
+	border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+	padding: 0px;
+}
+
+
+.topPlayersIMG {
+	background: url('images/layout/menusprite.png') 0px -19px;
+	width: 136px;
+	height: 19px;
+	border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding: 0px;
+}
+
+
+.shoutboxIMG {
+	background: url('images/layout/menusprite.png') 0px -38px;
+	width: 106px;
+	height: 19px;
+	border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding: 0px;
+}
+
+.newestMembersIMG {
+	background: url('images/layout/menusprite.png') 0px -57px;
+	width: 172px;
+	height: 19px;
+	border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding: 0px;
+}
+
+.forumActivityIMG {
+	background: url('images/layout/menusprite.png') 0px -76px;
+	width: 154px;
+	height: 19px;
+	border: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	padding: 0px;
+}
+
+
+
+#loginSection {
+	background-image: url('images/layout/login/loginbox.png');
+	width: 208px;
+	height: 203px;
+	position: fixed;
+	_position: absolute;
+	top: -170px;
+	left: 75px;
+	font-family: 'Exo', verdana;
+	font-size: 12px;
+	color: white;
+	z-index: 10;
+}
+
+
+#loginSection .loginForm {
+	position: relative;
+	top: 20px;
+	left: 25px;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+#loginSection .loggedInBar {
+	
+	position: absolute;
+	z-index: 1;
+	height: 10px;
+	width: 200px;
+	top: 15px;
+	left: 4px;
+	margin: 0px;
+	padding: 0px;
+	background-image: url('images/layout/login/loggedinbar.png');
+}
+
+#loginSection .loggedInIMG {
+	
+	position: relative;
+	z-index: 2;
+	height: 20px;
+	width: 112px;
+	top: 10px;
+	background-image: url('images/layout/login/loggedin.png');
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+#loginSection .loggedInInfo {
+	position: relative;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 175px;
+}
+
+#loginSection .loginDownArrow {
+	position: absolute;
+	bottom: 9px;
+	right: 12px;
+	background-image: url('images/layout/login/downarrow.png');
+	width: 29px;
+	height: 17px;
+	cursor: pointer;
+}
+
+#loginSection .loginDownArrowRed {
+	position: absolute;
+	bottom: 9px;
+	right: 12px;
+	background-image: url('images/layout/login/downarrowred.png');
+	width: 29px;
+	height: 17px;
+	cursor: pointer;
+}
+
+#loginSection .loginUpArrow {
+	position: absolute;
+	bottom: 9px;
+	right: 12px;
+	background-image: url('images/layout/login/uparrow.png');
+	width: 29px;
+	height: 17px;
+	cursor: pointer;
+}
+
+
+#loginSection .loginIMG {
+	position: absolute;
+	bottom: 9px;
+	left: 15px;
+	background-image: url('images/layout/login/login.png');
+	width: 128px;
+	height: 18px;
+	cursor: pointer;
+}
+
+#loginSection .loggedInUsername {
+	position: absolute;
+	bottom: 9px;
+	left: 15px;
+	width: 128px;
+	margin-left: auto;
+	margin-right: auto;
+	color: #b7ffa9;
+	overflow: hidden;
+	height: 18px;
+	cursor: pointer;
+	text-shadow: -1px 1px 5px #00ff06;
+}
+
+.loggedInUsername a {
+	color: #b7ffa9;
+}
+
+
+.siteContentTable {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+}
+
+
+.siteContentTable .topLeft {
+	background: url('images/layout/contentbox/boxsprite.png') 0px 0px;
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.siteContentTable .topRight {
+	background: url('images/layout/contentbox/boxsprite.png') -25px 0px;
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.siteContentTable .bottomLeft {
+	background: url('images/layout/contentbox/boxsprite.png') 0px -25px;
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.siteContentTable .bottomRight {
+	background: url('images/layout/contentbox/boxsprite.png') -25px -25px;
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+.siteContentTable .contentSection {
+	background-image: url('images/layout/contentbox/bg.png');
+	font-family: verdana;
+	font-size: 11px;
+}
+
+.siteContentTable .menuSection {
+	background-image: url('images/layout/contentbox/bg.png');
+	font-family: 'Exo', verdana;
+	font-size: 11px;
+	max-width: 165px;
+}
+
+.siteContentTable .topBG {
+	background-image: url('images/layout/contentbox/topbg.png');
+	height: 25px;
+	padding: 0px;
+}
+
+.siteContentTable .bottomBG {
+	background-image: url('images/layout/contentbox/bottombg.png');
+	height: 25px;
+	padding: 0px;
+}
+
+.siteContentTable .leftBG {
+	background-image: url('images/layout/contentbox/leftbg.png');
+	width: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.siteContentTable .rightBG {
+	background-image: url('images/layout/contentbox/rightbg.png');
+	width: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.gradientBox {
+	height: 20px;
+	background-image: url("images/gradient.jpg");
+	border: solid black 1px;
+}
+
+/* Custom BTCS4.css */
+
+.breadCrumbTitle, .boardCategory {
+	font-family: 'Exo', verdana, sans-serif;	
+}
+
+.shoutBox {
+	border: solid green 1px;	
+}

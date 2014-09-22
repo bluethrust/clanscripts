@@ -1,0 +1,325 @@
+html {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+
+body {
+	background-image: url('images/layout/dark-stone-bg.png');
+	margin: 0px;
+	padding: 0px;
+	font-family: verdana, sans-serif;
+	color: white;
+	font-size: 12px;
+	height: 100%;
+}
+
+
+a {
+	color: orange;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #FF4500;
+	text-decoration: underline;
+}
+
+form {
+	margin: 0px;
+	padding: 0px;
+}
+.headerDiv {
+	width: 100%;
+	height: 165px;
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	min-width: 990px;
+}
+
+.grassBlockBar {
+	height: 68px;
+	width: 100%;
+	position: absolute;
+	top: 91px;
+	background-image: url('images/layout/grassblock.png');
+}
+
+
+.skyBG {
+	width: 100%;
+	height: 100px;
+	position: absolute;
+	top: 0px;
+	background-image: url('images/layout/skybg.png');
+}
+
+.sunDiv {
+	width: 32px;
+	height: 30px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background-image: url('images/layout/sun.png');
+}
+
+
+.loginDiv {
+	position: absolute;
+	top: 0px;
+	right: 100px;
+	width: 440px;
+}
+
+.rememberMe_On {
+	width: 440px;
+	height: 50px;
+	position: absolute;
+	background: url('images/layout/login/rememberme.png') 0px 0px;
+	top: 55px;
+	left: 0px;
+}
+
+.rememberMe_Off {
+	width: 440px;
+	height: 46px;
+	position: absolute;
+	background: url('images/layout/login/rememberme.png') 0px -50px;
+	top: 59px;
+	left: 0px;
+}
+
+#rememberMeSwitch {
+	width: 25px;
+	height: 22px;
+	cursor: pointer;
+	position: absolute;
+	right: 1px;
+	top: 80px;
+}
+
+.loggedInBox {
+	width: 238px;
+	height: 70px;
+	position: absolute;
+	right: 5px;
+	background-image: url('images/layout/login/loggedinbox.png');
+	background-repeat: no-repeat;
+	top: 10px;
+	padding: 15px;
+	padding-top: 35px;
+	font-size: 10px;
+	color: black;
+	font-family: verdana, sans-serif;
+}
+
+.loggedInBox a {
+	color: #0d7963;
+	text-decoration: none;
+}
+
+.loggedInBox a:hover {
+	text-decoration: underline;
+	color: #0b604e ;
+}
+
+.loginBox {
+	background-image: url('images/layout/login/loginbox.png');
+	background-repeat: no-repeat;
+	width: 226px;
+	height: 86px;
+	position: absolute;
+	top: 8px;
+	left: 103px;
+}
+
+#loginSign {
+	background-image: url('images/layout/login/loginsign.png');
+	width: 44px;
+	height: 48px;
+	position: absolute;
+	top: 56px;
+	right: 50px;
+	cursor: pointer;
+}
+
+.loginUsernameDiv {
+	background: url('images/layout/login/userpass.png') 0px 0px;
+	width: 68px;
+	background-repeat: no-repeat;
+	padding-top: 13px;
+	height: 20px;
+	top: 8px;
+	left: 8px;
+	position: absolute;
+}
+
+.loginPasswordDiv {
+	background: url('images/layout/login/userpass.png') -68px 0px;
+	background-repeat: no-repeat;
+	width: 68px;
+	height: 12px;
+	padding-top: 13px;
+	top: 46px;
+	left: 8px;
+	position: absolute;
+}
+
+.loginTextBox {
+	width: 205px;
+	font-family: "Minecraft Regular", verdana;
+	font-size: 12px;
+	height: 15px;
+	border: solid black 1px;
+	padding: 1px;
+}
+
+.logoDiv {
+	position: absolute;
+	top: 15px;
+	left: 100px;
+	height: 73px;
+	width: 281px;
+}
+
+.bottomGradientBG {
+	width: 100%;
+	position: fixed;
+	_position: absolute;
+	bottom: 0px;
+	left: 0px;
+	height: 297px;
+	background-image: url('images/layout/bottom-gradient.png');
+	z-index: -1;
+}
+
+.mainSiteContainer {
+	position: relative;
+	min-width: 990px;
+	width: 85%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.contentTable {
+	width: 100%;
+	border: 0px;
+	border-spacing: 0px;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 50px;
+}
+
+.contentTable .topLeft {
+	height: 15px;
+	width: 15px;
+	background-image: url('images/layout/contentbox/topleft.png');
+	padding: 0px;
+}
+
+.contentTable .top {
+	height: 15px;
+	background-image: url('images/layout/contentbox/top.png');
+	padding: 0px;
+}
+
+.contentTable .topRight {
+	height: 15px;
+	width: 15px;
+	background-image: url('images/layout/contentbox/topright.png');
+	padding: 0px;
+}
+
+.contentTable .left {
+	width: 15px;
+	background-image: url('images/layout/contentbox/left.png');
+	padding: 0px;
+}
+
+.contentTable .right {
+	width: 15px;
+	background-image: url('images/layout/contentbox/right.png');
+	padding: 0px;
+}
+
+.contentTable .mainContent {
+	background-image: url('images/layout/contentbox/bg.png');
+	padding: 0px;
+	min-height: 100%;
+}
+
+.contentTable .bottomLeft {
+	height: 15px;
+	width: 15px;
+	background-image: url('images/layout/contentbox/bottomleft.png');
+	padding: 0px;
+}
+
+.contentTable .bottom {
+	height: 15px;
+	background-image: url('images/layout/contentbox/bottom.png');
+	padding: 0px;
+}
+
+.contentTable .bottomRight {
+	height: 15px;
+	width: 15px;
+	background-image: url('images/layout/contentbox/bottomright.png');
+	padding: 0px;
+}
+
+
+.innerContentTable {
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+	border: 0px;
+}
+
+.innerContentTable .menuColumn {
+	width: 162px;
+}
+
+.innerContentTable .menuColumn .menuLinks {
+	padding-left: 8px;
+	font-family: verdana, sans-serif;
+	margin-bottom: 20px;
+	margin-top: 5px;
+	font-size: 11px;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0px;
+	margin-bottom: -59px;
+	position: relative;
+}
+
+.push {
+	height: 59px;
+	position: relative;
+}
+
+.footerDiv {
+	position: relative;
+	height: 39px;
+	background-image: url('images/layout/footerbg.png');
+	width: 100%;
+	min-width: 990px;
+	font-family: "Minecraft Regular", verdana, sans-serif;
+	font-size: 8px;
+	padding-top: 20px;
+	text-align: center;
+	color: white;
+}
+
+.gradientBox {
+	height: 20px;
+	background-image: url("gradient.png");
+	border: solid black 1px;
+}

@@ -1,7 +1,7 @@
 <?php
-
-$prevFolder = "../";
 include("../_setup.php");
+include_once("../classes/member.php");
+include_once("../classes/basicorder.php");
 
 $member = new Member($mysqli);
 

@@ -17,6 +17,8 @@
 
 			
 			if($_POST['installType'] == 1) {
+				// Fresh Install
+			
 				// Check Username
 	
 				if(trim($_POST['adminusername']) == "") {
@@ -38,6 +40,8 @@
 				
 			}
 			else {
+				// Updating
+				
 				
 				$member = new Member($mysqli);
 				$member->select($_POST['adminusername']);
@@ -83,7 +87,7 @@
 				";
 				$url = $_SERVER['REQUEST_URI']; //returns the current URL
 				$setMainRoot = str_replace("installer/index.php?step=3", "", $url);
-
+				$setDocumentRoot = str_replace("installer/index.php", "", $_SERVER['SCRIPT_FILENAME']);
 				include("steps/configtemplate.php");
 
 				
@@ -127,8 +131,15 @@
 					include("steps/backupinserts.php");	
 				}
 				
+				$blnConvertWebsiteInfo = false;
 				if($countTableMatches > 0) {
-
+				
+					// Check if using the old websiteinfo table
+					$result = $mysqli->query("SELECT websiteinfo_id FROM ".$_POST['tableprefix']."websiteinfo");
+					if($result->num_rows < 60) {
+						$blnConvertWebsiteInfo = true;
+					}
+				
 					include("steps/backupdb.php");
 
 				}
@@ -149,6 +160,8 @@
 					$fullSQL = str_replace("[SWAPCREATEWITHTABLEPREFIX]", "CREATE TABLE IF NOT EXISTS `".$_POST['tableprefix'], $fullSQL);
 					$fullSQL = str_replace("[SWAPINSERTWITHTABLEPREFIX]", "INSERT INTO `".$_POST['tableprefix'], $fullSQL);
 
+					$fullSQL = str_replace("ALTER TABLE `ipban`", "ALTER TABLE `".$_POST['tableprefix']."ipban`", $fullSQL);
+					
 				}
 
 			
@@ -170,7 +183,7 @@
 						}
 					}
 					while($mysqli->next_result());
-
+									
 
 					echo "Successfully set up database!<br><br>";
 
@@ -191,6 +204,13 @@
 						$mysqli->query("INSERT INTO ".$_POST['tableprefix']."members (username, password, password2, rank_id, datejoined, lastlogin) VALUES ('".$_POST['adminusername']."', '".$encryptPassword."', '".$strSalt."', '1', '".time()."', '".time()."')");
 					}
 					else {
+					
+						if($blnConvertWebsiteInfo) {
+							// Convert websiteinfo table for people updating
+							define("CONVERT_WEBSITEINFO", true);
+							include("steps/convertwebsiteinfo.php");
+						}
+						
 						// Updating --> Check for all console options and categories
 						
 						$consoleCatObj = new ConsoleCategory($mysqli);
@@ -210,6 +230,7 @@
 							
 						}
 						
+						$pmCatID = "";
 						
 						foreach($arrConsoleCategories as $consoleCategory) {
 							if(!in_array($consoleCategory, $arrCheckConsoleCategories)) {
@@ -220,7 +241,13 @@
 								$tempCatID = array_search($consoleCategory, $arrConsoleCategories);
 								$arrConsoleCategoryIDs[$tempCatID] = $consoleCatObj->get_info("consolecategory_id");
 								$consoleCatObj->resortOrder();
+								
+								if($consoleCategory == "Private Messages") {
+									$pmCatID = $arrConsoleCategoryIDs[$tempCatID];
+								}
+								
 							}
+														
 						}
 						
 						
@@ -251,6 +278,13 @@
 																								
 								$consoleOptionObj->resortOrder();
 							}
+							elseif($consoleOptionName == "Private Messages" && $checkConsole !== false && $pmCatID != "") {
+								
+								$consoleOptionObj->select($checkConsole);
+								$consoleOptionObj->update(array("consolecategory_id", "sortnum"), array($pmCatID, 0));
+								$consoleOptionObj->resortOrder();
+								
+							}
 							
 						}						
 						
@@ -258,9 +292,13 @@
 						// Check for valid theme
 						$arrValidThemes = array();
 						$themeOptions .= "";
-						$websiteInfoObj = new Basic($mysqli, "websiteinfo", "websiteinfo_id");
+						$websiteInfoObj = new WebsiteInfo($mysqli);
 						$websiteInfoObj->select(1);
 						$themeName = $websiteInfoObj->get_info("theme");
+						
+						// Add New Websiteinfo
+						$websiteInfoObj->multiUpdate(array("default_timezone", "date_format", "display_date"), array("America/New_York", "l, F j, Y", "1"));
+						
 						
 						$verifyTheme = file_exists("../themes/".$themeName."/themeinfo.xml");
 						
@@ -304,10 +342,10 @@
 								$jqDialogButton = "
 								
 								
-									'Choose': function() {
+									'Choose': function() {/*
 										$.post('steps/updatetheme.php', { themeName: $('#theme').val(), user: '".$_POST['adminusername']."', pass: '".$_POST['adminpassword']."' }, function(data) {
 											$('#updateTheme').html(data);
-										});
+										});*/
 										$(this).dialog('close');
 									}
 								
@@ -353,64 +391,7 @@
 							
 							";
 							
-						}
-						else {
-							// Valid Theme Found, Ask if you want to import new menu sql
-							$themeURL = "../themes/".$themeName;
-							$dispThemeName = file_get_contents($themeURL."/THEMENAME.txt");
-							echo "
-							
-								<div id='themeError' style='display: none'>
-							
-									<p class='main' align='center'>
-										Updated theme found for <b>".$dispThemeName."</b>!<br><br>It is recommended that you import the latest menu information.
-									</p>
-									
-								</div>
-								
-								<div id='updateTheme'></div>
-								
-								<script type='text/javascript'>
-								
-									$(document).ready(function() {
-									
-										$('#themeError').dialog({
-										
-											title: 'Installation',
-											show: 'scale',
-											width: 400,
-											modal: true,
-											resizable: false,
-											zIndex: 99999,
-											buttons: {
-												'Import': function() {
-												
-												$.post('steps/updatetheme.php', { themeName: '".$themeName."', user: '".$_POST['adminusername']."', pass: '".$_POST['adminpassword']."' }, function(data) {
-													$('#updateTheme').html(data);
-												});
-												$(this).dialog('close');
-												
-												},
-												'Skip': function() {
-													$(this).dialog('close');
-												}
-											}
-										
-										
-										});
-									
-									});
-								
-								</script>
-							
-							
-							
-							";
-								
-								
-						}
-						
-						
+						}	
 						
 					}
 					

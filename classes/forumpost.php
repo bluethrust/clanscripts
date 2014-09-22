@@ -158,7 +158,7 @@ class ForumPost extends Basic {
 		if($this->intTableKeyValue != "") {
 			$returnVal = parent::delete();
 			$downloadObj = new Download($this->MySQL);
-			$arrAttachments = $this->getPostAttachements();
+			$arrAttachments = $this->getPostAttachments();
 			
 			foreach($arrAttachments as $attachment) {
 				$downloadObj->select($attachment);

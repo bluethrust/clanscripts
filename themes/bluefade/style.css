@@ -1,0 +1,266 @@
+/*
+Bluethrust Cl11an Scripts v4 - BLUE THEME CSS
+START
+*/
+
+
+html {
+position: absolute;
+width: 100%;
+margin: 0px;
+z-index: -7;
+}
+
+body {
+background-image: url("images/bg.png");
+width: 100%;
+margin: 0px;
+z-index: -99999;
+position: absolute;
+font-family: verdana, sans-serif;
+}
+
+a {
+color: silver;
+text-decoration: none;
+}
+
+a:hover {
+color: whitesmoke;
+text-decoration: underline;
+}
+
+input[type=checkbox] {
+	cursor: pointer;
+}
+
+img {
+	border: 0px;
+}
+
+.characterBG {
+position: fixed;
+_position: absolute;
+background-image: url("images/charactersbg2.png");
+width: 990px;
+height: 800px;
+left: 100%;
+margin-left: -990px;
+z-index: -5;
+}
+
+.blueBarBG {
+position: absolute;
+height: 80px;
+width: 100%;
+background-image: url("images/bluebar1.png");
+z-index: -4;
+top: 94px;
+min-width: 990px;
+}
+
+.logo {
+position: absolute;
+height: 63px;
+width: 950px;
+z-index: -3;
+margin-left: -475px;
+left: 50%;
+background-image: url("images/logo.png");
+top: 23px;
+}
+
+.contentContainer {
+position: absolute;
+top: 130px;
+width: 985px;
+margin-left: -486px;
+left: 50%;
+z-index: 1;
+padding-bottom: 10px;
+}
+
+.pageFooter {
+position: absolute;
+height: 35px;
+width: 100%;
+min-width: 985px;
+z-index: 10;
+bottom: -30px;
+font-family: arial;
+font-size: 10px;
+color: white;
+text-align: center;
+}
+
+
+
+.topLeftContentBox {
+background-image: url("images/contentbox/topleft.png");
+width: 10px;
+height: 10px;
+}
+
+.topRightContentBox {
+background-image: url("images/contentbox/topright.png");
+width: 10px;
+height: 10px;
+}
+
+.bottomLeftContentBox {
+background-image: url("images/contentbox/bottomleft.png");
+width: 10px;
+height: 10px;
+}
+
+.bottomRightContentBox {
+background-image: url("images/contentbox/bottomright.png");
+width: 10px;
+height: 10px;
+}
+
+.topContentBox {
+background-image: url("images/contentbox/top.png");
+height: 10px;
+}
+
+.bottomContentBox {
+background-image: url("images/contentbox/bottom.png");
+height: 10px;
+}
+
+.leftContentBox {
+background-image: url("images/contentbox/left.png");
+width: 10px;
+}
+
+.rightContentBox {
+background-image: url("images/contentbox/right.png");
+width: 10px;
+}
+
+.contentBoxMain {
+background-image: url("images/contentbox/bg.png");
+}
+
+
+
+.menuTop {
+background-image: url("images/menu/top1.png");
+height: 10px;
+width: 148px;
+}
+
+.menuBottom {
+background-image: url("images/menu/bottom.png");
+height: 10px;
+width: 148px;
+}
+
+.menuContent {
+background-image: url("images/menu/bg.png");
+width: 156px;
+padding-left: 8px;
+padding-right: 8px;
+font-size: 10px;
+color: white;
+font-family: verdana, sans-serif;
+}
+
+
+.menu_MainMenu {
+background: url("images/menu/titles.png") 0px 0px;
+width: 134px;
+height: 9px;
+}
+
+.menu_Tournaments {
+background: url("images/menu/titles.png") 0px -9px;
+width: 134px;
+height: 9px;
+}
+
+.menu_Statistics {
+background: url("images/menu/titles.png") 0px -18px;
+width: 134px;
+height: 9px;
+}
+
+
+.menu_TopPlayers {
+background: url("images/menu/titles.png") 0px -27px;
+width: 134px;
+height: 9px;
+}
+
+.menu_Forum {
+background: url("images/menu/titles.png") 0px -36px;
+width: 134px;
+height: 9px;
+}
+
+.menu_LogIn {
+background: url("images/menu/titles.png") 0px -45px;
+width: 134px;
+height: 9px;
+}
+
+.menu_Search {
+background: url("images/menu/titles.png") 0px -54px;
+width: 134px;
+height: 9px;
+}
+
+.menu_ChatBoard {
+background: url("images/menu/titles.png") 0px -63px;
+width: 134px;
+height: 9px;
+}
+
+.menu_LoggedIn {
+background: url("images/menu/titles.png") 0px -72px;
+width: 134px;
+height: 9px;
+}
+
+.menu_ForumActivity {
+background: url("images/menu/titles.png") 0px -81px;
+width: 134px;
+height: 9px;
+}
+
+.menu_NewestMembers {
+background: url("images/menu/titles.png") 0px -90px;
+width: 134px;
+height: 9px;
+}
+
+
+.timeContainer {
+
+}
+
+.gradientBox {
+height: 20px;
+background-image: url("images/gradient.jpg");
+border: solid dimgray 1px;
+}
+
+/*
+Bluethrust Clan Scripts v4 - BLUE THEME CSS
+END
+*/
+
+/* Custom BTCS4.css */
+
+.menusForumActivityItemWrapper, .menusNewestMembersItemWrapper {
+	padding: 5px 0px;	
+}
+
+.menusForumActivityTextWrapper, .menusNewestMembersRank {
+	font-size: 10px;	
+}
+
+.shoutBox {
+	padding: 3px;
+}

@@ -1,6 +1,6 @@
 Bluethrust Clan Scripts v4
 
-Copyright (c) 2012, Bluethrust Web Development
+Copyright (c) 2014, Bluethrust Web Development
 All rights reserved.
 
 

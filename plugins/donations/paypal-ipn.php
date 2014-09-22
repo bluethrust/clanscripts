@@ -16,7 +16,7 @@
 		$arrColumns = array("donationcampaign_id", "member_id", "name", "message", "datesent", "amount", "paypalemail", "transaction_id", "response");
 		
 		$p->setMode($donationPlugin->getConfigInfo("mode"));
-		if($p->validate_ipn() && $p->ipn_data['payment_status'] == "Completed") {
+		if($p->validate_ipn() && $p->ipn_data['payment_status'] != "Failed" && $p->ipn_data['payment_status'] != "Denied") {
 			
 			$member = new Member($mysqli);
 			$campaignObj = new DonationCampaign($mysqli);

@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Bluethrust Clan Scripts v4: Medieval Blue</title>
+		
+		<link href='http://fonts.googleapis.com/css?family=Overlock+SC' rel='stylesheet' type='text/css'>
+		<link rel='stylesheet' type='text/css' href='style.css'>
+		<link rel='stylesheet' type='text/css' href='btcs4.css'>
+		
+		<script type='text/javascript' src='../../js/jquery-1.6.4.min.js'></script>
+		<script type='text/javascript' src='../../js/jquery-ui-1.8.17.custom.min.js'></script>
+	</head>
+<body>
+
+		<div class='mainSiteContainer'>
+
+		<table class='mainSiteTable'>
+			<tr>
+				<td class='mainSiteLeft' valign='top'>
+					<table class='layoutContentTable'>
+						<tr>
+							<td class='top-left-table'></td><td class='top-table'></td><td class='top-right-table'></td>
+						</tr>
+						<tr>
+							<td class='left-table'></td>
+							<td valign='top' class='center-table'>
+							
+							
+							</td>
+							<td class='right-table'></td>
+						</tr>
+						<tr>
+							<td class='bottom-left-table'></td>
+							<td class='bottom-table'></td>
+							<td class='bottom-right-table'></td>
+						</tr>
+					</table>
+				</td>
+				<td class='mainSiteRight'>
+					<div class='navMenuContainer'>
+		
+						<div class='navMenuTop'></div>
+						<div class='navMenuCenter'>
+							<div class='navMenuTitle'>
+								<img src='images/layout/menu/menu.png'>
+							</div>
+							<b>&middot;</b> <a href=''>Home</a><br>
+							<b>&middot;</b> <a href=''>News</a><br>
+							<b>&middot;</b> <a href=''>Members</a><br>
+							<b>&middot;</b> <a href=''>Ranks</a><br>
+							<b>&middot;</b> <a href=''>Squads</a><br>
+							<b>&middot;</b> <a href=''>Tournaments</a><br>
+							<b>&middot;</b> <a href=''>Medals</a><br>
+							<b>&middot;</b> <a href=''>History</a><br>
+							<b>&middot;</b> <a href=''>Rules</a><br><br>
+						
+							<div class='navMenuTitle'>
+								<img src='images/layout/menu/topplayers.png'>
+							</div>
+							<b>&middot;</b> <a href='/cs4git/top-players/recruiters.php'>Recruiters</a><br>
+							<b>&middot;</b> <a href='/cs4git/top-players/game.php?gID=2'>Starcraft 2</a><br>
+							<b>&middot;</b> <a href='/cs4git/top-players/game.php?gID=9'>World of Warcraft</a><br>
+							<b>&middot;</b> <a href='/cs4git/top-players/game.php?gID=5'>Starcraft</a><br>
+							<b>&middot;</b> <a href='/cs4git/top-players/game.php?gID=8'>Call of Duty</a><br>
+							<b>&middot;</b> <a href='/cs4git/top-players/game.php?gID=7'>Minecraft</a><br><br>							
+							
+							<div class='navMenuTitle'>
+								<img src='images/layout/menu/shoutbox.png'>
+							</div>			
+							asdf
+						</div>
+						<div class='navMenuBottom'></div>
+					</div>
+				
+				</td>
+			</tr>
+		</table>
+		
+	
+		
+		
+	
+
+	
+	
+	
+	
+		<div style='position: absolute; top: 0px; left: 0px; width: 100%; min-width: 990px'>
+			<div class='centerKnightBG'></div>
+			<div class='leftKnightBG'></div>
+			<div class='acBG'></div>
+			<div class='layoutLine'></div>
+			<div class='bloodLeftBG'></div>
+			<div class='shieldBG'></div>
+			<div class='rightBarBG'></div>
+		</div>
+		
+		<div class='loginBar'>
+			<form action='login.php' method='post' style='padding: 0px; margin: 0px'>
+			<div class='loginSection'>
+				<div class='loginUsernameImg'></div>
+				<div class='loginTextBox'><input type='textbox' class='textBox' name='user' style='width: 150px; font-size: 14px'></div>
+				<div class='loginPasswordImg'></div>
+				<div class='loginTextBox'><input type='password' class='textBox' name='pass' style='width: 150px; font-size: 14px'></div>
+				
+				<div class='loginButtonSection'>
+					<div class='loginRememberMeImg'></div>
+					<div class='loginRememberMeBoxContainer'>
+						<img src='images/transparent.png' class='loginRememberBoxImg' id='rememberMeBoxImg'>
+					</div>
+					
+					
+					<div class='loginButtonContainer'>
+						
+						<img src='images/transparent.png' class='loginButtonImg'>
+					
+					</div>
+					
+					
+				</div>
+				<div style='clear: both'></div>
+			</div>
+			<input type='hidden' name='rememberme' id='rememberme' value='0'>
+			</form>
+			
+		</div>
+	
+		<div class='logoDiv'>
+			<img src='images/logo.png'>
+		</div>
+	
+	
+	
+	
+	<div class='push'></div>
+	</div>
+	<div class='footerDiv'>
+		Powered By: <a href='http://www.bluethrust.com' target='_blank'>Bluethrust Clan Scripts v4</a><br>
+		&copy; Copyright 2013
+	</div>
+	
+
+	<script type='text/javascript'>
+		
+		$(document).ready(function() {
+			$('#rememberMeBoxImg').click(function() {
+				if($('#rememberme').val() == 0) {
+					$('#rememberMeBoxImg').removeClass('loginRememberBoxImg').addClass('loginRememberBoxImg_checked');
+					$('#rememberme').val('1');
+				}
+				else {
+					$('#rememberMeBoxImg').removeClass('loginRememberBoxImg_checked').addClass('loginRememberBoxImg');
+					$('#rememberme').val('0');
+				}
+			});
+		});
+	
+	</script>
+
+</body>
+</html>

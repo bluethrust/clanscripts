@@ -34,6 +34,7 @@ if(file_put_contents($backupFileName, "") === false && !isset($_POST['checkBacku
 	<input type='hidden' name='adminkey' value='".$_POST['adminkey']."'>
 	<input type='hidden' name='adminkey_repeat' value='".$_POST['adminkey_repeat']."'>
 	<input type='hidden' name='step2submit' value='".$_POST['step2submit']."'>
+	<input type='hidden' name='installType' value='".$_POST['installType']."'>
 	<input type='hidden' name='checkBackup' value='1'>
 	</form>
 

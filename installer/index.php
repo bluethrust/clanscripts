@@ -19,6 +19,7 @@
 	include_once("../classes/member.php");
 	include_once("../classes/consolecategory.php");
 	include_once("../classes/consoleoption.php");
+	include_once("../classes/websiteinfo.php");
 	include("tablelist.php");
 	include("tablecolumns.php");
 	include("consoleinfo.php");
@@ -63,7 +64,7 @@
 
 				echo "
 					<div class='noteDiv'>
-						<b>Note:</b> Unable to write to config file.  You can fix this by setting the file permissions on the _config.php file to 755.  Otherwise, you will need to manually create and fill out the _config.php file.  Go <a href='configinstructions.php'>HERE</a> to view instructions on how to fill out the config file.
+						<b>Note:</b> Unable to write to config file.  You can fix this by setting the file permissions on the _config.php file to 775.  Otherwise, you will need to manually create and fill out the _config.php file.
 					</div>
 				";
 
@@ -74,7 +75,7 @@
 				
 			echo "
 				<div class='noteDiv'>
-					<b>Note:</b> Unable to write to config file.  You can fix this by setting the file permissions on the _config.php file to 755.  Otherwise, you will need to manually create and fill out the _config.php file.  Go <a href='configinstructions.php'>HERE</a> to view instructions on how to fill out the config file.
+					<b>Note:</b> Unable to write to config file.  You can fix this by setting the file permissions on the _config.php file to 775.  Otherwise, you will need to manually create and fill out the _config.php file.
 				</div>
 			";
 			

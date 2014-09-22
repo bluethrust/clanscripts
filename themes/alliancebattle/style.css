@@ -1,0 +1,644 @@
+html {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+}
+
+body {
+	background-color: #131313;
+	background-image: url('images/layout/background-1920x1060.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	background-size: cover;
+	margin: 0px;
+	padding: 0px;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	height: 100%;
+}
+
+img {
+	border: 0px;	
+}
+
+a {
+	color: #7f7f7f;	
+	text-decoration: none;
+}
+
+a:hover {
+	color: #a8a8a8;	
+}
+
+.layout-pattern-bg {
+	position: fixed;
+	background-image: url('images/layout/patternbg.png');
+	min-width: 500px;
+	min-height: 500px;
+	height: 100%;	
+	width: 100%;
+	top: 0px;
+	left: 0px;
+}
+
+.layout-gradient-bottom {
+	background-image: url('images/layout/gradientbg.png');
+	background-repeat: repeat-x;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	min-width: 100%;
+	height: 697px;
+}
+
+
+.layout-ice-bg {
+	background-image: url('images/layout/ice-background.png');
+	width: 1158px;
+	height: 700px;
+	position: fixed;
+	top: 0px;
+	right: 0px;	
+}
+
+.layout-fire-bottom {
+	background-image: url('images/layout/fire-bottom.png');
+	width: 729px;
+	height: 516px;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;	
+}
+
+.layout-fire-top {
+	background-image: url('images/layout/fire-top.png');
+	width: 720px;
+	height: 515px;
+	position: fixed;
+	top: 0px;
+	right: 0px;	
+}
+
+.layout-top-light {
+	background-image: url('images/layout/top-light.png');
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	margin-left: -293px;
+	width: 587px;
+	height: 245px;
+}
+
+.wrapper {
+	width: 100%;
+	min-width: 990px;
+	margin: 0px;
+	padding: 0px;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -80px;
+	position: relative;
+	
+}
+
+.push {
+	height: 80px;
+	position: relative;
+
+}
+
+.footerDiv {
+	height: 50px;
+	padding-top: 30px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	color: white;
+	font-family: 'Fenix', verdana, sans-serif;
+	font-size: 12px;
+}
+
+.headerDiv {
+	width: 85%;
+	min-width: 990px;
+	position: relative;
+	height: 135px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 50px;
+}
+
+.topMenuDiv {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width: 85%;
+	min-width: 990px;
+	height: 36px;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.topMenu_News {
+	background: url('images/layout/topmenu.png') 0px 0px;
+	width: 72px;
+	height: 36px;
+	margin: 0px 20px;
+}
+
+.topMenu_News:hover {
+	background: url('images/layout/topmenu.png') 0px -36px;
+}
+
+.topMenu_Members {
+	background: url('images/layout/topmenu.png') -72px 0px;
+	width: 121px;
+	height: 36px;
+	margin: 0px 20px;
+}
+
+.topMenu_Members:hover {
+	background: url('images/layout/topmenu.png') -72px -36px;
+}
+
+
+.topMenu_Tournaments {
+	background: url('images/layout/topmenu.png') -193px 0px;
+	width: 168px;
+	height: 36px;
+	margin: 0px 20px;
+}
+
+.topMenu_Tournaments:hover {
+	background: url('images/layout/topmenu.png') -193px -36px;
+}
+
+.topMenu_Squads {
+	background: url('images/layout/topmenu.png') -361px 0px;
+	width: 91px;
+	height: 36px;
+	margin: 0px 20px;
+}
+
+.topMenu_Squads:hover {
+	background: url('images/layout/topmenu.png') -361px -36px;
+}
+
+.topMenu_Events {
+	background: url('images/layout/topmenu.png') -452px 0px;
+	width: 94px;
+	height: 36px;
+	margin: 0px 20px;
+}
+
+.topMenu_Events:hover {
+	background: url('images/layout/topmenu.png') -452px -36px;
+}
+
+
+.topMenu_Forum {
+	background: url('images/layout/topmenu.png') -546px 0px;
+	width: 87px;
+	height: 36px;
+	margin: 0px 18px;
+}
+
+.topMenu_Forum:hover {
+	background: url('images/layout/topmenu.png') -546px -36px;
+}
+
+
+.mainBodyDiv {
+	position: relative;
+	background-image: url('images/layout/maincontentbg.png');
+	background-color: rgba(0,0,0,.6);
+	background-repeat: repeat-x;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 990px;
+	width: 85%;
+	min-height: 500px;
+	box-shadow: 0px 0px 6px 3px rgba(0,0,0,.5);
+	overflow: auto;
+}
+
+.mainBody_LeftCorner {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-image: url('images/layout/maincontent-top-left.png');
+	width: 4px;
+	height: 4px;
+}
+
+.mainBody_RightCorner {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background-image: url('images/layout/maincontent-top-right.png');
+	width: 4px;
+	height: 4px;
+}
+
+.mainBody_TopBorderWrapper {
+	position: absolute;
+	top: 5px;
+	width: 100%;
+	height: 1px;
+}
+
+.mainBody_TopBorder {
+	background-color: #303233;
+	height: 1px;
+	margin: 0px 5px;
+}
+
+.mainBody_LeftBorder {
+	height: 85%;
+	top: 5px;
+	left: 5px;
+	width: 1px;
+	position: absolute;
+	background-color: #303233;
+}
+
+.mainBody_BorderFade {
+	position: absolute;
+	bottom: -30px;
+	width: 1px;
+	height: 30px;
+	left: 0px;
+	background-image: url('images/layout/maincontent-border-gradient1.png');
+}
+
+
+.mainBody_RightBorder {
+	height: 85%;
+	top: 5px;
+	right: 5px;
+	width: 1px;
+	position: absolute;
+	background-color: #303233;
+}
+
+.leftMenuDiv {
+	float: left;
+	width: 172px;
+	padding-left: 15px;
+	padding-top: 20px;
+	min-height: 500px;
+}
+
+.rightMenuDiv {
+	float: right;
+	width: 172px;
+	padding-right: 15px;
+	padding-top: 20px;
+	min-height: 500px;
+}
+
+
+.menuWrapper {
+	width: 172px;
+	position: relative;
+	margin-bottom: 15px;
+}
+
+.menuTopTitle {
+	background-image: url('images/layout/menu/top.png');
+	width: 172px;
+	height: 28px;
+	text-align: center;
+	margin: 0px;
+	position: relative;
+	padding-top: 5px;
+}
+
+.menuContent {
+	background-image: url('images/layout/menu/bg.png');
+	width: 150px;
+	padding: 8px 11px;
+	padding-bottom: 0px;
+	min-height: 20px;
+	position: relative;
+	font-family: 'Fenix', verdana, sans-serif;
+}
+
+.menuBottomBG {
+	background-image: url('images/layout/menu/bottom.png');
+	width: 172px;
+	height: 12px;
+	position: relative;
+}
+
+.menuTitle_MainMenu {
+	width: 96px;
+	height: 12px;
+	background: url('images/layout/menu/menutitles.png') 0px 0px;	
+}
+
+.menuTitle_TopPlayers {
+	width: 110px;
+	height: 16px;
+	background: url('images/layout/menu/menutitles.png') 0px -12px;	
+}
+
+.menuTitle_Downloads {
+	width: 108px;
+	height: 13px;
+	background: url('images/layout/menu/menutitles.png') 0px -28px;	
+}
+
+.menuTitle_ForumActivity {
+	width: 148px;
+	height: 16px;
+	background: url('images/layout/menu/menutitles.png') 0px -41px;	
+}
+
+.menuTitle_Shoutbox {
+	width: 92px;
+	height: 13px;
+	background: url('images/layout/menu/menutitles.png') 0px -57px;	
+}
+
+.menuTitle_NewMembers {
+	width: 148px;
+	height: 13px;
+	background: url('images/layout/menu/menutitles.png') 0px -70px;	
+}
+
+.menuTitle_LogIn {
+	width: 56px;
+	height: 13px;
+	background: url('images/layout/menu/menutitles.png') 0px -83px;	
+}
+
+.menuTitle_LoggedIn {
+	width: 88px;
+	height: 13px;
+	background: url('images/layout/menu/menutitles.png') 0px -96px;	
+}
+
+.centerContentWrapper {
+	margin-left: 192px;
+	margin-right: 192px;
+	padding-top: 20px;
+	min-height: 500px;
+}
+
+.gradientBox {
+	height: 20px;
+	background-image: url("gradient.png");
+	border: solid rgba(255,255,255,.15) 1px;
+	font-size: 11px;
+}
+
+#mobileTopBar {
+	display: none;
+}
+
+
+
+/* Custom BTCS4.css */
+
+.menusForumActivityWrapper {
+	margin-left: 2px; 
+	margin-right: 2px; 
+	margin-top: 0px; 
+	padding-bottom: 10px;
+	margin-bottom: 0px;
+}
+
+.menusNewestMembersWrapper {
+	margin-left: 2px; 
+	margin-right: 2px; 
+	margin-top: 0px; 
+	padding-bottom: 10px;
+	margin-bottom: 0px;
+}
+
+.shoutBoxPost {
+	margin: 0px;
+	padding: 0px;
+	padding-top: 10px; 
+	border: 0px;
+}
+
+.shoutBoxPost p {
+	margin-bottom: 0px;
+}
+
+@media only screen 
+and (min-device-width: 320px)
+and (max-device-width: 800px) {
+
+	body {
+		font-size: 62.5%;
+	}
+
+	.wrapper {
+		min-width: 85%;
+		margin: 0px;
+		padding: 0px;
+		min-height: 100%;
+		height: auto !important;
+		height: 100%;
+		margin-bottom: -80px;
+		position: relative;
+		margin-top: 44px;
+	}
+
+	
+	.footerDiv {
+		height: 50px;
+		padding-top: 30px;
+		position: relative;
+		width: 85%;
+		text-align: center;
+		color: white;
+		font-family: 'Fenix', verdana, sans-serif;
+		font-size: 1em;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.headerDiv {
+		min-width: 85%;
+		max-width: 85%;
+		position: relative;
+		height: 60px;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		padding-top: 20px;
+	}
+	
+	.headerDiv img {
+		width: 100%;
+		height: auto;
+	}
+
+	.topMenuDiv {
+		display: none;
+	}
+	
+	
+	.mainBodyDiv {
+		position: relative;
+		background-image: url('images/layout/maincontentbg.png');
+		background-color: rgba(0,0,0,.6);
+		background-repeat: repeat-x;
+		margin-left: auto;
+		margin-right: auto;
+		min-width: 85%;
+		width: 85%;
+		min-height: 50px;
+		box-shadow: 0px 0px 6px 3px rgba(0,0,0,.5);
+		overflow: auto;
+	}
+
+
+	.leftMenuDiv {
+		position: absolute;
+		width: 172px;
+		padding-left: 15px;
+		padding-top: 20px;
+		min-height: 500px;
+		display: none;
+	}
+
+	.rightMenuDiv {
+		position: absolute;
+		border: solid blue 1px;
+		width: 172px;
+		padding-right: 15px;
+		padding-top: 20px;
+		min-height: 500px;
+		display: none;
+	}
+	
+	.centerContentWrapper {
+		padding-top: 20px;
+		min-height: 200px;
+		width: 90%;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		font-size: 1em;
+	}
+	
+	.layout-top-light {
+		background-image: url('images/layout/top-light.png');
+		position: absolute;
+		top: 44px;
+		left: 0px;
+		margin-left: 0px;
+		width: 100%;
+		height: 245px;
+		background-size: 50%;
+		background-repeat: no-repeat;
+		background-position: center top;
+	}
+
+	.layout-gradient-bottom {
+		background-image: url('images/layout/gradientbg.png');
+		background-repeat: repeat-x;
+		position: fixed;
+		bottom: 0px;
+		left: 0px;
+		min-width: 100%;
+		height: 300px;
+		background-size: 100% 100%;
+		
+	}
+	
+	#membersPageTable {
+		display: none;
+	}
+	
+	#themeTimeDisplay .main {
+		font-size: .75em;
+	}
+	
+	#mobileTopBar {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		z-index: 99999;
+		height: 44px;
+		width: 100%;
+		background-color: rgba(28,28,28, 1);
+		display: block;
+	}
+	
+	#mobileLeftSection {
+		position: absolute;
+		top: 0px;
+		left: -172px;
+		min-height: 100%;
+		background-color: black;
+		width: 172px;
+		overflow-y: auto;
+	}
+	
+	#mobileRightSection {
+		position: absolute;
+		top: 0px;
+		right: -172px;
+		min-height: 100%;
+		background-color: black;
+		width: 172px;
+		overflow-y: auto;
+	}
+	
+	
+	.menuLinks {
+		font-size: 14px;
+	}
+	
+	#phoneLeftMenuButton {
+		width: 30px;
+		height: 30px;
+		top: 15px;
+		background-image: url('images/phonemenubutton.png');
+		left: 10px;
+		position: absolute;
+		background-size: 60% 50%;
+		background-repeat: no-repeat;
+	}
+	
+	#phoneRightMenuButton {
+		width: 30px;
+		height: 30px;
+		top: 15px;
+		background-image: url('images/phonemenubutton.png');
+		right: 10px;
+		position: absolute;
+		background-size: 60% 50%;
+		background-repeat: no-repeat;
+	}
+	.layout-fire-bottom {
+		display: none;
+	}
+	
+	.layout-fire-top {
+		display: none;
+	}
+	
+}
+
+@media only screen 
+and (min-device-width: 320px)
+and (max-device-width: 800px)
+and (orientation:landscape) {
+	#membersPageTable {
+		display: block;
+	}
+	
+}
+

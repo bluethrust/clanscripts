@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<theme>
+		<info name="Minecraft">
+			<section>Left Menu</section>
+			<section>Right Menu</section>
+			<section>Login Section</section>
+		</info>
+		<menu name="Main Menu" type="none" section="1" useclass="menuLinks">
+			<header type="image">themes/minecraft/images/layout/menu/mainmenu.png</header>
+		</menu>
+		<menu name="Top Players" type="top-players" section="1" useclass="menuLinks">
+			<header type="image">themes/minecraft/images/layout/menu/topplayers.png</header>
+		</menu>
+		<menu name="Shoutbox" type="shoutbox" section="2">
+			<header type="image">themes/minecraft/images/layout/menu/shoutbox.png</header>
+		</menu>
+	</theme>

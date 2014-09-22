@@ -917,6 +917,13 @@ class Tournament extends Basic {
 		
 	}
 	
+	
+	public function getLink() {
+
+		return FULL_SITE_URL."tournaments/view.php?tID=".$this->intTableKeyValue;
+		
+	}
+	
 }
 
 

@@ -133,12 +133,14 @@
 		
 		public function displayAllMemberCards() {
 
+			$counter = 0;
 			foreach($this->getMembers() as $memberID) {
 				
 				$this->displayMemberCard($memberID);
-				
+				$counter++;
 			}
-			
+
+			return $counter;
 		}
 		
 		public function getTwitchName($memberID) {

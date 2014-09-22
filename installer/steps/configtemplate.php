@@ -28,7 +28,7 @@ $configInput = "<?php
 	\$dbprefix = \"".$_POST['tableprefix']."\";
 	
 	\$MAIN_ROOT = \"".$setMainRoot."\";
-	
+	\$BASE_DIRECTORY = \"".$setDocumentRoot."\";
 	
 	\$ADMIN_KEY = \"".$filterConfigKey."\"; // KEY FOR EXTRA SECURITY WHEN ADDING CONSOLE OPTION
 	

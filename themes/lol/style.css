@@ -1,0 +1,445 @@
+body {
+	background-color: #00030e;
+	font-family: verdana, sans-serif;
+	padding: 0px;
+	margin: 0px;
+	color: black;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color: #a54d2a;
+}
+
+a:hover {
+	color: #6e321a;
+	text-decoration: underline;	
+}
+
+.imageBGContainer {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	max-height: 1080px;	
+}
+
+.imageBG {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	max-height: 1080px;
+	background-image: url('images/layout/background.jpg');
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: cover;
+	opacity: .3;
+	z-index: -10;
+}
+
+.imageBGGradient {
+	position: absolute;
+	bottom: -125px;
+	left: 0px;
+	height: 125px;
+	width: 100%;
+	background-image: url('images/layout/background-gradient.png');	
+}
+
+.leftCharacterBG {
+	background-image: url('images/layout/left-character.png');
+	width: 416px;
+	height: 510px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: -10;
+}
+
+.rightCharacterBG {
+	background-image: url('images/layout/right-character.png');
+	width: 389px;
+	height: 392px;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	z-index: -10;
+}
+
+.headerDiv {
+	position: relative;
+	width: 90%;
+	min-width: 990px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 180px;
+	text-align: center;
+	padding-top: 30px;
+}
+
+.topMenuContainer {
+	width: 85%;
+	min-width: 898px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('images/layout/topmenu/bg.png');
+	padding-top: 27px;
+	height: 49px;
+	font-size: 18px;
+	text-align: center;
+	font-weight: bold;
+	font-family: 'Lato', verdana, sans-serif;
+}
+
+.topMenuContainer a {
+	color: white;	
+}
+
+.topMenuContainer a:hover {
+	color: #ffd478;
+	text-decoration: none;
+}
+
+.topMenuItem {
+	display: inline-block;
+	margin: 0px 2.3%;
+}
+
+.topMenuLeftCorner {
+	width: 46px;
+	height: 78px;
+	background-image: url('images/layout/topmenu/left.png');
+	position: absolute;
+	left: -46px;	
+	top: 0px;
+}
+
+.topMenuRightCorner {
+	width: 46px;
+	height: 78px;
+	background-image: url('images/layout/topmenu/right.png');
+	position: absolute;
+	right: -46px;
+	top: 0px;
+}
+
+.topMenuItemText {
+	position: relative;
+	padding-bottom: 9px;
+}
+
+.topMenuItemText p {
+	position: relative;
+	z-index: 3;
+	color: white;
+	margin: 0px;
+	padding: 0px;
+	cursor: default;
+}
+
+.layoutDropDownMenu {
+	position: absolute;
+	top: 29px;
+	left: 0px;
+	width: 140px;
+	min-height: 40px;
+	z-index: 2;
+	display: none;
+	border-image: url('images/layout/topmenu/dropdown-border-bg.png') 30 round;
+	border-image-width: 30px;
+	text-align: left;
+	font-size: 12px;
+	padding: 10px 20px;
+	padding-bottom: 30px;
+	color: white;
+}
+
+.layoutDropDownFillBG {
+	background-image: url('images/layout/topmenu/dropdown-bg.png');
+	width: 135px;
+	position: absolute;
+	top: 29px;
+	left: 24px;
+	z-index: -5;
+}
+
+.layoutDropDownCover {
+	width: 180px;
+	height: 38px;
+	background-image: url('images/layout/topmenu/dropdown-highlight.png');
+	position: absolute;
+	top: -35px;
+	left: 0px;
+	z-index: -10;
+}
+
+.topMenuHighlight {
+	width: 180px;
+	height: 34px;
+	background-image: url('images/layout/topmenu/menu-highlight.png');
+	position: absolute;
+	top: -5px;
+	left: 0px;
+	display: none;
+	z-index: 0;
+}
+
+.bodyDiv {
+	position: relative;
+	width: 85%;
+	min-height: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1;
+	min-width: 990px;
+	word-wrap: break-word;
+
+}
+
+.bodyBorder {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-image: url('images/layout/content-border.png') 40 round;
+	border-image-width: 40px;	
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+}
+
+.bodyMainBG {
+	position: absolute;
+	background-image: url('images/layout/content-bg.png');
+	top: 25px;
+	left: 25px;
+	bottom: 25px;
+	right: 25px;
+	z-index: -3;
+}
+
+.bodyContentBG {
+	position: absolute;
+	z-index: -2;
+	width: 80%;
+	background-image: url('images/layout/center-content-bg.png');
+	border-image: url('images/layout/center-content-border.png') 60 round;
+	border-image-width: 60px;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+}
+
+.bodyMenuBG {
+	position: absolute;
+	width: 20%;
+	background-image: url('images/layout/vertical-line.png');
+	background-repeat: repeat-y;
+	background-position: left top;
+	height: 100%;
+	right: 3px;
+}
+
+.bodyMainContent {
+	float: left;
+	width: 73%;
+	padding: 40px;
+	padding-right: 5px;
+	color: #31150a;
+	font-size: 12px;
+}
+
+.bodyMenuContent {
+	float: right;
+	width: 16%;
+	min-height: 300px;
+	margin-right: 36px;
+	padding: 35px 8px;
+	color: white;
+	font-family: 'Lato', verdana, sans-serif;
+}
+
+.bodyMenuContent a {
+	color: #ffd478;
+}
+
+.bodyMenuContent a:hover {
+	color: #d1ad61;
+}
+
+.bodyMenuContent .dottedLine {
+	border-bottom: dotted white 1px;	
+}
+
+.bodyMenuContent .alternateBGColor {
+	background-color: rgba(255,255,255, .08);
+}
+
+.menuGradientLineTop {
+	background: linear-gradient(to left, rgba(0,186,255, .1), rgba(0,186,255, 1), rgba(0,186,255, .1));
+	height: 1px;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0px 5px 3px 3px rgba(0,126,255,.1);
+}
+
+.menuGradientLineBottom {
+	background: linear-gradient(to left, rgba(0,186,255, .1), rgba(0,186,255, 1), rgba(0,186,255, .1));
+	height: 1px;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0px -5px 3px 3px rgba(0,126,255,.1);
+	margin-bottom: 10px;
+}
+
+.menuTitle {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0px;
+	padding: 3px 0px;
+	text-align: center;
+}
+
+.menuItem {
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+}
+
+.loginTextbox {
+	border: solid rgba(217,157,29, .45) 1px;
+	height: 20px;
+	padding: 3px;
+	width: 95%;
+	font-family: 'Lato', verdana, sans-serif;
+	background-color: rgba(255,255,255,.2);
+	color: white;
+	font-size: 12px;
+	margin: 0px;
+	margin-top: 2px;
+	margin-bottom: 10px;
+	border-radius: 3px;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0, .35);
+}
+
+.loginSubmitButton {
+	float: right;
+	border: solid rgba(0,186,255, 1) 1px;
+	border-radius: 3px;
+	padding: 5px;
+	background: linear-gradient(rgba(0,186,255, .2), rgba(0,186,255, .5));
+	color: white;
+	font-weight: bold;
+	font-family: 'Lato', verdana, sans-serif;
+	font-size: 12px;
+	margin-right: 8px;
+	margin-top: 10px;
+	min-width: 85px;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0, .75);
+	cursor: pointer;
+}
+
+.loginSubmitButton:hover {
+	background: linear-gradient(rgba(0,186,255, .1), rgba(0,186,255, .45));
+	border: solid rgba(0,186,255, .8) 1px;
+}
+
+.loggedInMenuList {
+	padding: 0px;
+	padding-left: 15px;
+	margin: 0px;	
+}
+
+.loggedInSection p {
+	margin: 0px; 
+	padding-left: 2px; 
+	margin-bottom: 5px	
+}
+
+.footerDiv {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width: 85%;
+	height: 25px;
+	padding: 15px 0px;
+	padding-top: 5px;
+	text-align: center;
+	font-size: 10px;
+	color: white;
+}
+
+
+.menusForumActivityWrapper .dottedLine {
+	border-bottom: dotted white 1px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+
+	.bodyMainBG {
+		right: 20px;
+		bottom: 20px;
+	}
+	
+	.bodyMenuBG {
+		right: -4px;
+	}
+	
+	.bodyMenuContent {
+		margin-right: 28px;
+	}
+	
+	.layoutDropDownFillBG { 
+		top: 27px;
+	}
+}
+
+
+/* BTCS4.CSS CHANGES */
+
+.newsDiv {
+	border-radius: 3px;	
+}
+
+.shoutBox {
+	box-shadow: 0px 0px 3px 0px rgba(0,0,0, .35);
+}
+
+.shoutBox .dottedLine {
+	border-bottom: dotted white 1px;	
+}
+
+.shoutBox a {
+	color: #ffd478;
+}
+
+.shoutBox a:hover {
+	color: #d1ad61;	
+}
+
+
+.squadContainer .squadRightColumn .shoutBox {
+	box-shadow: none;
+	background-color: initial;
+	width: 90% !important;
+}
+
+
+.squadContainer .squadRightColumn .shoutBox a {
+	color: #a54d2a;
+	font-size: 12px;
+}
+
+.squadContainer .squadRightColumn .shoutBox a:hover {
+	color: #6e321a;	
+}
+
+.squadContainer .squadRightColumn .shoutBox .dottedLine {
+	border-bottom: dotted #a54d2a 1px;
+}
+
+.breadCrumbTitle {
+	font-family: 'Lato', verdana, sans-serif;	
+}

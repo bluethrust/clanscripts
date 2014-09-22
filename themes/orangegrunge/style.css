@@ -1,0 +1,272 @@
+
+html {
+	
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	min-width: 990px;
+}
+
+
+body {
+	
+	background-image: url('images/layout/bg.png');
+	font-family: verdana;
+	font-size: 11px;
+	color: white;
+	text-align: left;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+a {
+	color: #F4A460;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #FF8C00;
+	text-decoration: underline;
+}
+
+.horizontalBG {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 500px;
+	width: 100%;
+	background-image: url('images/layout/horizontal-bg.png');
+	background-repeat: repeat-x;
+	z-index: -33333;
+	min-width: 990px;
+}
+
+.bottom-left-layout-image {
+	
+	position: fixed;
+	_position: absolute;
+	width: 420px;
+	height: 410px;
+	bottom: 0px;
+	left: 0px;
+	padding: 0px;
+	margin: 0px;
+	background-image: url('images/layout/bottom-left-image.png');
+	background-repeat: no-repeat;
+	z-index: -22222;
+	
+}
+
+.top-left-layout-image {
+	
+	position: absolute;
+	width: 431px;
+	height: 383px;
+	top: 0px;
+	left: 0px;
+	padding: 0px;
+	margin: 0px;
+	background-image: url('images/layout/top-left-grunge2.png');
+	background-repeat: no-repeat;
+	z-index: -22222;
+	
+}
+
+
+.top-right-layout-image {
+	
+	position: absolute;
+	width: 425px;
+	height: 344px;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+	margin: 0px;
+	background-image: url('images/layout/top-right-bg.png');
+	background-repeat: no-repeat;
+	z-index: -22222;
+	
+}
+
+.logoDiv {
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	width: 731px;
+	height: 99px;
+	padding: 0px;
+	text-align: center;
+}
+
+.left-orange-line {
+	position: absolute;
+	top: 125px;
+	left: 0px;
+	background-image: url('images/layout/line-bg.png');
+	width: 35%;
+	height: 5px;
+	z-index: -11111;
+	text-align: right;
+}
+
+.right-orange-line {
+	position: absolute;
+	top: 125px;
+	right: 0px;
+	background-image: url('images/layout/line-bg.png');
+	width: 35%;
+	height: 5px;
+	z-index: -11111;
+	text-align: left;
+}
+
+.mainLayoutTable {
+	padding: 0px;
+	margin: 50px auto 20px auto;
+	width: 95%;
+	border: 0px;
+	border-spacing: 0px;
+}
+
+.mainLayoutTable .top-left-corner {
+	background-image: url('images/layout/contentbox/top-left-corner.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .top-right-corner {
+	background-image: url('images/layout/contentbox/top-right-corner.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .bottom-left-corner {
+	background-image: url('images/layout/contentbox/bottom-left-corner.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .bottom-right-corner {
+	background-image: url('images/layout/contentbox/bottom-right-corner.png');
+	width: 25px;
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .top-side {
+	background-image: url('images/layout/contentbox/top-side.png');
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .bottom-side {
+	background-image: url('images/layout/contentbox/bottom-side.png');
+	height: 25px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .left-side {
+	background-image: url('images/layout/contentbox/left-side.png');
+	background-repeat: repeat-y;
+	width: 25px;
+	position: relative;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .right-side {
+	background-image: url('images/layout/contentbox/right-side.png');
+	background-repeat: repeat-y;
+	position: relative;
+	width: 25px;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainLayoutTable .mainContentBox {
+	background-image: url('images/layout/contentbox/bg.png');
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+.mainInnerTable {
+	
+	border: 0px;
+	margin: 0px;
+	width: 100%;
+	padding: 0px;
+	font-family: verdana;
+	font-size: 11px;
+	color: white;
+	
+}
+
+.mainInnerTable .menuColumn {
+	padding: 2px;
+	font-family: verdana;
+	font-size: 11px;
+	color: white;
+}
+
+.mainInnerTable .contentColumn {
+	width: 100%;
+	padding: 2px 10px;
+	font-family: verdana;
+	font-size: 11px;
+	color: white;
+}
+
+
+.mainSiteContainer {
+	margin-bottom: -59px;
+}
+
+.push {
+	height: 59px;
+}
+
+.footerDiv {
+	height: 59px;
+	padding: 0px;
+	background-image: url('images/layout/footer-bg.png');
+	background-repeat: repeat-x;
+	width: 100%;
+	margin: 0px;
+	font-size: 10px;
+	font-family: verdana;
+	color: white;
+	text-align: center;
+}
+
+.gradientBox {
+	height: 20px;
+	background-image: url("images/gradient.jpg");
+	border: solid dimgray 1px;
+}
+
+
+/* Custom BTCS4.css */
+
+.formDiv {
+	border: solid #191a1a 1px;	
+}
+
+.forumPostContainer {
+	border-spacing: 0px;
+}
