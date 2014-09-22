@@ -5,13 +5,16 @@
 		
 		
 		public $hoursBefore = 8;
+		protected $mailObj;
+		protected $sentObj;
 		
 		public function __construct($sqlConnection) {
 
 			$this->MySQL = $sqlConnection;
 			$this->strTableName = $this->MySQL->get_tablePrefix()."emailnotifications";
 			$this->strTableKey = "emailnotification_id";
-
+			$this->mailObj = new btMail();
+			$this->sentObj = new Basic($this->MySQL, "emailnotifications_sent", "emailnotificationssent_id");
 		}
 		
 		
@@ -59,12 +62,45 @@
 		
 		public function sendTournamentNotification() {
 			
-			$arrTournaments = $this->getNotificationItems("tournaments", "tournament_id", "Tournaments", "startdate");
-			$sqlTournaments = "('".implode("','", $arrTournaments)."')";
-			$result = $this->MySQL->query("SELECT member_id FROM ".$this->MySQL->get_tablePrefix()."tournamentplayers WHERE tournament_id IN ".$sqlTournaments);
+			$member = new Member($this->MySQL);
+			$tournamentObj = new Tournament($this->MySQL);
+		
+			$arrEmails = array();
 			
+			$arrTournaments = $this->getNotificationItems("tournaments", "tournament_id", "Tournaments", "startdate");
+			
+			$sqlTournaments = "('".implode("','", $arrTournaments)."')";
+			$result = $this->MySQL->query("SELECT member_id, tournament_id FROM ".$this->MySQL->get_tablePrefix()."tournamentplayers WHERE tournament_id IN ".$sqlTournaments);
+			while($row = $result->fetch_assoc()) {
+			
+				if($member->select($row['member_id']) && $member->getEmailNotificationSetting("Tournament")) {
+					$arrEmails[$row['tournament_id']]['bcc'][] = $member->get_info_filtered("email");					
+				}
+				
+			}
+			
+			foreach($arrEmails as $tournamentID => $arrPlayerEmails) {
+				
+				$tournamentObj->select($tournamentID);
+				$tounamentLink = $tournamentObj->getLink();
+				$tournamentInfo = $tournamentObj->get_info_filtered();
+				
+				$message = "The ".$tournamentInfo['name']." tournament will be starting on ".getPreciseTime($tournamentInfo['startdate'], "", true).".";
+				$this->mailObj->sendMail("", "Tournament Starting!", "", $arrPlayerEmails);
+				
+				$this->logNotification($tournamentID);
+			}
 		}
 		
+		private function logNotification($itemID) {
+			
+			if($this->intTableKeyValue != "") {
+				
+				$this->sentObj->addNew(array("emailnotification_id", "item_id", "datesent"), array($this->intTableKeyValue, $itemID, time()));
+				
+			}
+			
+		}
 		
 	}
 

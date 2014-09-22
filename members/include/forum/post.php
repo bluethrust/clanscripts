@@ -395,7 +395,7 @@ function checkForAttachments() {
 				
 				if($attachmentObj->addNew($arrDLColumns, $arrDLValues)) {
 					$arrDownloadID[] = $attachmentObj->get_info("download_id");
-				}	
+				}
 			}
 			elseif($_FILES[$tempPostName]['name'] != "") {
 				$countErrors++;
