@@ -18,7 +18,7 @@ class btMySQL extends MySQLi {
 	protected $bt_TestingMode;
 
 	
-	public function __construct($host, $username, $passwd, $dbname = "", $port, $socket) {
+	public function __construct($host, $username, $passwd, $dbname = "", $port=null, $socket=null) {
 
 		$host = !isset($host) ? ini_get("mysqli.default_host") : $host;
 		$username = !isset($username) ? ini_get("mysqli.default_user") : $username;
