@@ -15,12 +15,9 @@
 	if(!defined("LOGGED_IN") || !LOGGED_IN) { 
 		
 		$setupManageListArgs = json_decode($_POST['listArgs'], true);
-		
+
 		include("../_setup.php");
-		include_once("../classes/member.php");
-		include_once("../classes/rank.php");
-		include_once("../classes/consoleoption.php");
-		
+
 		
 		$member = new Member($mysqli);
 		$member->select($_SESSION['btUsername']);

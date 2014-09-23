@@ -12,6 +12,7 @@
 	 *
 	 */
 
+
 	if(!defined("LOGGED_IN") || !LOGGED_IN) { die("<script type='text/javascript'>window.location = '".$MAIN_ROOT."'</script>"); }
 	
 	$objManageList->intAddCID = $consoleObj->findConsoleIDByName("Add New Medal");
