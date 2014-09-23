@@ -13,10 +13,6 @@
  */
 
 include_once("../../../../_setup.php");
-include_once("../../../../classes/member.php");
-include_once("../../../../classes/rank.php");
-include_once("../../../../classes/consoleoption.php");
-include_once("../../../../classes/medal.php");
 
 
 $member = new Member($mysqli);
@@ -42,8 +38,12 @@ if($member->authorizeLogin($_SESSION['btPassword'])) {
 		
 		if($_POST['confirm'] == 1) {
 			$medalObj->delete();
-			include("main.php");
-			include("../../../console.managelist.list.php");
+
+			$objManageList = new btOrderManageList($medalObj);
+			$objManageList->strMainListLink = BASE_DIRECTORY."members/include/admin/medals/main.php";
+
+			include($objManageList->strMainListLink);
+			include(BASE_DIRECTORY."members/console.managelist.list.php");
 			
 		}
 		else {
