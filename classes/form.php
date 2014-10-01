@@ -168,8 +168,15 @@
 						";
 						break;
 					case "datepicker":
+						
+						$datePick = new DateTime();
+						$datePick->setTimestamp($componentInfo['value']/1000);
+						$datePick->setTimezone(new DateTimeZone("UTC"));
+						
+						$formatDatePick = $datePick->format("n-j-Y");
+						
 						$afterJS .= $this->datepickerJS($componentInfo['attributes']['id'], $componentInfo['options']);
-						$displayForm .= "<input type='text' value='".$componentInfo['options']['defaultDate']."' ".$dispAttributes." readonly='readonly'><input type='hidden' id='".$componentInfo['options']['altField']."' name='".$componentName."' value='".$componentInfo['value']."'>";
+						$displayForm .= "<input type='text' value='".$componentInfo['options']['defaultDate']."' ".$dispAttributes." readonly='readonly'><input type='hidden' id='".$componentInfo['options']['altField']."' name='".$componentName."' value='".$formatDatePick."'>";
 						break;
 					case "select":
 						$displayForm .= "<select name='".$componentName."' ".$dispAttributes.">";
@@ -446,8 +453,13 @@
 							}
 							break;
 						case "NUMBER_ONLY":
-							if(!is_numeric($_POST[$componentName])) {
+							if(!is_numeric($_POST[$componentName]) && $componentInfo['type'] != "datepicker") {
 								$this->errors[] = ($arrValidate['customMessage'] != "") ? $arrValidate['customMessage'] : $componentInfo['display_name']." may only be a numeric value.";	
+							}
+							elseif($componentInfo['type'] == "datepicker") {
+
+								$checkDate = explode("-", $_POST[$componentName]);
+								
 							}
 							break;
 						case "POSITIVE_NUMBER":
@@ -641,7 +653,14 @@
 					
 				}
 				elseif($componentInfo['type'] == "datepicker") {
-					$_POST[$componentName] = $_POST[$componentName]/1000;	
+					
+					$formatDate = explode("-", $_POST[$componentName]);
+					$datePick = new DateTime();
+					$datePick->setTimezone(new DateTimeZone("UTC"));
+					$datePick->setDate($formatDate[2], $formatDate[0], $formatDate[1]);
+					$dateTimestamp = $datePick->format("U");
+					
+					$_POST[$componentName] = $dateTimestamp;	
 				}				
 					
 				
@@ -969,7 +988,7 @@
 					yearRange: '".$componentOptions['yearRange']."',
 					defaultDate: '".$componentOptions['defaultDate']."',
 					altField: '#".$componentOptions['altField']."',
-					altFormat: '@'
+					altFormat: 'm-d-yy'
 				});
 			";
 			
