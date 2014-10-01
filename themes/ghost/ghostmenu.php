@@ -52,8 +52,6 @@
 				<input type='submit' name='submit' value='Login' id='btnLogin' style='display: none'>
 				<div class='loginButton' id='btnFakeLogin'></div>
 				
-				<div style='position: absolute; top: 102px; left: 29px'>Sign in with Facebook</div>
-				
 				<input type='hidden' value='0' id='rememberMe' name='rememberme'>
 			</form>
 			
